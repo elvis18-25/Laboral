@@ -1,0 +1,110 @@
+#fijo{
+    top: -37px;
+    position: relative;
+    margin-left: 12px;
+}
+
+#tipo{
+    top: 7px;
+    position: relative;
+    margin-left: 10px;
+}
+
+#inlineRadio1{
+    top: -6px;
+    position: relative;
+    margin-left: 5px;  
+}
+
+
+#lafijo{
+margin-left: -26px;
+}
+
+#ltemporal{
+    margin-left: -22px;;
+}
+
+.selec option{
+    text:rgb(0, 0, 0);
+    background-color:#ffffff;;
+}
+
+.redondo{
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  #role-table tbody tr{
+    cursor: pointer;
+  }
+
+  #empleado-table tbody{
+      cursor: pointer;
+  }
+
+  .dataTables_filter{
+    width: 626px !important;
+   
+  }
+  div.dataTables_wrapper div.dataTables_filter input {
+    display: inline-block;
+    width: 571px !important;
+}
+  div.col-sm-12.col-sm-6{
+  margin-left: -271px;
+}
+
+.dropzone .dz-preview{
+        margin: 10px;
+        min-height: 150px;
+    }
+    .dropzone .dz-preview .dz-image{
+        width: 150px;
+        height: 150px;
+    }
+    .dz-image img{
+        width: 150px;
+        height: 150px;
+    }
+
+
+#labid{
+  cursor: pointer;
+}
+
+#image{
+  margin-left: 122px;
+  cursor: pointer;
+  background-image: url('../black/img/default-user-image.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* background-size: cover; */
+
+
+} 
+/* table.dataTable tbody tr.selected {
+  background-color: #b62897 !important;
+} */
+
+
+    @media (min-width: 768px){
+    div.col-md-6 {
+
+      margin-left: -12px !important;
+    }
+  } 
+
+  @media (min-width: 768px){
+    div.col-sm-12.col-md-6 {
+
+      margin-right: -276px !important;
+    }
+  } 
+
+  /* #Empleadotable_wrappertbody tr.selected {
+    color: white !important;
+    background-color: #9e2ca8 !important;
+} */

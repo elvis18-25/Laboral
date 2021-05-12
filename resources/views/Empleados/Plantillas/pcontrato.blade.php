@@ -1,0 +1,1 @@
+<option value="{{$contrato->id}}">{{$contrato->name}}</option>

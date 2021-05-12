@@ -1,0 +1,416 @@
+@font-face {
+    font-family: SourceSansPro;
+    src: url(SourceSansPro-Regular.ttf);
+  }
+  
+  .clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .Userlogin{
+    font-size: 10px;
+    margin-top: -50px;
+    float: left;
+    margin-left: -5%;
+    color: gray;
+  }
+
+  .encabezado{
+    text-align:center; 
+    font-size: 25px; 
+    margin-left: 35%;
+    float: left;
+    /* position: relative; */
+  }
+
+/* .thd{
+  height: 50px;
+} */
+
+.obersrvaciones{
+
+  width: 50%;
+}
+  #totsd{
+    margin-left: 620px ;
+    color: #023166;
+    font-size: 1.2em;
+    font-weight: normal;
+  }
+  .blue{
+    color: #023166; 
+  }
+  
+  .recur{
+      font-size: 20px;
+  }
+  
+  .egreso{
+    width:35%;
+    position: absolute;
+    margin-top: -28px; 
+    float: right; 
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+    font-size: 14px;
+    font-weight: normal;
+
+  }
+  body {
+    position: relative;
+    /* width: 21cm;   */
+    height: 29.7cm; 
+    /* margin: 0 auto;  */
+    color: #000000;
+    background: #FFFFFF; 
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+    font-size: 14px; 
+    font-family: SourceSansPro;
+  }
+  
+  header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #AAAAAA;
+  }
+  
+  #logo {
+    float: center;
+    margin-top: -60px;
+    margin-left: 40%;
+  }
+
+  #logoWS {
+    float: right;
+    /* margin-top: -10px; */
+    font-size: 40px; 
+    color: gray;
+    margin-right: -1%;
+    margin-top: -20px;
+    position: relative;
+  }
+  
+  #logo img {
+    height: 150px;
+  }
+  
+  
+  #company {
+    float: center;
+    margin-left: -10px;
+    text-align: left;
+    margin-top: 78px;
+    /* line-height:20px; */
+  }
+
+  /* #princpial{
+    margin-right: 115% !important;
+    width: 210%;
+    position: relative;
+  } */
+
+  #input{
+    display: none;
+  }
+  
+  #logow{
+  position: relative;
+  margin-left: 100px !important;
+  }
+  
+  
+  #details {
+    margin-bottom: 50px;
+  }
+  
+  #client {
+    padding-left: 6px;
+    border-left: 6px solid #0087C3;
+    float: left;
+  }
+  
+  .linea{
+    border-top: 1px solid black;
+    height: 2px;
+    max-width: 200px;
+    padding: 0;
+    margin: 20px auto 0 auto;
+    
+  }
+  .linea2{
+    border-top: 1px solid black;
+    height: 2px;
+    max-width: 200px;
+    padding: 0;
+    margin: 20px auto 0 auto;
+    
+  }
+  
+  .elaborado{
+    margin-top: 110px;
+    margin-left: 70px;
+    float: left;
+  }
+  
+  .recibido{
+    margin-top: 90px;
+    margin-right: 70px;
+    float: right;
+  }
+
+  #client .to {
+    font-size: 1.4em;
+    color: #000000;
+  }
+  
+  h3.name {
+    font-size: 1.4em;
+    font-weight: normal;
+    margin: 0;
+  }
+  
+  h3.apellido {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 0;
+  }
+  
+  h3.address {
+    font-size: 1.4em;
+    font-weight: normal;
+    margin: 0;
+  }
+  
+  #invoice {
+    float: left;
+    margin-left: 200px;
+    text-align: right;
+  }
+  
+  #logow1{
+    position: relative;
+    margin-left: 150px !important;
+    }
+  
+  #invoice h1 {
+    color: #0087C3;
+    font-size: 2.4em;
+    line-height: 1em;
+    font-weight: normal;
+    margin: 0  0 10px 0;
+  }
+  
+  #invoice .date {
+    font-size: 1.4em;
+    color: #555555;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    /* border-spacing: 0; */
+    margin-bottom: 20px;
+  }
+
+  .totalgasto{
+      font-size: 18px;
+  }
+  
+  
+  table th,
+  table td {
+    padding: 3px;
+    background: #EEEEEE;
+    text-align: center;
+    border-bottom: 1px solid #424242;
+  }
+  
+  table th .no1 {
+    white-space: nowrap;        
+    font-weight: bold;
+    background: #023166;
+  }
+  table th .no2d {
+    white-space: nowrap;        
+    font-weight: bold;
+    background: #ffffff;
+  }
+  table th {
+    white-space: nowrap;        
+    font-weight: normal;
+  }
+  
+  table td {
+    text-align: right;
+  }
+  
+  table td h3{
+    color: #023166;
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 0 0 0.2em 0;
+  }
+  
+  table .no {
+    color: #FFFFFF;
+    background: #023166;
+  }
+  
+  table .no1 {
+    color: #FFFFFF;
+    font-size: 1.1em;
+    background: #023166;
+  }
+  
+  #text{
+    text-align: center;
+  }
+  
+  #space{
+    background: white;
+  }
+  
+  #space1{
+    background: white;
+  }
+  
+  table .no2 {
+    color: #FFFFFF;
+    font-size: 1.1em;
+    background: #023166;
+    text-align: center;
+  }
+  
+  table .desc {
+    text-align: left;
+  }
+  
+  table .unit {
+    background: #DDDDDD;
+  }
+  
+  table .qty {
+  }
+  
+  table .total {
+    background: #023166;
+    color: #FFFFFF;
+  }
+  
+  table td.unit,
+  table td.qty,
+  table td.total {
+    font-size: 1.2em;
+  }
+  
+  table tbody tr:last-child td {
+    border: none;
+  }
+  tbody{
+      font-size: 16px;
+  }
+  
+  table tfoot td {
+    padding: 10px 20px;
+    background: #FFFFFF;
+    border-bottom: none;
+    font-size: 1.2em;
+    white-space: nowrap; 
+    border-top: 1px solid #AAAAAA; 
+  }
+  
+  table tfoot tr:first-child td {
+    border-top: none; 
+  }
+  
+  table tfoot tr:last-child td {
+    color:#023166;
+    font-size: 1.4em;
+    border-top: 1px solid #023166; 
+  
+  }
+  
+  table tfoot tr td:first-child {
+    border: none;
+  }
+  
+  #tr1{
+    position: relative;
+    top: -500px !important;
+    color:#023166;
+   
+  }
+  
+  #tr2{
+    color:#023166;
+    font-size: 1.4em;
+    border-top: 1px solid #023166; 
+  }
+  
+  #thanks{
+    font-size: 2em;
+    margin-bottom: 50px;
+  }
+  
+  #notices{
+    padding-left: 6px;
+    border-left: 6px solid #0087C3;  
+  }
+  
+  #notices .notice {
+    font-size: 1.2em;
+  }
+  
+  footer {
+    color: #777777;
+    width: 100%;
+    height: 10px;
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #AAAAAA;
+    padding: 8px 0;
+    text-align: center;
+  }
+  /* .foor {
+    color: #777777;
+    background-color: #777777;
+    height: 2px;
+
+  } */
+  th.last, td.last {
+    border-right: 0;
+ }
+
+  
+  .hoy{
+    margin-left: 720px;
+    font-size: 1.7em;
+  }
+  h1{
+      margin-left: 300px;
+  }
+  .linea {
+    border-top: 1px solid black;
+    height: 2px;
+    max-width: 220px;
+    padding: 0;
+    margin: 20px auto 0 auto;
+    top: 100px;
+    margin-left: 500px;
+    position: relative;
+  }
+  .firma{
+    top: 100px;
+    margin-left: 530px;
+    position: relative;
+  }
+  
+
+  
+  

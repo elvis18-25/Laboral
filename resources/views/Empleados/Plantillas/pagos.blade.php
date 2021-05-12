@@ -1,0 +1,1 @@
+<option value="{{$pagos->id}}">{{$pagos->pago}}</option>
