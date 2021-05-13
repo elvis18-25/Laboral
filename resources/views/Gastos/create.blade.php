@@ -2,6 +2,7 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -240,6 +241,15 @@
 </div>
 </form>
 
+<div class="o-page-loader">
+  <div class="o-page-loader--content">
+    <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+      {{-- <div class=""></div> --}}
+      <div class="o-page-loader--message">
+          <span>Cargando...</span>
+      </div>
+  </div>
+</div>
 
 <div class="modal fade" id="nominamodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 {{-- @include('Gastos.phone') --}}
@@ -251,6 +261,7 @@
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous"></script>
 <script src="{{asset('js/jquery-qrcode-0.18.0.min.js')}}"></script>
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
 // $(document).ready(function(){

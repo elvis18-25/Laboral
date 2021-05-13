@@ -11,6 +11,7 @@ use App\Models\sexo_empleado;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Puesto;
 use App\Models\empleado_puesto;
+use App\Models\Listado;
 
 
 class HomeController extends Controller
@@ -64,6 +65,15 @@ class HomeController extends Controller
     	// 			->get();
 
                     $gasto = Gasto::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
+                    ->where('id_empresa',Auth::user()->id_empresa)
+                    ->where('estado',0)
+                    ->orderBy("fecha")
+                    ->groupBy(DB::raw("month(fecha)"))
+                    ->get();
+
+                    $nomina = Listado::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
+                    ->where('id_empresa',Auth::user()->id_empresa)
+                    ->where('estado',0)
                     ->orderBy("fecha")
                     ->groupBy(DB::raw("month(fecha)"))
                     ->get();
@@ -75,12 +85,22 @@ class HomeController extends Controller
                      $i=0;
 
                      foreach($gasto as $gastos){
-                        $moth[$i]=$gastos->moth;
+                        $moth[$i]=(int)$gastos->moth;
                         $data[$i]=$gastos->count;
                         $i++;
 
                      }
-                    //  dd($moth);
+
+                     $mothnom=[];
+                     $datanom=[];
+                     $p=0;
+                     foreach($nomina as $nominas){
+                        $mothnom[$p]=(int)$nominas->moth;
+                        $datanom[$p]=$nominas->count;
+                        $p++;
+
+                     }
+
 
         
         $count_mujeres=sexo_empleado::leftjoin('empleado','empleado.id_empleado','=','empleado_sexo.empleado_id_empleado')
@@ -107,9 +127,12 @@ class HomeController extends Controller
         // ->dimensions(1000,500)
         // ->responsive(false);
             
-
         return view('dashboard',compact('count_empleado','count_mujeres','count_hombres','count_indefinido','count_puesto'))
         ->with('puesto',json_encode($puesto,JSON_NUMERIC_CHECK))
+        ->with('data',json_encode($data,JSON_NUMERIC_CHECK))
+        ->with('moth',json_encode($moth,JSON_NUMERIC_CHECK))
+        ->with('datanom',json_encode($datanom,JSON_NUMERIC_CHECK))
+        ->with('mothnom',json_encode($mothnom,JSON_NUMERIC_CHECK))
         ->with('puesto_empleado',json_encode($puesto_empleado,JSON_NUMERIC_CHECK));
     }
 

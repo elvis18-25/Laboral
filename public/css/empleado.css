@@ -31,7 +31,7 @@ margin-left: -26px;
 }
 
 .redondo{
-    display: block;
+    /* display: block; */
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -43,6 +43,7 @@ margin-left: -26px;
 
   .dataTables_filter{
     width: 785px !important;
+    max-width: 100% !important;
    
   }
   div.dataTables_wrapper div.dataTables_filter input {

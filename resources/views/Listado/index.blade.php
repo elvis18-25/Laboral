@@ -12,10 +12,10 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">LISTADO DE NOMINAS</h4>
+                    <h4 class="card-title"><b>LISTADO DE NOMINAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{url('Nominas')}}" title="Crear Nueva Nomina " class="btn btn-sm btn-info"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"></i></a>
+                <a href="{{url('Nominas')}}" title="Crear Nueva Nomina " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
                 </div>
             </div>
         </div>
@@ -27,10 +27,10 @@
                 <table class="table tablesorter " id="listado-table">
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">DESCRIPCION</th>
-                        <th scope="col">FECHA</th>
-                        <th scope="col">USUARIO</th>
-                        <th scope="col">MONTO</th>
+                        <th class="titlelistado">DESCRIPCION</th>
+                        <th style="font-size: 15px !important;">FECHA</th>
+                        <th style="font-size: 15px !important;">USUARIO</th>
+                        <th class="titlelistado">MONTO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -42,7 +42,7 @@
                             <td>{{$listados->descripcion}}</td>
                             <td>{{date("d/m/Y", strtotime($listados->fecha))}}</td>
                             <td>{{$listados->user}}</td>
-                            <td>${{number_format($listados->monto,2)}}</td>
+                            <td class="amount">${{number_format($listados->monto,2)}}</td>
                         </tr>
                         @endif
                         @endif
@@ -64,7 +64,7 @@
 
 @endsection
 
-@section('js')
+@section('js2')
 <script>
    table=$('#listado-table').DataTable({
     "info": false,

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddGastosfijo extends Migration
+class AddCalendar extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,17 @@ class AddGastosfijo extends Migration
      */
     public function up()
     {
-        Schema::create('gastos_fijo',function(Blueprint $table){
+        Schema::create('eventos',function(Blueprint $table){
             $table->id();
-            $table->integer('concepto');
-            $table->string('monto');
-            $table->string('estado');
+            $table->string('titulo');
+            $table->text('descripcion');
+            $table->string('color',20);
+            $table->string('textcolor',20);
+            $table->dateTime('start');
+            $table->dateTime('end');
+
             $table->string('id_empresa');
+            $table->integer('estado');
             $table->timestamps();
         });
     }

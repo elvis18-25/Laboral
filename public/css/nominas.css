@@ -31,10 +31,18 @@ margin-left: -26px;
 }
 
 .redondo{
-    display: block;
+    /* display: block; */
     width: 40px;
     height: 40px;
     border-radius: 50%;
+  }
+
+  .TitleCard{
+    top: -5px;
+    font-size: 16px;
+    font-weight: bold !important;
+    color: white !important;
+    position: relative;
   }
 
   #empleado-table tbody{
@@ -65,12 +73,21 @@ margin-left: -26px;
     cursor: pointer;
   }
 
+  .TitleP{
+    font-size: 14px !important;
+  }
+
+  .TitleNomi{
+    font-size: 14px !important;
+    text-align: center !important;
+  }
+
   #perfiles tbody tr{
       cursor: pointer;
   }
 
   #perfiles_length{
-    margin-right: 236px; 
+    margin-left: 3%; 
   }
   div.dataTables_wrapper div.dataTables_filter input {
     display: inline-block;
@@ -159,7 +176,9 @@ margin-left: -26px;
   width: -moz-available !important;
   width: revert;
   cursor: pointer;
+  width: 100% !important;
 }
+
 
 /* #Nominas th{
   text-align: center;

@@ -1,18 +1,19 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
-<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link rel="stylesheet" href="{{asset('css/nominas.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
       <form action="{{route('Nominas.store')}}" method="POST">
-        <div class="card-header" style="background: #4054b2 !important; height: 36px;">
+        <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title TitleCard"><b>NOMINAS</b></h4>
+                    <h4 class="card-title">NOMINAS</h4>
                 </div>
                 <div class="col-4 text-right">
-                    
+                    <a href="#" class="btn btn-sm btn-primary" title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus"></i></a>
+                    <a href="#" class="btn btn-sm btn-success" title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus"></i></a>
                     {{-- <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i></button> --}}
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button> --}}
                     {{-- <button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button> --}}
@@ -33,9 +34,8 @@
                 <div class="col-sm-3">
                     <input type="date" id="fech" name="fecha" class="form-control"  >
                 </div>
-                <a href="#" class="btn btn-sm btn-warning redondo" style="top: -6px;"  title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-users" style="top: 5px; position: relative; margin-left: -3px;"></i></a>
-                    <a href="#" class="btn btn-sm btn-success redondo"style="top: -6px;" id="btnplusemple"  title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="top: 5px; position: relative; margin-left: -3px;" ></i></a>
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
+                <button type="submit"  class="btn btn-fill btn-info btn-sm float-right"><i class="fas fa-save"></i></button>
             </div>
             <br>
             <input type="text" name="perfil" id="input" hidden value="">
@@ -43,12 +43,12 @@
                     
                     <thead class=" text-primary">
                         <tr> 
-                            <th class="TitleNomi"><b>NOMBRE</b></th>
-                            <th class="TitleNomi"><b>CARGO</b></th>
-                            <th class="TitleNomi"><b>SALARIO BRUTO</b></th>
-                            <th class="TitleNomi"><b>DEDUCIONES</b></th>
-                            <th class="TitleNomi"><b>INCREMENTO</b></th>
-                            <th class="TitleNomi"><b>TOTAL</b></th>
+                            <th style="text-align: center !important;" scope="col">NOMBRE</th>
+                            <th style="text-align: center !important;" scope="col">CARGO</th>
+                            <th style="text-align: center !important;" scope="col">SALARIO BRUTO</th>
+                            <th style="text-align: center !important;" scope="col">DEDUCIONES</th>
+                            <th style="text-align: center !important;" scope="col">INCREMENTO</th>
+                            <th style="text-align: center !important;" scope="col">TOTAL</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -57,22 +57,14 @@
             
         </div>
         <div class="card-footer text-muted ">
-
+            <nav class="d-flex justify-content-end" aria-label="...">
+              <b class="float-right" style="color: black; font-size: 15px;">TOTAL DE NOMINA: <span id="totalnomina"></span></b>
+            </nav>
         </div>
-        
-      </div>
-   
-   <div class="card" style="height: 48px;">
-     <div class="card-body">
-      <nav class="d-flex justify-content-end" aria-label="...">
-        <b class="float-right" style="color: black; font-size: 15px;">TOTAL: <span id="totalnomina"></span></b>
-      </nav>
-      <button type="submit" style="top: -36px;"  class="btn btn-fill btn-info redondo btn-sm float-left"><i class="fas fa-save"></i></button>
-     </div>
-   </div>
+      </form>
     </div>
-    
-  </form>
+</div>
+
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
@@ -80,24 +72,24 @@
 <div class="modal fade" id="otrosedites" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 @include('Nominas.otros')
 
-<div class="o-page-loader">
-  <div class="o-page-loader--content">
-    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
-      {{-- <div class=""></div> --}}
-      <div class="o-page-loader--message">
-          <span>Cargando...</span>
+
+    <div class="o-page-loader">
+      <div class="o-page-loader--content">
+        <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+          {{-- <div class=""></div> --}}
+          <div class="o-page-loader--message">
+              <span>Cargando...</span>
+          </div>
       </div>
   </div>
-</div>
-
 @endsection
 
 
-@section('js2')
-<script src="{{asset('js/pageLoader.js')}}"></script>
+@section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script> 
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+<script src="{{asset('js/pageLoader.js')}}"></script>
 @if (session('eliminado')=='ya')
 <script>
     Swal.fire(
@@ -123,9 +115,6 @@
  }   
 
 });
-
-
-
 
   $.ajaxSetup({
 headers: {
@@ -187,11 +176,11 @@ headers: {
 
       }, 
 
-      columnDefs: [{
-targets: [0,1,2,3,4,5],
-className: 'bolded'
-}
-],
+//       columnDefs: [{
+// targets: [0,1,2,3,4,5],
+// className: 'bolded'
+// }
+// ],
       buttons: [
             {
                 extend: 'excel',
@@ -219,11 +208,11 @@ className: 'bolded'
 
     columns:[
     {data:'nombre',name:'nombre', },
-    {data:'cargo', name:'cargo', class: "boldend", searchable:false},
-    {data:'salario',name:'salario', class: "right",},
-    {data:'Asigna',name:'Asigna', class: "right"},
-    {data:'amount',name:'amount', class: "right"},
-    {data:'total',name:'total', class: "right"},
+    {data:'cargo', name:'cargo', searchable:false},
+    {data:'salario',name:'salario', className: "right"},
+    {data:'Asigna',name:'Asigna', className: "right"},
+    {data:'amount',name:'amount', className: "right"},
+    {data:'total',name:'total', className: "right"},
     ],
 
 
@@ -292,15 +281,15 @@ $('#Nominas').on('key-focus.dt', function(e, datatable, cell){
 //     tabla.cell( ':eq(0)' ).focus();
 // });
 
-  //   document.addEventListener ("keydown", function (e) {
-  //   if (e.keyCode==16) {
-  //     var rowI = tabla.cell(':eq(0)').index().row;
+    document.addEventListener ("keydown", function (e) {
+    if (e.keyCode==16) {
+      var rowI = tabla.cell(':eq(0)').index().row;
       
-  //     tabla.row(rowI).select();
+      tabla.row(rowI).select();
 
-  //     tabla.cell(':eq(0)').focus(); 
-  //   }
-  // });
+      tabla.cell(':eq(0)').focus(); 
+    }
+  });
 
       //     document.addEventListener ("keydown", function (e) {
 //     if (e.keyCode==16) {
@@ -726,7 +715,6 @@ tebl=$('#Empleadotable').DataTable({
 
     language: {
       searchPlaceholder: "Buscar",
-      searchClass: "serachEmpleado",
         "decimal": "",
         "emptyTable": "No hay información",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
@@ -751,17 +739,17 @@ tebl=$('#Empleadotable').DataTable({
 
   });
 
-//   document.addEventListener ("keydown", function (e) {
-//     if (e.keyCode==16) {
+  document.addEventListener ("keydown", function (e) {
+    if (e.keyCode==16) {
 
-//       var rowIdx = tebl.cell(':eq(0)').index().row;
+      var rowIdx = tebl.cell(':eq(0)').index().row;
       
-//       tebl.row(rowIdx).select();
+      tebl.row(rowIdx).select();
 
-//       tebl.cell( ':eq(0)' ).focus();
+      tebl.cell( ':eq(0)' ).focus();
 
-//     }
-// });
+    }
+});
   $('#Empleadotable').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
@@ -799,42 +787,6 @@ tebl=$('#Empleadotable').DataTable({
         }
         
     });
-
-  $('#Empleadotable').DataTable().on("draw", function(){
-    $("input:[type=search]").addClass("serachEmpleado");
-
-});
-
-$("#btnplusemple").on('click',function(){
-  var rowIdx = tebl.cell(':eq(0)').index().row;
-      
-      tebl.row(rowIdx).select();
-
-      tebl.cell( ':eq(0)' ).focus();
-      verificate();
-});
-
-
-$('#emplados').keyup(function(e){
-    if(e.keyCode!=13)
-    {
-      $('div.dataTables_filter input', tebl.table().container()).focus();
-    }
-
-});
-
-function verificate(){
-  var modal=$('#emplados').hasClass('show');
-      if(modal==false){
-        var rowIdx = tebl.cell(':eq(0)').index().row;
-      
-      tebl.row(rowIdx).select();
-
-      tebl.cell( ':eq(0)' ).focus();
-       
-   }
-}
-
 
 
 function Add(e){
@@ -991,26 +943,18 @@ $(".buttons-pdf").click();
 });
 
 </script>
-<style>
-  .right{
-  text-align: right !important;
-}
-
-.TitleNomi{
-    font-size: 14px !important;
-    text-align: center !important;
-  }
-
-  .boldend{
-    width: 200px;
-  }
-
-  .serachEmpleado{
-    font-size: 13px;
-    color: black;
-  }
-</style>
-
     
 @endsection
 
+<style>
+  .right{
+    text-align: right !important;
+  }
+  
+    #Nominas{
+  width: -moz-available !important;
+  width: revert;
+  cursor: pointer;
+  font-size: inherit !important;
+}
+</style>

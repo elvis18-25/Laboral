@@ -2,6 +2,15 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<link href="{{asset('css/mdtimepicker.css')}}" rel="stylesheet">
+
+@include('Fullcalendar.create')
+<style>
+  .card-tasks{
+    min-height: 100% !important;
+
+  }
+</style>
 <div class="row">
   <div class="col-lg-4">
     <div class="card card-chart">
@@ -58,29 +67,12 @@
                             <h2 class="card-title"><b> Gastos de la Empresa</b></h2>
                         </div>
                         <div class="col-sm-6">
-                            <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                            <label class="btn btn-sm btn-primary btn-simple active" id="0">
-                                <input type="radio" name="options" checked>
-                                <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">4 Meses</span>
-                                <span class="d-block d-sm-none">
-                                    <i class="tim-icons icon-single-02"></i>
-                                </span>
-                            </label>
-                            <label class="btn btn-sm btn-primary btn-simple" id="1">
-                                <input type="radio" class="d-none d-sm-none" name="options">
-                                <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">8 Meses</span>
-                                <span class="d-block d-sm-none">
-                                    <i class="tim-icons icon-gift-2"></i>
-                                </span>
-                            </label>
-                            <label class="btn btn-sm btn-primary btn-simple" id="2">
-                                <input type="radio" class="d-none" name="options">
-                                <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block"> 1 Año</span>
-                                <span class="d-block d-sm-none">
-                                    <i class="tim-icons icon-tap-02"></i>
-                                </span>
-                            </label>
-                            </div>
+
+                          <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: inline-end;">
+                            <i class="fa fa-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div>
+
                         </div>
                     </div>
                 </div>
@@ -265,17 +257,21 @@
             </div>
         </div>
     </div>
+    
 @endsection
 @push('js')
-@include('Fullcalendar.create')
+
 <script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="{{asset('js/mdtimepicker.js')}}"></script>
+
 
 {{-- {!! Charts::assets(['highcharts']) !!}
 {!! $usersChart->script() !!} --}}
 
     <script>
        
+       $('#timepicker').mdtimepicker();
 
         document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -283,14 +279,14 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
 
- customButtons: {
-    myCustomButton: {
-      text: 'custom!',
-      click: function() {
-       $("#createevent").modal('toggle');
-      }
-    }
-  },
+//  customButtons: {
+//     myCustomButton: {
+//       text: 'custom!',
+//       click: function() {
+//        $("#opnemodal").trigger("click");
+//       }
+//     }
+//   },
 
   headerToolbar: {
     left: 'prev,next today ',
@@ -299,48 +295,88 @@
   },
 
   dateClick: function(info) {
-    // alert('Clicked on: ' + info.dateStr);
-    // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-    // alert('Current view: ' + info.view.type);
-    // // change the day's background color just for fun
-    // info.dayEl.style.backgroundColor = 'red';
-    console.log(info);
-    $("#createevent").modal('toggle');
-  }
+
+    $("#opnemodal").trigger("click");
+    $("#txtfecha").val(info.dateStr)
+    calendar.addEvent({title:"Eventos mio",date:info.dateStr});
+  },
+
+  eventClick: function(info){
+    // console.log(info.event.title);
+    // console.log(info.event.start);
+
+    // console.log(info.event.extendedProps.descripcion);
+  },
+
+  events:[
+    {
+      title:"Mi evento",
+      start:"2021-05-18 10:00:00",
+      descripcion:"Este dia voy para la playa"
+    },{
+      title:"Mi evento 2",
+      start:"2021-05-24 10:00:00",
+      end:"2021-05-27 10:00:00",
+      color:"#FFCCAA",
+      textColor:"#000",
+      descripcion:" Ir Para el dentista"
+
+    }
+  ]
+
         });
-
-
 
         calendar.setOption('locale','Es');
         calendar.render();
       });
 
-      // var url = "{{url('chartjs')}}";
-      // var moth = new Array();
-      //   var cont = new Array();
-      //   // var Prices = new Array();
-      //   $.get(url, function(response){
-      //       response.forEach(function(data){
-      //         moth.push(data.fecha);
-      //         cont.push(data.count);
+      $("#btnsave").on('click',function(){
+        RecolectarDatos("POST");
 
-      //       });
-      //     });
+      })
+
+      function RecolectarDatos(method){
+        nuevoEvento={
+          titulo:$("#txttitulo").val(),
+          descripcion:$("#textarea").val(),
+          color:$("#txtcolor").val(),
+          textcolor:'#FFFFFF',
+          start:$("#txtfecha").val()+" "+$("#timepicker").val(),
+          end:$("#txtfecha").val()+" "+$("#timepicker").val(),
+          '_token':$("meta[name='csrf-token']").attr("content"),
+          '_method':method
+
+        }
+        console.log(nuevoEvento);
+      }
 
 
-     
+
+      var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
       
-// var options = {
-//      theme:"",
-//      message:'Cargando.... ',
-// };
 
-// window.onbeforeunload = function(e) {
-//     HoldOn.open(options);
-// };
-      
-      
       $(document).ready(function() {
+
         var data_puesto = <?php echo $puesto_empleado; ?>;
         gradientChartOptionsConfigurationWithTooltipBlue = {
           maintainAspectRatio: false,
@@ -592,6 +628,7 @@
     gradientStrokew.addColorStop(0.2, 'rgba(72,72,176,0.0)');
     gradientStrokew.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
 
+    
     var myChart = new Chart(ctx, {
       type: 'bar',
       responsive: true,
@@ -649,9 +686,94 @@
       options: gradientBarChartConfiguration
     });
 
+
+
+    var cData = <?php echo $data; ?>;
+    var cMoth = <?php echo $moth; ?>;
+
+    var cDatanom = <?php echo $datanom; ?>;
+    var cMothnom = <?php echo $mothnom; ?>;
     
-    var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
+
+    var meses=[];
+    var monto=[];
+    var list=0;
+  for (var mes = 1; mes <=12; mes++) {
+    list++;
+    for (pos=0; pos <12; pos++) {
+
+        if(cMoth[pos]==mes && mes==1){
+          meses[pos]="ENERO";
+          monto[pos]=cData[pos];
+        }
+
+        if(mes==2 && cMoth[pos]==mes){
+          meses[pos]="FEBRERO";
+          monto[pos]=cData[pos];
+        }
+
+        if(cMoth[pos]==mes && mes==3){
+          meses[pos]="MARZO";
+          monto[pos]=cData[pos];
+        }
+
+        if(mes==4 && cMoth[pos]==mes){
+          meses[pos]="ABRIL";
+          monto[pos]=cData[pos];
+        }
+
+        if(mes==5 && cMoth[pos]==mes){
+          meses[pos]="MAYO";
+          monto[pos]=cData[pos];
+        }
+
+        if(mes==6 && cMoth[pos]==mes){
+          meses[pos]="JUNIO";
+          monto[pos]=cData[pos];
+        }
+        if(mes==7 && cMoth[pos]==mes){
+          meses[pos]="JULIO";
+          monto[pos]=cData[pos];
+        }
+        if(mes==8 && cMoth[pos]==mes){
+          meses[pos]="AGOSTO";
+          monto[pos]=cData[pos];
+        }
+        if(mes==9 && cMoth[pos]==mes){
+          meses[pos]="SEPTIEMBRE";
+          monto[pos]=cData[pos];
+        }
+        if(mes==10 && cMoth[pos]==mes){
+          meses[pos]="OCTUBRE";
+          monto[pos]=cData[pos];
+        }
+        if(mes==11 && cMoth[pos]==mes){
+          meses[pos]="NOVIEMBRE";
+          monto[pos]=cData[pos];
+        }
+        if(mes==12 && cMoth[pos]==mes){
+          meses[pos]="DICIEMBRE";
+          monto[pos]=cData[pos];
+        }
+      
+    }
+
+  }
+
+  // console.log(meses);
+
+  // for (let index = 0; index < meses.length; index++) { 
+  //     if(index==1){
+  //       if(meses[index]==" "){
+  //       meses[index]="ENERO"
+  //       monto[index]=0;
+  //       }
+  //     } 
+  // }
+
+
+    // var meses = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
+    // var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
 
 
     var ctx = document.getElementById("chartBig1d").getContext('2d');
@@ -664,9 +786,9 @@
     var config = {
       type: 'line',
       data: {
-        labels: chart_labels,
+        labels: meses,
         datasets: [{
-          label: "My First dataset",
+          label: "Monto",
           fill: true,
           backgroundColor: gradientStroke,
           borderColor: '#d346b1',
@@ -680,7 +802,7 @@
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
           pointRadius: 4,
-          data: chart_data,
+          data: monto,
         }]
       },
       options: gradientChartOptionsConfigurationWithTooltipPurple

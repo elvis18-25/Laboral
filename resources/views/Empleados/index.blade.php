@@ -8,14 +8,14 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">EMPLEADOS</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{route('Empleados.create')}}" title="Crear Nuevo Empleado" class="btn btn-sm btn-info"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"></i></a>
-                    <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i></button>
+                    <a href="{{route('Empleados.create')}}" title="Crear Nuevo Empleado" class="btn btn-sm btn-info redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
+                    <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo"><i class="fas fa-file-excel"></i></button>
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button> --}}
-                    <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button></a>
-                    <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i></button>
+                    <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo"><i class="fas fa-print"></i></button></a>
+                    <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf"></i></button>
                 </div>
             </div>
         </div>
@@ -164,7 +164,7 @@ document.addEventListener ("keydown", function (e) {
 
     
   
-    language: {
+        language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
         "emptyTable": "No hay información",
@@ -185,7 +185,7 @@ document.addEventListener ("keydown", function (e) {
             "previous": "Anterior"
         }
 
-      },   
+      },    
    
 });
 $('div.dataTables_filter input', table.table().container()).focus(); 

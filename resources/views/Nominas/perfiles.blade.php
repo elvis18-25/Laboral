@@ -5,7 +5,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content" style=" width: 931px; width: 931px; margin-top:-100px;">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" style="color: black !important" >PERFILES</h5>
+        <h5 class="modal-title" id="exampleModalLabel" style="color: black !important" ><b>PERFILES</b></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -16,11 +16,11 @@
           <table class="table tablesorter table-striped table-hover" style="position: relative; width: 870px!important; margin-left: -3px!important;" id="perfiles">
               <thead class=" text-primary">
                   <tr> 
-                    <th scope="col">ID</th>
-                    <th scope="col">DESCRIPCION</th>
-                    <th scope="col">FECHA CREADA</th>
-                    <th scope="col">EMPLEADO</th>
-                    <th scope="col">USUARIO</th>
+                    <th class="TitleP">ID</th>
+                    <th class="TitleP">DESCRIPCION</th>
+                    <th class="TitleP">FECHA CREADA</th>
+                    <th class="TitleP">EMPLEADOS</th>
+                    <th class="TitleP">USUARIO</th>
                 </tr>
               </thead>
               <tbody>

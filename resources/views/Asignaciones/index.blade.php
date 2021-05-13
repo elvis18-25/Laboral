@@ -8,14 +8,14 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">ASIGNACIONES</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>ASIGNACIONES</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="#" title="Crear Nueva Asignacion" data-toggle="modal" data-target="#asignacionesmodal" class="btn btn-sm btn-primary"><button   type="button" id="created" style="display: none;"></button><i class="fas fa-plus"></i></a>
-                    <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i></button>
-                    <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button>
+                    <a href="#" title="Crear Nueva Asignacion" data-toggle="modal" data-target="#asignacionesmodal" class="btn btn-sm btn-info redondo"><button   type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="position: relative; top: 5px;"></i></a>
+                    {{-- <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i></button> --}}
+                    {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button> --}}
                     {{-- <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button></a> --}}
-                    <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-info btn-sm"><i class="fas fa-file-pdf"></i></button>
+                    {{-- <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-info btn-sm"><i class="fas fa-file-pdf"></i></button> --}}
                 </div>
                 @include('Asignaciones.modal')
             </div>
@@ -27,11 +27,11 @@
                     
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">NOMBRE</th>
-                        <th scope="col">TIPO</th>
-                        <th scope="col">MONTO</th>
-                        <th scope="col">EMPLEADO</th>
-                        <th scope="col">USUARIO</th>
+                        <th style="font-size: 14px; text-align: center">NOMBRE</th>
+                        <th style="font-size: 14px; text-align: center">TIPO</th>
+                        <th style="font-size: 14px; text-align: center">MONTO</th>
+                        <th style="font-size: 14px; text-align: center">EMPLEADOS</th>
+                        <th style="font-size: 14px; text-align: center">USUARIO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -146,9 +146,9 @@ headers: {
     columns:[
     {data:'Nombre',name:'Nombre'},
     {data:'tipo_asigna',name:'tipo_asigna'},
-    {data:'Monto',name:'Monto'},
-    {data:'emple',name:'emple',searchable:false},
-    {data:'user',name:'user'},
+    {data:'Monto',name:'Monto',class: "right"},
+    {data:'emple',name:'emple',class: "center",searchable:false},
+    {data:'user',name:'user',class: "center"},
     ],
  
     language: {
@@ -351,4 +351,13 @@ function edit(e){
    } 
 
 </script>
+
+<style>
+    .right{
+        text-align: right;
+    }
+    .center{
+        text-align: center;
+    }
+</style>
 @endsection

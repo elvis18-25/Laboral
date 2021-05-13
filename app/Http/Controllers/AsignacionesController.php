@@ -172,7 +172,7 @@ class AsignacionesController extends Controller
                 };
             })->setRowAttr([
                 'data-href'=>function($row){
-                    return $row->id;    
+                    return $row->id;   
                 },
 
             ])->toJson();

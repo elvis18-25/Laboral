@@ -4,7 +4,7 @@
     <div class="modal-dialog">
       <div class="modal-content" >
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color: black">EDITAR ASIGNACIÓN</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="color: black; font-size: 16px !important; font-weight: bold !important;"><b>EDITAR ASIGNACIÓN</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -13,12 +13,12 @@
 
         <div class="form-row">
             <div class="col-sm-6">
-                <label style="color: black">{{ __('NOMBRE ') }}</label>
+                <label style="color: black"><b>{{ __('NOMBRE ') }}</b></label>
                 <input type="text" name="name" value="{{$asigna->Nombre}}" autofocus id="nameedit" required  class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
             </div>
 
             <div class="col-sm-6">
-                <label style="color: black">{{ __('TIPO ') }}</label>
+                <label style="color: black"><b>{{ __('TIPO ') }}</b></label>
                 <select id="inputStateed" class="form-control selec" required name="tipoedit" >
                     <option selected disabled>ElEGIR...</option>
                     @if ($asigna->tipo_asigna=="DEDUCCIÓN")
@@ -38,7 +38,7 @@
             </div>
 
             <div class="col-sm-5">
-                <label style="color: black">{{ __('FORMA ') }}</label>
+                <label style="color: black"><b> {{ __('FORMA ') }}</b></label>
                 <select  class="form-control selec" name="formae" required id="formaedit" >
                     <option selected disabled>ElEGIR...</option>
                     @if ($asigna->tipo=="PORCENATJE")
@@ -89,8 +89,8 @@
     </div> 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info" id="saveredit" onclick="updateasignaciones({{$asigna->id}});"><i class="fas fa-save"></i></button>
-          <button type="button" class="btn btn-danger" id="deletesr" onclick="deleteasigna({{$asigna->id}});"><i class="fas fa-trash"></i></button>
+          <button type="button" class="btn btn-info redondo" id="saveredit" onclick="updateasignaciones({{$asigna->id}});"><i class="fas fa-save"></i></button>
+          <button type="button" class="btn btn-danger redondo" id="deletesr" onclick="deleteasigna({{$asigna->id}});"><i class="fas fa-trash"></i></button>
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
 
   <div class="modal fade" id="emplados" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content" style="width: 909px; margin-top: -110px; height: 544px;" >
+      <div class="modal-content" style="width: 1001px; margin-top: -110px; height: 544px;" >
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color: black">EMPLEADO</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="color: black"><b>EMPLEADOS</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -16,11 +16,11 @@
             <table class="table tablesorter table-striped table-hover " style="width: 100" id="Empleadotable" style=" width: 844px !important;">
                 <thead class=" text-primary" style="color: black !important">
                     <tr> 
-                    <th scope="col">NOMBRE</th>
-                    <th scope="col">CEDULA</th>
-                    <th scope="col">CARGO</th>
-                    <th scope="col">DEPARTAMENTO</th>
-                    <th scope="col">SALARIO</th>
+                    <th class="TitleP">NOMBRE</th>
+                    <th class="TitleP">CEDULA</th>
+                    <th class="TitleP">CARGO</th>
+                    <th class="TitleP">DEPARTAMENTO</th>
+                    <th class="TitleP">SALARIO</th>
                   </tr>
                 </thead>
                 @php
@@ -31,7 +31,7 @@
                     @if ($empleado->estado==0)
                     @if ($empleado->id_empresa==$empresa)
                       <tr onclick="Add({{$empleado->id_empleado}});" value="{{$empleado->id_empleado}}" >
-                        <td>{{$empleado->nombre." ".$empleado->apellido}}</td>
+                        <td> {{$empleado->nombre." ".$empleado->apellido}}</td>
                         <td>{{$empleado->cedula}}</td>
                         <td>{{$empleado->cargo}}</td>
                         <td>
