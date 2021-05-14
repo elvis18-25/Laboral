@@ -7,10 +7,10 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">PERFILES</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>PERFILES</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{route('Perfiles.create')}}" class="btn btn-sm btn-info"><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus"></i></a>
+                    <a href="{{route('Perfiles.create')}}" class="btn btn-sm btn-info redondo"><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus" style="top: 6px; position: relative;"></i></a>
                 </div>
             </div>
         </div>
@@ -21,11 +21,10 @@
                     
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">ID</th>
-                        <th scope="col">DESCRIPCION</th>
-                        <th scope="col">FECHA CREADA</th>
-                        <th scope="col">EMPLEADO</th>
-                        <th scope="col">USUARIO</th>
+                        <th class="TitlePer"><b>DESCRIPCION</b></th>
+                        <th class="TitlePer"><b>FECHA CREADA</b></th>
+                        <th class="TitlePer"><b>EMPLEADOS</b></th>
+                        <th class="TitlePer"><b>USUARIO</b></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -106,11 +105,10 @@ headers: {
     },
 
     columns:[
-    {data:'id',name:'id'},
     {data:'descripcion',name:'descripcion'},
-    {data:'created_at',name:'created_at'},
-    {data:'emple',name:'emple',searchable:false},
-    {data:'user',name:'user'},
+    {data:'created_at',name:'created_at', class:"center"},
+    {data:'emple',name:'emple',searchable:false,class:"center"},
+    {data:'user',name:'user',class:"center"},
     ],
  
     language: {
@@ -242,8 +240,11 @@ document.addEventListener ("keydown", function (e) {
 
 </script>
 
+<style>
+    .center{
+        text-align: center;
+    }
+</style>
+
 @endsection
 
-<style>
-    
-</style>

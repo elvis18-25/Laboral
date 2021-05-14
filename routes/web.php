@@ -58,6 +58,7 @@ Route::resource('Nominas', 'App\Http\Controllers\NominaController')->middleware(
 Route::resource('Otros', 'App\Http\Controllers\OtrosController')->middleware('auth');
 Route::resource('Gasto', 'App\Http\Controllers\GastoController')->middleware('auth');
 Route::resource('Empresa', 'App\Http\Controllers\EmpresaController')->middleware('auth');
+Route::resource('Eventos', 'App\Http\Controllers\EventosController')->middleware('auth');
 
 
 //Asingaciones

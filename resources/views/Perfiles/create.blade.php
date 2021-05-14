@@ -2,6 +2,7 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/perfiles.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
 <form action="{{Route('Perfiles.store')}}" method="POST" >
 @csrf
@@ -11,10 +12,10 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">NUEVO PERFIL</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO PERFIL</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil"  data-toggle="modal" data-target="#Empleado" class="btn btn-success btn-sm"><i class="fas fa-plus"></i></button>
+                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
                @include('Perfiles.modalemple')
                 </div>
             </div>
@@ -34,11 +35,11 @@
                 <table class="table tablesorter table-hover" id="perfiles-table">
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">NOMBRE</th>
-                        <th scope="col">CEDULA</th>
-                        <th scope="col">CARGO</th>
-                        <th scope="col">DEPARTAMENTO</th>
-                        <th scope="col">SALARIO</th>
+                        <th class="TitlePer">NOMBRE</th>
+                        <th class="TitlePer">CEDULA</th>
+                        <th class="TitlePer">CARGO</th>
+                        <th class="TitlePer">DEPARTAMENTO</th>
+                        <th class="TitlePer">SALARIO</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -65,6 +66,7 @@
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
     $(document).ready(function(){
  
@@ -75,6 +77,31 @@
         started();
     } 
 });
+
+p=0;
+document.addEventListener ("keydown", function (e) {
+    if (e.keyCode== 40){
+        if(p==0){
+        var rowIdx = tebl.cell(':eq(0)').index().row;
+      
+      tebl.row(rowIdx).select();
+
+      tebl.cell( ':eq(0)' ).focus();   
+        p=1; 
+        }
+    } 
+});
+
+
+$("#createdperfiles").on('click',function(){
+    var rowIdx = tebl.cell(':eq(0)').index().row;
+      
+      tebl.row(rowIdx).select();
+
+      tebl.cell( ':eq(0)' ).focus();
+      p=0; 
+});
+
 
 tebl=$('#Empleadotable').DataTable({
         scrollY: 300,

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Puesto;
 use App\Models\empleado_puesto;
 use App\Models\Listado;
+use App\Models\eventos;
 
 
 class HomeController extends Controller
@@ -52,6 +53,7 @@ class HomeController extends Controller
         $puesto_empleado = array_column($puesto_empleado, 'emple');
         // dd($puesto_empleado);
 
+        $eventos=eventos::all();
 
 
 
@@ -126,7 +128,7 @@ class HomeController extends Controller
         // ->values([5,10,20])
         // ->dimensions(1000,500)
         // ->responsive(false);
-            
+
         return view('dashboard',compact('count_empleado','count_mujeres','count_hombres','count_indefinido','count_puesto'))
         ->with('puesto',json_encode($puesto,JSON_NUMERIC_CHECK))
         ->with('data',json_encode($data,JSON_NUMERIC_CHECK))

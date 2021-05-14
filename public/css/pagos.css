@@ -29,9 +29,13 @@ margin-left: -26px;
     text:rgb(0, 0, 0);
     background-color:#ffffff;;
 }
+.TitleP{
+  font-size: 14px;
+  text-align: center;
+}
 
 .redondo{
-    display: block;
+    /* display: block; */
     width: 40px;
     height: 40px;
     border-radius: 50%;

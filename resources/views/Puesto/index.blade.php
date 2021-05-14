@@ -2,15 +2,17 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/puesto.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">DEPARTAMENTOS</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>DEPARTAMENTOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="#" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#createdepart" ><button type="button" id="cretedwepart" style="display: none;"></button><i class="fas fa-plus"></i></a>
+                    <a href="#" class="btn btn-sm btn-info redondo"  data-toggle="modal" data-target="#createdepart" ><button type="button" id="cretedwepart" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
                 @include('Puesto.modalcreate')
                 </div>
             </div>
@@ -21,10 +23,10 @@
                 <table class="table tablesorter " id="depar-table">
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">NOMBRE</th>
-                        <th scope="col">FECHA</th>
-                        <th scope="col">EMPLEADOS</th>
-                        <th scope="col">USUARIO</th>
+                        <th class="TitleP">NOMBRE</th>
+                        <th class="TitleP">FECHA</th>
+                        <th class="TitleP">EMPLEADOS</th>
+                        <th class="TitleP">USUARIO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -39,13 +41,22 @@
         </div>
     </div>
 </div>
-
+<div class="o-page-loader">
+  <div class="o-page-loader--content">
+    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+      {{-- <div class=""></div> --}}
+      <div class="o-page-loader--message">
+          <span>Cargando...</span>
+      </div>
+  </div>
+</div>
 <div class="modal fade" id="departshow" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 </div>
 
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
 document.addEventListener ("keydown", function (e) {
@@ -105,9 +116,9 @@ headers: {
 
     columns:[
     {data:'name',name:'name'},
-    {data:'created_at',name:'created_at',searchable:false},
-    {data:'emple',name:'emple', searchable:false},
-    {data:'usuario',name:'usuario'},
+    {data:'created_at',name:'created_at',searchable:false, class:"center"},
+    {data:'emple',name:'emple', searchable:false, class:"center"},
+    {data:'usuario',name:'usuario', class:"center"},
     ],
 
     language: {
@@ -302,4 +313,9 @@ toastr.options = {
 
 </script>
     
+<style>
+  .center{
+    text-align: center !important;
+  }
+</style>
 @endsection

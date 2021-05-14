@@ -1,9 +1,9 @@
 
   <div class="modal fade" id="Empleado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content" style=" width: 955px; margin-top: -76px; height: 579px;" >
+      <div class="modal-content" style=" width: 964px; margin-top: -76px; height: 615px;" >
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color: black">EMPLEADO</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="color: black font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -15,11 +15,11 @@
             <table class="table tablesorter table-striped table-hover " style="width: 200px;"  id="Empleadotable">
                 <thead class=" text-primary" style="color: black !important">
                     <tr> 
-                    <th scope="col">NOMBRE</th>
-                    <th scope="col">CEDULA</th>
-                    <th scope="col">CARGO</th>
-                    <th scope="col">DEPARTAMENTO</th>
-                    <th scope="col">SALARIO</th>
+                    <th class="TitlePer">NOMBRE</th>
+                    <th class="TitlePer">CEDULA</th>
+                    <th class="TitlePer">CARGO</th>
+                    <th class="TitlePer">DEPARTAMENTO</th>
+                    <th class="TitlePer">SALARIO</th>
                   </tr>
                 </thead>
                 @php
@@ -30,10 +30,10 @@
                     @if ($empleado->estado==0)
                     @if ($empleado->id_empresa==$empresa)
                       <tr onclick="Add('{{url('agregar',[$empleado->id_empleado])}}',{{$empleado->id_empleado}});" action="{{url('agregar',[$empleado->id_empleado])}}" value="{{$empleado->id_empleado}}" >
-                        <td>{{$empleado->nombre." ".$empleado->apellido}}</td>
-                        <td>{{$empleado->cedula}}</td>
-                        <td>{{$empleado->cargo}}</td>
-                        <td>
+                        <td class="left">{{$empleado->nombre." ".$empleado->apellido}}</td>
+                        <td class="left">{{$empleado->cedula}}</td>
+                        <td class="left">{{$empleado->cargo}}</td>
+                        <td class="left">
                           @foreach ($empleado->puesto as $puesto)
                               {{$puesto->name}}
                           @endforeach
@@ -85,5 +85,9 @@
 
     #Empleadotable tbody tr{
       cursor: pointer;
+    }
+    .left{
+      text-align: left;
+      font-size: 14px;
     }
   </style>

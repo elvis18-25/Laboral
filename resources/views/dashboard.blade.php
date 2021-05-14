@@ -3,6 +3,7 @@
 @section('content')
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link href="{{asset('css/mdtimepicker.css')}}" rel="stylesheet">
+<link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
 
 @include('Fullcalendar.create')
 <style>
@@ -97,7 +98,7 @@
         <div class="col-lg-6 col-md-12">
             <div class="card card-tasks">
                 <div class="card-header ">
-                    <h4 class="title d-inline">Lista</h4>
+                    <h4 class="title d-inline">EVENTOS</h4>
                     <p class="card-category d-inline">Hoy</p>
                     {{-- <div class="dropdown">
                         <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
@@ -264,13 +265,15 @@
 <script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="{{asset('js/mdtimepicker.js')}}"></script>
+<script src="{{asset('js/jscolor.js')}}"></script>
+<script src="{{asset('js/timepicker.min.js')}}"></script>
 
 
 {{-- {!! Charts::assets(['highcharts']) !!}
 {!! $usersChart->script() !!} --}}
 
     <script>
-       
+       $('.bs-timepicker').timepicker();
        $('#timepicker').mdtimepicker();
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -288,41 +291,46 @@
 //     }
 //   },
 
+
   headerToolbar: {
-    left: 'prev,next today ',
+    left: 'prev,next ',
     center: 'title',
-    right: 'myCustomButton'
+    right: 'today'
   },
 
   dateClick: function(info) {
 
     $("#opnemodal").trigger("click");
     $("#txtfecha").val(info.dateStr)
-    calendar.addEvent({title:"Eventos mio",date:info.dateStr});
   },
 
   eventClick: function(info){
-    // console.log(info.event.title);
-    // console.log(info.event.start);
 
-    // console.log(info.event.extendedProps.descripcion);
+
+    console.log(info);
+
+
   },
 
-  events:[
-    {
-      title:"Mi evento",
-      start:"2021-05-18 10:00:00",
-      descripcion:"Este dia voy para la playa"
-    },{
-      title:"Mi evento 2",
-      start:"2021-05-24 10:00:00",
-      end:"2021-05-27 10:00:00",
-      color:"#FFCCAA",
-      textColor:"#000",
-      descripcion:" Ir Para el dentista"
+  // events:[
+  //   {
+  //     title:"Mi evento",
+  //     start:"2021-05-18 10:00:00",
+  //     descripcion:"Este dia voy para la playa"
+  //   },{
+  //     title:"Mi evento 2",
+  //     start:"2021-05-24 10:00:00",
+  //     end:"2021-05-27 10:00:00",
+  //     color:"#FFCCAA",
+  //     textColor:"#000",
+  //     descripcion:" Ir Para el dentista"
 
-    }
-  ]
+  //   }
+  // ]
+
+  
+  events:"{{url('Eventos/show')}}"
+
 
         });
 
@@ -331,24 +339,45 @@
       });
 
       $("#btnsave").on('click',function(){
-        RecolectarDatos("POST");
+        var Evento=RecolectarDatos("POST");
+        EnviarInfo('',Evento);
 
       })
 
+      var reserv = new Date($("#timepicker").val()).getTime();
       function RecolectarDatos(method){
         nuevoEvento={
-          titulo:$("#txttitulo").val(),
+          title:$("#txttitulo").val(),
           descripcion:$("#textarea").val(),
           color:$("#txtcolor").val(),
-          textcolor:'#FFFFFF',
-          start:$("#txtfecha").val()+" "+$("#timepicker").val(),
-          end:$("#txtfecha").val()+" "+$("#timepicker").val(),
+          textColor:'#FFFFFF',
+          start:$("#txtfecha").val()+" "+$("#horas").val(),
+          end:$("#txtfecha").val()+" "+$("#horas").val(),
+          id_empresa:$("#empresa").val(),
+          estado:$("#estado").val(),
           '_token':$("meta[name='csrf-token']").attr("content"),
           '_method':method
 
         }
-        console.log(nuevoEvento);
+        return (nuevoEvento);
       }
+
+      function EnviarInfo(Accion,Evento){
+        $.ajax(
+        {
+          type:"POST",
+          url:"{{url('/Eventos')}}"+Accion,
+          data:Evento,
+          success:function(msg){console.log(msg);
+            $("#opnemodal").trigger("click");
+           
+           
+          },
+          error:function(){alert("Error");}
+        }
+        );
+      }
+
 
 
 

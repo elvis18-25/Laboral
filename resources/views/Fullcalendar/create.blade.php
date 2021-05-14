@@ -19,7 +19,7 @@
             </div>
             <div class="col-sm-2 md-8">
               <label for="">HORA:</label>
-              <input type="text"  name="hora" class="form-control" id="timepicker"/>
+              <input type="text" class="form-control bs-timepicker" value="" id="horas">
             </div>
             <br><br>
           
@@ -30,8 +30,14 @@
         <br><br>
         <div class="col-sm-5">
           <label for=""> COLOR:</label>
-          <input type="text" id="txtcolor" name="txtcolor" class="form-control" />
+          {{-- <input type="text" id="txtcolor" name="txtcolor" class="form-control" /> --}}
+          <input value="#3399FF80" data-jscolor="{}" id="txtcolor">
         </div>
+        @php
+            $user=Auth::user()->id_empresa;
+        @endphp
+        <input type="text" id="empresa" value="{{$user}}" hidden>
+        <input type="text" id="estado" value="0" hidden>
       </div>
       </div>
         <input type="text" id="txtfecha" value="" hidden >

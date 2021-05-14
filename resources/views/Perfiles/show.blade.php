@@ -3,6 +3,8 @@
 @section('content')
 
 <link rel="stylesheet" href="{{asset('css/perfiles.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+
 {{-- <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">   --}}
 <form action="{{Route('Perfiles.update',$perfiles->id)}}" method="POST" >
     @csrf
@@ -12,10 +14,10 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">NUEVO PERFIL</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EDITAR PERFIL</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles"  data-toggle="modal" data-target="#Empleadoedit" class="btn btn-success btn-sm"><i class="fas fa-plus"></i></button>
+                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil" data-toggle="modal" data-target="#Empleadoedit" class="btn btn-info btn-sm redondo"><i class="fas fa-users" style="top: 5px; margin-left: -39%;"></i></button>
                     @include('Perfiles.modaleditempleado')
                 </div>
             </div>
@@ -23,7 +25,7 @@
         <div class="card-body">
     <div class="form-row">
             <div class="col-sm-5">
-                <input type="text" name="descripcion" value="{{$perfiles->descripcion}}" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
+                <input type="text" name="descripcion" style="font-size: 14px;"  value="{{$perfiles->descripcion}}" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
             </div>
             {{-- <div class="col-sm-5">
                 <input type="date" id="fech" value="{{$perfiles->fecha}}" name="fecha" class="form-control"  >
@@ -38,11 +40,11 @@
                 <table class="table tablesorter table-striped table-hover" id="perfiles-tableedit">
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">NOMBRE</th>
-                        <th scope="col">CEDULA</th>
-                        <th scope="col">CARGO</th>
-                        <th scope="col">DEPARTAMENTO</th>
-                        <th scope="col">SALARIO</th>
+                        <th class="TitlePer">NOMBRE</th>
+                        <th class="TitlePer">CEDULA</th>
+                        <th class="TitlePer">CARGO</th>
+                        <th class="TitlePer">DEPARTAMENTO</th>
+                        <th class="TitlePer">SALARIO</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -52,16 +54,16 @@
                         @if ($perfe->id_empleado==$empleados->id_empleado)
                         @if ($perfe->id_empresa=$empresa)
                         <tr>
-                            <td>{{$empleados->nombre." ".$empleados->apellido}}</td>
-                            <td>{{$empleados->cedula}}</td>
-                            <td>{{$empleados->cargo}}</td>
-                            <td>
+                            <td >{{$empleados->nombre." ".$empleados->apellido}}</td>
+                            <td style="text-align: center;">{{$empleados->cedula}}</td>
+                            <td style="text-align: center;">{{$empleados->cargo}}</td>
+                            <td style="text-align: center;">
                             @foreach ($empleados->puesto as $puesto)
                                 {{$puesto->name}}
                             @endforeach
                             </td>
-                            <td>${{number_format($empleados->salario,2)}}</td>
-                            <td>
+                            <td style="text-align: right;">${{number_format($empleados->salario,2)}}</td>
+                            <td style="text-align: right;">
                                 <button class="btn btn-danger btn-sm remfe" type="button" value="{{$empleados->id_empleado}}"><i class="fas fa-minus"></i></button>
                             </td>
                         </tr>
@@ -78,6 +80,15 @@
             <nav class="d-flex justify-content-end" aria-label="...">
                 
             </nav>
+        </div>
+    </div>
+</div>
+<div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
         </div>
     </div>
 </div>
@@ -98,6 +109,7 @@
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 
 <script>
  $(document).ready(function(){
@@ -110,7 +122,10 @@ if (e.keyCode== 107) {
 
 
 tebl=$('#Empleadotable-edit').DataTable({
-    "info": false,
+      scrollY: 300,
+        "paging":   false,
+        // "ordering": false,
+        "info":     false,
     select: {
             style: 'single',
         },
@@ -151,16 +166,35 @@ tebl=$('#Empleadotable-edit').DataTable({
   });
 
 
-  document.addEventListener ("keydown", function (e) {
-    if (e.keyCode==16) {
+//   document.addEventListener ("keydown", function (e) {
+//     if (e.keyCode== 107) {
+//         $("#createdperfiles").trigger("click");
+//         started();
+//     } 
+// });
 
-      var rowIdx = tebl.cell(':eq(0)').index().row;
+p=0;
+document.addEventListener ("keydown", function (e) {
+    if (e.keyCode== 40){
+        if(p==0){
+        var rowIdx = tebl.cell(':eq(0)').index().row;
+      
+      tebl.row(rowIdx).select();
+
+      tebl.cell( ':eq(0)' ).focus();   
+        p=1; 
+        }
+    } 
+});
+
+
+$("#createdperfiles").on('click',function(){
+    var rowIdx = tebl.cell(':eq(0)').index().row;
       
       tebl.row(rowIdx).select();
 
       tebl.cell( ':eq(0)' ).focus();
-
-    }
+      p=0; 
 });
   $('#Empleadotable-edit').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
@@ -313,4 +347,13 @@ window.onbeforeunload = function(e) {
 };
 </script>
     
+<style>
+.table-striped{
+  width: 100% !important;
+}
+
+.tablesorter {
+  width: 100% !important;
+}
+</style>
 @endsection

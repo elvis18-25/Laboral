@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\eventos;
+use App\Models\Empleado;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class EventosController extends Controller
 {
@@ -34,7 +38,9 @@ class EventosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datos=request()->except(['_token','_method']);
+        eventos::insert($datos);
+        print_r($datos);
     }
 
     /**
@@ -43,9 +49,50 @@ class EventosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        // $data['eventos']=eventos::all();
+        // return response()->json($data['eventos']);
+        $data=[];
+        $empleado=Empleado::all();
+        $eventos=eventos::all();
+
+        foreach($empleado as $empleados){
+        if($empleados->id_empresa==Auth::user()->id_empresa && $empleados->estado==0){
+        $separa = explode("-", $empleados->edad);
+        $ano = $separa[0];
+        $mes = $separa[1];
+        $dia = $separa[2];
+
+            $data[] = array(
+                'title'   => "Cumpleado de"." ".$empleados->nombre, 
+                'start'   => Carbon::now()->format('Y')."-".$mes."-".$dia,
+                'end'   => $empleados->edad,
+                'color' =>"#00FF2AFF",
+                'textColor'=> "#FFFFFF"
+            );
+        }
+        }
+
+            foreach($eventos as  $evento){
+            if($evento->id_empresa==Auth::user()->id_empresa && $evento->estado==0){
+                $data[] = array(
+                    'title'   => $evento->title, 
+                    'start'   => $evento->start,
+                    'end'   => $evento->end,
+                    'color' =>$evento->color,
+                    'textColor'=> $evento->textColor
+
+                );
+            
+            }
+            }
+
+            
+        
+            
+            
+            return response()->json($data);
     }
 
     /**
