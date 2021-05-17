@@ -2,12 +2,13 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title"><b>GASTOS RECURENTES</b></h4>
+                <div class="col-12">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS RECURENTES</b></h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -18,16 +19,16 @@
                 <form action="{{route('Gasto.destroy',$gasto->id)}}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button  type="submit" title="Eliminar" class="btn btn-danger btn-sm float-right"  style="top: -59px;"><i class="fas fa-trash"></i></button>
+                  <button  type="submit" title="Eliminar" class="btn btn-danger btn-sm float-right redondo"  style="top: -92px;"><i class="fas fa-trash"></i></button>
                 </form>
                 <form action="{{route('Gasto.update',$gasto->id)}}" method="POST">
-                  <button type="submit" title="Guardar Gastos" id="save" class="btn btn-fill btn-info btn-sm float-right " style="top: -59px;"><i class="fas fa-save"></i></button>
-                  <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm float-right"  style="top: -59px;"><i class="fas fa-file-excel"></i></button>
-                  <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacion" class="btn btn-info  btn-sm float-right"  style="top: -59px;"><i class="fas fa-edit"></i></i></button>
+                  <button type="submit" title="Guardar Gastos" id="save" class="btn btn-fill btn-info btn-sm float-right redondo whiter " style="top: -92px;"><i class="fas fa-save"></i></button>
+                  <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-excel"></i></button>
+                  {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacion" class="btn btn-info  btn-sm float-right whiter redondo"  style="top: -104px;"><i class="fas fa-edit"></i></i></button> --}}
                   {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm float-right"  style="top: -59px;"><i class="fas fa-print"></i></button> --}}
-                  <a href="{{url('listadopdfgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button  type="button"  style="top: -59px;" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm float-right"><i class="fas fa-print"></i></button></a>
+                  <a href="{{url('listadopdfgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button  type="button"  style="top: -92px;" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo float-right"><i class="fas fa-print"></i></button></a>
                   {{-- <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm float-right"  style="top: -59px;"><i class="fas fa-file-pdf"></i></button> --}}
-                 <a href="{{url('donwloadgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm float-right"  style="top: -59px;"><i class="fas fa-file-pdf"></i></button></a>
+                 <a href="{{url('donwloadgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-pdf"></i></button></a>
                   @csrf   
                   @method('PUT') 
             <div class="form-row">
@@ -73,12 +74,14 @@
             </div>
           </div>
         </div>
+        <input type="text" id="idnomina" name="idnomina" hidden value="{{$gasto->id_nomina}}">
      {{-- ----------------------------------------------------------------------------------------------------------------- --}}   
-        <div class="card" style="height: 400px">
+     {{-- @include('Gastos.modalfijoscreate') --}}
+        <div class="card" style="height: 410px">
           <div class="card-header">
             <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title"><b>GASTOS FIJOS</b></h4>
+                <div class="col-12">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS FIJOS</b></h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -86,43 +89,53 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Agregar Gasto Fijo" onclick="Mcf();"   class="btn btn-fill btn-info btn-sm float-right " style="top: -59px;"><i class="fas fa-plus"></i></button>
+              <button type="button" title="Agregar Gasto Fijo" onclick="MFDC();"   class="btn btn-fill btn-info btn-sm float-right redondo whiter" ><i class="fas fa-plus"></i></button>
+              <div style="max-height: 305px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-77px; ">
+                <table class="table tablesorter " id="gastofijo-table" style="top: -8px; position: relative;">
+                <thead class="text-primary">
+                    <tr>
+                        <th style="text-align: center !important; "  scope="col">CONCEPTO</th>
+                        <th style="text-align: center !important; position: relative; width: 25%;"  scope="col">MONTO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  @foreach ( $gastofijos as  $gastofijo)
+                  @if ($gastofijo->id_empresa==Auth::user()->id_empresa && $gastofijo->estado==0)
+                  @if ($gastofijo->id_gasto==$gasto->id)
+                      
+                  
 
-            
-              {{-- <div style="max-height: 289px; overflow-x: hidden; width: auto; position: relative; overflow-y: auto; font-size:small; top:-12px; "> --}}
-                <table class="table tablesorter " id="gastos-table">
-                    <thead class=" text-primary">
-                        <tr>
-                            <th style="text-align: center !important;"  scope="col">CONCEPTO</th>
-                            <th style="text-align: center !important;"  scope="col">MONTO</th>
-                        </tr>
-                    </thead>
-                    {{-- <tbody>
-                      @foreach ($gasto as $gastos)
-                      @if ($gastos->id_empresa==Auth::user()->id_empresa && $gastos->estado==0 )
-                          <tr id="gasto{{$gastos->id}}">
-                            <td onclick="verconcept({{$gastos->id}})">{{$gastos->concepto}}</td>
-                            <td  onclick="verconcept({{$gastos->id}})" style="text-align: right;">${{number_format($gastos->monto,2)}}</td>
-                          </tr>
-                          @endif
-                      @endforeach
-                    </tbody> --}}
-                </table>
-            {{-- </div> --}}
-            
+                  <tr id="gasto{{$gastofijo->id}}">
+                      <td onclick="verconcept({{$gastofijo->id}})">{{$gastofijo->concepto}}</td>
+                      <td  onclick="verconcept({{$gastofijo->id}})" style="text-align: right;">${{number_format($gastofijo->monto,2)}}</td>
+                  </tr>
+                      
+                  @endif
+                  @endif
+                  @endforeach
+                </tbody>
+
+            </table>
+            <input type="text" name="" value="{{$totalfijo}}" id="totalfijo" hidden>
+          </div>
             <div class="card-footer py-4">
               <nav class="d-flex justify-content-end" aria-label="...">
-                <b class="float-right" style="color: black; margin-right: 6px; font-size: 16px;">TOTAL: <span id="totalnomina"></span></b>
+                <b class="float-right" style="color: black;
+                margin-right: 15px;
+                font-size: 16px;
+                top: 379px;
+                position: absolute;">TOTAL: <span id="totalnomina"></span></b>
               </nav>
             </div>
           </div>
         </div>
+      {{------ Gastos del Periodo -------}}
      {{-- -------------------------------------------------------------------------------------------------------------- --}}
-        <div class="card" style="height: 400px">
+        <div class="card" style="height: 410px">
           <div class="card-header">
             <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title"><b>GASTOS DEL PERIODO</b></h4>
+                <div class="col-12">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS DEL PERIODO</b></h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -130,9 +143,9 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal" class="btn btn-fill btn-info btn-sm float-right " style="top: -59px;"><i class="fas fa-plus"></i></button>
-          <div style="max-height: 289px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-12px; ">
-              <table class="table tablesorter " id="gastoperido-table">
+              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal" class="btn btn-fill btn-info btn-sm float-right redondo whiter " ><i class="fas fa-plus"></i></button>
+              <div style="max-height: 305px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-77px; ">
+                <table class="table tablesorter " id="gastoperido-table" style="top: -8px; position: relative;">
                 <thead class="text-primary">
                     <tr>
                         <th style="text-align: center !important; "  scope="col">CONCEPTO</th>
@@ -141,25 +154,23 @@
                 </thead>
                 <tbody>
                   @foreach ( $concepto as  $conceptos)
-                  @foreach ($gastofijos as $gastofijo)
-                  @if ($conceptos->id_empresa==Auth::user()->id_empresa)
-                  @if ($conceptos->estado==0)
-                  @if ($gastofijo->concepto!=$conceptos->concepto)
-                  <tr>
+                  @if ($conceptos->id_empresa==Auth::user()->id_empresa && $conceptos->estado==0)
+                  @if ($conceptos->id_gasto==$gasto->id)
+
+                  <tr id="gasto{{$conceptos->id}}">
                       <td onclick="verconcept({{$conceptos->id}})">{{$conceptos->concepto}}</td>
                       <td  onclick="verconcept({{$conceptos->id}})" style="text-align: right;">${{number_format($conceptos->monto,2)}}</td>
                   </tr>
                       
-                  @endif  
                   @endif
                   @endif
-                  @endforeach
                   @endforeach
                 </tbody>
 
             </table>
           </div>
         </div>
+        <input type="text" name="" value="{{$totalconcepto}}" id="totalconcepto" hidden >
         <div class="card-footer py-4">
           <nav class="d-flex justify-content-end" aria-label="...">
             <b class="float-right" style="color: black;
@@ -175,8 +186,8 @@
       <div class="card">
         <div class="card-header">
           <div class="row">
-              <div class="col-8">
-                  <h4 class="card-title"><b>GASTOS DE NOMINA</b></h4>
+              <div class="col-12">
+                  <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS DE NOMINA</b></h4>
               </div>
    
               <div class="col-4 text-right">
@@ -184,7 +195,7 @@
             </div>
           </div>
           <div class="card-body">
-            <table class="table tablesorter " id="gastonomina-table">
+            <table class="table tablesorter " id="gastonomina-table" style="top: -42px;  position: relative;">
               <thead class="text-primary">
                   <tr>
                       <th style="text-align: center !important; "  scope="col">CONCEPTO</th>
@@ -194,7 +205,6 @@
               <tbody>
                 
               </tbody>
-
           </table>
           </div>
           <div class="card-footer py-4">
@@ -202,7 +212,7 @@
               <b class="float-right" style="color: black;
               margin-right: 15px;
               font-size: 16px;
-              top: 167px;
+              top: 186px;
               position: absolute;">TOTAL: <span id="totalnominames"></span></b>
             </nav>
           </div>
@@ -231,7 +241,7 @@
   <div class="card-header">
     <div class="row">
         <div class="col-8">
-            <h4 class="card-title"><b>TOTAL GENERAL:</b></h4>
+            <h4 class="car"><b>TOTAL GENERAL:</b></h4>
         </div>
 
         <div class="col-4 text-right">
@@ -244,7 +254,7 @@
         margin-right: 15px;
         font-size: 16px;
         top: 16px;
-        position: absolute;">TOTAL: <span id="totalgeneral"></span></b>
+        position: absolute;"><span id="totalgeneral"></span></b>
       </nav>
     </div>
 </div>
@@ -255,7 +265,7 @@
   <div class="card-header">
     <div class="row">
         <div class="col-8">
-            <h4 class="card-title"><b>OBSERVACIONES:</b></h4>
+            <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>OBSERVACIONES</b></h4>
         </div>
 
         <div class="col-4 text-right">
@@ -263,7 +273,7 @@
       </div>
     </div>
     <div class="card-body">
-      <textarea class="form-control" name="textarea" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <textarea class="form-control" style="color: black; font-size: 13px !important; font-weight: bold !important;" name="textarea" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" id="exampleFormControlTextarea1" rows="3">{{$gasto->observaciones}}</textarea>
     </div>
 </div>
 </div>
@@ -274,12 +284,24 @@
 {{-- @include('Gastos.phone') --}}
 <div class="modal fade" id="fijomodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <div class="modal fade" id="modalcreatefijo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<div class="modal fade" id="modalSf" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 
+
+<div class="o-page-loader">
+  <div class="o-page-loader--content">
+    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+      {{-- <div class=""></div> --}}
+      <div class="o-page-loader--message">
+          <span>Cargando...</span>
+      </div>
+  </div>
+</div>
 @endsection
 
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous"></script>
 <script src="{{asset('js/jquery-qrcode-0.18.0.min.js')}}"></script>
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
 // $(document).ready(function(){
@@ -289,12 +311,27 @@
 // window.addEventListener("onbeforeunload",function(e){
 // return "h";
 // });
+formpago=parseInt($("#totalconcepto").val(),10);
+cont=0;
+valordectes=0;
+general=0;
+options2 = { style: 'currency', currency: 'USD' };
+numberFormat2 = new Intl.NumberFormat('en-US', options2);
+
+reses= numberFormat2.format(formpago); 
+$("#totalperiodo").append(reses);
+
+resnomina= numberFormat2.format(valordectes); 
+$("#totalnominames").append(resnomina);
+
+restotal= numberFormat2.format(general); 
+$("#totalgeneral").append(restotal);
 
 
 totalgasto();
-  var hoy = new Date();
-  var fecha = moment(hoy);
-  document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
+  // var hoy = new Date();
+  // var fecha = moment(hoy);
+  // document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
 
 
 $('#descr').keypress(function(tecla)
@@ -307,10 +344,11 @@ $('#descr').keypress(function(tecla)
    }
 });
 
-formpago=0;
-cont=0;
-function totalgasto(){
-    var url = "{{ url('totalgasto') }}";
+
+
+function MFDC(){
+  var id=$("#input").val();
+  var url = "{{ url('modalcreateedit')}}/"+id;
      var data = '';
         $.ajax({
          method: "GET",
@@ -318,11 +356,31 @@ function totalgasto(){
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
-              var restnomina=parseInt($("#nominatotaldf").val(),10);
-              var concepextras=parseInt( $("#conceptosd").val(),10);
+              $("#modalSf").html(result).modal("show");
+              
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             });  
+}
 
-              var sum=restnomina+parseInt(result,10)+concepextras;
-              var sum1=parseInt(result,10);
+
+function totalgasto(){
+             var restnomina=parseInt($("#nominatotaldf").val(),10);
+              var concepextras=parseInt( $("#conceptosd").val(),10);
+              var totalconcepto=parseInt($("#totalconcepto").val(),10);
+              var totalfijo=parseInt($("#totalfijo").val(),10);
+
+              if(totalconcepto!=0){
+                var sum=restnomina+totalfijo+concepextras+totalconcepto;
+              }else{
+                var sum=restnomina+totalfijo+concepextras;
+                
+              }
+
+
+              var sum1=totalfijo;
               res= numberFormat2.format(sum1); 
               var resgeneral= numberFormat2.format(sum); 
 
@@ -332,27 +390,130 @@ function totalgasto(){
 
             $("#totalgeneral").empty();
             $("#totalgeneral").append(resgeneral);
-
-            $("#formes").attr('value',result);
-            $("#totl").attr('value',result);
-
+            
+            $("#formes").attr('value',totalfijo);
+            $("#totl").attr('value',totalfijo);
+            
             if($("#totl").val()!=0){
               $("#totl").attr('value',sum);
-
+              
             }
+
+            
             cont=parseInt($("#formes").val());
+
+            var totalconcepto=$("#totalconcepto").val();
+            var restotal= numberFormat2.format(totalconcepto); 
+            
+            $("#totalperiodo").empty();
+            $("#totalperiodo").append(restotal);
+            var idnominas=$("#idnomina").val();
+            if(idnominas!=0){
+              VerficateNomina();
+            }
+
+          }
+
+
+          function VerficateNomina(){
+var id=$("#idnomina").val();
+var url = "{{ url('listmonto')}}/"+id;
+     var data = '';
+     $.ajax({
+         method: "POST",
+         data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              
+              $("#gastonomina-table tbody").empty();
+              $("#gastonomina-table tbody").append(result);
+    
+              
+              var monto=parseInt($(result).attr('value'),10);
+              $("#nominatotaldf").attr('value',monto);
+              var restotal= numberFormat2.format(monto); 
+              $("#totalnominames").empty();
+              $("#totalnominames").append(restotal);
+
+              var Totalmonto=parseInt($("#totl").val(),10);
+              var sum =Totalmonto+monto;
+
+              var resgeneral= numberFormat2.format(sum); 
+
+            $("#totalgeneral").empty();
+            $("#totalgeneral").append(resgeneral);
+
+            $("#totl").attr('value',sum);
+        
+          
+              
+           },
+           error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+              }
+             });  
+}
+// function totalgasto(){
+//     var url = "{{ url('totalgasto') }}";
+//      var data = '';
+//         $.ajax({
+//          method: "GET",
+//            data: data,
+//             url:url ,
+//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+//             success:function(result){
+//               var restnomina=parseInt($("#nominatotaldf").val(),10);
+//               var concepextras=parseInt( $("#conceptosd").val(),10);
+//               var totalconcepto=parseInt($("#totalconcepto").val(),10);
+
+//               if(totalconcepto!=0){
+//                 var sum=restnomina+parseInt(result,10)+concepextras+totalconcepto;
+//               }else{
+//                 var sum=restnomina+parseInt(result,10)+concepextras;
+                
+//               }
+
+
+//               var sum1=parseInt(result,10);
+//               res= numberFormat2.format(sum1); 
+//               var resgeneral= numberFormat2.format(sum); 
+
+              
+//             $("#totalnomina").empty();
+//             $("#totalnomina").append(res);
+
+//             $("#totalgeneral").empty();
+//             $("#totalgeneral").append(resgeneral);
+
+//             $("#formes").attr('value',result);
+//             $("#totl").attr('value',result);
+
+//             if($("#totl").val()!=0){
+//               $("#totl").attr('value',sum);
+
+//             }
+
+            
+//             cont=parseInt($("#formes").val());
+
+//             var totalconcepto=$("#totalconcepto").val();
+//             var restotal= numberFormat2.format(totalconcepto); 
+
+//             $("#totalperiodo").empty();
+//             $("#totalperiodo").append(restotal);
 
 
 
 
           
            
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-    }
-             });  
-}
+//            },
+//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
+//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+//     }
+//              });  
+// }
 
 
 
@@ -454,19 +615,6 @@ function GanoFoco2(){
 //  }
 // };
 
-options2 = { style: 'currency', currency: 'USD' };
-numberFormat2 = new Intl.NumberFormat('en-US', options2);
-
-valordectes=0;
-general=0;
-reses= numberFormat2.format(formpago); 
-            $("#totalperiodo").append(reses);
-
-resnomina= numberFormat2.format(valordectes); 
-            $("#totalnominames").append(resnomina);
-
-restotal= numberFormat2.format(general); 
-            $("#totalgeneral").append(restotal);
 
 
 
@@ -618,101 +766,101 @@ var rest=0;
 
 // });
 
-$.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-  });
+// $.ajaxSetup({
+// headers: {
+// 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+// }
+//   });
   
- tabla=$('#gastos-table').DataTable({
-        dom: 'Bfrtip',
-        "searching": false,
-        "paging":   false,
-        // "ordering": false,
-        "info":     false,
-        processing:true,
-        "scrollY":        "280px",
-        "scrollCollapse": true,
+//  tabla=$('#gastos-table').DataTable({
+//         dom: 'Bfrtip',
+//         "searching": false,
+//         "paging":   false,
+//         // "ordering": false,
+//         "info":     false,
+//         processing:true,
+//         "scrollY":        "280px",
+//         "scrollCollapse": true,
       
 
-    serverSide:true,
-    ajax:
-    {
-      url:"{{ url('datatableconcept') }}",
-      "data":function(d){
-        if($("#input").val()!=''){
-          d.dato1=$("#input").val();
-          // alert($("#input").val())
-          id=$("#input").val();
-            // totalnomi(id);
-        }
-      }
+//     serverSide:true,
+//     ajax:
+//     {
+//       url:"{{ url('datatableconcept') }}",
+//       "data":function(d){
+//         if($("#input").val()!=''){
+//           d.dato1=$("#input").val();
+//           // alert($("#input").val())
+//           id=$("#input").val();
+//             // totalnomi(id);
+//         }
+//       }
      
-    },
+//     },
 
-    language: {
-      searchPlaceholder: "Buscar",
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "",
-        "zeroRecords": "Sin resultados encontrados",
-        "paginate": {
-            "first": "Primero",
-            "last": "Ultimo",
-            "next": "Siguiente",
-            "previous": "Anterior"
-        }
+//     language: {
+//       searchPlaceholder: "Buscar",
+//         "decimal": "",
+//         "emptyTable": "No hay información",
+//         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+//         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+//         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+//         "infoPostFix": "",
+//         "thousands": ",",
+//         "lengthMenu": "",
+//         "loadingRecords": "Cargando...",
+//         "processing": "Procesando...",
+//         "search": "",
+//         "zeroRecords": "Sin resultados encontrados",
+//         "paginate": {
+//             "first": "Primero",
+//             "last": "Ultimo",
+//             "next": "Siguiente",
+//             "previous": "Anterior"
+//         }
 
-      }, 
+//       }, 
 
-//       columnDefs: [
-//         {
-//           className: "dt-head-center",
-//         },
-//         {
-//       "targets": 0, // your case first column
-//       "className": "text-left",
-//       // "width": "20%",
-//         },
-//         {
-//       "targets": 1, // your case first column
-//       "className": "text-left",
-//       // "width": "20%",
-//         },
-// ],
-
-
-      buttons: [
-            {
-                extend: 'excel',
-                messageTop: 'Listado de Empleado.'
-            },
-            {
-                extend: 'pdf',
-                messageBottom: null
-            },
-            {
-                extend: 'print',
-                messageTop: 'Listado de Empleado.',
-            }
-        ],
+// //       columnDefs: [
+// //         {
+// //           className: "dt-head-center",
+// //         },
+// //         {
+// //       "targets": 0, // your case first column
+// //       "className": "text-left",
+// //       // "width": "20%",
+// //         },
+// //         {
+// //       "targets": 1, // your case first column
+// //       "className": "text-left",
+// //       // "width": "20%",
+// //         },
+// // ],
 
 
+//       buttons: [
+//             {
+//                 extend: 'excel',
+//                 messageTop: 'Listado de Empleado.'
+//             },
+//             {
+//                 extend: 'pdf',
+//                 messageBottom: null
+//             },
+//             {
+//                 extend: 'print',
+//                 messageTop: 'Listado de Empleado.',
+//             }
+//         ],
 
-    columns:[
-    {data:'concepto',name:'concepto', class:'left' },
-    {data:'monto', name:'monto', class:'right'},
-    ],
 
-});
+
+//     columns:[
+//     {data:'concepto',name:'concepto', class:'left' },
+//     {data:'monto', name:'monto', class:'right'},
+//     ],
+
+// });
 
 $("#gastos-table select[name='porciento[]']").on('change',function(){
    var  e=$(this).val();
@@ -725,56 +873,134 @@ $("#gastos-table select[name='porciento[]']").on('change',function(){
 idconcepto=0;
 verificador=0;
 
-function capturar(){
+// function capturar(){
 
-  var conceptoCapturar=document.getElementById("concepto").value;
-  var montoCapturar=document.getElementById("monto").value;
-  var conceptid=idconcepto++;
+//   var conceptoCapturar=document.getElementById("concepto").value;
+//   var montoCapturar=document.getElementById("monto").value;
+//   var conceptid=idconcepto++;
+ 
+//   var nomina=$("#nominavalue").val();
+
+// if(conceptoCapturar!=''&&montoCapturar!=''){
+
+//     function  Persona(id,concepto,monto){
+//      this.concepto=concepto;
+//      this.monto=monto;
+//      this.id=id;
+//     }
+
+//     nuevoSujeto= new Persona(conceptid,conceptoCapturar,montoCapturar);
+ 
+//  agregar();
+//   }else{
+//     // if(nomina==0){
+//     //  errornomina();
+//     // }
+//     if(conceptoCapturar=='' ||montoCapturar=='' ){
+
+//     error();
+//     }
+
+//   }
+// }
+// var baseDatos=[];
+// var BDconceptos=[];
+// var BDmonto=[];
+// var p=0;
+// function agregar(){
+//   $('.datosInput').val('');
+//   $("#concepto").focus();
+//   $("#conceptomodal").trigger("click");
+//   var valor=parseInt($("#nominatotaldf").val(),10);
+//   var cont2=parseInt($("#totalconcepto").val(),10);
+//   var cont=parseInt($("#totl").val(),10);
+  
+
+//   formpago=formpago+parseInt(nuevoSujeto.monto,10);
+
+//   if(valor==0){
+//     cont=cont+parseInt(nuevoSujeto.monto,10);
+//     // verificador=parseInt($("#formes").val());
+//     // alert()
+//   }else{
+//     cont=cont+parseInt(nuevoSujeto.monto,10);
+
+//   }
+
+  
+//   $("#totl").attr('value',cont);
+
+//   var reses= numberFormat2.format(formpago);
+//   var resgeneral= numberFormat2.format(cont);
+
+//         $("#totalperiodo").empty();
+//         $("#totalperiodo").append(reses);
+
+//         $("#totalgeneral").empty();
+//             $("#totalgeneral").append(resgeneral);
+
+//         $("#conceptosd").attr('value',formpago);
+
+//    re= numberFormat2.format(nuevoSujeto.monto);
+
+
+
+// baseDatos.push(nuevoSujeto);
+// console.log(baseDatos);
+// var button = '<button class="btn btn-danger remf btn-sm" value="'+nuevoSujeto.monto+'" type="button"><i class="fas fa-trash"></i></button>';
+// var button2=' <button class="btn btn-info  btn-sm" data-toggle="modal" data-target="#upload" type="button"><i class="fas fa-upload"></i></button>'
+
+// BDconceptos[p]=nuevoSujeto.concepto;
+// BDmonto[p]=nuevoSujeto.monto;
+// console.log(BDconceptos);
+// console.log(BDmonto);
+// p++;
+
+// $("#conp").attr('value',BDconceptos);
+// $("#montp").attr('value',BDmonto);
+
+
+// $('#gastoperido-table tbody').append('<tr class="showinfo" action="'+nuevoSujeto.concepto+'" value="'+nuevoSujeto.monto+'" ><td><input type="text" value="'+nuevoSujeto.concepto+'"  name="concepto[]" / hidden>'+nuevoSujeto.concepto+'</td><td style="text-align: right;"><input type="text" name="monto[]" value="'+nuevoSujeto.monto+'"/hidden>'+re+'</tr>');
+
+
+// }
+
+function capturar(){
+  var concepto=document.getElementById("concepto").value;
+  var monto=document.getElementById("monto").value;
+  var e=$("#input").val();
+  // var conceptid=idconcepto++;
  
   var nomina=$("#nominavalue").val();
 
-if(conceptoCapturar!=''&&montoCapturar!=''){
-
-    function  Persona(id,concepto,monto){
-     this.concepto=concepto;
-     this.monto=monto;
-     this.id=id;
-    }
-
-    nuevoSujeto= new Persona(conceptid,conceptoCapturar,montoCapturar);
- 
- agregar();
-  }else{
-    // if(nomina==0){
-    //  errornomina();
-    // }
-    if(conceptoCapturar=='' ||montoCapturar=='' ){
-
-    error();
-    }
-
-  }
-}
-var baseDatos=[];
-var BDconceptos=[];
-var BDmonto=[];
-var p=0;
-function agregar(){
-  $('.datosInput').val('');
+if(concepto!=''&& monto!=''){
+  var url = "{{ url('saveconconcepto')}}/"+e;
+     var data = {concepto:concepto, monto:monto};
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              if(result!=0){
+                $("#gastoperido-table tbody").append(result);
+              $("#conceptomodal").trigger("click");
+              // var sum=parseInt($("#totalconcepto").val(),10)+parseInt($(result).attr('action'),10);
+              $('.datosInput').val('');
   $("#concepto").focus();
-  $("#conceptomodal").trigger("click");
   var valor=parseInt($("#nominatotaldf").val(),10);
+  var cont2=parseInt($("#totalconcepto").val(),10);
   var cont=parseInt($("#totl").val(),10);
   
 
-  formpago=formpago+parseInt(nuevoSujeto.monto,10);
+  formpago=formpago+parseInt($(result).attr('action'),10);
 
   if(valor==0){
-    cont=cont+parseInt(nuevoSujeto.monto,10);
+    cont=cont+parseInt($(result).attr('action'),10);
     // verificador=parseInt($("#formes").val());
     // alert()
   }else{
-    cont=cont+parseInt(nuevoSujeto.monto,10);
+    cont=cont+parseInt($(result).attr('action'),10);
 
   }
 
@@ -792,29 +1018,31 @@ function agregar(){
 
         $("#conceptosd").attr('value',formpago);
 
-   re= numberFormat2.format(nuevoSujeto.monto);
+            //   var resgeneral= numberFormat2.format(sum); 
 
+              
+            // $("#totalnomina").empty();
+            // $("#totalnomina").append(resgeneral);
 
+            // $("#formes").attr('value',sum);
+            // $("#totl").attr('value',sum);
 
-baseDatos.push(nuevoSujeto);
-console.log(baseDatos);
-var button = '<button class="btn btn-danger remf btn-sm" value="'+nuevoSujeto.monto+'" type="button"><i class="fas fa-trash"></i></button>';
-var button2=' <button class="btn btn-info  btn-sm" data-toggle="modal" data-target="#upload" type="button"><i class="fas fa-upload"></i></button>'
-
-BDconceptos[p]=nuevoSujeto.concepto;
-BDmonto[p]=nuevoSujeto.monto;
-console.log(BDconceptos);
-console.log(BDmonto);
-p++;
-
-$("#conp").attr('value',BDconceptos);
-$("#montp").attr('value',BDmonto);
-
-
-$('#gastoperido-table tbody').append('<tr class="showinfo" action="'+nuevoSujeto.concepto+'" value="'+nuevoSujeto.monto+'" ><td><input type="text" value="'+nuevoSujeto.concepto+'"  name="concepto[]" / hidden>'+nuevoSujeto.concepto+'</td><td style="text-align: right;"><input type="text" name="monto[]" value="'+nuevoSujeto.monto+'"/hidden>'+re+'</tr>');
-
-
+              }else{
+                ComparationGastos();
+              }
+        
+          
+           
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             }); 
+            }else{
+              error();
+            }
 }
+
 var options = {
      theme:"sk-cube-grid",
      message:'Cargando.... ',
@@ -1015,32 +1243,8 @@ function Mcf(){
              });  
 }
 
-// function verconcept(e){
-//  var url = "{{ url('modalmodificar')}}/"+e;
-//      var data = '';
-//         $.ajax({
-//          method: "POST",
-//            data: data,
-//             url:url ,
-//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-//             success:function(result){
-//               $("#fijomodal").html(result).modal("show");
-
-        
-          
-           
-//            },
-//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-//     }
-//              });  
- 
-// }
-
-$("#gastos-table tbody").on('click','tr',function(){
- 
- var id=$(this).attr('data-href');
- var url = "{{ url('modalfijo')}}/"+id;
+function verconcept(e){
+ var url = "{{ url('modalmodificar')}}/"+e;
      var data = '';
         $.ajax({
          method: "POST",
@@ -1059,17 +1263,71 @@ $("#gastos-table tbody").on('click','tr',function(){
     }
              });  
  
-});
+}
+
+function ComparationGastos() {
+  Command: toastr["error"]("Este gasto ya esta Registrado", "Error")
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+}
+
+// $("#gastos-table tbody").on('click','tr',function(){
+ 
+//  var id=$(this).attr('data-href');
+//  var url = "{{ url('modalfijo')}}/"+id;
+//      var data = '';
+//         $.ajax({
+//          method: "POST",
+//            data: data,
+//             url:url ,
+//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+//             success:function(result){
+//               $("#fijomodal").html(result).modal("show");
+
+        
+          
+           
+//            },
+//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
+//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+//     }
+//              });  
+ 
+// });
 
 </script>
-    
-@endsection
-
 <style>
   .disabledclass{
     background-color: #e2e2e2;
   color: #000000;
   }
-
+  .card-title{
+    margin-left: -17px;
+    width: 102% !important;
+    /* height: 100px !important; */
+    padding: 15px !important;
+    background-color: #4054b2 !important;
+    /* box-shadow: 10px 10px #80808040 !important; */
+    color: white !important;
+    position: relative;
+    top: -15px;
+}
 
   </style>
+@endsection
+

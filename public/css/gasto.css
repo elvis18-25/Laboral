@@ -1,7 +1,7 @@
 
 
 .redondo{
-    display: block;
+    /* display: block; */
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -12,6 +12,38 @@
 
 } */
 /* 4054b2 */
+
+/* .card-title{
+  width:  !important;
+  height: 100px !important;
+  padding: 15px !important;
+  background-color: #4054b2 !important;
+  box-shadow: 10px 10px grey !important;
+} */
+
+.TitleCp{
+  font-size: 14px !important;
+  text-align: center;
+}
+
+.whiter{
+  top: -92px; 
+  margin-right: 3%;
+   background: white; 
+   color: #4054b2 !important;
+}
+.whiter:hover{
+  background-color: #ffffff !important;
+  background-image: linear-gradient(to bottom left, #ffffff, #ffffff, #ffffff87) !important;
+}
+.TitleP{
+  font-size: 14px;
+  text-align: center;
+}
+
+#gastos-table_length{
+  margin-left: 3% !important;
+}
 #myTab{
   display: none;
 }
@@ -54,6 +86,8 @@ table tr td{
 
 #gastos-table_wrapper{
   height: 288px;
+  top: -28px;
+  position: relative;
 }
 
     @media (min-width: 768px){
@@ -114,12 +148,7 @@ margin-left: -26px;
     background-color:#525f7f;;
 }
 
-.redondo{
-    display: block;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
+
 
   #empleado-table tbody{
       cursor: pointer;

@@ -2,16 +2,18 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">GASTOS</h4>
+                    <h4 class="card-title"  style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{route('Gasto.create')}}" title="Agregar Gastos" class="btn btn-sm btn-info"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"></i></a>
-                    <a href="{{url('GastosFijo')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-warning"><button type="button" id="created" style="display: none;"></button><i class="fas fa-coins"></i></a>
+                    <a href="{{route('Gasto.create')}}" title="Agregar Gastos" class="btn btn-sm btn-info float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
+                    <a href="{{url('GastosFijo')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-warning float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-coins"style="top: 5px; position: relative;" ></i></a>
                 </div>
             </div>
         </div>
@@ -23,10 +25,10 @@
                 <table class="table tablesorter " id="gastos-table">
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">DESCRIPCION</th>
-                        <th scope="col">FECHA</th>
-                        <th scope="col">USUARIO</th>
-                        <th scope="col">MONTO</th>
+                        <th class="TitleP">DESCRIPCION</th>
+                        <th class="TitleP">FECHA</th>
+                        <th class="TitleP">USUARIO</th>
+                        <th class="TitleP">MONTO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -35,9 +37,9 @@
                         @if ($gastos->id_empresa==$user)
                         <tr action="{{Route('Gasto.show',$gastos->id)}}">
                             <td>{{$gastos->descripcion}}</td>
-                            <td>{{date("d/m/Y", strtotime($gastos->fecha))}}</td>
-                            <td>{{$gastos->user}}</td>
-                            <td>${{number_format($gastos->monto,2)}}</td>
+                            <td style="text-align: center;" >{{date("d/m/Y", strtotime($gastos->fecha))}}</td>
+                            <td style="text-align: center;" >{{$gastos->user}}</td>
+                            <td style="text-align: right;" >${{number_format($gastos->monto,2)}}</td>
                         </tr>
                         @endif
                         @endif
@@ -56,10 +58,19 @@
 
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 
-
+<div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
    table=$('#gastos-table').DataTable({
     "info": false,

@@ -118,7 +118,49 @@ class GastoController extends Controller
     {
         $gasto=Gasto::findOrFail($id);
         $gastofijos=gasto_fijo::all();
-        $concepto=concepto_gasto::all();
+        $array=[];
+        $array2=[];
+        
+        $i=0;
+        foreach($gastofijos as $gastofijo){
+            if($gastofijo->estado==0 && $gastofijo->id_empresa==Auth::user()->id_empresa){
+            $array[$i]=$gastofijo->concepto;
+            $i++;
+        }
+     }
+        
+        $concepto=concepto_gasto::whereNotIn('concepto',$array)->get();
+
+        $p=0;
+        foreach($concepto as $conceptos){
+            if($conceptos->estado==0 && $conceptos->id_empresa==Auth::user()->id_empresa){
+            $array2[$p]=$conceptos->concepto;
+            $p++;
+        }
+    }
+        
+        $gastofijos=concepto_gasto::whereNotIn('concepto',$array2)->get();
+
+        // dd($concepto);
+        // $fijo=gasto_fijo::whereNotIn('id',$array)->get();
+        $totalconcepto=0;
+        foreach($concepto as $conceptos){
+            if($conceptos->estado==0 && $conceptos->id_empresa==Auth::user()->id_empresa){
+
+            if($gasto->id==$conceptos->id_gasto){
+                $totalconcepto+=$conceptos->monto;
+
+            }
+        }
+        
+        }
+        $totalfijo=0;
+        foreach($gastofijos as $gastofijo){
+            if($gasto->id==$gastofijo->id_gasto){
+                $totalfijo+=$gastofijo->monto;
+
+            }
+        }
 
         $nominas=Listado::all();
 
@@ -133,7 +175,7 @@ class GastoController extends Controller
 
         
 
-        return view('Gastos.show',compact('gasto','concepto','nominas','totalmonto','gastofijos'));
+        return view('Gastos.show',compact('gasto','totalconcepto','concepto','nominas','totalmonto','gastofijos','totalfijo'));
     }
 
     /**
@@ -161,12 +203,6 @@ class GastoController extends Controller
         $gasto->save();
         return $id;
         // $nomina=Listado::findOrFail($id);
-
-        
-
-  
-
-        
     }
     public function vernomina($id)
     {
@@ -194,9 +230,10 @@ class GastoController extends Controller
         $gasto->id_nomina=$request->get('idnomina');
         $gasto->monto=$request->get('total');
         $gasto->user=Auth::user()->name;
+        $gasto->observaciones=$request->get('textarea');
         $gasto->update();
 
-        $concep=Concepto_gasto::all();
+        // $concep=Concepto_gasto::all();
 
         // foreach($concep as $concept){
         //     if($concept->id_gasto==$id){
@@ -204,18 +241,18 @@ class GastoController extends Controller
         //     }
         // }
 
-        if($request->get('concepto')!=''){
-            for($i = 0; $i < count($request->get('concepto')); $i++){
-                if(!empty(collect($request)->get('concepto')[$i])){
-                $input['id_gasto']=$gasto->id;
-                $input['concepto'] = $request->get('concepto')[$i];
-                $input['monto'] = $request->get('monto')[$i];
-                $input['id_empresa'] = Auth::user()->id_empresa;
-                $input['estado'] =0;
-                $referencia=concepto_gasto::create($input);
-            }  
-            }   
-        }
+        // if($request->get('concepto')!=''){
+        //     for($i = 0; $i < count($request->get('concepto')); $i++){
+        //         if(!empty(collect($request)->get('concepto')[$i])){
+        //         $input['id_gasto']=$gasto->id;
+        //         $input['concepto'] = $request->get('concepto')[$i];
+        //         $input['monto'] = $request->get('monto')[$i];
+        //         $input['id_empresa'] = Auth::user()->id_empresa;
+        //         $input['estado'] =0;
+        //         $referencia=concepto_gasto::create($input);
+        //     }  
+        //     }   
+        // }
 
         return redirect('Gasto');
 
@@ -244,6 +281,26 @@ class GastoController extends Controller
     public function modalcreatefijo()
     {
         return view('Gastos.modalcreatefijo');
+
+    }
+    public function modalcreateedit($id)
+    {
+        $gasto=Gasto::findOrFail($id);
+        $concepto=concepto_gasto::all();
+
+        $data=[];
+        $i=0;
+        foreach($concepto as $conceptos){
+            if($conceptos->estado==0 && $conceptos->id_empresa==Auth::user()->id_empresa){
+                if($gasto->id==$conceptos->id_gasto){
+                $data[$i]=$conceptos->concepto;
+                $i++;
+            }
+        }
+        }
+        $gastofijos=gasto_fijo::whereNotIn('concepto',$data)->get();
+        // $gastofijos=gasto_fijo::all();
+        return view('Gastos.modalfijoscreateR',compact('gastofijos','gasto'));
 
     }
     public function deletegasto($id)
@@ -291,35 +348,98 @@ class GastoController extends Controller
         return $sum+$monto;
 
     }
-    public function Gastossavefijo(Request $Request)
+    public function Gastossavefijo($id,Request $Request)
     {
         
         $concep=request('name');
         $monto=request('monto');
+        $sele=request('elegir');
+        $verificateGastoFijo=gasto_fijo::all();
 
-        $gasto=new gasto_fijo();
-        $gasto->concepto=$concep;
-        $gasto->monto=$monto;
-        $gasto->estado=0;
-        $gasto->id_empresa=Auth::user()->id_empresa;
-        $gasto->save();
+        // if($concep!="" && $monto!="" ){
+
+        // }
+        $p=0;
+        foreach($verificateGastoFijo as $verificateGastoFijos){
+            if($verificateGastoFijos->id_empresa==Auth::user()->id_empresa && $verificateGastoFijos->estado==0) {
+            if($verificateGastoFijos->concepto==$concep){
+                $p=1;
+            }
+        }
+        }
+
+        if($sele!=0){
+            $gasto=gasto_fijo::findOrFail($sele);
+            $concept=new concepto_gasto();
+            $concept->id_gasto=$id;
+            $concept->concepto=$gasto->concepto;
+            $concept->monto=$gasto->monto;
+            $concept->estado=0;
+            $concept->id_empresa=Auth::user()->id_empresa;
+            $concept->save();
+            return view('Gastos.Plantillas.Pmodalfijo',compact('concept'));
+        }else{
+
+            if($p==0){
+            $gasto=new gasto_fijo();
+            $gasto->concepto=$concep;
+            $gasto->monto=$monto;
+            $gasto->estado=0;
+            $gasto->id_empresa=Auth::user()->id_empresa;
+            $gasto->save();
+
+            $concept=new concepto_gasto();
+            $concept->id_gasto=$id;
+            $concept->concepto=$gasto->concepto;
+            $concept->monto=$gasto->monto;
+            $concept->estado=0;
+            $concept->id_empresa=Auth::user()->id_empresa;
+            $concept->save();
+            return view('Gastos.Plantillas.Pmodalfijo',compact('concept'));
+            }else{
+                return 0;
+            }
+        }
+
+
+        
+
 
 
 
     }
     public function saveconconcepto($id,Request $Request)
     {
+
         $gastos=Gasto::findOrFail($id);
         $concep=request('concepto');
         $monto=request('monto');
 
-        $gasto=new concepto_gasto();
-        $gasto->id_gasto=$id;
-        $gasto->concepto=$concep;
-        $gasto->monto=$monto;
-        $gasto->estado=0;
-        $gasto->id_empresa=Auth::user()->id_empresa;
-        $gasto->save();
+        $verificateGastoFijo=gasto_fijo::all();
+        $p=0;
+        foreach($verificateGastoFijo as $verificateGastoFijos){
+            if($verificateGastoFijos->id_empresa==Auth::user()->id_empresa && $verificateGastoFijos->estado==0) {
+            if($verificateGastoFijos->concepto==$concep){
+                $p=1;
+            }
+        }
+        }
+
+        if($p==0){
+            
+            $gasto=new concepto_gasto();
+            $gasto->id_gasto=$id;
+            $gasto->concepto=$concep;
+            $gasto->monto=$monto;
+            $gasto->estado=0;
+            $gasto->id_empresa=Auth::user()->id_empresa;
+            $gasto->save();
+
+            return view('Gastos.Plantillas.Pmodalconcept',compact('gasto'));
+        }else{
+            return 0;
+        }
+
 
 
 
@@ -449,11 +569,24 @@ class GastoController extends Controller
     }
     public function deleteconcept($id,Request $request)
     {
-        $concepto=gasto_fijo::findOrFail($id);
+        $concepto=concepto_gasto::findOrFail($id);
         $concepto->estado=1;
         $concepto->save();
 
-        return $concepto->id;
+        // return $concepto->id;
+
+        $verificateGastoFijo=gasto_fijo::all();
+        $p=0;
+        foreach($verificateGastoFijo as $verificateGastoFijos){
+            if($verificateGastoFijos->id_empresa==Auth::user()->id_empresa && $verificateGastoFijos->estado==0) {
+            if($verificateGastoFijos->concepto== $concepto->concepto){
+                $p=1;
+            }
+        }
+        }
+
+
+         return view('Gastos.updategasto',compact('concepto','p'));
     }
     public function buscarnomina($id,Request $request)
     {
@@ -467,6 +600,54 @@ class GastoController extends Controller
     {
         $concepto=gasto_fijo::findOrFail($id);
         return view('Gastos.modalfijo',compact('concepto'));
+         
+    }
+    public function saveGastosfijo($id,Request $request)
+    {
+
+        $concep=request('name');
+        $monto=request('monto');
+
+        $gasto=new gasto_fijo();
+        $gasto->concepto=$concep;
+        $gasto->monto=$monto;
+        $gasto->estado=0;
+        $gasto->id_empresa=Auth::user()->id_empresa;
+        $gasto->save();
+
+        $concepto=new Concepto_gasto();
+        $concepto->concepto=$concep;
+        $concepto->id_gasto=$id;
+        $concepto->monto=$monto;
+        $concepto->estado=0;
+        $concepto->id_empresa=Auth::user()->id_empresa;
+        $concepto->save();
+
+        return view('Gastos.Plantillas.Pmodalfijo',compact('concepto'));
+
+
+
+         
+    }
+    public function saveFijos(Request $request)
+    {
+
+        $concep=request('conce');
+        $monto=request('monto');
+
+        $gasto=new gasto_fijo();
+        $gasto->concepto=$concep;
+        $gasto->monto=$monto;
+        $gasto->estado=0;
+        $gasto->id_empresa=Auth::user()->id_empresa;
+        $gasto->save();
+
+
+
+        // return view('Gastos.Plantillas.Pmodalfijo',compact('concepto'));
+
+
+
          
     }
     // public function Vernomina($id)
@@ -483,7 +664,7 @@ class GastoController extends Controller
     }
     public function modalmodificar($id,Request $request)
     {
-        $concepto=gasto_fijo::findOrFail($id);
+        $concepto=Concepto_gasto::findOrFail($id);
         return view('Gastos.modalmo',compact('concepto'));
          
     }
@@ -500,15 +681,28 @@ class GastoController extends Controller
     }
     public function updateconcept($id,Request $request)
     {
-        $concepto=gasto_fijo::findOrFail($id);
+        $concepto=Concepto_gasto::findOrFail($id);
         $nombre=request('name');
         $monto=request('monto');
 
-         $concepto->concepto=$nombre;
-         $concepto->monto=$monto;
-         $concepto->update();
+        $verificateGastoFijo=gasto_fijo::all();
+        $p=0;
+        foreach($verificateGastoFijo as $verificateGastoFijos){
+            if($verificateGastoFijos->id_empresa==Auth::user()->id_empresa && $verificateGastoFijos->estado==0) {
+            if($verificateGastoFijos->concepto==$nombre){
+                $p=1;
+            }
+        }
+        }
 
-         return view('Gastos.updategasto',compact('concepto'));
+        $concepto->concepto=$nombre;
+        $concepto->monto=$monto;
+        $concepto->update();
+
+
+
+
+         return view('Gastos.updategasto',compact('concepto','p'));
 
 
     }
@@ -525,20 +719,20 @@ class GastoController extends Controller
          return 0;
     }
 
-    public function observacion($id,Request $request)
-    {
-        $nombre=request('name');
-        $gastos=Gasto::findOrFail($id);
-        if( $gastos->observaciones!=null){
-            $gastos->observaciones=$nombre;
-            $gastos->save();
-        }else{
-         $gastos->observaciones=$nombre;
-         $gastos->save();
-        }
+    // public function observacion($id,Request $request)
+    // {
+    //     $nombre=request('name');
+    //     $gastos=Gasto::findOrFail($id);
+    //     if( $gastos->observaciones!=null){
+    //         $gastos->observaciones=$nombre;
+    //         $gastos->save();
+    //     }else{
+    //      $gastos->observaciones=$nombre;
+    //      $gastos->save();
+    //     }
 
-         return $gastos->observaciones;
-    }
+    //      return $gastos->observaciones;
+    // }
     // public function buscarobs($id,Request $request)
     // {
     //     $gastos=Gasto::findOrFail($id);

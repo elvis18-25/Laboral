@@ -1,34 +1,33 @@
 
-    <div class="modal-dialog">
-        <div class="modal-content modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">EDITAR CONCEPTO</h5>
+            <h5 class="modal-title" id="exampleModalLabel" style="font-size: 16px !important; font-weight: bold !important;"><b>EDITAR CONCEPTO</b></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
               <div class="form-row">
-                  <div class="form-group col-md-7">
-                    <label for="inputEmail4">CONCEPTO</label>
+                  <div class="form-group col-md-8">
+                    <label for="inputEmail4"><b>CONCEPTO</b></label>
                     <input type="text" class="form-control" placeholder="Concepto"  id="nombreC"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                   </div>
-                  <br>
                   <div class="form-group col-md-4">
-                      <label for="inputEmail4">MONTO</label>
+                      <label for="inputEmail4"><b>MONTO</b></label>
                       <input type="text"  class="form-control" placeholder="Monto" id="montsC">
                     </div>
               </div>
           </div>
           <div class="modal-footer">
               {{-- <button class="btn btn-danger elimini btn-sm"  type="button"><i class="fas fa-trash"></i>&nbsp;Eliminar</button>  --}}
-            <button type="button" class="btn btn-info save btn-sm"  ><i class="fas fa-save">&nbsp;</i> Guardar</button>
+            <button type="button" class="btn btn-info save btn-sm redondo"><i class="fas fa-save"></i></button>
           </div>
         </div>
       </div>
   
     <script>
-        $("#monts").mask('0#');
+        $("#montsC").mask('0#');
   
    $('.elimini').on('click',function(){
   
@@ -73,13 +72,13 @@
   
   $('.save').on('click',function(){
       var id=$(this).val();
-      var name=$("#nombreC").val();
+      var conce=$("#nombreC").val();
       var monto=$("#montsC").val();
   
   
-      if(name!=''&& monto!=''){
-        var url = "{{ url('Gastossavefijo') }}";
-     var data = {name:name,monto:monto};
+      if(conce!=''&& monto!=''){
+        var url = "{{ url('saveFijos') }}";
+     var data = {conce:conce,monto:monto};
         $.ajax({
          method: "POST",
            data: data,

@@ -7,8 +7,8 @@
     <div class="card ">
         <div class="card-header">
             <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title"><b>GASTOS RECURENTES</b></h4>
+                <div class="col-12">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>GASTOS RECURENTES</b></h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -17,14 +17,14 @@
             </div>
             <div class="card-body">
               <form action="{{route('Gasto.store')}}" method="POST">
-                <button type="submit" title="Guardar Gastos" id="save" class="btn btn-fill btn-info btn-sm float-right " style="top: -59px;"><i class="fas fa-save">&nbsp;</i></button>
+                <button type="submit" title="Guardar Gastos" id="save" class="btn btn-fill btn-light btn-sm float-right  redondo whiter " style=""><i class="fas fa-save" style="font-size: 17px; margin-left: -1px">&nbsp;</i></button>
                 {{-- <button type="button" title="Guardar Gastos" id="save" class="btn btn-fill btn-primary btn-sm float-right " style="top: -59px;"><i class="fas fa-save"></i></button> --}}
                 {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacionCreate" class="btn btn-info  btn-sm float-right"  style="top: -59px;"><i class="fas fa-edit"></i></i></button> --}}
 
                 @csrf   
             <div class="form-row">
                 <div class="col-sm-5">
-                    <label>{{ __('DESCRIPCION') }}</label>
+                    <label><b>{{ __('DESCRIPCION') }}</b></label>
                     <input type="text" name="descripn" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
                 </div>
                 @php
@@ -32,7 +32,7 @@
                 @endphp
 
               <div class="col-sm-5">
-                <label>{{ __('ELEGIR NOMINA') }}</label>
+                <label><b>{{ __('ELEGIR NOMINA') }}</b></label>
                 <div class="input-group  mb-3">
                   <div class="input-group-prepend disabledclass" id="prepend" >
                     <div class="input-group-text">
@@ -52,7 +52,7 @@
               </div>
 
             <div class="col-sm-2">
-                <label>{{ __('FECHA') }}</label>
+                <label><b>{{ __('FECHA') }}</b></label>
                 <input type="date" id="fech" name="fec" class="form-control"  >
             </div>
 
@@ -61,11 +61,11 @@
           </div>
         </div>
      {{-- ----------------------------------------------------------------------------------------------------------------- --}}   
-        <div class="card" style="height: 400px">
+        <div class="card" style="height: 410px">
           <div class="card-header">
             <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title"><b>GASTOS FIJOS</b></h4>
+                <div class="col-12">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS FIJOS</b></h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -73,15 +73,15 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Agregar Gasto Fijo" onclick="Mcf();"   class="btn btn-fill btn-info btn-sm float-right " style="top: -59px;"><i class="fas fa-plus"></i></button>
+              <button type="button" title="Agregar Gasto Fijo" onclick="Mcf();"   class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus"  style="font-size: 17px; margin-left: -1px"></i></button>
 
             
               {{-- <div style="max-height: 289px; overflow-x: hidden; width: auto; position: relative; overflow-y: auto; font-size:small; top:-12px; "> --}}
                 <table class="table tablesorter " id="gastos-table">
                     <thead class=" text-primary">
                         <tr>
-                            <th style="text-align: center !important;"  scope="col">CONCEPTO</th>
-                            <th style="text-align: center !important;"  scope="col">MONTO</th>
+                            <th style="text-align: center !important;"  class="TitleCp"><b>CONCEPTO</b></th>
+                            <th style="text-align: center !important;"  class="TitleCp"><b>MONTO</b></th>
                         </tr>
                     </thead>
                     {{-- <tbody>
@@ -99,17 +99,17 @@
             
             <div class="card-footer py-4">
               <nav class="d-flex justify-content-end" aria-label="...">
-                <b class="float-right" style="color: black; margin-right: 6px; font-size: 16px;">TOTAL: <span id="totalnomina"></span></b>
+                <b class="float-right" style="color: black; margin-right: -8px; font-size: 16px; top: -26px; position: relative;">TOTAL: <span id="totalnomina"></span></b>
               </nav>
             </div>
           </div>
         </div>
      {{-- -------------------------------------------------------------------------------------------------------------- --}}
-        <div class="card" style="height: 400px">
+        <div class="card" style="height: 410px">
           <div class="card-header">
             <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title"><b>GASTOS DEL PERIODO</b></h4>
+                <div class="col-12">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS DEL PERIODO</b></h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -117,13 +117,13 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal" class="btn btn-fill btn-info btn-sm float-right " style="top: -59px;"><i class="fas fa-plus"></i></button>
-          <div style="max-height: 289px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-12px; ">
+              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal " class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus" style="font-size: 17px; margin-left: -1px" ></i></button>
+          <div style="max-height: 289px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-77px; ">
               <table class="table tablesorter " id="gastoperido-table">
                 <thead class="text-primary">
                     <tr>
-                        <th style="text-align: center !important; "  scope="col">CONCEPTO</th>
-                        <th style="text-align: center !important; position: relative; width: 25%;"  scope="col">MONTO</th>
+                        <th style="text-align: center !important; "  class="TitleCp"><b>CONCEPTO</b></th>
+                        <th style="text-align: center !important; position: relative; width: 25%;"  class="TitleCp"><b>MONTO</b></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -144,11 +144,11 @@
         </div>
       </div>
    {{--------------------------------------------------------------------------------------------------------------------------------------------------}}
-      <div class="card">
+      <div class="card" style="height: 229px;">
         <div class="card-header">
           <div class="row">
-              <div class="col-8">
-                  <h4 class="card-title"><b>GASTOS DE NOMINA</b></h4>
+              <div class="col-12">
+                  <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS DE NOMINA</b></h4>
               </div>
    
               <div class="col-4 text-right">
@@ -156,11 +156,11 @@
             </div>
           </div>
           <div class="card-body">
-            <table class="table tablesorter " id="gastonomina-table">
+            <table class="table tablesorter " id="gastonomina-table" style="top: -34px;  position: relative;" >
               <thead class="text-primary">
                   <tr>
-                      <th style="text-align: center !important; "  scope="col">CONCEPTO</th>
-                      <th style="text-align: center !important; position: relative; width: 25%;"  scope="col">MONTO</th>
+                      <th style="text-align: center !important; "  class="TitleCp"><b>CONCEPTO</b></th>
+                      <th style="text-align: center !important; position: relative; width: 25%;"  class="TitleCp"><b>MONTO</b></th>
                   </tr>
               </thead>
               <tbody>
@@ -174,7 +174,7 @@
               <b class="float-right" style="color: black;
               margin-right: 15px;
               font-size: 16px;
-              top: 167px;
+              top: 198px;
               position: absolute;">TOTAL: <span id="totalnominames"></span></b>
             </nav>
           </div>
@@ -202,8 +202,8 @@
 <div class="card" style="height: 48px;">
   <div class="card-header">
     <div class="row">
-        <div class="col-8">
-            <h4 class="card-title"><b>TOTAL GENERAL:</b></h4>
+        <div class="col-12">
+            <h4 class="car" style="font-size: 16px !important; font-weight: bold !important;" ><b>TOTAL GENERAL:</b></h4>
         </div>
 
         <div class="col-4 text-right">
@@ -227,7 +227,7 @@
   <div class="card-header">
     <div class="row">
         <div class="col-8">
-            <h4 class="card-title"><b>OBSERVACIONES:</b></h4>
+            <h4 class="card-title"  style="font-size: 16px !important; font-weight: bold !important;"><b>OBSERVACIONES:</b></h4>
         </div>
 
         <div class="col-4 text-right">
@@ -235,7 +235,7 @@
       </div>
     </div>
     <div class="card-body">
-      <textarea class="form-control" name="textarea" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <textarea class="form-control" style="color: black; font-size: 13px !important; font-weight: bold !important;" name="textarea" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"id="exampleFormControlTextarea1" rows="3"></textarea>
     </div>
 </div>
 </div>
@@ -272,7 +272,7 @@
 // return "h";
 // });
 
-
+$("#monto").mask('0#');
 totalgasto();
   var hoy = new Date();
   var fecha = moment(hoy);
@@ -311,6 +311,8 @@ function totalgasto(){
               
             $("#totalnomina").empty();
             $("#totalnomina").append(res);
+
+
 
             $("#totalgeneral").empty();
             $("#totalgeneral").append(resgeneral);
@@ -500,6 +502,9 @@ var rest=0;
             $("#nominavalue").attr('value',nomina);
             $("#nominavalue").attr('value',nomina);
 
+            $("#totalnominames").empty();
+            $("#totalnominames").append(results);
+
             }else{
           cont=rsul+nomina-restnomina;
           var resultado= numberFormat2.format(cont);
@@ -512,6 +517,9 @@ var rest=0;
           $("#totl").attr('value',cont);
           $("#nominavalue").attr('value',nomina);
           $("#nominatotaldf").attr('value',nomina);
+
+          $("#totalnominames").empty();
+            $("#totalnominames").append(results);
             }
 
    
@@ -957,5 +965,22 @@ $("#gastos-table tbody").on('click','tr',function(){
   color: #000000;
   }
 
+
+  <style>
+  .disabledclass{
+    background-color: #e2e2e2;
+  color: #000000;
+  }
+  .card-title{
+    margin-left: -17px;
+    width: 102% !important;
+    /* height: 100px !important; */
+    padding: 15px !important;
+    background-color: #4054b2 !important;
+    /* box-shadow: 10px 10px #80808040 !important; */
+    color: white !important;
+    position: relative;
+    top: -15px;
+}
 
   </style>

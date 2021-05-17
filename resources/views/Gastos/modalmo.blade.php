@@ -1,7 +1,7 @@
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">EDITAR CONCEPTO</h5>
+        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 16px !important; font-weight: bold !important;">EDITAR CONCEPTO</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -9,16 +9,16 @@
       <div class="modal-body">
           <div class="form-row">
               <div class="form-group col-md-6">
-                <label for="inputEmail4">CONCEPTO</label>
-                <input type="text" class="form-control" value="{{$concepto->concepto}}" id="nombre">
+                <label for="inputEmail4"><b>CONCEPTO</b></label>
+                <input type="text" class="form-control" value="{{$concepto->concepto}}" id="nombre" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" >
               </div>
-              <br>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                   <label for="inputEmail4">MONTO</label>
                   <input type="text" value="{{$concepto->monto}}" class="form-control" id="monts">
                 </div>
           </div>
       </div>
+      <input type="text" id="retenido" value="{{$concepto->monto}}" hidden>
       <div class="modal-footer">
           <button class="btn btn-danger eliminiconcepts btn-sm" value="{{$concepto->id}}" type="button"><i class="fas fa-trash"></i>&nbsp;Eliminar</button> 
         <button type="button" class="btn btn-info updatestes btn-sm" value="{{$concepto->id}}" ><i class="fas fa-save">&nbsp;</i> Guardar</button>
@@ -50,9 +50,51 @@ var id=$(this).val();
            url:url ,
            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
            success:function(result){
-            $("#fijomodal").trigger("click");
-            $("#gasto"+id).remove();
-            totalgasto();
+            $("#gasto"+id).closest('tr').remove();
+            var condition=parseInt($(result).attr('action'),10);
+            var general=parseInt($("#totl").val(),10);
+            var total=0;
+
+            if(condition==0){
+              // $("#gastoperido-table tbody").append(result);
+              $("#fijomodal").trigger("click");
+              var cont=parseInt($("#totalconcepto").val());
+
+              var resta=cont-parseInt($("#retenido").val(),10);
+              // var sum=resta+parseInt($(result).attr('value'),10);
+
+              var restotal= numberFormat2.format(resta); 
+              $("#totalperiodo").empty();
+              $("#totalperiodo").append(restotal);
+
+              total=general-parseInt($("#retenido").val(),10);
+              
+              
+              // total=parseInt($(result).attr('value'),10)+total;
+              $("#totl").attr('value',total);
+
+            }else{
+              // $("#gastofijo-table tbody").append(result);
+
+                $("#fijomodal").trigger("click");
+              var cont=parseInt($("#formes").val());
+
+              var resta=cont-parseInt($("#retenido").val(),10);
+              // var sum2=resta+parseInt($(result).attr('value'),10);
+
+              var restotal2= numberFormat2.format(resta); 
+              $("#totalnomina").empty();
+              $("#totalnomina").append(restotal2);
+              
+              total=general-parseInt($("#retenido").val(),10);
+            // total=parseInt($(result).attr('value'),10)+total;
+            $("#totl").attr('value',total);
+            }
+
+            var resgeneral= numberFormat2.format(total);
+            $("#totalgeneral").empty();
+            $("#totalgeneral").append(resgeneral);
+            
          
           
           },
@@ -77,10 +119,50 @@ $('.updatestes').on('click',function(){
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
             $("#gasto"+id).closest('tr').remove();
+            var condition=parseInt($(result).attr('action'),10);
+            var general=parseInt($("#totl").val(),10);
+            var total=0;
 
-            $("#gastos-table tbody").append(result);
-            $("#fijomodal").trigger("click");
-            totalgasto();
+            if(condition==0){
+              $("#gastoperido-table tbody").append(result);
+              $("#fijomodal").trigger("click");
+              var cont=parseInt($("#totalconcepto").val());
+
+              var resta=cont-parseInt($("#retenido").val(),10);
+              var sum=resta+parseInt($(result).attr('value'),10);
+
+              var restotal= numberFormat2.format(sum); 
+              $("#totalperiodo").empty();
+              $("#totalperiodo").append(restotal);
+
+              total=general-parseInt($("#retenido").val(),10);
+              
+              total=parseInt($(result).attr('value'),10)+total;
+              $("#totl").attr('value',total);
+
+            }else{
+              $("#gastofijo-table tbody").append(result);
+
+                $("#fijomodal").trigger("click");
+              var cont=parseInt($("#formes").val());
+
+              var resta=cont-parseInt($("#retenido").val(),10);
+              var sum2=resta+parseInt($(result).attr('value'),10);
+
+              var restotal2= numberFormat2.format(sum2); 
+              $("#totalnomina").empty();
+              $("#totalnomina").append(restotal2);
+              
+              total=general-parseInt($("#retenido").val(),10);
+            total=parseInt($(result).attr('value'),10)+total;
+            $("#totl").attr('value',total);
+            }
+
+            var resgeneral= numberFormat2.format(total);
+            $("#totalgeneral").empty();
+            $("#totalgeneral").append(resgeneral);
+
+
         
           
            

@@ -2,12 +2,13 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title">GASTOS FIJO</h4>
+                <div class="col-12">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;">GASTOS FIJOS</h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -16,13 +17,13 @@
             </div>
             <div class="card-body">
               {{-- <form action="{{route('Gasto.store')}}" method="POST"> --}}
-                <a href="{{url('Gasto')}}"><button type="button" title="Guardar Gastos" id="save" class="btn btn-fill btn-primary btn-sm float-right " style="top: -59px;"><i class="fas fa-save"></i></button></a>
+                <a href="{{url('Gasto')}}"><button type="button" title="Guardar Gastos" id="save" class="btn btn-fill btn-info redondo btn-sm float-right whiter "><i class="fas fa-save" style="font-size: 17px; margin-left: -1px"></i></button></a>
                 {{-- <button type="button" title="Guardar Gastos" id="save" class="btn btn-fill btn-primary btn-sm float-right " style="top: -59px;"><i class="fas fa-save"></i></button> --}}
             @csrf   
           <div class="form-row">
             <td scope="row"><div class="col-sm-5 mb-1" ><input type="text" autofocus name="descripcion" id="concepto" placeholder="Concepto" class="form-control input focus" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"></div></td>
                         <td><div class="col-sm-4 mb-1"><input type="text" name="monto" id="monto"  class="form-control input montro" placeholder="Monto"></div></td>
-                        <td><button class="btn btn-info btn-sm"  title="Agregar Gasto" type="button" style=" position: relative;margin-left: 3px; top:-4px" onclick="capturar();"><i class="fas fa-plus"></i></button></td>
+                        <td><button class="btn btn-info btn-sm redondo"  title="Agregar Gasto" type="button" style=" position: relative;margin-left: 3px; top:-4px " onclick="capturar();"><i class="fas fa-plus"></i></button></td>
                       </div>
             <div class="">
                 <table class="table  table table-striped table-hover " id="gastosfijo-table">
@@ -51,10 +52,19 @@
 <div class="modal fade" id="fijomodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 </div>
 
-
+<div class="o-page-loader">
+  <div class="o-page-loader--content">
+    <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+      {{-- <div class=""></div> --}}
+      <div class="o-page-loader--message">
+          <span>Cargando...</span>
+      </div>
+  </div>
+</div>
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 options2 = { style: 'currency', currency: 'USD' };
 numberFormat2 = new Intl.NumberFormat('en-US', options2);
@@ -166,7 +176,7 @@ function capturar(){
 
 
     if(conce!=''&& monto!=''){
-        var url = "{{ url('Gastossavefijo') }}";
+        var url = "{{ url('saveFijos') }}";
      var data = {conce:conce,monto:monto};
         $.ajax({
          method: "POST",
@@ -272,4 +282,16 @@ $("#gastosfijo-table tbody").on('click','tr',function(){
   #gastosfijo-table tbody tr{
 cursor: pointer;
   }
+
+  .card-title{
+    margin-left: -17px;
+    width: 102% !important;
+    /* height: 100px !important; */
+    padding: 15px !important;
+    background-color: #4054b2 !important;
+    /* box-shadow: 10px 10px #80808040 !important; */
+    color: white !important;
+    position: relative;
+    top: -15px;
+}
 </style>

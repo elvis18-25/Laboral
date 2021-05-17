@@ -149,7 +149,7 @@ Route::post('deleteotros/{id}','App\Http\Controllers\OtrosController@deleteotros
 //Gasto
 Route::post('listmonto/{id}','App\Http\Controllers\GastoController@listmonto');
 Route::get('GastosFijo','App\Http\Controllers\GastoController@GastosFijo');
-Route::post('Gastossavefijo','App\Http\Controllers\GastoController@Gastossavefijo');
+Route::post('Gastossavefijo/{id}','App\Http\Controllers\GastoController@Gastossavefijo');
 Route::get('totalgasto','App\Http\Controllers\GastoController@totalgasto');
 Route::post('totalgastoshow/{id}','App\Http\Controllers\GastoController@totalgastoshow');
 Route::post('deletegasto/{id}','App\Http\Controllers\GastoController@deletegasto');
@@ -167,7 +167,9 @@ Route::post('updateconceptedit/{id}','App\Http\Controllers\GastoController@updat
 Route::post('saveconconcepto/{id}','App\Http\Controllers\GastoController@saveconconcepto');
 Route::post('deleteconceptshow/{id}','App\Http\Controllers\GastoController@deleteconceptshow');
 Route::post('eliminarnomina/{id}','App\Http\Controllers\GastoController@eliminarnomina');
+Route::post('saveFijos','App\Http\Controllers\GastoController@saveFijos');
 Route::get('listadopdfgasto/{id}','App\Http\Controllers\GastoController@listadopdfgasto');
 Route::get('donwloadgasto/{id}','App\Http\Controllers\GastoController@donwloadgasto');
-Route::post('observacion/{id}','App\Http\Controllers\GastoController@observacion');
 Route::get('modalcreatefijo','App\Http\Controllers\GastoController@modalcreatefijo');
+Route::get('modalcreateedit/{id}','App\Http\Controllers\GastoController@modalcreateedit');
+Route::get('saveGastosfijo/{id}','App\Http\Controllers\GastoController@saveGastosfijo');
