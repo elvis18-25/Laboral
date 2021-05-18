@@ -6,10 +6,14 @@
 <link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
 
 @include('Fullcalendar.create')
+@include('Fullcalendar.edit')
 <style>
   .card-tasks{
     min-height: 100% !important;
+  }
 
+  .fc-scrollgrid{
+    cursor: pointer;
   }
 </style>
 <div class="row">
@@ -69,10 +73,7 @@
                         </div>
                         <div class="col-sm-6">
 
-                          <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: inline-end;">
-                            <i class="fa fa-calendar"></i>&nbsp;
-                            <span></span> <i class="fa fa-caret-down"></i>
-                        </div>
+
 
                         </div>
                     </div>
@@ -99,7 +100,11 @@
             <div class="card card-tasks">
                 <div class="card-header ">
                     <h4 class="title d-inline">EVENTOS</h4>
-                    <p class="card-category d-inline">Hoy</p>
+
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: right; color: black;">
+                      <i class="fa fa-calendar"></i>&nbsp;
+                      <span></span> <i class="fa fa-caret-down"></i>
+                  </div>
                     {{-- <div class="dropdown">
                         <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
                             <i class="tim-icons icon-settings-gear-63"></i>
@@ -113,134 +118,9 @@
                 </div>
                 <div class="card-body ">
                     <div class="table-full-width table-responsive">
-                        <table class="table">
+                        <table class="table" id="tableeventos">
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Update the Documentation</p>
-                                        <p class="text-muted">Dwuamish Head, Seattle, WA 8:47 AM</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="" checked="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">GDPR Compliance</p>
-                                        <p class="text-muted">The GDPR is a regulation that requires businesses to protect the personal data and privacy of Europe citizens for transactions that occur within EU member states.</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                    <span class="form-check-sign">
-                                                        <span class="check"></span>
-                                                    </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Solve the issues</p>
-                                        <p class="text-muted">Fifty percent of all respondents said they would be more likely to shop at a company </p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Release v2.0.0</p>
-                                        <p class="text-muted">Ra Ave SW, Seattle, WA 98116, SUA 11:19 AM</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Export the processed files</p>
-                                        <p class="text-muted">The report also shows that consumers will not easily forgive a company once a breach exposing their personal data occurs. </p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="checkbox" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="title">Arival at export process</p>
-                                        <p class="text-muted">Capitol Hill, Seattle, WA 12:34 AM</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                                            <i class="tim-icons icon-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -269,27 +149,18 @@
 <script src="{{asset('js/timepicker.min.js')}}"></script>
 
 
-{{-- {!! Charts::assets(['highcharts']) !!}
-{!! $usersChart->script() !!} --}}
 
     <script>
+      var calendar;
+      
        $('.bs-timepicker').timepicker();
        $('#timepicker').mdtimepicker();
 
         document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+          calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-
-//  customButtons: {
-//     myCustomButton: {
-//       text: 'custom!',
-//       click: function() {
-//        $("#opnemodal").trigger("click");
-//       }
-//     }
-//   },
 
 
   headerToolbar: {
@@ -303,30 +174,13 @@
     $("#opnemodal").trigger("click");
     $("#txtfecha").val(info.dateStr)
   },
-
-  eventClick: function(info){
-
-
-    console.log(info);
-
-
-  },
-
-  // events:[
-  //   {
-  //     title:"Mi evento",
-  //     start:"2021-05-18 10:00:00",
-  //     descripcion:"Este dia voy para la playa"
-  //   },{
-  //     title:"Mi evento 2",
-  //     start:"2021-05-24 10:00:00",
-  //     end:"2021-05-27 10:00:00",
-  //     color:"#FFCCAA",
-  //     textColor:"#000",
-  //     descripcion:" Ir Para el dentista"
-
-  //   }
-  // ]
+  
+  // eventClick: function(info){
+  //   $("#opneditmodal").trigger("click");
+  //   $("#edittitulo").val(info.event.title),
+  //   $("#editcolor").val(info.event.backgroundColor),
+  //   console.log(info);
+  // },
 
   
   events:"{{url('Eventos/show')}}"
@@ -370,7 +224,11 @@
           data:Evento,
           success:function(msg){console.log(msg);
             $("#opnemodal").trigger("click");
-           
+            calendar.refetchEvents();
+            SerchEventos(start,end);
+
+            // calendar.fullCalendar('refetchEvents');
+            
            
           },
           error:function(){alert("Error");}
@@ -381,27 +239,63 @@
 
 
 
-      var start = moment().subtract(29, 'days');
+      var start = moment();
     var end = moment();
 
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
+    SerchEventos(start,end);
+    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+
+
+    // function cb(start, end) {
+    //     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    // }
 
     $('#reportrange').daterangepicker({
         startDate: start,
         endDate: end,
         ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+           'Hoy': [moment(), moment()],
+           'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+           'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+           'Este mes': [moment().startOf('month'), moment().endOf('month')],
+           'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
-    }, cb);
+      }, function (start, end) {
+          
+          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+          // table.ajax.reload();
+          SerchEventos(start,end);
+        });
 
-    cb(start, end);
+    // cb(start, end);
+
+
+    function SerchEventos(start,end){
+      var url = "{{url('SerchEventos')}}";
+      var Istart=start.format('YYYY-MM-DD');
+      var Iend=end.format('YYYY-MM-DD');
+      // alert(Istart);
+
+     var data = {Istart:Istart,Iend:Iend};
+        $.ajax({
+         method: "GET",
+           data: data,
+            url:url ,
+            success:function(result){
+              // alert(result);
+              $("#tableeventos tbody").empty();
+            $("#tableeventos tbody").append(result);
+   
+             
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             });
+ 
+    }
       
 
       $(document).ready(function() {

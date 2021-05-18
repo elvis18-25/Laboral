@@ -123,6 +123,9 @@ Route::post('eliminipuesto/{id}','App\Http\Controllers\PuestoController@eliminip
 //Listado
 Route::get('listadopdf/{id}','App\Http\Controllers\ListadoContrller@listadopdf');
 
+//Eventos
+Route::get('SerchEventos','App\Http\Controllers\EventosController@SerchEventos');
+
 
 //Nominas
 Route::post('addempleado/{id}','App\Http\Controllers\NominaController@addempleado');

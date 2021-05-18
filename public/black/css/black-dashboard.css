@@ -14169,7 +14169,7 @@ p.description {
 
 ul li,
 ol li {
-  color: #ffffff;
+  color: black;
 }
 
 pre {
@@ -17745,9 +17745,11 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .card-tasks .table-full-width {
-  max-height: 429px;
+  /* max-height: 429px; */
   position: relative;
   overflow-x: hidden;
+  overflow-y: auto;
+  height: 87%;
 }
 
 .card-tasks .card-header .title {
