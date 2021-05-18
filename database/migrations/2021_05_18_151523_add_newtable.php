@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddNewtable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('Perfiles_Usuarios',function(Blueprint $table){
+            $table->id();
+            $table->integer('id_perfil');
+            $table->integer('id_user');
+            $table->string('id_empresa');
+            $table->integer('estado');
+            $table->timestamps();
+        });
+        Schema::create('PerfilesUser',function(Blueprint $table){
+            $table->id();
+            $table->string('descripcion');
+            $table->string('user');
+            $table->string('id_empresa');
+            $table->integer('estado');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
+}

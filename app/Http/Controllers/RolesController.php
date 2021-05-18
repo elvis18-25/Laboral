@@ -86,6 +86,9 @@ class RolesController extends Controller
                 if($permisos[$i]==11){
                  $permi->formas_pagos=1;
                 }
+                if($permisos[$i]==12){
+                 $permi->perfilesuser=1;
+                }
                 $permi->save();
             }  
         } 
@@ -175,6 +178,9 @@ class RolesController extends Controller
                 if($permisos[$i]==11){
                  $permi->formas_pagos=1;
                 }
+                if($permisos[$i]==12){
+                    $permi->perfilesuser=1;
+                   }
                 $permi->save();
             }  
         } 

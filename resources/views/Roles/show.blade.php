@@ -289,6 +289,27 @@
                     </label>
                 </div>  
                 @endif
+                @if ($permis->perfilesuser==1)
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" checked type="checkbox" name="dinamico[]" value="12" >
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                        <h5><b>VER PERFILES DE USUARIOS</b></h5>
+                    </label>
+                </div>    
+                @else
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="12" >
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                        <h5><b>VER PERFILES DE USUARIOS</b></h5>
+                    </label>
+                </div>  
+                @endif
           <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------->
           @if ($b==0)
           <div class="form-check">

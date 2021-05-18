@@ -59,6 +59,7 @@ Route::resource('Otros', 'App\Http\Controllers\OtrosController')->middleware('au
 Route::resource('Gasto', 'App\Http\Controllers\GastoController')->middleware('auth');
 Route::resource('Empresa', 'App\Http\Controllers\EmpresaController')->middleware('auth');
 Route::resource('Eventos', 'App\Http\Controllers\EventosController')->middleware('auth');
+Route::resource('PerfilesUsuario', 'App\Http\Controllers\PerfilesUsuarioController')->middleware('auth');
 
 
 //Asingaciones
@@ -78,6 +79,7 @@ Route::get('datatable','App\Http\Controllers\NominaController@datatable');
 Route::get('datatablegastos','App\Http\Controllers\GastoController@datatablegastos');
 Route::get('datatablegastosshowfijo','App\Http\Controllers\GastoController@datatablegastosshowfijo');
 Route::get('datatableconcept','App\Http\Controllers\GastoController@datatableconcept');
+Route::get('datatableperfilesUsuarios','App\Http\Controllers\PerfilesUsuarioController@datatableperfilesUsuarios');
 
 
 //Empleados
@@ -111,6 +113,10 @@ Route::post('downloadContratouser','App\Http\Controllers\UserController@download
 Route::post('guardar','App\Http\Controllers\EmpleadosController@subir')->name('subir');
 //Perfiles
 Route::PUT('agregar/{ide}','App\Http\Controllers\PerfilesController@agregar');
+
+//Perfiles De Usuario
+Route::PUT('agregarUsuario/{ide}','App\Http\Controllers\PerfilesUsuarioController@agregarUsuario');
+Route::PUT('agregarUsuarioEdit/{ide}','App\Http\Controllers\PerfilesUsuarioController@agregarUsuarioEdit');
 
 //Contrato
 Route::get('donwload/{file}','App\Http\Controllers\ContratoController@index');

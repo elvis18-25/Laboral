@@ -1,10 +1,10 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
-<link rel="stylesheet" href="{{asset('css/perfiles.css')}}">
+<link rel="stylesheet" href="{{asset('css/perfilesUser.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
-<form action="{{Route('Perfiles.store')}}" method="POST" >
+<form action="{{Route('PerfilesUsuario.store')}}" method="POST" >
 @csrf
 {{ method_field('POST') }}
 <div class="col-md-12">
@@ -12,11 +12,11 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO PERFIL</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO PERFIL DE USUARIO</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
-               @include('Perfiles.modalemple')
+                    <button type="button" id="createdperfilesUsuarios" title="Agregar Usuario al Perfil"  data-toggle="modal" data-target="#Usuario" class="btn btn-info btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
+               @include('PerfilesUser.modaluser')
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
 
     document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
-        $("#createdperfiles").trigger("click");
+        $("#createdperfilesUsuarios").trigger("click");
         started();
     } 
 });
@@ -101,7 +101,7 @@ document.addEventListener ("keydown", function (e) {
 });
 
 
-$("#createdperfiles").on('click',function(){
+$("#createdperfilesUsuarios").on('click',function(){
     var rowIdx = tebl.cell(':eq(0)').index().row;
       
       tebl.row(rowIdx).select();
@@ -111,7 +111,7 @@ $("#createdperfiles").on('click',function(){
 });
 
 
-tebl=$('#Empleadotable').DataTable({
+tebl=$('#UserTable').DataTable({
         scrollY: 300,
         "paging":   false,
         // "ordering": false,
@@ -170,14 +170,14 @@ tebl=$('#Empleadotable').DataTable({
 
     }
 });
-  $('#Empleadotable').on('key-focus.dt', function(e, datatable, cell){
+  $('#UserTable').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
         tebl.row(cell.index().row).select();
      });
 
     // Handle click on table cell
-    $('#Empleadotable').on('click', 'tbody td', function(e){
+    $('#UserTable').on('click', 'tbody td', function(e){
         e.stopPropagation();
         
         // Get index of the clicked row
@@ -188,7 +188,7 @@ tebl=$('#Empleadotable').DataTable({
         tebl.row(rowIdx).select();
     });
     // Handle key event that hasn't been handled by KeyTable
-    $('#Empleadotable').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+    $('#UserTable').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
 
         // If ENTER key is pressed
         if(key === 13){
@@ -203,7 +203,7 @@ tebl=$('#Empleadotable').DataTable({
 
            button=$(row_s).attr('action');
            id=$(row_s).attr('value');
-           Add(button,id);
+           AddUser(button,id);
             
         }
         
@@ -212,13 +212,6 @@ tebl=$('#Empleadotable').DataTable({
 
     });
 
-//     $('#Empleadotable').DataTable().on("draw", function(){
-//     var rowIdx = tebl.cell(':eq(0)').index().row;
-      
-//     tebl.row(rowIdx).select();
-
-//     tebl.cell( ':eq(0)' ).focus();
-// });
 
 function started(){
     var rowIdx = tebl.cell(':eq(0)').index().row;
@@ -230,7 +223,7 @@ function started(){
 
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode==13) {
- var modal=$('#Empleado').hasClass('show');
+ var modal=$('#Usuario').hasClass('show');
     if(modal==false){
         $("#subir").trigger("click");
      };
@@ -238,14 +231,14 @@ document.addEventListener ("keydown", function (e) {
 });
 
 
- $("#Empleadotable tbody").on('click','tr',function(){
-    $('td', row_s).css('backgroundColor', '#958fcd ');
-            $('td', row_s).css('color', 'white');
+ $("#UserTable tbody").on('click','tr',function(){
+    $('td', this).css('backgroundColor', '#958fcd ');
+            $('td', this).css('color', 'white');
 });
 
 arreglo=[];
  i=0;
-function Add(e,m){
+function AddUser(e,m){
     var p=0;
     for (let index = 0; index < arreglo.length; index++) {
             if(arreglo[index]==m){
@@ -295,9 +288,7 @@ $(document).on('click', '.remf', function (event) {
      }
 });   
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+
 
 $('#Empleado').keyup(function(e){
     if(e.keyCode!=13)
@@ -330,17 +321,9 @@ document.addEventListener ("keydown", function (e) {
     }
 });
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
-
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 function Errore(){
-    Command: toastr["error"]("Este Empleado ha sido Selecionado", "Error")
+    Command: toastr["error"]("Este Usuario ha sido Selecionado", "Error")
     toastr.options = {
       "closeButton": false,
       "debug": false,

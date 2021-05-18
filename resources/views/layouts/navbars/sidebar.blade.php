@@ -1,9 +1,9 @@
 <div class="sidebar sidebar-dark" style="top: -66px; width: 258px; overflow-y: auto;">
     <div class="sidebar-wrapper">
-        {{-- <div class="logo"> --}}
+        <div class="logo">
             {{-- <a href="{{ route('home') }}" class="simple-text logo-mini">{{ __('RH') }}</a> --}}
             {{-- <a href="{{ route('home') }}" class="simple-text logo-normal" style="text-align: center">{{ __('LABORAL') }}</a> --}}
-        {{-- </div> --}}
+        </div>
         @php
             $permiso=App\Models\Permisos::all();
             $user=Auth::user()->id;
@@ -45,14 +45,7 @@
             </li>
             @endif
 
-            @if ($permisos->usuario==1)
-            <li>
-                <a href="{{ url('user') }}">
-                    <i class="tim-icons icon-single-02"></i>
-                    <p>{{ __('Usuarios') }}</p>
-                </a>
-            </li>
-            @endif
+
 
             {{-- @if ($permisos->roles==1)
             <li @if ($pageSlug == 'notifications') class="active " @endif>
@@ -104,7 +97,7 @@
                 </a>
             </li>
             @endif --}}
-            @if ($permisos->departamento==1||$permisos->formas_pagos==1||$permisos->listado==1)
+            @if ($permisos->departamento==1||$permisos->formas_pagos==1||$permisos->listado==1 || $permisos->usuario==1)
             <li>
                 <a data-toggle="collapse" href="#Confi" aria-expanded="true">
                     <i class="fa fa-cog fa-2x"> </i>
@@ -136,6 +129,24 @@
                             <a href="{{ url('Pagos')  }}"  >
                                 <i class="tim-icons icon-money-coins"></i>
                                 <p>{{ __('Formas de Pagos') }}</p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if ($permisos->usuario==1)
+                        <li>
+                            <a href="{{ url('user') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <p>{{ __('Usuarios') }}</p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if ($permisos->perfilesuser==1)
+                        <li>
+                            <a href="{{url('PerfilesUsuario')}}">
+                                <i class="fas fa-users-cog"></i>
+                                <p>{{ __('Perfiles Usuarios') }}</p>
                             </a>
                         </li>
                         @endif

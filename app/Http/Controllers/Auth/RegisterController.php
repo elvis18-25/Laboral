@@ -99,7 +99,8 @@ class RegisterController extends Controller
             'nomina'        => 1,
         'nomina_empleador'  => 1,
             'formas_pagos'  => 1,
-            'contrato'      => 1,      
+            'contrato'      => 1, 
+            'perfilesuser'  => 1,
             'id_empresa'     => $empresa->id,      
         ]);
 
