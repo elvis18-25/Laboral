@@ -59,6 +59,7 @@ Route::resource('Otros', 'App\Http\Controllers\OtrosController')->middleware('au
 Route::resource('Gasto', 'App\Http\Controllers\GastoController')->middleware('auth');
 Route::resource('Empresa', 'App\Http\Controllers\EmpresaController')->middleware('auth');
 Route::resource('Eventos', 'App\Http\Controllers\EventosController')->middleware('auth');
+Route::resource('Cooperativas', 'App\Http\Controllers\CoopController')->middleware('auth');
 Route::resource('PerfilesUsuario', 'App\Http\Controllers\PerfilesUsuarioController')->middleware('auth');
 
 
@@ -80,6 +81,7 @@ Route::get('datatablegastos','App\Http\Controllers\GastoController@datatablegast
 Route::get('datatablegastosshowfijo','App\Http\Controllers\GastoController@datatablegastosshowfijo');
 Route::get('datatableconcept','App\Http\Controllers\GastoController@datatableconcept');
 Route::get('datatableperfilesUsuarios','App\Http\Controllers\PerfilesUsuarioController@datatableperfilesUsuarios');
+Route::get('datatableCoop','App\Http\Controllers\CoopController@datatableCoop');
 
 
 //Empleados
@@ -108,7 +110,8 @@ Route::post('newadjuntouser','App\Http\Controllers\UserController@newadjuntouser
 Route::post('savejuntouser','App\Http\Controllers\UserController@savejuntouser');
 Route::post('downloadContratouser','App\Http\Controllers\UserController@downloadContratouser');
 
-
+//Cooperativa
+Route::PUT('agregarCoop/{id}','App\Http\Controllers\CoopController@agregarCoop');
 
 Route::post('guardar','App\Http\Controllers\EmpleadosController@subir')->name('subir');
 //Perfiles

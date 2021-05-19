@@ -110,7 +110,7 @@ class PerfilesController extends Controller
         $puesto=Puesto::all();
 
         return view('Perfiles.plantilla',compact('empleado','puesto'));
-        return "hola";
+        // return "hola";
     } 
 
 

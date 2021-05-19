@@ -83,20 +83,17 @@
             </li>
             @endif
             
-
-
-
-
-
-            
-            {{-- @if ($permisos->contrato==1)
-            <li>
-                <a href="{{ url('Configuracion')  }}"  >
-                    <i class="fa fa-cog fa-2x"> </i>
-                    <p>{{ __('Configuracion') }}</p>
+            {{-- <li>
+                <a href="{{url('Cooperativas')}}">
+                    <i class="fas fa-users"></i>
+                    <p>{{ __('Cooperativas') }}</p>
                 </a>
-            </li>
-            @endif --}}
+            </li> --}}
+
+
+
+
+        
             @if ($permisos->departamento==1||$permisos->formas_pagos==1||$permisos->listado==1 || $permisos->usuario==1)
             <li>
                 <a data-toggle="collapse" href="#Confi" aria-expanded="true">
@@ -150,6 +147,8 @@
                             </a>
                         </li>
                         @endif
+
+
                     </ul>
                 </div>
             </li>

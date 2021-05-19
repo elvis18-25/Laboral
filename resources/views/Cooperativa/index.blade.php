@@ -1,37 +1,31 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
-<link rel="stylesheet" href="{{asset('css/asignaciones.css')}}">
+<link rel="stylesheet" href="{{asset('css/coop.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>ASIGNACIONES</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>COOPERATIVAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="#" title="Crear Nueva Asignacion" data-toggle="modal" data-target="#asignacionesmodal" class="btn btn-sm btn-info redondo"><button   type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="position: relative; top: 5px;"></i></a>
-                    {{-- <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i></button> --}}
-                    {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button> --}}
-                    {{-- <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button></a> --}}
-                    {{-- <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-info btn-sm"><i class="fas fa-file-pdf"></i></button> --}}
+                    <a href="{{route('Cooperativas.create')}}" class="btn btn-sm btn-info redondo"><button type="button" id="createdcoop" style="display: none;"></button><i class="fas fa-plus" style="top: 6px; position: relative;"></i></a>
                 </div>
-                @include('Asignaciones.modal')
             </div>
         </div>
         <div class="card-body">
             
             <div class="">
-                <table class="table tablesorter" id="asigna-table">
-                    
+                <table class="table tablesorter" id="coop-table">
                     <thead class=" text-primary">
                         <tr> 
-                        <th style="font-size: 14px; text-align: center">NOMBRE</th>
-                        <th style="font-size: 14px; text-align: center">TIPO</th>
-                        <th style="font-size: 14px; text-align: center">MONTO</th>
-                        <th style="font-size: 14px; text-align: center">EMPLEADOS</th>
-                        <th style="font-size: 14px; text-align: center">USUARIO</th>
+                        <th class="TitlePer"><b>DESCRIPCION</b></th>
+                        <th class="TitlePer"><b>FECHA CREADA</b></th>
+                        <th class="TitlePer"><b>EMPLEADOS</b></th>
+                        <th class="TitlePer"><b>USUARIO</b></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -56,16 +50,14 @@
         </div>
     </div>
 </div>
-{{-- <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a> --}}
-<div class="modal fade" id="showmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-<input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
-
+<a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 
 @endsection
 
 @section('js')
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
+
     $("#monto").mask('0#');
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
@@ -85,8 +77,8 @@ $('#asignacionesmodal').keyup(function(e){
     if (e.keyCode==13) {
        $("#saver").trigger("click"); 
     }
-
 });
+
 $('#showmodal').keyup(function(e){
     var name= $("#nameedit").val();
     if(e.keyCode!=13)
@@ -108,9 +100,9 @@ headers: {
 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 }
   });
-  table=$('#asigna-table').DataTable({
+  table=$('#coop-table').DataTable({
     "info": false,
-    dom: 'Bfrtip',
+    // dom: 'Bfrtip',
     select: {
             style: 'single',
         },
@@ -120,24 +112,24 @@ headers: {
         rowGroup: {
         dataSrc: 'group'
     },
-    buttons: [
-            {
-                extend: 'excel',
-                messageTop: 'Listado de Asignaciones.'
-            },
-            {
-                extend: 'pdf',
-                messageBottom: null
-            },
-            {
-                extend: 'print',
-                messageTop: 'Listado de Asignaciones.',
-            }
-        ],
+    // buttons: [
+    //         {
+    //             extend: 'excel',
+    //             messageTop: 'Listado de Asignaciones.'
+    //         },
+    //         {
+    //             extend: 'pdf',
+    //             messageBottom: null
+    //         },
+    //         {
+    //             extend: 'print',
+    //             messageTop: 'Listado de Asignaciones.',
+    //         }
+    //     ],
     
     ajax:
     {
-      url:"{{ url('datatablesasigna') }}",
+      url:"{{ url('datatableCoop') }}",
     },
 
     // "fnDrawCallback":function(){
@@ -145,9 +137,8 @@ headers: {
     //   }, 
 
     columns:[
-    {data:'Nombre',name:'Nombre'},
-    {data:'tipo_asigna',name:'tipo_asigna'},
-    {data:'Monto',name:'Monto',class: "right"},
+    {data:'descripcion',name:'descripcion'},
+    {data:'created_at',name:'created_at',class: "center"},
     {data:'emple',name:'emple',class: "center",searchable:false},
     {data:'user',name:'user',class: "center"},
     ],
@@ -178,14 +169,14 @@ headers: {
 });
 $('div.dataTables_filter input', table.table().container()).focus(); 
 
-$('#asigna-table').on('key-focus.dt', function(e, datatable, cell){
+$('#coop-table').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
         table.row(cell.index().row).select();
      });
  
     // Handle click on table cell
-    $('#asigna-table').on('click', 'tbody td', function(e){
+    $('#coop-table').on('click', 'tbody td', function(e){
         e.stopPropagation();
         
         // Get index of the clicked row
@@ -196,7 +187,7 @@ $('#asigna-table').on('key-focus.dt', function(e, datatable, cell){
         table.row(rowIdx).select();
     });
     // Handle key event that hasn't been handled by KeyTable
-    $('#asigna-table').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+    $('#coop-table').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
 
         // If ENTER key is pressed
         if(key === 13){
@@ -204,15 +195,18 @@ $('#asigna-table').on('key-focus.dt', function(e, datatable, cell){
             var data = table.row(cell.index().row).data();
             
             var row_s=$(this).DataTable().row({selected:true}).node(); 
-            url=$(row_s).attr('data-href');
 
-            edit(url);
+            url=$(row_s).attr('url');
+
+            $("#sd").attr('href',url);
+
+            $("#urles").trigger("click");
             
         }
         
     });
 
-$('#asigna-table').DataTable().on("draw", function(){
+$('#coop-table').DataTable().on("draw", function(){
     var rowIdx = table.cell(':eq(0)').index().row;
       
       table.row(rowIdx).select();
@@ -221,15 +215,6 @@ $('#asigna-table').DataTable().on("draw", function(){
 });
 
 
-
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
-
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {
@@ -323,33 +308,17 @@ function Errores(){
     }
   }
 
-$("#asigna-table tbody").on('click','tr',function(){
+$("#coop-table tbody").on('click','tr',function(){
  
- url=$(this).attr('data-href');
+    url=$(this).attr('url');
 
-edit(url);
+$("#sd").attr('href',url);
+
+$("#urles").trigger("click");
 
  
 });
 
-function edit(e){
-    var url = "{{url('viewasigna')}}/"+e; ; 
-     var data ='';
-        $.ajax({
-         method: "POST",
-           data: data,
-            url:url ,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(result){
-            $("#showmodal").html(result).modal("show");
-            
-
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-    }
-             }); 
-   } 
 
 </script>
 
@@ -359,6 +328,10 @@ function edit(e){
     }
     .center{
         text-align: center;
+    }
+
+    #coop-table tbody tr{
+        cursor: pointer;
     }
 </style>
 @endsection
