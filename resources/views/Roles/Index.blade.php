@@ -2,15 +2,16 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/roles.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">ROLES</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>ROLES</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{route('Roles.create')}}" class="btn btn-sm btn-primary"><button type="button" id="createdroles" style="display: none;"></button><i class="fas fa-plus"></i></a>
+                    <a href="{{route('Roles.create')}}" class="btn btn-sm btn-info redondo"><button type="button" id="createdroles" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
                 </div>
             </div>
         </div>
@@ -20,10 +21,10 @@
                 <table class="table tablesorter " id="role-table">
                     <thead class=" text-primary">
                         <tr> 
-                        <th scope="col">NOMBRE</th>
-                        <th scope="col">FECHA</th>
-                        <th scope="col">EMPLEADOS</th>
-                        <th scope="col">USUARIO</th>
+                        <th class="TitlePer">NOMBRE</th>
+                        <th class="TitlePer">FECHA</th>
+                        <th class="TitlePer">EMPLEADOS</th>
+                        <th class="TitlePer">USUARIO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -40,9 +41,19 @@
 </div>
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 
+<div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 @if (session('eliminiado')=='ya')
 <script>
     Swal.fire(
@@ -99,10 +110,10 @@ headers: {
     //         }, 
 
     columns:[
-    {data:'name',name:'name'},
-    {data:'created_at',name:'created_at'},
-    {data:'user',name:'user'},
-    {data:'usuario',name:'usuario'},
+    {data:'name',name:'name', },
+    {data:'created_at',name:'created_at',class:'center'},
+    {data:'user',name:'user',class:'center'},
+    {data:'usuario',name:'usuario',class:'center'},
     ],
 
     language: {
@@ -224,4 +235,14 @@ $("#urles").trigger("click");
 });
 </script>
     
+
+<style>
+    .center{
+        text-align: center !important;
+    }
+
+    #role-table{
+        width: 100% !important;
+    }
+</style>
 @endsection

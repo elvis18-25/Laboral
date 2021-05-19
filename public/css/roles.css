@@ -16,6 +16,9 @@
     margin-left: 5px;  
 }
 
+.dataTables_length{
+  margin-left: 3% !important;
+}
 
 #lafijo{
 margin-left: -26px;
@@ -30,8 +33,12 @@ margin-left: -26px;
     background-color:#ffffff;;
 }
 
+.TitlePer{
+  text-align: center;
+  font-size: 16px;
+}
 .redondo{
-    display: block;
+    /* display: block; */
     width: 40px;
     height: 40px;
     border-radius: 50%;

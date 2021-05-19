@@ -106,7 +106,8 @@ class RolesController extends Controller
     public function show($id)
     {
         $roles=Role::findOrFail($id);
-        $permisos=Permisos::where('role_id','=',$id)->get();
+        $permisos=Permisos::where('role_id','=',$id)->first();
+        // dd($permisos);
         return view('Roles.show',compact('roles','permisos'));
     }
 
@@ -210,7 +211,7 @@ class RolesController extends Controller
         leftjoin('role_user','role_user.role_id','=','roles.id')
         ->leftjoin('users','users.id','=','role_user.user_id')
         ->where('roles.estado','=',0)
-        ->where('roles.id_empresa','=',Auth::user()->id_empresa,'OR','roles.id_empresa','=',0 )
+        ->where('roles.id_empresa','=',Auth::user()->id_empresa )
         ->select('roles.id','roles.name','roles.created_at',DB::raw('count(role_user.user_id) as user'),'roles.usuario')
         ->GroupBy('roles.id','roles.name','roles.created_at','roles.usuario');
        
