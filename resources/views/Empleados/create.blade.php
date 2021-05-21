@@ -3,6 +3,8 @@
 @section('content')
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
+
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
 
 
@@ -141,7 +143,7 @@
 
                         <div class="col-sm-4{{ $errors->has('salario') ? ' has-danger' : '' }}">
                             <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text" name="salario" onkeyup="calcular()" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }}" id="salario" placeholder="{{ __('Salario') }}" required>
+                            <input type="text" name="salario"  class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }}" id="salario" placeholder="{{ __('Salario') }}" required>
                        
                         </div>
                         <div class="col-sm-4{{ $errors->has('pagos') ? ' has-danger' : '' }}">
@@ -189,6 +191,28 @@
                             </div>
                         </div>
                         @include('Empleados.modaldepart')
+
+                        <div class="col-sm-5{{ $errors->has('grupo') ? ' has-danger' : '' }}">
+                          <label>{{ __('GRUPOS') }}</label>
+                          <div class="input-group mb-3">
+                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  required>
+                              <option selected value="">ELEGIR...</option>
+                              @foreach ($equipo as $equipos)
+                              @if ($equipos->estado==0)
+                              @if ($equipos->id_empresa==Auth::user()->id_empresa)
+                                  
+                              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              @endif
+                              @endif
+                              @endforeach
+                            </select>
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                        @include('Empleados.modalgroup') 
+
 
 
                     </div>
@@ -422,12 +446,15 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script> --}}
 
 <script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="{{asset('js/timepicker.min.js')}}"></script>
+
 <script  type="text/javascript">
   $(document).ready(function(){
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
     $("input[type='tel']").mask('(000) 000-0000');
     $("#pass").val('');
+    $('.bs-timepicker').timepicker();
 
 // window.onbeforeunload = preguntarAntesDeSalir;
 
@@ -505,6 +532,9 @@ document.addEventListener ("keydown", function (e) {
 
 $("#newdepart").on('keypress', function(e) { return e.keyCode != 13; }); 
 $("#newpago").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#descr").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#entrada").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#salida").on('keypress', function(e) { return e.keyCode != 13; }); 
 
 $('#adjunnow').keyup(function(e){
     if(e.keyCode==13)
@@ -798,6 +828,33 @@ function savedepart(){
     }
              }); 
 }
+
+function savedgruop(){
+    var name=$("#descr").val();
+    var entrada=$("#entradaH").val();
+    var salida=$("#salidaH").val();
+
+    var url = "{{url('savegroup')}}"; 
+     var data ={name:name,entrada:entrada,salida:salida};
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              $("#group").modal("toggle");
+              $("#grupo").append(result);
+              $("#grupo option[value="+ $(result).val() +"]").attr("selected",true);
+              document.getElementById('subir').disabled=false;
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             }); 
+}
+
+
 function savepago(){
     var namew=$("#newpago").val();
     var url = "{{url('savepago')}}"; 

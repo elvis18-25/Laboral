@@ -246,8 +246,8 @@ $('#Empleadoedit').keyup(function(e){
 
 
  $("#Empleadotable-edit tbody").on('click','tr',function(){
-    $('td', row_s).css('backgroundColor', '#958fcd ');
-    $('td', row_s).css('color', 'white');
+    $('td', this).css('backgroundColor', '#958fcd ');
+    $('td', this).css('color', 'white');
 });
 
 

@@ -32,6 +32,8 @@ use App\Models\estado_asignaciones;
 use App\Models\estados_isr;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Equipos;
+use App\Models\empleados_equipo;
 
 
 class EmpleadosController extends Controller
@@ -67,11 +69,12 @@ class EmpleadosController extends Controller
         $puesto=Puesto::all();
         $asignaciones=Asignaciones::all();
         $contrato=Contrato::all();
+        $equipo=Equipos::all();
 
         $pais=Pais::all(['id','name']);
         
         // $estado=Estado::all();
-        return view('Empleados.create',compact('sexo','pago','puesto','asignaciones','pais','contrato'));
+        return view('Empleados.create',compact('sexo','equipo','pago','puesto','asignaciones','pais','contrato'));
     }
 
     public function emplepaises($id)
@@ -100,6 +103,22 @@ class EmpleadosController extends Controller
         $puesto->save();
 
         return view('Empleados.Plantillas.departa',compact('puesto'));     
+    }
+    public function savegroup(Request $request)
+    {
+
+        $equipos= new Equipos(); 
+        
+        $equipos->descripcion=request('name');
+        $equipos->entrada=request('entrada');
+        $equipos->salida=request('salida');
+        $equipos->user=Auth::user()->name;
+        $equipos->estado=0;
+        $equipos->id_empresa=Auth::user()->id_empresa;
+        $equipos->save();
+
+        return view('Empleados.Plantillas.grupo',compact('equipos'));  
+
     }
     public function savepago(Request $request)
     {
@@ -134,7 +153,7 @@ class EmpleadosController extends Controller
     public function store(Request $request)
     {
 
-        
+        // dd($request->all());
         $inputs=$request->all();
 
         if($request->get('checkasgina')!=''){
@@ -147,6 +166,12 @@ class EmpleadosController extends Controller
         $empleados->estado=0;
         $empleados->save();
 
+        $equipos= new empleados_equipo();
+        $equipos->id_empleado=$empleados->id_empleado;
+        $equipos->equipos=$request->get('grupo');
+        $equipos->estado=0;
+        $equipos->id_empresa=Auth::user()->id_empresa;
+        $equipos->save();
         
 
         if($request->get('checkasgina')!=''){
@@ -285,6 +310,8 @@ class EmpleadosController extends Controller
         $referencias=Referencias::all();
         $Adjunto=Adjuntos::all();
         $role=Role::all();
+        $equipo=Equipos::all();
+        $emple_equipo=empleados_equipo::where('id_empleado','=',$id)->first();
 
         $pais=Pais::all(['id','name']);
 
@@ -314,7 +341,7 @@ class EmpleadosController extends Controller
         
 
         return view('Empleados.edit',compact('empleados','sexo','pago',
-        'puesto','asignaciones','contrato','tipo','referencias','Adjunto','pais','pais_emple','state','ciudades','role'));
+        'puesto','asignaciones','contrato','tipo','referencias','Adjunto','pais','pais_emple','state','ciudades','emple_equipo','equipo','role'));
     }
 
     /**
@@ -446,6 +473,15 @@ class EmpleadosController extends Controller
         }else{
             $empleados->asignarSexo($request->get('genero'));
         }
+
+        // =$request->get('grupo');
+        if($request->get('grupo')!=" "){
+            $equipo=empleados_equipo::where('id_empleado','=',$id)->first();
+            $emple_equipo=empleados_equipo::findOrFail($equipo->id);
+            $emple_equipo->equipos=$request->get('grupo');
+            $emple_equipo->update();
+        }
+
         
     
 

@@ -1,30 +1,72 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
-<link rel="stylesheet" href="{{asset('css/perfiles.css')}}">
+<link rel="stylesheet" href="{{asset('css/equipos.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
-<form action="{{Route('Perfiles.store')}}" method="POST" >
+<form action="{{Route('Equipos.store')}}" method="POST" id="formularios" >
 @csrf
 {{ method_field('POST') }}
 <div class="col-md-12">
+    
+    <div class="card " sty>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-8">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO GRUPO</b></h4>
+                </div>
+                {{-- <div class="col-4 text-right">
+                    <button type="button" id="createdperfiles" title="Agregar Empleado a la cooperativa"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
+               @include('Equipos.modalempleado')
+                </div> --}}
+            </div>
+        </div>
+        <div class="card-body">
+    <div class="form-row">
+        <div class="col-sm-6">
+            <label style="color: black"><b>{{ __('DESCRIPCION ') }}</b></label>
+            <input type="text" name="name" autofocus id="descr" required  class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Descripción') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+        </div>
+
+        <div class="col-sm-2">
+            <label style="color: black"><b>{{ __('HORA DE ENTRADA') }}</b></label>
+            <input type="text" name="entrada" class="form-control bs-timepicker" value="" id="entrada">
+        </div>
+
+        <div class="col-sm-2">
+            <label style="color: black"><b>{{ __('HORA DE SALIDA') }}</b></label>
+            <input type="text" name="salida" class="form-control bs-timepicker" value="" id="salida">
+        </div>
+
+        </div>
+
+        </div>
+        <div class="card-footer py-4">
+            <nav class="d-flex justify-content-end" aria-label="...">
+                
+            </nav>
+        </div>
+    </div>
+
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO PERFIL</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
-               @include('Perfiles.modalemple')
+                    <button type="button" id="createdperfiles" title="Agregar Empleados al Grupo"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-user"  style="top: 5px; margin-left: -14%;"></i></button>
+                    <button type="button" id="btnall" onclick="AllGroup();" title="Agregar Todos los Empleado al Grupo"  class="btn btn-warning btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
+               @include('Equipos.modalempleado')
                 </div>
             </div>
         </div>
         <div class="card-body">
     <div class="form-row">
-            <div class="col-sm-4">
+            {{-- <div class="col-sm-4">
                 <input type="text" name="descripcion" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
-            </div>
+            </div> --}}
             {{-- <div class="col-sm-5">
                 <input type="date" id="fech" name="fecha" class="form-control"  >
             </div> --}}
@@ -32,7 +74,7 @@
         <br>
             <div class="">
                 <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; ">
-                <table class="table tablesorter table-hover" id="perfiles-table">
+                <table class="table tablesorter table-hover" id="grupo-table">
                     <thead class=" text-primary">
                         <tr> 
                         <th class="TitlePer">NOMBRE</th>
@@ -58,7 +100,7 @@
 </div>
 <input type="text" name="arreglo" value="" id="arreglo" hidden>
 
-<button type="submit" id="subir" title="Guardar Perfil" class="btn btn-fill btn-info float-right">{{ __('Guardar') }}</button>
+<button type="submit" id="subir" title="Guardar grupo" class="btn btn-fill btn-info float-right">{{ __('Guardar') }}</button>
 </form>
 
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
@@ -75,41 +117,15 @@
 
 @section('js')
 <script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="{{asset('js/timepicker.min.js')}}"></script>
 <script>
-    $(document).ready(function(){
- 
+     $('.bs-timepicker').timepicker();
 
-    document.addEventListener ("keydown", function (e) {
-    if (e.keyCode== 107) {
-        $("#createdperfiles").trigger("click");
-        started();
-    } 
+
+     $("#Empleadotable tbody").on('click','tr',function(){
+    $('td', this).css('backgroundColor', '#958fcd ');
+            $('td', this).css('color', 'white');
 });
-
-p=0;
-document.addEventListener ("keydown", function (e) {
-    if (e.keyCode== 40){
-        if(p==0){
-        var rowIdx = tebl.cell(':eq(0)').index().row;
-      
-      tebl.row(rowIdx).select();
-
-      tebl.cell( ':eq(0)' ).focus();   
-        p=1; 
-        }
-    } 
-});
-
-
-$("#createdperfiles").on('click',function(){
-    var rowIdx = tebl.cell(':eq(0)').index().row;
-      
-      tebl.row(rowIdx).select();
-
-      tebl.cell( ':eq(0)' ).focus();
-      p=0; 
-});
-
 
 tebl=$('#Empleadotable').DataTable({
         scrollY: 300,
@@ -203,24 +219,13 @@ tebl=$('#Empleadotable').DataTable({
 
            button=$(row_s).attr('action');
            id=$(row_s).attr('value');
-           Add(button,id);
+           AddGroup(button,id);
             
         }
         
     });
 
-
-    });
-
-//     $('#Empleadotable').DataTable().on("draw", function(){
-//     var rowIdx = tebl.cell(':eq(0)').index().row;
-      
-//     tebl.row(rowIdx).select();
-
-//     tebl.cell( ':eq(0)' ).focus();
-// });
-
-function started(){
+    function started(){
     var rowIdx = tebl.cell(':eq(0)').index().row;
       
       tebl.row(rowIdx).select();
@@ -228,24 +233,40 @@ function started(){
       tebl.cell( ':eq(0)' ).focus();
 }
 
+
 document.addEventListener ("keydown", function (e) {
-    if (e.keyCode==13) {
- var modal=$('#Empleado').hasClass('show');
-    if(modal==false){
-        $("#subir").trigger("click");
-     };
-    }
+    if (e.keyCode== 107) {
+        $("#createdperfiles").trigger("click");
+        started();
+    } 
 });
 
+p=0;
+document.addEventListener ("keydown", function (e) {
+    if (e.keyCode== 40){
+        if(p==0){
+        var rowIdx = tebl.cell(':eq(0)').index().row;
+      
+      tebl.row(rowIdx).select();
 
- $("#Empleadotable tbody").on('click','tr',function(){
-    $('td', this).css('backgroundColor', '#958fcd ');
-            $('td', this).css('color', 'white');
+      tebl.cell( ':eq(0)' ).focus();   
+        p=1; 
+        }
+    } 
+});
+
+$("#createdperfiles").on('click',function(){
+    var rowIdx = tebl.cell(':eq(0)').index().row;
+      
+      tebl.row(rowIdx).select();
+
+      tebl.cell( ':eq(0)' ).focus();
+      p=0; 
 });
 
 arreglo=[];
  i=0;
-function Add(e,m){
+function AddGroup(e,m){
     var p=0;
     for (let index = 0; index < arreglo.length; index++) {
             if(arreglo[index]==m){
@@ -261,9 +282,8 @@ function Add(e,m){
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
-            $('#perfiles-table tbody').append(result);
+            $('#grupo-table tbody').append(result);
             arreglo[i]=m
-            console.log(arreglo);
             $("#arreglo").attr('value',arreglo);
             i++;
           
@@ -279,65 +299,47 @@ function Add(e,m){
 }
 
 
-$(document).on('click', '.remf', function (event) {
-    event.preventDefault();
-    $(this).closest('tr').remove();
-     re=$(this).val();
-     for (let index = 0; index < arreglo.length; index++) {
-            if(arreglo[index]==re){
-              arreglo.splice(index,1);
-              console.log(arreglo);
-            }else{
-              $("#arreglo").attr('value',arreglo);
 
-            }
-            
-     }
-});   
+function AllGroup(){
+    var url="{{url('AllGroup')}}"; 
+  var data='';
+  $.ajax({
+         method: "GET",
+           data: data,
+            url:url ,
+            success:function(result){
+            $('#grupo-table tbody').empty();
+            $('#grupo-table tbody').append(result);
+            AgregarGru();
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
-
-$('#Empleado').keyup(function(e){
-    if(e.keyCode!=13)
-    {
-        $('div.dataTables_filter input', tebl.table().container()).focus(); 
-      
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
     }
-});
+             });
+}
 
-$("#descr").keypress(function(tecla)
-{
-   if(tecla.charCode==43)
 
-   {
-      return false;
+function AgregarGru(){
+    $("#grupo-table tbody tr").each(function(){
+        arreglo[i]=$(this).attr('value');
+        i++;
+        $("#arreglo").attr('value',arreglo);
+    });
+}
 
-   }
 
-});
+// $('#formularios').on('submit',function(e){
+//     e.preventDefault();
+//     $("#grupo-table tbody tr").each(function(){
+//         arreglo[i]=$(this).attr('value');
+//         i++;
+//         $("#arreglo").attr('value',arreglo);
+//     });
 
-document.addEventListener ("keydown", function (e) {
-    if (e.keyCode==27) {
-        $("#descr").focus();
-    }
-});
+//     this.submit();
+// });
 
-document.addEventListener ("keydown", function (e) {
-    if (e.altKey  &&  e.which === 65) {
-        $('#back').trigger("click");
-    }
-});
-
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
-
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 function Errore(){
     Command: toastr["error"]("Este Empleado ha sido Selecionado", "Error")
@@ -360,5 +362,10 @@ function Errore(){
     }
   }
 </script>
-@endsection
 
+<style>
+    table tbody tr td{
+        padding:  6px 7px !important;
+    }
+</style>
+@endsection

@@ -163,7 +163,6 @@
                                     <option value="{{$pag->id}}" selected>{{$pag->pago}}</option>							
                                   @else
                                   <option value="{{$pag->id}}">{{$pag->pago}}</option>
-                                  <option value="{{$pag->id}}">{{$pag->pago}}</option>
                                   @endif
                                   @endif		
                                  @endif
@@ -188,7 +187,6 @@
                                 @foreach ($puesto as $puest)
                                 @if ($puest->estado==0)
                                 @if ($puest->id_empresa==Auth::user()->id_empresa)
-                                    
                                 @if($puest->name == str_replace(array('["', '"]'), '',$empleados->tienePuesto()));
                                 <option value="{{$puest->id}}" selected>{{$puest->name}}</option>							
                                 @else
@@ -204,6 +202,31 @@
                             </div>
                         </div>
                         @include('Empleados.modaldepart')
+
+                        <div class="col-sm-5{{ $errors->has('grupo') ? ' has-danger' : '' }}">
+                          <label>{{ __('GRUPOS') }}</label>
+                          <div class="input-group mb-3">
+                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  required>
+                              <option selected value="">ELEGIR...</option>
+                              @foreach ($equipo as $equipos)
+                              @if ($equipos->estado==0)
+                              @if ($equipos->id_empresa==Auth::user()->id_empresa)
+                              @if ($emple_equipo->equipos==$equipos->id)
+                              <option value="{{$equipos->id}}" selected>{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              
+                              @else
+                              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              @endif
+                              @endif
+                              @endif
+                              @endforeach
+                            </select>
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                        @include('Empleados.modalgroup') 
                        
 
                     </div>

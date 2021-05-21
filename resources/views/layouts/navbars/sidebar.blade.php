@@ -90,6 +90,13 @@
                 </a>
             </li> --}}
 
+            <li>
+                <a href="{{url('Asistencia')}}">
+                    <i class="fas fa-users"></i>
+                    <p>{{ __('Asistencia') }}</p>
+                </a>
+            </li>
+
 
 
 

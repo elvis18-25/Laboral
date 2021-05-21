@@ -61,6 +61,9 @@ Route::resource('Empresa', 'App\Http\Controllers\EmpresaController')->middleware
 Route::resource('Eventos', 'App\Http\Controllers\EventosController')->middleware('auth');
 Route::resource('Cooperativas', 'App\Http\Controllers\CoopController')->middleware('auth');
 Route::resource('PerfilesUsuario', 'App\Http\Controllers\PerfilesUsuarioController')->middleware('auth');
+Route::resource('Asistencia', 'App\Http\Controllers\AsistenciaController')->middleware('auth');
+Route::resource('Equipos', 'App\Http\Controllers\EquiposController')->middleware('auth');
+
 
 
 //Asingaciones
@@ -82,11 +85,13 @@ Route::get('datatablegastosshowfijo','App\Http\Controllers\GastoController@datat
 Route::get('datatableconcept','App\Http\Controllers\GastoController@datatableconcept');
 Route::get('datatableperfilesUsuarios','App\Http\Controllers\PerfilesUsuarioController@datatableperfilesUsuarios');
 Route::get('datatableCoop','App\Http\Controllers\CoopController@datatableCoop');
+Route::get('datatablEquipos','App\Http\Controllers\EquiposController@datatablEquipos');
 
 
 //Empleados
 Route::post('savedepart','App\Http\Controllers\EmpleadosController@savedepart');
 Route::post('savepago','App\Http\Controllers\EmpleadosController@savepago');
+Route::post('savegroup','App\Http\Controllers\EmpleadosController@savegroup');
 Route::post('saveasignar','App\Http\Controllers\EmpleadosController@saveasignar');
 Route::post('eliminirefern/{id}','App\Http\Controllers\EmpleadosController@eliminirefern');
 Route::post('Gadjunto/{id}','App\Http\Controllers\EmpleadosController@Gadjunto');
@@ -109,6 +114,14 @@ Route::post('Gadjuntouser/{id}','App\Http\Controllers\UserController@Gadjuntouse
 Route::post('newadjuntouser','App\Http\Controllers\UserController@newadjuntouser');
 Route::post('savejuntouser','App\Http\Controllers\UserController@savejuntouser');
 Route::post('downloadContratouser','App\Http\Controllers\UserController@downloadContratouser');
+
+//Grupos
+Route::PUT('agregarGruop/{id}','App\Http\Controllers\EquiposController@agregarGruop');
+Route::PUT('agregarGruopEdit/{id}','App\Http\Controllers\EquiposController@agregarGruopEdit');
+Route::post('AllGroupEDIT','App\Http\Controllers\EquiposController@AllGroupEDIT');
+Route::get('AllGroup','App\Http\Controllers\EquiposController@AllGroup');
+
+
 
 //Cooperativa
 Route::PUT('agregarCoop/{id}','App\Http\Controllers\CoopController@agregarCoop');

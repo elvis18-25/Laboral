@@ -10,7 +10,7 @@ var bstptid = '';
 	var i = function (t) {
 			return t >= 10 ? t + "" : "0" + t
 		}, e = /^[0-9]{1,2}:[0-9]{1,2}$/, s = {}, n = function () {
-		}, o = new Array(24).fill(null).map(function (t, e) {
+		}, o = new Array(12).fill(null).map(function (t, e) {
 			var s = i(e);
 			return '<li class="cell-2 js-hour-cell" data-val="' + s + '">' + s + "</li>"
 		}).join(""), c = new Array(12).fill(null).map(function (t, e) {
@@ -27,9 +27,9 @@ var bstptid = '';
 		}).on("click", ".js-plus-minute", function () {
 			t.minute >= 59 ? t.minute = 0 : t.minute++, t.update()
 		}).on("click", ".js-plus-houer", function () {
-			t.hour >= 23 ? t.hour = 0 : t.hour++, t.update()
+			t.hour >= 12 ? t.hour = 0 : t.hour++, t.update()
 		}).on("click", ".js-minus-houer", function () {
-			t.hour <= 0 ? t.hour = 23 : t.hour--, t.update()
+			t.hour <= 0 ? t.hour = 12 : t.hour--, t.update()
 		}).on("click", ".js-minute-cell", function () {
 			t.minute = +this.getAttribute("data-val"), t.update(), t.choseMinute.hide(), t.choseAll.show(), t.title.text("Select Time")
 		}).on("click", ".js-hour-cell", function () {
