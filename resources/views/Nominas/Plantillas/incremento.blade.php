@@ -11,22 +11,22 @@
 
     <tr>
         <td >{{$tsse->Nombre}}</td>
-        <td >{{$tsse->tipo}}</td>
+        <td style="text-align: center;">{{$tsse->tipo}}</td>
 
         @if ($tsse->tipo=="PORCENTAJE")
         @php
         $cont=$tsse->Monto*$empleado->salario;
         $cont=$cont/100;
    @endphp
-        <td >{{$tsse->Monto}}%</td>
+        <td style="text-align: center;" >{{$tsse->Monto}}%</td>
 
         @else
-        <td >${{number_format($tsse->Monto,2)}}</td>
+        <td style="text-align: center;" >${{number_format($tsse->Monto,2)}}</td>
   
         @endif
-        <td >${{number_format($cont,2)}}</td>
+        <td style="text-align: right;" >${{number_format($cont,2)}}</td>
 
-        <td >{{$tsse->created_at->format('d/m/Y')}}</td>
+        <td style="text-align: center;" >{{$tsse->created_at->format('d/m/Y')}}</td>
         @foreach ($estado as $estados)
         @if ($estados->id_empleado==$empleado->id_empleado)
         @if ($estados->id_asignaciones==$tsse->id)

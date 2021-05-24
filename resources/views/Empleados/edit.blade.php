@@ -133,25 +133,32 @@
 
 
                     <div class="form-row">
-                        <div class="col-sm-4 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
                             <label>{{ __('FECHA DE ENTRADA') }}</label>
                             <input type="date" name="Fecha_Entrada" value="{{$empleados->Fecha_Entrada}}" class="form-control{{ $errors->has('Fecha_Entrada') ? ' is-invalid' : '' }}" id="entrada" required>
                            
                         </div>
                     
 
-                        <div class="col-sm-4{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
+                        <div class="col-sm-3{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
                             <label>{{ __('FECHA DE SALIDA') }}</label>
                             <input type="date" name="fecha_salida" value="{{$empleados->fecha_salida}}" class="form-control{{ $errors->has('fecha_salida') ? ' is-invalid' : '' }}">
                            
                         </div>
 
-                        <div class="col-sm-4{{ $errors->has('salario') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
                             <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text" name="salario" value="{{$empleados->salario}}" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }}" id="salario" placeholder="{{ __('Salario') }}" required>
+                            <input type="text" onkeyup="calcular();"  value="{{number_format($empleados->salario,2)}}" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }} money" id="salario" placeholder="{{ __('Salario') }}" required>
+                            <input type="text" name="salario" value="" id="salarioOP" hidden>
                        
                         </div>
-                        <div class="col-sm-4{{ $errors->has('pagos') ? ' has-danger' : '' }}">
+                      {{-- </div> --}}
+                      <div class="col-sm-3{{ $errors->has('dias') ? ' has-danger' : '' }}">
+                          <label>{{ __('SALARIO POR DIAS') }}</label>
+                          <input type="text" name="horas" value="{{$empleados->horas}}"  class="form-control  " id="salDias" placeholder="{{ __('$0.00') }} money" required>
+                     
+                      </div>
+                        <div class="col-sm-3{{ $errors->has('pagos') ? ' has-danger' : '' }}">
                             <label>{{ __('FORMAS DE PAGOS') }}</label>
                             <div class="input-group mb-2">
                                 <select class="form-control{{ $errors->has('pagos') ? ' is-invalid' : '' }} selec" name="pagos" id="forma" required>
@@ -174,12 +181,12 @@
                               </div>
                             @include('Empleados.modalpago')
                         </div>
-                        <div class="col-sm-6{{ $errors->has('cargo') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('cargo') ? ' has-danger' : '' }}">
                             <label>{{ __('CARGO') }}</label>
                             <input type="text" name="cargo" value="{{$empleados->cargo}}" class="form-control{{ $errors->has('cargo') ? ' is-invalid' : '' }}" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" id="cargo" placeholder="{{ __('Cargo') }}" required>
                        
                         </div>
-                        <div class="col-sm-5{{ $errors->has('departa') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('departa') ? ' has-danger' : '' }}">
                             <label>{{ __('DEPARTAMENTO') }}</label>
                             <div class="input-group mb-3">
                             <select class="form-control{{ $errors->has('departa') ? ' is-invalid' : '' }} selec" name="departa" id="depar"  required>
@@ -203,7 +210,7 @@
                         </div>
                         @include('Empleados.modaldepart')
 
-                        <div class="col-sm-5{{ $errors->has('grupo') ? ' has-danger' : '' }}">
+                        <div class="col-sm-4{{ $errors->has('grupo') ? ' has-danger' : '' }}">
                           <label>{{ __('GRUPOS') }}</label>
                           <div class="input-group mb-3">
                           <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  required>
@@ -530,6 +537,8 @@
     $("#pass").val('');
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
+    $('.money').mask("#,##0.00", {reverse: true});
+
     $("input[type='tel']").mask('(000) 000-0000');
     $("#descradjunto").val(" ");
 
@@ -694,6 +703,46 @@ $('transTable').append(button);
 document.getElementById("transTable").innerHTML += '<tr class="reducir"><td><input type="text" name="no[]" value="'+nuevoSujeto.nombre+'"/ hidden>'+nuevoSujeto.nombre+'</td><td><input type="text" name="parentesco[]" value="'+nuevoSujeto.preferencia+'"/hidden>'+nuevoSujeto.preferencia+'</td><td><input type="text" name="tel[]" value="'+nuevoSujeto.telefono+'"/ hidden>'+nuevoSujeto.telefono+'</td><td>'+button+'</td></tr>';
 
 
+}
+
+function calcular(){
+   var salario=$("#salario").val();
+   
+   var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+   sum=montoFormat/23.83/8;
+
+   $("#salarioOP").attr('value',montoFormat);
+   $("#salDias").attr('value',financial(sum));
+
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+// Incluso pensándolo como algo más genérico:
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
 }
 
 // var options = {

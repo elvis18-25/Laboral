@@ -65,20 +65,20 @@
             </li>
             @endif
 
-            @if ($permisos->perfiles==1)
+            {{-- @if ($permisos->perfiles==1)
             <li  >
                 <a href="{{ url('Perfiles')  }}" class="nav-link  {{request()->Is('Perfiles') ? 'active' : ''}}" >
                     <i class="tim-icons icon-single-copy-04"></i>
                     <p>{{ __('Perfiles de nomina') }}</p>
                 </a>
             </li>
-            @endif
+            @endif --}}
 
             @if ($permisos->listado==1)
             <li >
                 <a href="{{ url('Listado')  }}" >
                     <i class="fas fa-file-invoice-dollar"></i>
-                    <p>{{ __('Listado de nominas') }}</p>
+                    <p>{{ __('nominas') }}</p>
                 </a>
             </li>
             @endif

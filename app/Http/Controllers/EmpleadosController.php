@@ -172,6 +172,8 @@ class EmpleadosController extends Controller
         $equipos->estado=0;
         $equipos->id_empresa=Auth::user()->id_empresa;
         $equipos->save();
+
+
         
 
         if($request->get('checkasgina')!=''){
@@ -374,6 +376,8 @@ class EmpleadosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
+
         $empleados=Empleado::findOrFail($id);
         $empleados->fill($request->all());
         $empleados->update();

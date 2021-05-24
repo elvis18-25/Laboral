@@ -31,6 +31,7 @@ protected $column='email';
         'password',
         'cargo',
         'id_empresa',
+        'horas',
 
     ];
     

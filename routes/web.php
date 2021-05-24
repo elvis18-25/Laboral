@@ -86,6 +86,7 @@ Route::get('datatableconcept','App\Http\Controllers\GastoController@datatablecon
 Route::get('datatableperfilesUsuarios','App\Http\Controllers\PerfilesUsuarioController@datatableperfilesUsuarios');
 Route::get('datatableCoop','App\Http\Controllers\CoopController@datatableCoop');
 Route::get('datatablEquipos','App\Http\Controllers\EquiposController@datatablEquipos');
+Route::get('datatableAsistencia','App\Http\Controllers\AsistenciaController@datatableAsistencia');
 
 
 //Empleados
@@ -160,6 +161,9 @@ Route::get('Detalle/{id}','App\Http\Controllers\NominaController@Detalle');
 Route::get('incremento/{id}','App\Http\Controllers\NominaController@incremento');
 Route::get('otros/{id}','App\Http\Controllers\NominaController@otros');
 Route::post('deleteemple/{id}','App\Http\Controllers\NominaController@deleteemple');
+Route::post('VerificateHours/{id}','App\Http\Controllers\NominaController@VerificateHours');
+Route::post('savegrupos/{id}','App\Http\Controllers\NominaController@savegrupos');
+Route::post('modalhours/{id}','App\Http\Controllers\NominaController@modalhours');
 
 //Pagos
 Route::post('Pagosshow/{id}','App\Http\Controllers\PagosController@Pagosshow');

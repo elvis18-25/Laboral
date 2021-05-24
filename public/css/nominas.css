@@ -10,6 +10,11 @@
     margin-left: 10px;
 }
 
+.TitleP{
+  font-size: 14px !important;
+  text-align: center;
+}
+
 #inlineRadio1{
     top: -6px;
     position: relative;

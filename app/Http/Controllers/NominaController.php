@@ -9,6 +9,7 @@ use App\Models\Empleado;
 use App\Models\otros;
 use Illuminate\Support\Facades\DB;
 use App\Models\Asignaciones_empleado;
+use App\Models\empleados_equipo;
 use App\Models\estado_asignaciones;
 use App\Models\isr_empleado;
 use App\Models\Puesto;
@@ -16,9 +17,9 @@ use App\Models\Perfiles_empleado;
 use Illuminate\Support\Facades\Auth;
 use App\Models\estados_isr;
 use App\Models\Listado;
-
-
-
+use App\Models\empleados_nominas;
+use App\Models\Equipos;
+use DateTime;
 
 class NominaController extends Controller
 {
@@ -30,7 +31,8 @@ class NominaController extends Controller
     public function index()
     {
         $empleados=Empleado::all();
-        return view('Nominas.index',compact('empleados'));
+        $equipos=Equipos::all();
+        return view('Nominas.index',compact('empleados','equipos'));
     }
 
     /**
@@ -41,6 +43,44 @@ class NominaController extends Controller
     public function create()
     {
        
+    }
+    public function savegrupos($id)
+    {
+        $empleado=Empleado::findOrFail($id);
+        
+        $elegir=request('elegir');
+
+        if($elegir!=0){
+            $emple_equipos= New empleados_equipo();
+            $emple_equipos->id_empleado=$id;
+            $emple_equipos->equipos=$elegir;
+            $emple_equipos->id_empresa=Auth::user()->id_empresa;
+            $emple_equipos->estado=0;
+            $emple_equipos->save();
+            return  $emple_equipos->id;
+        
+        }else{
+        $equipos= New Equipos();
+        $equipos->descripcion=request('name');
+        $equipos->entrada=request('entrada');
+        $equipos->salida=request('salida');
+        $equipos->user=Auth::user()->name;
+        $equipos->estado=0;
+        $equipos->id_empresa=Auth::user()->id_empresa;
+        $equipos->save();
+
+        $emple_equipos= New empleados_equipo();
+        $emple_equipos->id_empleado=$id;
+        $emple_equipos->equipos=$equipos->id;
+        $emple_equipos->id_empresa=Auth::user()->id_empresa;
+        $emple_equipos->estado=0;
+        $emple_equipos->save();
+        return $equipos->id;
+    }
+
+
+
+   
     }
 
     /**
@@ -60,14 +100,19 @@ class NominaController extends Controller
         $nominas->id_perfiles=$request->get('perfil');
         $nominas->id_empresa=Auth::user()->id_empresa;
         $nominas->estado=0;
-
         $nominas->save();
+
+
         return redirect('Listado');
 
     }
     public function totalnominas($id,Request $request)
     {
         // $id=request("e");
+
+        $start =new DateTime(request('Istart'));
+        $end =new DateTime(request('Iend'));
+
         $perfiles=Perfiles_empleado::select('id')->where('id','=',$id)->first();
         $perf=Perfiles::all();
         $empleados=Empleado::all();
@@ -75,12 +120,9 @@ class NominaController extends Controller
         $tss=Asignaciones::all();
         $estado=estado_asignaciones::all();
 
-        $p=0;
-
         $cont2=0;
         $cont3=0;
         $cont=0;
-        $rebajaisr=0;
         $contbono=0;
         $contdeducion=0;
         $desbono=0;
@@ -91,12 +133,38 @@ class NominaController extends Controller
         $totalbono=0;
         $otrosD=0;
         $otrosI=0;
+        $salarioDias=0;
+
+        $p=0;
+                
+        for($i = $start; $i <= $end; $i->modify('+1 day')){
+            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+            
+        switch($nombre_dia)
+        {
+            case 1: $p=$p+8;
+            break;
+            case 2: $p=$p+8;
+            break;
+            case 3: $p=$p+8;
+            break;
+            case 4: $p=$p+8;
+            break;
+            case 5: $p=$p+8;
+            break;
+            case 6: $p=$p+4;
+            break;
+        }
+        
+        }
+
 
             foreach($perf as $perfe){
                 if($perfiles->id==$perfe->id_perfiles){
                    foreach($empleados as $emple){
                        if($emple->id_empleado==$perfe->id_empleado){
-                        $salario= $salario+$emple->salario;
+                        $salarioDias=$emple->horas*$p;
+                        $salario=$salario+$salarioDias;
                         
                         }
                        }
@@ -112,12 +180,12 @@ class NominaController extends Controller
                             if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                 if($tsse->tipo_asigna=="INCREMENTO"){
                                     if($tsse->tipo=="PORCENTAJE"){
-                                    $totalbono=$tsse->Monto * $emple->salario;
+                                    $totalbono=$tsse->Monto*$emple->salario;
                                     $totalbono=$totalbono/100;
                                     $contbono=$contbono+$totalbono;
                                     }
                                     else{
-                                     $totalbono=$totalbono+$tsse->Monto;
+                                     $totalbono=$tsse->Monto;
                                      $contbono=$contbono+$totalbono;
                                     }
                               }  
@@ -257,12 +325,20 @@ class NominaController extends Controller
                             }  
                         }
 
-             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3-$rebajaisr;
+             $totaldeducion=0;
+             $totalincremento=0;
+             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3;
              $totalincremento=$otrosI+$contbono-$desbonoCont;
              
              return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
-            //  return  $contdeducion;
+            //  return  $p;
+            //  return $p;
     }
+
+    //265,127
+
+    //16,370.70
+    //
 
     /**
      * Display the specified resource.
@@ -343,6 +419,40 @@ class NominaController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+    public function modalhours($id)
+    {
+        $equipos=Equipos::
+        leftjoin('equipos_empleados','equipos_empleados.equipos','=','equipos.id')
+        ->leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
+        ->where('equipos.id_empresa',Auth::user()->id_empresa)
+        ->where('equipos.estado','!=','1')
+        ->where('equipos_empleados.id_empleado','=',$id)
+        ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
+        ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
+        ->get();
+        // $equipos_emple=empleados_equipo::select('equipos')->where('id_empleado','=',$id)->first();
+        // $equipos=Equipos::where('id','=',$equipos_emple->equipos)->get();
+        return view("Nominas.modalhoras",compact('equipos'));
+
+    }
+    public function VerificateHours($id)
+    {
+        // $empleado=Empleado::findOrFail();
+
+        if(sizeof(empleados_equipo::select('id_empleado')->where('id_empleado','=',$id)->get())==0){
+            return 0;
+        }else{
+            return 1;
+        }
+
+        // if(!empty(sizeof(empleados_equipo::select('id_empleado')->where('id_empleado','=',$id)->get()))){
+        //     $equipos=empleados_equipo::select('id_empleado')->where('id_empleado','=',$id)->first();
+        //     return view("Nominas.Plantillas.verificatehor",compact('equipos'));
+            
+        // }
+
+        
     }
 
     public function switchetss($id,Request $request)
@@ -498,8 +608,8 @@ class NominaController extends Controller
         
         if(request()->ajax()){
          $tipo=request()->get('dato1');
-        //  $tipo=1;
-         $cont=0;
+
+
      
         $empleados=Empleado::leftjoin('perfiles','perfiles.id_empleado','=','empleado.id_empleado')
         ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','perfiles.id_empleado')
@@ -508,7 +618,7 @@ class NominaController extends Controller
         ->leftjoin('asignaciones','asignaciones.id','=','asignaciones_empleado.asignaciones_id')
 
         ->where('perfiles.estados','=',0)
-        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.cedula','puesto.name as puesto','empleado.salario',DB::raw('sum(asignaciones_empleado.monto) as Asigna'))->GroupBy('empleado.id_empleado','empleado.cedula','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario');
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.horas','empleado.cedula','puesto.name as puesto','empleado.salario',DB::raw('sum(asignaciones_empleado.monto) as Asigna'))->GroupBy('empleado.id_empleado','empleado.cedula','empleado.horas','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario');
        
         if(!empty($tipo)){
             $empleados->where('perfiles.id_perfiles',$tipo);
@@ -524,10 +634,43 @@ class NominaController extends Controller
                 return $row->nombre." ".$row->apellido;
 
             })
+            ->editColumn('horas',function($row){
+                $start=request()->start_date;
+                $end=request()->end_date;
+
+                $begin = new DateTime($start);
+                $end   = new DateTime($end);
+                $p=0;
+                
+                for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                    $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+                    
+                switch($nombre_dia)
+                {
+                    case 1: $p=$p+8;
+                    break;
+                    case 2: $p=$p+8;
+                    break;
+                    case 3: $p=$p+8;
+                    break;
+                    case 4: $p=$p+8;
+                    break;
+                    case 5: $p=$p+8;
+                    break;
+                    case 6: $p=$p+4;
+                    break;
+                }
+                
+                }
+
+                return  $p;
+
+            })
             ->editColumn('amount',function($row){
                 $cont=0;
                 $cont2=0;
                 $sum=0;
+                $sum2=0;
                 $tipo=request()->get('dato1');
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
@@ -544,8 +687,10 @@ class NominaController extends Controller
                                     if($tsse->tipo=="PORCENTAJE"){
                                     $cont=$tsse->Monto * $row->salario;
                                     $cont=$cont/100;
+                                    $sum=$sum+$cont;
                                     }else{
-                                     $cont=$tsse->Monto;
+                                     $cont=$cont+$tsse->Monto;
+                                     $sum=$sum+$cont;
                                     }
                               }  
                             }
@@ -588,8 +733,10 @@ class NominaController extends Controller
                                                         if($tsse->tipo=="PORCENTAJE"){
                                                             $cont2=$tsse->Monto*$row->salario;
                                                             $cont2=$cont2/100;
+                                                            $sum2=$sum2+$cont2;
                                                             }else{
-                                                             $cont2=$tsse->Monto;
+                                                             $cont2=$cont2+$tsse->Monto;
+                                                             $sum2=$sum2+$cont2;
                                                             }
                                                     }
                                                 }
@@ -604,28 +751,21 @@ class NominaController extends Controller
                                     }
                                    }
                                }
-                    return '$'.number_format($otrostotal+$cont-$cont2,2);
+                    return '$'.number_format($otrostotal-$sum2+$sum,2);
                 // return 0;
             })
             ->editColumn('Asigna',function($row){
                 $cont=0;
                 $cont2=0;
-                $cont3=0;
+                $sum=0;
+                $sum2=0;
                 $otrosCont=0;
                 $tipo=request()->get('dato1');
                 $otro=Otros::all();
                 $tss=Asignaciones::all();
-                $asigna=Asignaciones_empleado::all();
                 $perf=Perfiles::all();
                 $estado=estado_asignaciones::all();
-                $estadoasigna=estados_isr::all();
-                $isr=isr_empleado::all();
 
-                // $otros=DB::table('otros')
-                // ->select(DB::raw('sum(monto)'))
-                // ->where('id_empleado',$row->id_empleado)
-                // ->where('tipo_asigna','DEDUCIÓN')
-                // ->value('monto');
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
@@ -645,6 +785,7 @@ class NominaController extends Controller
                             }
                         }  
                     }
+
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
@@ -658,8 +799,10 @@ class NominaController extends Controller
                                 if($tsse->tipo=="PORCENTAJE"){
                                     $cont=$tsse->Monto*$row->salario;
                                     $cont=$cont/100;
+                                    $sum2=$sum2+$cont;
                                     }else{
-                                     $cont=$tsse->Monto;
+                                     $cont=$cont+$tsse->Monto;
+                                     $sum2=$sum2+$cont;
                                     }
                                 }
                                 }
@@ -682,8 +825,10 @@ class NominaController extends Controller
                                     if($tsse->tipo=="PORCENTAJE"){
                                         $cont2=$tsse->Monto*$row->salario;
                                         $cont2=$cont2/100;
+                                        $sum=$sum+$cont2;
                                         }else{
                                          $cont2=$cont2+$tsse->Monto;
+                                         $sum=$sum+$cont2;
                                         }
                                     }
                     
@@ -693,37 +838,58 @@ class NominaController extends Controller
                             }
                             
                         }
-                    return '$'.number_format($otrosCont+$cont2-$cont,2);
+                    return '$'.number_format($otrosCont-$sum2+$sum,2);
+                    // return '$'.number_format($sum2,2);
             })
             ->editColumn('total',function($row){
                 $tducion=0;
                 $tincremnt=0;
                 $cont=0;
                 $cont2=0;
-                $cont3=0;
                 $Cont4bono=0;
                 $contbono=0;
                 $otroI=0;
                 $tipo=request()->get('dato1');
                 $tss=Asignaciones::all();
-                $asigna=Asignaciones_empleado::all();
                 $perf=Perfiles::all();
                 $otro=Otros::all();
                 $estadoasigna=estado_asignaciones::all();
-                $isr=isr_empleado::all();
-                $estadosisr=estados_isr::all();
                 $otroD=0;
+                $sum=0;
+                $sum2=0;
+                $sumEstado=0;
+                $sumBono=0;
+                $salarioDias=0;
 
-                // $otroI=DB::table('otros')
-                // ->select(DB::raw('sum(monto)'))
-                // ->where('id_empleado',$row->id_empleado)
-                // ->where('tipo_asigna','INCREMENTO')
-                // ->value('monto');
-                // $otroD=DB::table('otros')
-                // ->select(DB::raw('sum(monto)'))
-                // ->where('id_empleado',$row->id_empleado)
-                // ->where('tipo_asigna','DEDUCIÓN')
-                // ->value('monto');
+                $start=request()->start_date;
+                $end=request()->end_date;
+
+                $begin = new DateTime($start);
+                $end   = new DateTime($end);
+                $p=0;
+                
+                for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                    $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+                    
+                switch($nombre_dia)
+                {
+                    case 1: $p=$p+8;
+                    break;
+                    case 2: $p=$p+8;
+                    break;
+                    case 3: $p=$p+8;
+                    break;
+                    case 4: $p=$p+8;
+                    break;
+                    case 5: $p=$p+8;
+                    break;
+                    case 6: $p=$p+4;
+                    break;
+                }
+                
+                }
+
+                $salarioDias=$row->horas*$p;
 
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
@@ -764,8 +930,10 @@ class NominaController extends Controller
                                     if($tsse->tipo=="PORCENTAJE"){
                                         $cont=$tsse->Monto*$row->salario;
                                         $cont=$cont/100;
+                                        $sumEstado=$sumEstado+$cont;
                                         }else{
-                                         $cont=$tsse->Monto;
+                                         $cont=$cont+$tsse->Monto;
+                                         $sumEstado=$sumEstado+$cont;
                                         }
                                     }
                                     }
@@ -789,8 +957,10 @@ class NominaController extends Controller
                                         if($tsse->tipo=="PORCENTAJE"){
                                             $cont2=$tsse->Monto*$row->salario;
                                             $cont2=$cont2/100;
+                                            $sum=$sum+$cont2;
                                             }else{
                                              $cont2=$cont2+$tsse->Monto;
+                                             $sum=$sum+$cont2;
                                             }
                                         }
                         
@@ -811,8 +981,10 @@ foreach($perf as $perfe){
                     if($tsse->tipo=="PORCENTAJE"){
                     $contbono=$tsse->Monto * $row->salario;
                     $contbono=$contbono/100;
+                    $sum2=$sum2+$contbono;
                     }else{
                      $contbono=$tsse->Monto;
+                     $sum2=$sum2+$contbono;
                     }
               }  
             }
@@ -836,8 +1008,10 @@ foreach($perf as $perfe){
                                         if($tsse->tipo=="PORCENTAJE"){
                                             $Cont4bono=$tsse->Monto*$row->salario;
                                             $Cont4bono=$Cont4bono/100;
+                                            $sumBono=$sumBono+$Cont4bono;
                                             }else{
-                                             $Cont4bono=$tsse->Monto;
+                                             $Cont4bono=$Cont4bono+$tsse->Monto;
+                                             $sumBono=$sumBono+$Cont4bono;
                                             }
                                     }
                                 }
@@ -853,9 +1027,11 @@ foreach($perf as $perfe){
                }
                             
 
-                $tducion= $otroD+$cont2-$cont;
-                $tincremnt=$otroI+$contbono-$Cont4bono;
-                return '$'.number_format($row->salario+$tincremnt-$tducion,2);
+                $tducion= $otroD+$sum-$sumEstado;
+                $tincremnt=$otroI+$sum2-$sumBono;
+                return '$'.number_format($salarioDias+$tincremnt-$tducion,2);
+                // return $begin;
+
             })->editColumn('salario',function($row){
                 return '$'.number_format($row->salario,2);
             })->setRowAttr([
@@ -866,24 +1042,17 @@ foreach($perf as $perfe){
                     return $row->nombre." ".$row->apellido;    
                 },
                 'dedu'=>function($row){
-                    $cont=0;
+                $cont=0;
                 $cont2=0;
-                $cont3=0;
                 $otrosCont=0;
                 $tipo=request()->get('dato1');
                 $otro=Otros::all();
                 $tss=Asignaciones::all();
-                $asigna=Asignaciones_empleado::all();
                 $perf=Perfiles::all();
                 $estado=estado_asignaciones::all();
-                $estadoasigna=estados_isr::all();
-                $isr=isr_empleado::all();
+                $sum=0;
+                $sumEstado=0;
 
-                // $otros=DB::table('otros')
-                // ->select(DB::raw('sum(monto)'))
-                // ->where('id_empleado',$row->id_empleado)
-                // ->where('tipo_asigna','DEDUCIÓN')
-                // ->value('monto');
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
@@ -916,8 +1085,10 @@ foreach($perf as $perfe){
                                 if($tsse->tipo=="PORCENTAJE"){
                                     $cont=$tsse->Monto*$row->salario;
                                     $cont=$cont/100;
+                                    $sumEstado=$sumEstado+$cont;
                                     }else{
                                      $cont=$tsse->Monto;
+                                     $sumEstado=$sumEstado+$cont;
                                     }
                                 }
                                 }
@@ -940,8 +1111,10 @@ foreach($perf as $perfe){
                                     if($tsse->tipo=="PORCENTAJE"){
                                         $cont2=$tsse->Monto*$row->salario;
                                         $cont2=$cont2/100;
+                                        $sum=$sum+$cont2;
                                         }else{
                                          $cont2=$cont2+$tsse->Monto;
+                                         $sum=$sum+$cont2;
                                         }
                                     }
                     
@@ -951,18 +1124,19 @@ foreach($perf as $perfe){
                             }
                             
                         }
-                    return '$'.number_format($otrosCont+$cont2-$cont,2);
+                    return '$'.number_format($otrosCont+$sum-$sumEstado,2);
                 },
                 'bono'=>function($row){
                     $cont=0;
                     $cont2=0;
-                    $sum=0;
                     $tipo=request()->get('dato1');
                     $tss=Asignaciones::all();
                     $perf=Perfiles::all();
                     $estado=estado_asignaciones::all();
                     $otro=Otros::all();
                     $otrostotal=0;
+                    $sum=0;
+                    $sumEstado=0;
     
                     foreach($perf as $perfe){
                         if($tipo==$perfe->id_perfiles){
@@ -973,8 +1147,10 @@ foreach($perf as $perfe){
                                         if($tsse->tipo=="PORCENTAJE"){
                                         $cont=$tsse->Monto * $row->salario;
                                         $cont=$cont/100;
+                                        $sum=$sum+$cont;
                                         }else{
                                          $cont=$tsse->Monto;
+                                         $sum=$sum+$cont;
                                         }
                                   }  
                                 }
@@ -1017,8 +1193,10 @@ foreach($perf as $perfe){
                                                             if($tsse->tipo=="PORCENTAJE"){
                                                                 $cont2=$tsse->Monto*$row->salario;
                                                                 $cont2=$cont2/100;
+                                                                $sumEstado=$sumEstado+$cont2;
                                                                 }else{
                                                                  $cont2=$tsse->Monto;
+                                                                 $sumEstado=$sumEstado+$cont2;
                                                                 }
                                                         }
                                                     }
@@ -1033,7 +1211,7 @@ foreach($perf as $perfe){
                                         }
                                        }
                                    }
-                        return '$'.number_format($otrostotal+$cont-$cont2,2);
+                        return '$'.number_format($otrostotal+$sum-$sumEstado,2);
                 },
 
                 'otros'=>function($row){

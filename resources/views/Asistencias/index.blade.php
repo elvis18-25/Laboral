@@ -17,7 +17,7 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>LISTADO DE ASISTENCIAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                {{-- <a href="{{Route('Asistencia.create')}}" title="Crear Nuevo listado de Asistencia " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a> --}}
+                <a href="{{Route('Asistencia.create')}}" title="Crear Nuevo listado de Asistencia " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
                 <a href="{{url('Equipos')}}" title="Crear Grupo de Empleado " class="btn btn-sm btn-warning redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-users-cog" style="top: 5px; margin-left: -25%; position: relative; font-size: 15px;"></i> </a>
                 </div>
             </div>
@@ -73,12 +73,14 @@
         </div>
     </div>
   </div>
+
 @endsection
 
 @section('js2')
 <script src="{{asset('js/pageLoader.js')}}"></script>
 
 <script>
+
    table=$('#listado-table').DataTable({
     "info": false,
     select: {
@@ -145,6 +147,7 @@ document.addEventListener ("keydown", function (e) {
          
     } 
 });
+
 
 
 $("#listado-table tbody").on('click','tr',function(){

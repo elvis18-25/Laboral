@@ -2,6 +2,8 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/listado.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+
 <style>
     #listado-table tbody {
         cursor: 'pointer';
@@ -12,10 +14,11 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title"><b>LISTADO DE NOMINAS</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>LISTADO DE NOMINAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
                 <a href="{{url('Nominas')}}" title="Crear Nueva Nomina " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
+                <a href="{{url('Perfiles')}}" title="Perfiles " class="btn btn-sm btn-warning redondo "><button  type="button"  style="display: none;"></button><i class="fas fa-users" style="top: 5px; position: relative; margin-left: -3px"></i></a>
                 </div>
             </div>
         </div>
@@ -60,11 +63,21 @@
 </div>
 
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
-
+<div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
+</div>
 
 @endsection
 
 @section('js2')
+<script src="{{asset('js/pageLoader.js')}}"></script>
+
 <script>
    table=$('#listado-table').DataTable({
     "info": false,
@@ -125,10 +138,10 @@
 $('div.dataTables_filter input', table.table().container()).focus();   
 
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
@@ -137,9 +150,9 @@ document.addEventListener ("keydown", function (e) {
     } 
 });
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+// window.onbeforeunload = function(e) {
+//     HoldOn.open(options);
+// };
 
 $("#listado-table tbody").on('click','tr',function(){
  

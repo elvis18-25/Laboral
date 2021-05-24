@@ -1,0 +1,1 @@
+<input type="text" id="inputgruop" value="1" action="{{$equipos->id}}">

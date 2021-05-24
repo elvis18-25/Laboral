@@ -53,7 +53,7 @@
   }
 
   .table-striped{
-    width: 935px !important;
+    /* width: 935px !important; */
   margin-left: 0px !important;
   }
   .dataTables_scrollHead{

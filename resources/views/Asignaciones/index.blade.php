@@ -66,7 +66,8 @@
 @section('js')
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
-    $("#monto").mask('0#');
+
+    $("#monto").mask('0.#');
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
         $("#created").trigger("click");
@@ -222,14 +223,7 @@ $('#asigna-table').DataTable().on("draw", function(){
 
 
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {
