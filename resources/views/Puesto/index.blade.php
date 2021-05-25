@@ -148,14 +148,6 @@ headers: {
 });
   $('div.dataTables_filter input', table.table().container()).focus();
 
-  var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
-
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {

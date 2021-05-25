@@ -4,20 +4,16 @@
 <link rel="stylesheet" href="{{asset('css/asistencia.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 
-<style>
-    #listado-table tbody {
-        cursor: 'pointer';
-    }  
-  </style>
+
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>LISTADO DE ASISTENCIAS</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>HISTORIAL DE ASISTENCIA</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                <a href="{{Route('Asistencia.create')}}" title="Crear Nuevo listado de Asistencia " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
+                <a href="{{Route('Asistencia.create')}}" title="Crear Nuevo listado de Asistencia " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
                 <a href="{{url('Equipos')}}" title="Crear Grupo de Empleado " class="btn btn-sm btn-warning redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-users-cog" style="top: 5px; margin-left: -25%; position: relative; font-size: 15px;"></i> </a>
                 </div>
             </div>
@@ -26,30 +22,25 @@
             @php
                 $user=Auth::user()->id_empresa;
             @endphp
+                        <div class="col-sm-3" >
+                            <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; position: relative; top: 3px;">
+                              <i class="fa fa-calendar"></i>&nbsp;
+                              <span></span> <i class="fa fa-caret-down"></i>
+                            </div>
+                          </div>
             <div class="">
                 <table class="table tablesorter " id="listado-table">
                     <thead class=" text-primary">
                         <tr> 
-                        <th class="titlelistado">DESCRIPCION</th>
-                        <th style="font-size: 15px !important;">FECHA</th>
-                        <th style="font-size: 15px !important;">USUARIO</th>
-                        <th class="titlelistado">MONTO</th>
+                        <th class="titlelistado">NOMBRE</th>
+                        <th style="font-size: 15px !important;">CARGO</th>
+                        <th style="font-size: 15px !important;">CEDULA</th>
+                        <th style="font-size: 15px !important;">FECHA DE ENTRADA</th>
+                        <th style="font-size: 15px !important;">FECHA DE SALIDA</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="cursor: pointer;">
                         
-                        @foreach ($asistencia as $asistencias)
-                        @if ($asistencias->estado!=1)
-                        @if ($asistencias->id_empresa==$user)
-                        <tr action="{{Route('Asistencia.show',$asistencias->id)}}">
-                            <td>{{$asistencias->descripcion}}</td>
-                            <td>{{date("d/m/Y", strtotime($asistencias->fecha))}}</td>
-                            <td>{{$asistencias->user}}</td>
-                            <td class="amount">${{number_format($asistencias->monto,2)}}</td>
-                        </tr>
-                        @endif
-                        @endif
-                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -63,6 +54,7 @@
 </div>
 
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
+<div class="modal fade" id="horassdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 
 <div class="o-page-loader">
     <div class="o-page-loader--content">
@@ -81,38 +73,70 @@
 
 <script>
 
-   table=$('#listado-table').DataTable({
-    "info": false,
-    select: {
+
+
+start = moment().startOf('month');
+end = moment().endOf('month');
+
+$(document).ready(function(){
+$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+$('#reportrange').daterangepicker({
+    startDate: start,
+    endDate: end,
+    timePicker: true,
+    ranges: {
+       'Today': [moment(), moment()],
+       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'This Month': [moment().startOf('month'), moment().endOf('month')],
+       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
+},      function (start, end) {
+          
+          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+          tabla.ajax.reload();
+        });
+
+  
+
+
+$.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+  });
+  
+ tabla=$('#listado-table').DataTable({
+
+        processing:true,
+              select: {
             style: 'single',
         },
+
         keys: {
           keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
         },
         rowGroup: {
         dataSrc: 'group'
     },
-    buttons:[{
-            extend: 'print',
-            messageTop: 'Nomina Empleado',
-            exportOptions: {
-                    columns: [0, 1, 2, 3, 4],
-                },
-            customize: function ( win ) {
-                    $(win.document.body)
-                        .css( 'font-size', '20pt' )
-                        .prepend(
-                            '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                        );
- 
-                    $(win.document.body).find( 'table' )
-                        .addClass( 'compact' )
-                        .css( 'font-size', 'inherit' );
-                }
-          }],
 
-    
-  
+    serverSide:true,
+    ajax:
+    {
+      url:"{{url('datatableHAS') }}",
+      "data":function(d){
+        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+        d.start_date=start;
+          d.end_date=end;
+
+       
+      }
+    },
+
     language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
@@ -122,7 +146,7 @@
         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
         "infoPostFix": "",
         "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "lengthMenu": "",
         "loadingRecords": "Cargando...",
         "processing": "Procesando...",
         "search": "",
@@ -134,10 +158,21 @@
             "previous": "Anterior"
         }
 
-      },   
-   
+      }, 
+
+
+    columns:[
+    {data:'nombre',name:'nombre',class: "boldend" },
+    {data:'cargo', name:'cargo', class: "boldend"},
+    {data:'cedula', name:'cedula', class: "boldend"},
+    {data:'entrada',name:'entrada', class: "boldend", searchable:false},
+    {data:'salidad',name:'salidad', class: "boldend", searchable:false},
+    ],
+
 });
-$('div.dataTables_filter input', table.table().container()).focus();   
+
+$('div.dataTables_filter input', tabla.table().container()).focus();   
+});
 
 
 
@@ -150,21 +185,30 @@ document.addEventListener ("keydown", function (e) {
 
 
 
+
+
 $("#listado-table tbody").on('click','tr',function(){
  
- url=$(this).attr('action');
+ url=$(this).attr('data-href');
 
- $("#sd").attr('href',url);
-
- $("#urles").trigger("click");
+ modaledit(url);
 
  
 });
 
+// $('#listado-table').DataTable().on("draw", function(){
+//     var rowIdx = tabla.cell(':eq(0)').index().row;
+      
+//       tabla.row(rowIdx).select();
+
+//       tabla.cell( ':eq(0)' ).focus();
+// });
+
+
 $('#listado-table').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
-        table.row(cell.index().row).select();
+        tabla.row(cell.index().row).select();
      });
  
     // Handle click on table cell
@@ -172,11 +216,11 @@ $('#listado-table').on('key-focus.dt', function(e, datatable, cell){
         e.stopPropagation();
         
         // Get index of the clicked row
-        var rowIdx = table.cell(this).index().row;
+        var rowIdx = tabla.cell(this).index().row;
 
         
         // Select row
-        table.row(rowIdx).select();
+        tabla.row(rowIdx).select();
     });
     // Handle key event that hasn't been handled by KeyTable
     $('#listado-table').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
@@ -184,15 +228,15 @@ $('#listado-table').on('key-focus.dt', function(e, datatable, cell){
         // If ENTER key is pressed
         if(key === 13){
             // Get highlighted row data
-            var data = table.row(cell.index().row).data();
+            var data = tabla.row(cell.index().row).data();
             
             var row_s=$(this).DataTable().row({selected:true}).node(); 
 
-                url=$(row_s).attr('action');
+                url=$(row_s).attr('data-href');
 
-                $("#sd").attr('href',url);
+                modaledit(url);
 
-                $("#urles").trigger("click");
+  
             
         }
         
@@ -200,14 +244,38 @@ $('#listado-table').on('key-focus.dt', function(e, datatable, cell){
 
 
 
-      var rowIdx = table.cell(':eq(0)').index().row;
-      
-      table.row(rowIdx).select();
+function modaledit(e){
+    var url="{{url('modaleditFecha')}}/"+e; 
+var data='';
+  $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            success:function(result){
+              $("#horassdd").html(result).modal("show");
+              
 
-      table.cell( ':eq(0)' ).focus();
-
-
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             });
+}
 
 </script>
+
+<style>
+    .dataTables_filter{
+        margin-top: -30px !important;
+        margin-left: 34px;
+    }
+    #listado-table tbody tr {
+        cursor: 'pointer';
+    } 
+    #listado-table{
+        width: 100% !important;
+    }
+</style>
+
 @endsection
 

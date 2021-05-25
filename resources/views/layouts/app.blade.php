@@ -23,7 +23,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <!-- Chartisan -->
         <script src="https://unpkg.com/chart.js@2.9.3/dist/Chart.min.js"></script>
-        <script src="https://unpkg.com/@chartisan/chartjs@^2.1.0/dist/chartisan_chartjs.umd.js"></script>
+        {{-- <script src="https://unpkg.com/@chartisan/chartjs@^2.1.0/dist/chartisan_chartjs.umd.js"></script> --}}
     </head>
     <body class="{{ $class ?? '' }}">
         @auth()

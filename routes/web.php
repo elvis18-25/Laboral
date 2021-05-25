@@ -87,6 +87,7 @@ Route::get('datatableperfilesUsuarios','App\Http\Controllers\PerfilesUsuarioCont
 Route::get('datatableCoop','App\Http\Controllers\CoopController@datatableCoop');
 Route::get('datatablEquipos','App\Http\Controllers\EquiposController@datatablEquipos');
 Route::get('datatableAsistencia','App\Http\Controllers\AsistenciaController@datatableAsistencia');
+Route::get('datatableHAS','App\Http\Controllers\AsistenciaController@datatableHAS');
 
 
 //Empleados
@@ -137,6 +138,13 @@ Route::PUT('agregarUsuarioEdit/{ide}','App\Http\Controllers\PerfilesUsuarioContr
 
 //Contrato
 Route::get('donwload/{file}','App\Http\Controllers\ContratoController@index');
+
+//Asistencia
+Route::get('AllGroupAsistencia','App\Http\Controllers\AsistenciaController@AllGroupAsistencia');
+Route::post('modaleditFecha/{id}','App\Http\Controllers\AsistenciaController@modaleditFecha');
+Route::post('updatefecha/{id}','App\Http\Controllers\AsistenciaController@updatefecha');
+Route::post('deletefecha/{id}','App\Http\Controllers\AsistenciaController@deletefecha');
+
 
 //Puesto
 Route::post('departshow/{id}','App\Http\Controllers\PuestoController@departshow');
