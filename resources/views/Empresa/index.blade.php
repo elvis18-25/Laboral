@@ -1,12 +1,16 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
+<link rel="stylesheet" href="{{asset('css/empresa.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.css" rel="stylesheet">
+
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">CONFIGURACION DE LA EMPRESA</h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>CONFIGURACION DE LA EMPRESA</b></h4>
                 </div>
                 <div class="col-4 text-right">
                     {{-- <a href="{{url('Nominas')}}" class="btn btn-sm btn-info"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"></i></a> --}}
@@ -68,11 +72,11 @@
                                             <i class="tim-icons icon-paper"></i>
                                         </div>
                                     </div>
-                                    <input type="text" name="rncUP" class="form-control" value="{{$empresa->rnc}}" placeholder="RNC">
+                                    <input type="text" name="rncUP" class="form-control rnc" value="{{$empresa->rnc}}" placeholder="RNC">
                                 </div>
                           </div>
 
-                            <div class="col-sm-7">
+                            <div class="col-sm-4">
                                 <label for=""><b>DIRECCION:</b></label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -95,7 +99,15 @@
                                     <input type="email" name="emailUP" class="form-control"value="{{$empresa->email}}" placeholder="Email" >
                                 </div>
                             </div>
-
+            
+                            <div class="col-sm-4">
+                                <div class="color-wrapper">
+                                  <label for=""><b>COLOR:</b></label><br>
+                                  <input type="text" name="custom_color" placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" value="{{$empresa->color}}">
+                                  <div class="color-holder call-picker"></div>
+                                  <div class="color-picker" id="color-picker" style="display: none"></div>
+                                </div>
+                              </div>
 
                             <div class="col-sm-4">
                                 <label for=""><b>IMAGEN:</b></label><br>
@@ -104,10 +116,10 @@
                                 {{-- <label for="actual-btn" id="labides" style="color: black;"></label> --}}
                                 <span id="file-chosen" style="color: black">SIN ARCHIVO...</span>
                               </div>
-                           
 
 
-
+                       
+                        
 
                             </div>
                             
@@ -157,61 +169,91 @@
                                   
                                     <form action="{{Route('Empresa.store')}}" method="POST">
                                         @csrf
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text" style="color: black">
-                                                <i class="tim-icons icon-single-02"></i>
-                                            </div>
-                                        </div>
-                                        <input type="text" name="nombre" autofocus class="form-control" placeholder="Nombre de la Empresa" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
-                                    </div>
-                     
+                                        <div class="form-row">
+                                        <div class="col-sm-5">
+                                            <label for=""><b>NOMBRE:</b></label>
+                                           <div class="input-group mb-3">
+                                               <div class="input-group-prepend">
+                                                   <div class="input-group-text">
+                                                   <i class="fas fa-address-card" style="color: black"></i>
+                                               </div>
+                                           </div>
+                                           <input type="text" name="nombre"  autofocus class="form-control" placeholder="Nombre de la Empresa" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+                                       </div>
+                                   </div>
+                        
+                                   <div class="col-sm-3 wrap-input100 validate-input m-b-18" >
+                                       <label for=""><b>TELÉFONO:</b></label>
+                                       <div class="input-group mb-3">
+                                           <div class="input-group-prepend">
+                                               <div class="input-group-text" style="color: black">
+                                                   <i class="fas fa-mobile-alt"></i>
+                                               </div>
+                                           </div>
+                                           <input type="tel" name="telefono"  class="form-control" placeholder="Télefono">
+                                       </div>
+                                       <span class="focus-input100"></span>
+                                   </div>
+                         
+                                   <div class="col-sm-3">
+                                       <label for=""><b>RNC:</b></label>
+                                       <div class="input-group mb-3">
+                                           <div class="input-group-prepend">
+                                               <div class="input-group-text" style="color: black">
+                                                   <i class="tim-icons icon-paper"></i>
+                                               </div>
+                                           </div>
+                                           <input type="text" name="rnc" class="form-control rnc"  placeholder="RNC">
+                                       </div>
+                                 </div>
+       
+                                   <div class="col-sm-4">
+                                       <label for=""><b>DIRECCION:</b></label>
+                                       <div class="input-group mb-3">
+                                           <div class="input-group-prepend">
+                                               <div class="input-group-text" style="color: black">
+                                                   <i class="tim-icons icon-map-big"></i>
+                                               </div>
+                                           </div>
+                                           <input type="text" name="direcion" class="form-control" placeholder="Direccion" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+                                       </div>
+                                   </div>
+       
+                                   <div class="col-sm-4">
+                                       <label for=""><b>EMAIL:</b></label>
+                                       <div class="input-group mb-3">
+                                           <div class="input-group-prepend">
+                                               <div class="input-group-text" style="color: black">
+                                                   <i class="fas fa-at"></i>
+                                               </div>
+                                           </div>
+                                           <input type="email" name="email" class="form-control" placeholder="Email" >
+                                       </div>
+                                   </div>
+                   
+                                   <div class="col-sm-4">
+                                       <div class="color-wrapper">
+                                         <label for=""><b>COLOR:</b></label><br>
+                                         <input type="text" name="custom_color" placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" >
+                                         <div class="color-holder call-picker"></div>
+                                         <div class="color-picker" id="color-picker" style="display: none"></div>
+                                       </div>
+                                     </div>
+       
+                                   <div class="col-sm-4">
+                                       <label for=""><b>IMAGEN:</b></label><br>
+                                       <button type="button" type="button" id="btnuploa" for="actual-btn"  class="btn btn-success btn-sm"><i class="fas fa-folder-open"></i></button>
+                                       <input type="file" id="actual-btn" max-file-size="1" accept=".png" name="archiveUP" hidden/>
+                                       {{-- <label for="actual-btn" id="labides" style="color: black;"></label> --}}
+                                       <span id="file-chosen" style="color: black">SIN ARCHIVO...</span>
+                                     </div>
 
-                                
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text" style="color: black">
-                                                <i class="tim-icons icon-mobile"></i>
-                                            </div>
-                                        </div>
-                                        <input type="tel" name="telefono" class="form-control" placeholder="Télefono">
-                                    </div>
-                      
-
-                              
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text" style="color: black">
-                                                <i class="tim-icons icon-map-big"></i>
-                                            </div>
-                                        </div>
-                                        <input type="text" name="direcion" class="form-control" placeholder="Direccion" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
-                                    </div>
-         
-                            
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text" style="color: black">
-                                                <i class="tim-icons icon-paper"></i>
-                                            </div>
-                                        </div>
-                                        <input type="text" name="rnc" class="form-control" placeholder="RNC">
-                                    </div>
-
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text" style="color: black">
-                                                <i class="fas fa-at"></i>
-                                            </div>
-                                        </div>
-                                        <input type="text" name="email" class="form-control" placeholder="Email">
-                                    </div>
-
-                                    <button type="submit" class="btn btn-info"><i class="fas fa-save"></i>&nbsp;Guardar</button>
-                                </form>
+                                     <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 197px; top:82px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+                                    </form>
                                
 
                             </div>
+                        </div>
                         </div>
 
                         <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
@@ -229,18 +271,27 @@
     </div>
 </div>
   
-
+<div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner logotipo">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
+  </div>
     @include('Contrato.modal')
 @endsection
 
 @section('js')
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+<script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/js/bootstrap-colorpicker.js"></script>
+
+
 <script>
-    var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+
 
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
@@ -250,10 +301,9 @@ document.addEventListener ("keydown", function (e) {
 });
 
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
+$("input[name='custom_color']").mask('#0');
+$(".rnc").mask('0#');
 $("input[type='tel']").mask('(000) 000-0000');
 
 
@@ -270,6 +320,28 @@ $("#btnuploa").on('click',function(){
 
 // $("#filepond--drop-label-6ece2zz3j").change()
 
+var colorList = [ '000000', '993300', '333300', '003300', '003366', '000066', '333399', '333333', 
+'660000', 'FF6633', '666633', '336633', '336666', '0066FF', '666699', '666666', 'CC3333', 'FF9933', '99CC33', '669966', '66CCCC', '3366FF', '663366', '999999', 'CC66FF', 'FFCC33', 'FFFF66', '99FF66', '99CCCC', '66CCFF', '993366', 'CCCCCC', 'FF99CC', 'FFCC99', 'FFFF99', 'CCffCC', 'CCFFff', '99CCFF', 'CC99FF', 'FFFFFF' ];
+		var picker = $('#color-picker');
+
+		for (var i = 0; i < colorList.length; i++ ) {
+			picker.append('<li class="color-item" data-hex="' + '#' + colorList[i] + '" style="background-color:' + '#' + colorList[i] + ';"></li>');
+		}
+
+		$('body').click(function () {
+			picker.fadeOut();
+		});
+
+		$('.call-picker').click(function(event) {
+			event.stopPropagation();
+			picker.fadeIn();
+			picker.children('li').hover(function() {
+				var codeHex = $(this).data('hex');
+
+				$('.color-holder').css('background-color', codeHex);
+				$('#pickcolor').val(codeHex);
+			});
+		});
 </script>
     
 @endsection

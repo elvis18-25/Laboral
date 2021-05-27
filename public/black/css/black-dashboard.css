@@ -620,24 +620,46 @@ pre code {
   .container {
     max-width: 540px;
   }
+
+.card-tasks{
+  min-height: 98% !important;
+}
 }
 
 @media (min-width: 768px) {
   .container {
     max-width: 720px;
   }
+
+
+.card-tasks{
+  min-height: 98% !important;
+}
+
 }
 
 @media (min-width: 992px) {
   .container {
     max-width: 960px;
   }
+
+  
+.card-tasks{
+  min-height: 98% !important;
+}
+
 }
 
 @media (min-width: 1200px) {
   .container {
     max-width: 1140px;
   }
+
+
+.card-tasks{
+  min-height: 98% !important;
+}
+
 }
 
 .container-fluid {
@@ -938,6 +960,11 @@ pre code {
     flex: 0 0 16.666667%;
     max-width: 16.666667%;
   }
+
+  .card-tasks{
+    min-height: 98% !important;
+  }
+
   .col-sm-3 {
     flex: 0 0 25%;
     max-width: 25%;
@@ -1067,6 +1094,15 @@ pre code {
     flex-grow: 1;
     max-width: 100%;
   }
+
+  .card-tasks{
+    min-height: 98% !important;
+  }
+
+  .card-tasks{
+    min-height: 98% !important;
+  }
+
   .col-md-auto {
     flex: 0 0 auto;
     width: auto;
@@ -1208,6 +1244,10 @@ pre code {
     flex-basis: 0;
     flex-grow: 1;
     max-width: 100%;
+  }
+
+  .card-tasks{
+    min-height: 98% !important;
   }
   .col-lg-auto {
     flex: 0 0 auto;
@@ -1351,6 +1391,11 @@ pre code {
     flex-grow: 1;
     max-width: 100%;
   }
+
+  .card-tasks{
+    min-height: 98% !important;
+  }
+  
   .col-xl-auto {
     flex: 0 0 auto;
     width: auto;

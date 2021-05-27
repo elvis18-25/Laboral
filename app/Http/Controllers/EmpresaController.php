@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Permisos;
+use App\Http\Controllers\Auth\LoginController;
 
 class EmpresaController extends Controller
 {
@@ -48,15 +49,29 @@ class EmpresaController extends Controller
         $empresa->nombre=$request->get('nombre');
         $empresa->telefono=$request->get('telefono');
         $empresa->direcion=$request->get('direcion');
+        $empresa->email=$request->get('email');
+        $empresa->color=$request->get('custom_color');
+        $empresa->email=$request->get('archiveUP');
         $empresa->estado=0;
         $empresa->rnc=$request->get('rnc');
         $empresa->save();
 
         $user=new User();
         $user->name=Auth::user()->name;
-        $user->email=$request->get('email');
-        $user->id_empresa=$empresa->id;
+        $user->apellido=Auth::user()->apellido;
+        $user->email=Auth::user()->email;
         $user->password=Auth::user()->password;
+        $user->cedula=Auth::user()->cedula;
+        $user->telefono=Auth::user()->telefono;
+        $user->direccion=Auth::user()->direccion;
+        $user->edad=Auth::user()->edad;
+        $user->imagen=Auth::user()->imagen;
+        $user->entrada=Auth::user()->entrada;
+        $user->salida=Auth::user()->salida;
+        $user->salario=Auth::user()->salario;
+        $user->cargo=Auth::user()->cargo;
+        $user->id_empresa=$empresa->id;
+        $user->estado=0;
         $user->save();
 
         $user->asignarRol(1);
@@ -122,6 +137,19 @@ class EmpresaController extends Controller
     {
         //
     }
+
+    public function SearchUser(Request $request)
+    {
+        $user=User::where('id_empresa','=',$request->get('selecet'))->Where('email','=',Auth::user()->email)->first();
+
+
+       
+        $myVariable =Auth::login($user);
+        // dd( $myVariable);
+        return redirect('/home');
+
+    }
+
     public function guardar()
     {
         //
@@ -143,6 +171,7 @@ class EmpresaController extends Controller
         $empresa->direcion=$request->get('direcionUP');
         $empresa->rnc=$request->get('rncUP');
         $empresa->email=$request->get('emailUP');
+        $empresa->color=$request->get('custom_color');
         
 
         if($request->hasFile('archiveUP')){

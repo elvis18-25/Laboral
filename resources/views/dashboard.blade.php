@@ -8,12 +8,17 @@
 @include('Fullcalendar.create')
 @include('Fullcalendar.edit')
 <style>
-  .card-tasks{
+  /* .card-tasks{
     min-height: 100% !important;
-  }
+  } */
 
   .fc-scrollgrid{
     cursor: pointer;
+  }
+  @media(max-width:: 870px){
+    .card-tasks{
+      min-height: 90% !important;
+  }
   }
 </style>
 <div class="row">

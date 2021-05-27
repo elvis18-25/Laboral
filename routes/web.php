@@ -63,6 +63,7 @@ Route::resource('Cooperativas', 'App\Http\Controllers\CoopController')->middlewa
 Route::resource('PerfilesUsuario', 'App\Http\Controllers\PerfilesUsuarioController')->middleware('auth');
 Route::resource('Asistencia', 'App\Http\Controllers\AsistenciaController')->middleware('auth');
 Route::resource('Equipos', 'App\Http\Controllers\EquiposController')->middleware('auth');
+Route::resource('Seleccion', 'App\Http\Controllers\MultiController');
 
 
 
@@ -70,6 +71,12 @@ Route::resource('Equipos', 'App\Http\Controllers\EquiposController')->middleware
 Route::post('viewasigna/{id}','App\Http\Controllers\AsignacionesController@viewasigna');
 Route::post('updateasignaciones/{id}','App\Http\Controllers\AsignacionesController@updateasignaciones');
 Route::post('deleteasigna/{id}','App\Http\Controllers\AsignacionesController@deleteasigna');
+//Empresa
+Route::post('SearchUser','App\Http\Controllers\EmpresaController@SearchUser');
+
+//Multi
+Route::post('MultiEmpresa','App\Http\Controllers\MultiController@MultiEmpresa');
+Route::post('SeleccionEmpresa','App\Http\Controllers\MultiController@SeleccionEmpresa');
 
 
 //datatables

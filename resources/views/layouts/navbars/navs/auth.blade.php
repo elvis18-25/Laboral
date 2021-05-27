@@ -22,31 +22,48 @@
                         <span class="d-lg-none d-md-block">{{ __('Search') }}</span>
                     </button>
                 </li> --}}
+
+                @php
+                    $user=App\Models\User::where('email','=',Auth::user()->email)->where('estado','=',0)->get();
+                    $empresa=App\Models\Empresa::where('estado','=',0)->get();
+                @endphp
+
+        @if (sizeof(App\Models\User::where('email','=',Auth::user()->email)->get())>1)
+    
+            <form action="{{url('SearchUser')}}" method="post">
+                @csrf
+                <select class="custom-select" id="validationDefault04" name="selecet" >
+                    @foreach ($empresa as $empresas)
+                    @foreach ($user as $users)
+
+                    @if ($users->id_empresa==$empresas->id)
+                    @if ($empresas->id==Auth::user()->id_empresa)
+                    <option selected  value="{{$empresas->id}}">{{$empresas->nombre}}</option>
+                    @else
+                    <option   value="{{$empresas->id}}">{{$empresas->nombre}}</option>
+                    @endif
+
+                    @endif
+
+                    @endforeach
+                    @endforeach
+                </select>
+                <button type="submit" id="btnsubmit" hidden></button>
+            </form>
+
+            @endif
+
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <div class="notification d-none d-lg-block d-xl-block"></div>
                         <i class="fas fa-bell"></i>
-                        <p class="d-lg-none"> {{ __('Notifications') }} </p>
+                        <p class="d-lg-none"> {{ __('Notificaciónes') }} </p>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
-                        {{-- <li class="nav-link">
-                            <a href="#" class="nav-item dropdown-item">{{ __('Mike John responded to your email') }}</a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="#" class="nav-item dropdown-item">{{ __('You have 5 more tasks') }}</a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="#" class="nav-item dropdown-item">{{ __('Your friend Michael is in town') }}</a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="#" class="nav-item dropdown-item">{{ __('Another notification') }}</a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="#" class="nav-item dropdown-item">{{ __('Another one') }}</a>
-                        </li> --}}
                     </ul>
                 </li>
                 <li class="dropdown nav-item">
+
                     @php
                         $user=Auth::user();
                     @endphp
@@ -63,7 +80,7 @@
                         @endif
 
                         <b class="caret d-none d-lg-block d-xl-block"></b>
-                        <p class="d-lg-none">{{ __('Log out') }}</p>
+                        <p class="d-lg-none">{{ __('Cerrar Sesión') }}</p>
                     </a>
                     <ul class="dropdown-menu dropdown-navbar">
                         <li class="nav-link">
@@ -95,3 +112,11 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('black') }}/js/core/jquery.min.js"></script>
+
+
+<script>
+    $("#validationDefault04").on('change',function(){
+        $("#btnsubmit").trigger("click");
+    })
+</script>

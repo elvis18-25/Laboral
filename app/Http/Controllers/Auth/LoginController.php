@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginController extends Controller
 {
@@ -19,7 +23,51 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    
+    public function authenticate(Request $request)
+    {
+    
+        $credentials = $request->only('email', 'password');
+        
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/home');
+        }
+        
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+            ]);
+        }
+        
+    public function authenticate2(Request $request)
+    {
+
+        $user=User::where('email','=',$request->get('email'))->where('id_empresa','=',$request->get('id_empresa'))->first();
+        $myVariable =Auth::login($user,true);
+
+        return redirect()->intended('/home');
+
+    }
+
+
+    public function authenticate3($request)
+    {
+        // dd($request->only('email', 'password','id_empresa'));
+    
+        $credentials = $request->only('email', 'password','id_empresa');
+        
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/home');
+        }
+        
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+            ]);
+        }
+        use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.

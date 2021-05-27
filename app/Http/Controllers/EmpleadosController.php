@@ -162,7 +162,7 @@ class EmpleadosController extends Controller
         }
         $empleados=Empleado::create($inputs);
 
-        $empleados->password=$empleados->cedula;
+        $empleados->password=bcrypt($empleados->cedula);
         $empleados->estado=0;
         $empleados->save();
 

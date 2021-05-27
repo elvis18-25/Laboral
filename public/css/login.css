@@ -287,6 +287,16 @@ form.sign-in-form {
     transition: 1s 0.8s ease-in-out;
   }
 
+  .o-page-loader--spinner {
+    width: 50% !important;
+    height: 20% !important;
+    /* background-color: rgb(255,255,255); */
+    /* background-image: url('..black/img/logotipo.png'); */
+    margin: 20px auto;
+    /* animation: rotate-plane 1.2s infinite ease-in-out;
+    -webkit-animation: rotate-plane 1.2s infinite ease-in-out; */
+}
+
   .signin-signup,
   .container.sign-up-mode .signin-signup {
     left: 50%;
@@ -388,7 +398,7 @@ top: -88px;
   }
 
   .register{
-    top: -55px;
+    top: -81px;
     position: relative;
   }
 
@@ -396,9 +406,10 @@ top: -88px;
     display: none;
   }
   .logotipo{
-    width: 56%;
-    top: 15px;
-    position: relative
+    width: 49%;
+    top: 35px;
+    position: relative;
+    font-size: small;
   }
   .panel .content {
     padding: 0.5rem 1rem;
@@ -408,7 +419,7 @@ top: -88px;
   }
 
   .container:before {
-    bottom: 72%;
+    bottom: 76%;
     left: 50%;
   }
 

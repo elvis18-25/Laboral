@@ -19,8 +19,10 @@
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form  class="sign-in-form" method="post" action="{{ route('login') }}">
+          {{-- <form  class="sign-in-form" method="post" action="{{ route('login') }}"> --}}
+          <form  class="sign-in-form" method="POST" action="{{url('MultiEmpresa')}}">
             @csrf
+            @method('POST')
             <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="logotipo">
             <h2 class="title">Iniciar Sesión</h2>
             <div class="input-field">
@@ -32,22 +34,6 @@
               <input type="password" placeholder="Contraseña" name="password" />
             </div>
 
-			@if ($errors->any())
-
-			<ul>
-				 @foreach ($errors->all() as $error)
-				 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-					 <script>
-						 Swal.fire({
-						 icon: 'error',
-						 title: 'Oops...',
-						 text: 'La Contraseña o el Usuario esta incorrecto!',
-						 })
-					 </script>
-				 @endforeach
-			</ul>
-		
-		@endif
             <input type="submit" value="Entrar" class="btn solid" />
 
           </form>
@@ -141,13 +127,21 @@
         </div>
       </div>
     </div>
+    <div class="o-page-loader">
+      <div class="o-page-loader--content">
+        <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner logotipo">
+          {{-- <div class=""></div> --}}
+          <div class="o-page-loader--message">
+              <span>Cargando...</span>
+          </div>
+      </div>
+    </div>
 
     <script src="{{asset('js/login.js')}}"></script>
 	<script src="{{ asset('black') }}/js/core/jquery.min.js"></script>
+  <script src="{{asset('js/pageLoader.js')}}"></script>
   </body>
 </html>
-<script src="{{asset('js/holdOn.js')}}"></script>
-<link rel="stylesheet" href="{{asset('css/holdOn.css')}}">
 {{-- <script src="{{asset('logincss/bootstrap/js/bootstrap.min.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{asset('logincss/bootstrap/css/bootstrap.min.css')}}"> --}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -157,14 +151,6 @@
 
 
 <script>
-	var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
-
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 
 $(".empresa").on("click", function (e) {
@@ -239,7 +225,7 @@ function Errores(){
 </script>
 
 <style>
-	body{
+	/* body{
 		overflow-x: hidden;
 		overflow-y: hidden;
 		
@@ -285,9 +271,9 @@ function Errores(){
     bottom: 38%;
     left: 50%;
   }
-}
+} */
 
-@media (max-width: 870px){
+/* @media (max-width: 870px){
   .right-panel {
     grid-row: 3 / 4;
     position: relative;
@@ -297,19 +283,7 @@ function Errores(){
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap");
 
-.container:before {
-  content: "";
-  position: absolute;
-  height: 2000px;
-  width: 2000px;
-  top: -10%;
-  right: 48%;
-  transform: translateY(-50%);
-  background-image: linear-gradient(-45deg, #4054b2 0%, #4054b2 100%);
-  transition: 1.8s ease-in-out;
-  border-radius: 50%;
-  z-index: 6;
-}
+
 
 .btn {
   width: 150px;
@@ -324,6 +298,8 @@ function Errores(){
   margin: 10px 0;
   cursor: pointer;
   transition: 0.5s;
+} */
+.container:before {
+  border-radius: 50%;
 }
-
 </style>
