@@ -103,7 +103,7 @@
                             <div class="col-sm-4">
                                 <div class="color-wrapper">
                                   <label for=""><b>COLOR:</b></label><br>
-                                  <input type="text" name="custom_color" placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" value="{{$empresa->color}}">
+                                  <input type="text" name="custom_color" readonly placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" value="{{$empresa->color}}">
                                   <div class="color-holder call-picker"></div>
                                   <div class="color-picker" id="color-picker" style="display: none"></div>
                                 </div>
@@ -125,6 +125,8 @@
                             
                             <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 197px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
                         </form>
+
+
                         </div>
                              
                         </div>
@@ -302,7 +304,7 @@ document.addEventListener ("keydown", function (e) {
 
 
 
-$("input[name='custom_color']").mask('#0');
+// $("input[name='custom_color']").mask('0#');
 $(".rnc").mask('0#');
 $("input[type='tel']").mask('(000) 000-0000');
 
