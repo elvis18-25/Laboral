@@ -28,8 +28,8 @@
             <div class="form-inline ">
                 <label for="inputState"><b> SELECCIONAR POR GRUPO:</b> &nbsp;</label>
                     <select id="inputState" class="form-control form-control-sm" name="dinamico">
-                      <option selected value="-1">NINGUNO...</option>
-                      <option value="0">TODOS</option>
+                      <option  value="-1">NINGUNO...</option>
+                      <option selected value="0">TODOS</option>
                       @foreach ($equipo as $equipos)
                       @if ($equipos->id_empresa==Auth::user()->id_empresa && $equipos->estados==0)
                       <option value="{{$equipos->id}}">{{$equipos->descripcion}}</option>
@@ -40,7 +40,7 @@
             </div>
             <br>
             <br>
-            <input type="text" id="input" value="-1" hidden>
+            <input type="text" id="input" value="0" hidden>
             @php
                 $user=Auth::user()->id_empresa;
             @endphp
@@ -48,15 +48,15 @@
                 <table class="table tablesorter " id="listado-table" style="width: 100% !important;">
                     <thead class=" text-primary">
                     <tr> 
-                        <th style="font-size: 15px !important;">ACCIÓN</th>
-                        <th class="titlelistado"><b>EMPLEADO</b></th>
+                        <th style="font-size: 15px !important; width: 61px !important;">ACCIÓN</th>
+                        <th style="font-size: 15px !important; text-align: center !important;"><b>EMPLEADO</b></th>
                         <th style="font-size: 15px !important;"><b>CARGO</b></th>
                         <th style="font-size: 15px !important;"><b>DEPARTAMENTO</b></th>
                         <th style="font-size: 15px !important;"><b>CEDULA</b></th>
                         <th class="titlelistado"><b>GRUPO</b></th>
                       </tr>
                     </thead>
-                    <tbody style="font-size: 12px !important;">
+                    <tbody style="font-size: 13px !important;">
                     </tbody>
                 </table>
             </div>
@@ -99,9 +99,9 @@ headers: {
  tabla=$('#listado-table').DataTable({
         // dom: 'Bfrtip',
         // "searching": false,
-        // "paging":   false,
+        "paging":   false,
         // "ordering": false,
-        // "info":     false,
+        "info":     false,
         processing:true,
       
         // select: {
@@ -267,9 +267,15 @@ $(function() {
 .boldend{
     text-align: center !important;
 }
+.right{
+  text-align: left !important;
+}
 
 .listado-table{
     width: 100% !important;
+}
+.dataTables_filter{
+  top: -37px !important;
 }
 </style>
 @endsection

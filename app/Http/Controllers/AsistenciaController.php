@@ -50,11 +50,12 @@ class AsistenciaController extends Controller
         // dd($request->all());
         $notas=$request->get('notas');
         $entrada=$request->get('birthday');
-        $empleados=Empleado::all();
 
-        if($request->get('dinamico')==0){
-            foreach($empleados as $empleado){
-            $input['id_empleado']=$empleado->id_empleado;
+        $size = count(collect($request)->get('Din'));
+        
+        for ($i=0; $i<=$size ; $i++) { 
+            if(!empty(collect($request)->get('Din')[$i])){
+           $input['id_empleado']=$request->get('Din')[$i];
            $input['notas']= $notas;
            $input['entrada']=$request->get('birthday');
            $input['salidad']=$request->get('birthday2s');
@@ -62,41 +63,10 @@ class AsistenciaController extends Controller
            $input['id_empresa']=Auth::user()->id_empresa;
            $input['estado']=0;
            $perfiles=Asistencia::create($input);
+
             }
-        }else{
-            $equipos=empleados_equipo::where('equipos','=',$request->get('dinamico'))->get();
-
-            foreach($equipos as $equipo){
-                $input['id_empleado']=$equipo->id_empleado;
-               $input['notas']= $notas;
-               $input['entrada']=$request->get('birthday');
-               $input['salidad']=$request->get('birthday2s');
-               $input['user']=Auth::user()->name;
-               $input['id_empresa']=Auth::user()->id_empresa;
-               $input['estado']=0;
-               $perfiles=Asistencia::create($input);
-                }
-                
         }
-
-
-        // dd($notas);
-        // $size = count(collect($request)->get('dinamico'));
         
-        // for ($i=0; $i<=$size ; $i++) { 
-        //     if(!empty(collect($request)->get('dinamico')[$i])){
-        //    $input['id_empleado']=$request->get('dinamico')[$i];
-        //    $input['notas']= $notas;
-        //    $input['entrada']=$request->get('birthday');
-        //    $input['salidad']=$request->get('birthday2s');
-        //    $input['user']=Auth::user()->name;
-        //    $input['id_empresa']=Auth::user()->id_empresa;
-        //    $input['estado']=0;
-        //    $perfiles=Asistencia::create($input);
-
-        //     }
-        // }
-
         return redirect('Asistencia');
     }
 
@@ -191,7 +161,8 @@ class AsistenciaController extends Controller
         ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
         ->where('empleado.estado','=',0)
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)
-        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.horas','empleado.cedula','puesto.name as puesto','empleado.salario','equipos_empleados.equipos')->GroupBy('equipos_empleados.id_empleado','equipos_empleados.equipos','empleado.id_empleado','empleado.cedula','empleado.horas','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario');
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.horas','empleado.cedula','puesto.name as puesto','empleado.salario')
+        ->GroupBy('equipos_empleados.id_empleado','empleado.nombre','empleado.id_empleado','empleado.cedula','empleado.horas','empleado.cargo','empleado.apellido','puesto','empleado.salario');
        
 
         if(!empty($tipo)){
@@ -203,8 +174,23 @@ class AsistenciaController extends Controller
                 return $row->nombre." ".$row->apellido;
 
             })
+            ->editColumn('equipos',function($row){
+                $equipos=empleados_equipo::all();
+                $tipo=request()->get('dato1');
+                
+
+                foreach($equipos as  $equipo){
+                    if($equipo->equipos==$tipo){
+                        return $tipo ;
+                    }else{
+                        return $tipo; 
+                    }
+                }
+                
+
+            })
             ->addColumn('btn',function($row){
-                $button='<div class="form-check"><label class="form-check-label"><input class="form-check-input check"  checked type="checkbox" value="'.$row->id_empleado.'"><span class="form-check-sign"><span class="check"></span></span></label></div>';
+                $button='<div class="form-check"><label class="form-check-label"><input class="form-check-input check" name="Din[]"  checked type="checkbox" value="'.$row->id_empleado.'"><span class="form-check-sign"><span class="check"></span></span></label></div>';
                 return  $button;
                 
 
