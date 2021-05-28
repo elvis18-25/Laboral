@@ -784,7 +784,7 @@ function savedepart(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -804,7 +804,7 @@ function savepago(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -843,7 +843,7 @@ function elimini(e,p){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
   }
@@ -865,7 +865,7 @@ function openadjunto(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -943,7 +943,7 @@ $(document).on('click', '.remf', function (event) {
             success:function(result){;
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 
@@ -970,7 +970,7 @@ $("#countries").on('change',function(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 });
@@ -996,7 +996,7 @@ $("#state").on('change',function(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 });
@@ -1019,7 +1019,7 @@ function estado(e){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -1042,7 +1042,7 @@ function ciudad(e){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -1064,7 +1064,7 @@ function ciudad(e){
 
 //            },
 //                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+//                 ErroresGeneral();
 //     }
 //              });
 // });

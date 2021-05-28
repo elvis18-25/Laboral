@@ -936,7 +936,7 @@ function savedepart(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -961,7 +961,7 @@ function savedgruop(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -986,7 +986,7 @@ function savepago(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -1008,7 +1008,7 @@ function saveasignar(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -1067,7 +1067,7 @@ function newadjunto(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
 }
@@ -1096,7 +1096,7 @@ $("#countries").on('change',function(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 });
@@ -1117,7 +1117,7 @@ $("#state").on('change',function(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 });
@@ -1134,7 +1134,7 @@ $(document).on('click', '.remf', function (event) {
             success:function(result){;
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                  ErroresGeneral();
     }
              }); 
 
