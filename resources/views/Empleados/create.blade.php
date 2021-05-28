@@ -1,5 +1,11 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
+<style>
+
+  .error{
+    border-color: red !important;
+  }
+</style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -26,20 +32,22 @@
 
                         @include('alerts.success')
 
-                        <div class="col-sm-4 mb-2{{ $errors->has('nombre') ? ' has-danger' : '' }}">
+                        <div class="col-sm-4 mb-2 " >
                             <label>{{ __('NOMBRE') }}</label>
                             <input type="text" name="nombre" autofocus class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="{{ __('Nombre') }}" required >
-                        
+                            <label for="nombre" class="validation_error_message help-block"></label>
                         </div>
                         <div class="col-sm-4{{ $errors->has('apellido') ? ' has-danger' : '' }}">
                             <label>{{ __('APELLIDO') }}</label>
                             <input type="text" name="apellido" class="form-control{{ $errors->has('apellido') ? ' is-invalid' : '' }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="{{ __('apellido') }}" required>
-                         
+                            <label for="apellido" class="validation_error_message help-block"></label>
+                            
                         </div>
                         <div class="col-sm-4{{ $errors->has('cedula') ? ' has-danger' : '' }}">
                             <label>{{ __('CÉDULA') }}</label>
                             <input type="text" name="cedula" class="form-control{{ $errors->has('cedula') ? ' is-invalid' : '' }}" id="cedula" placeholder="{{ __('Cedula') }}" required>
-                       
+                            <label for="cedula" class="validation_error_message help-block"></label>
+
                         </div>
                         <div class="col-sm-4 mb-2{{ $errors->has('edad') ? ' has-danger' : '' }}">
                             <label>{{ __('FECHA DE NACIMINETO') }}</label>
@@ -54,7 +62,7 @@
 
                         <div class="col-sm-3{{ $errors->has('pais') ? ' has-danger' : '' }}">
                             <label>{{ __('PAIS') }}</label>
-                            <select class="form-control{{ $errors->has('pais') ? ' is-invalid' : '' }} selec" id="countries" name="pais" >
+                            <select class="form-control{{ $errors->has('pais') ? ' is-invalid' : '' }} selec" id="countries" name="pais" required >
                                 <option selected disabled value="{{old('pais')}}">ELEGIR...</option>
                                 @foreach ($pais as $paises)
                                 <option value="{{$paises->id}}">{{$paises->name}}</option>
@@ -63,21 +71,21 @@
                         </div>
                         <div class="col-sm-3 mb-2{{ $errors->has('state') ? ' has-danger' : '' }}">
                             <label>{{ __('ESTADO') }}</label>
-                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" id="state" name="state">
+                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" id="state" name="state" required>
                                 <option selected disabled value="{{old('state')}}">ELEGIR...</option>
 
                               </select>
                         </div>
                         <div class="col-sm-3 mb-2{{ $errors->has('Ciudad') ? ' has-danger' : '' }}">
                             <label>{{ __('CIUDAD') }}</label>
-                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" name="ciudad" id="cities" >
+                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" name="ciudad" id="cities" required >
                                 <option selected disabled value="{{old('cities')}}">ELEGIR...</option>
                                 <option>...</option>
                               </select>
                         </div>
                         <div class="col-sm-3{{ $errors->has('telefono') ? ' has-danger' : '' }}">
                             <label>{{ __('TÉLEFONO') }}</label>
-                            <input type="tel" name="telefono" class="form-control{{ $errors->has('telefono') ? ' is-invalid' : '' }}" placeholder="{{ __('Télefono') }}" required>
+                            <input type="tel" name="telefono" class="form-control{{ $errors->has('telefono') ? ' is-invalid' : '' }}" placeholder="{{ __('Télefono') }}" >
                         
                         </div>
 
@@ -89,7 +97,7 @@
                         <div class="col-sm-3{{ $errors->has('genero') ? ' has-danger' : '' }}">
                             <label>{{ __('GENERO') }}</label>
                             <select class="form-control{{ $errors->has('genero') ? ' is-invalid' : '' }} selec" name="genero" required>
-                                <option selected >ELEGIR...</option>
+                                <option selected value="" >ELEGIR...</option>
                               @foreach ($sexo as $sex)
                                 <option value="{{$sex->id}}">{{$sex->name}}</option>
                                 @endforeach
@@ -155,7 +163,7 @@
                             <label>{{ __('FORMAS DE PAGOS') }}</label>
                             <div class="input-group mb-2">
                                 <select class="form-control{{ $errors->has('pagos') ? ' is-invalid' : '' }} selec" name="pagos" id="forma" required>
-                                    <option selected >ELEGIR...</option>
+                                    <option selected value="" >ELEGIR...</option>
                                     @foreach ($pago as $pag)
                                     @if ($pag->estado==0)
                                     @if ($pag->id_empresa==Auth::user()->id_empresa)
@@ -425,7 +433,7 @@
     <input type="text" name="ISR" value="" id="ISR" hidden>
 
 
-    <button type="submit" class="btn btn-fill btn-info mx-auto"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+    <button type="submit" class="btn btn-fill btn-info mx-auto" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
     </form>
     </div>
     </div>
@@ -452,6 +460,7 @@
 
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="{{asset('js/timepicker.min.js')}}"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 
 <script  type="text/javascript">
   $(document).ready(function(){
@@ -467,6 +476,65 @@
 // function preguntarAntesDeSalir(){
 // return "¿Seguro que quieres salir?";
 // }
+let elementos = document.querySelectorAll("input[type=text], input[type=email]")
+
+// elementos.forEach((elemento) => {
+//   alert
+//             $(elementos).RemoveClass('has-danger');
+//           })
+
+
+//         let boton = document.getElementById("seave")
+//         let aviso = document.getElementById("aviso")
+        
+//         boton.addEventListener("click", (event) => {
+//           event.preventDefault()
+//           elementos.forEach((elemento) => {
+//             (elemento.value === "") ? elemento.style.background = "red" : aviso.innerHTML = "Campos llenados"
+//           })
+//         })
+    
+$("#formulario").validate({
+
+  errorPlacement: function(error, element) {
+        var name = element.attr('name');
+        element.addClass('error');
+        var errorSelector = '.validation_error_message[for="' + name + '"]';
+        var $element = $(errorSelector);
+        if ($element.length) { 
+          $(errorSelector).html(error.html());
+        } else {
+          
+            error.insertAfter(element);
+
+        }
+        ErroresGeneral();
+    }
+
+});
+
+jQuery.extend(jQuery.validator.messages, {
+    required: "",
+    remote: "Please fix this field.",
+    email: "Please enter a valid email address.",
+    url: "Please enter a valid URL.",
+    date: "Please enter a valid date.",
+    dateISO: "Please enter a valid date (ISO).",
+    number: "Please enter a valid number.",
+    digits: "Please enter only digits.",
+    creditcard: "Please enter a valid credit card number.",
+    equalTo: "",
+    accept: "Please enter a value with a valid extension.",
+    maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
+    minlength: jQuery.validator.format("Please enter at least {0} characters."),
+    rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+    range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+    max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+    min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+});
+
+
+
 
  $("#exampleRadios1").attr("checked",true);
   $("#salida").hide();
@@ -1076,6 +1144,26 @@ $(document).on('click', '.remf', function (event) {
 });
 
 
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
 
 </script>
 @endsection

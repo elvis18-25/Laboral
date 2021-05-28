@@ -1,6 +1,12 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
+<style>
+
+  .error{
+    border-color: red !important;
+  }
+</style>
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -426,7 +432,7 @@
                                 <label class="custom-file-label" for="inputGroupFile01" hidden>Choose file</label>
                               </div>
 
-                              <div class="col-sm-8" style="top: -42px; margin-left: -27px;" >
+                              {{-- <div class="col-sm-8" style="top: -42px; margin-left: -27px;" >
                                 <label class="float-left">{{ __('CONTRATO') }}</label>
                                 <div class="input-group mb-3">
                                 <select class="form-control selec" id="contra">
@@ -434,22 +440,30 @@
                                     @foreach ($contrato as $contratos)
                                     <option value="{{$contratos->id}}">{{$contratos->name}}</option>	
                                     @endforeach
-                                  </select>
+                                  </select> --}}
                                   {{-- <div class="input-group-append">
                                     <button type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#contrato" ><i class="fas fa-plus"></i></button>
                                 </div> --}}
-                                </div>
+                                {{-- </div>
                                 
-                            </div>
-
-
-                        </p>
-                        
-
-
-                      </div>
-                </p>
-            </div>
+                            </div> --}}
+                          </p>
+                          
+                          
+                          
+                        </div>
+                      </p>
+                      
+                      <div class="form-group" style="top: -49px; width: 61%;">
+                        <label class="float-left"><b>{{ __('CONTRATO') }}</b></label>
+                        <select class="form-control selec" id="contra">
+                          <option selected >ELEGIR...</option>
+                          @foreach ($contrato as $contratos)
+                          <option value="{{$contratos->id}}">{{$contratos->name}}</option>	
+                          @endforeach
+                        </select> 
+                    </div>
+                  </div>
         </div>
         <div class="card" style="top: -4px;">
             <div class="card-header">
@@ -532,6 +546,8 @@
 <link rel="stylesheet" href="{{asset('css/holdOn.css')}}"> --}}
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
+
+
   $(document).ready(function(){
     // HoldOn.close();
     $("#pass").val('');
@@ -564,7 +580,6 @@
 
     }
     
-
     $("#formulario").validate({
            rules: {
             pass: { 
@@ -591,11 +606,48 @@
          minlength:"El Contraseña debe tener minimo 6 caracteres",
          maxlength: ""
        }
-     }
+     },
  
+     errorPlacement: function(error, element) {
+        var name = element.attr('name');
+        element.addClass('error');
+        var errorSelector = '.validation_error_message[for="' + name + '"]';
+        var $element = $(errorSelector);
+        if ($element.length) { 
+          $(errorSelector).html(error.html());
+        } else {
+          
+            error.insertAfter(element);
+
+        }
+        ErroresGeneral();
+    }
 
 });
 
+
+
+
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
 // var validar=$("#formulario").validate();
 jQuery.extend(jQuery.validator.messages, {
     required: "",

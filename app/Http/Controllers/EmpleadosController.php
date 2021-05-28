@@ -71,7 +71,7 @@ class EmpleadosController extends Controller
         $contrato=Contrato::all();
         $equipo=Equipos::all();
 
-        $pais=Pais::all(['id','name']);
+        $pais=Pais::select('id','name')->orderBy('name')->get();
         
         // $estado=Estado::all();
         return view('Empleados.create',compact('sexo','equipo','pago','puesto','asignaciones','pais','contrato'));
@@ -79,13 +79,13 @@ class EmpleadosController extends Controller
 
     public function emplepaises($id)
     {
-        $estado=Estado::where('country_id','=',$id)->get();
+        $estado=Estado::where('country_id','=',$id)->orderBy('name')->get();
 
      return view('Empleados.Plantillas.estado',compact('estado'));
     }
     public function empleciudad($id)
     {
-    $ciudad=Ciudad::where('state_id','=',$id)->get();
+    $ciudad=Ciudad::where('state_id','=',$id)->orderBy('name')->get();
 
      return view('Empleados.Plantillas.ciudad',compact('ciudad'));
     }
@@ -153,7 +153,8 @@ class EmpleadosController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
+        dd($request->all());
+
         $inputs=$request->all();
 
         if($request->get('checkasgina')!=''){

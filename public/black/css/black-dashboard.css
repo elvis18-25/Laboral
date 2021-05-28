@@ -12355,7 +12355,7 @@ fieldset[disabled] .btn-link.active {
 }
 
 .form-control {
-  border-color: #4054b2 !important;
+  border-color: #4054b2 ;
   border-radius: 0.4285rem;
   font-size: 0.75rem;
   -webkit-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
@@ -12366,7 +12366,7 @@ fieldset[disabled] .btn-link.active {
 }
 
 .form-control:focus {
-  border-color: #e14eca;
+  border-color: #3bb6db;
   background-color: transparent;
   box-shadow: none;
 }

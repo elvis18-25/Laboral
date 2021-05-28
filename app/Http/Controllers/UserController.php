@@ -55,7 +55,7 @@ class UserController extends Controller
         $puesto=Puesto::all();
         $asignaciones=Asignaciones::all();
         $sexo=Sexo::all();
-        $pais=Pais::all(['id','name']);
+        $pais=Pais::select('id','name')->orderBy('name')->get();
         $roles=Role::all();
 
         return view('users.create',compact('pago','puesto','asignaciones','pais','sexo','roles'));

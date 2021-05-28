@@ -1,8 +1,14 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
+<style>
 
+  .error{
+    border-color: red !important;
+  }
+</style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/users.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 
 
 <form  action="{{Route('user.update',$users->id)}}" method="POST" enctype="multipart/form-data" id="formulario"  >  
@@ -418,7 +424,7 @@
                                 <input type="file" class="custom-file-input" name="image"   aria-describedby="inputGroupFileAddon01" id="subirimaggen" hidden>
                                 <label class="custom-file-label" for="inputGroupFile01" hidden>Choose file</label>
                               </div>
-
+{{-- 
                               <div class="col-sm-8" style="top: -42px; margin-left: -27px;" >
                                 <label class="float-left">{{ __('CONTRATO') }}</label>
                                 <div class="input-group mb-3">
@@ -427,13 +433,13 @@
                                     @foreach ($contrato as $contratos)
                                     <option value="{{$contratos->id}}">{{$contratos->name}}</option>	
                                     @endforeach
-                                  </select>
+                                  </select> --}}
                                   {{-- <div class="input-group-append">
                                     <button type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#contrato" ><i class="fas fa-plus"></i></button>
                                 </div> --}}
-                                </div>
+                                {{-- </div>
                                 
-                            </div>
+                            </div> --}}
 
 
                         </p>
@@ -442,6 +448,15 @@
 
                       </div>
                 </p>
+                <div class="form-group" style="top: -49px; width: 61%;">
+                  <label class="float-left"><b>{{ __('CONTRATO') }}</b></label>
+                  <select class="form-control selec" id="contra">
+                    <option selected >ELEGIR...</option>
+                    @foreach ($contrato as $contratos)
+                    <option value="{{$contratos->id}}">{{$contratos->name}}</option>	
+                    @endforeach
+                  </select> 
+              </div>
             </div>
         </div>
         <div class="card" style="top: -4px;">
@@ -497,7 +512,15 @@
 <input type="text" name="" id="searchState" value="{{$state}}" hidden>
 <input type="text" name="" id="searchCiudad" value="{{$ciudades}}" hidden>
 
-
+<div class="o-page-loader">
+  <div class="o-page-loader--content">
+    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+      {{-- <div class=""></div> --}}
+      <div class="o-page-loader--message">
+          <span>Cargando...</span>
+      </div>
+  </div>
+</div>
 
 <div class="modal fade" id="adjunnew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 @endsection
@@ -505,9 +528,12 @@
 @section('js')
 @include('Contrato.modal')
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
-<script src="{{asset('js/holdOn.js')}}"></script>
-<link rel="stylesheet" href="{{asset('css/holdOn.css')}}">
+{{-- <script src="{{asset('js/holdOn.js')}}"></script>
+<link rel="stylesheet" href="{{asset('css/holdOn.css')}}"> --}}
+<script src="{{asset('js/pageLoader.js')}}"></script>
+
 <script>
+
   $(document).ready(function(){
     
     $("#pass").val('');
@@ -553,7 +579,6 @@
                      maxlength: 10
                }
 
-
            },
      messages:{
       password: { 
@@ -565,8 +590,22 @@
          minlength:"El Contraseña debe tener minimo 6 caracteres",
          maxlength: ""
        }
-     }
+     },
  
+     errorPlacement: function(error, element) {
+        var name = element.attr('name');
+        element.addClass('error');
+        var errorSelector = '.validation_error_message[for="' + name + '"]';
+        var $element = $(errorSelector);
+        if ($element.length) { 
+          $(errorSelector).html(error.html());
+        } else {
+          
+            error.insertAfter(element);
+
+        }
+        ErroresGeneral();
+    }
 
 });
 
@@ -592,6 +631,26 @@ jQuery.extend(jQuery.validator.messages, {
 });
 
 
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
     
  $("#exampleRadios1").attr("checked",true);
   $("#salida").hide();
@@ -679,26 +738,26 @@ document.getElementById("transTable").innerHTML += '<tr class="reducir"><td><inp
 
 }
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
-p=0;
-$(document).on('click', '.btncontrato', function (event) {
-  p=1;
-  HoldOn.close();
-});
+// p=0;
+// $(document).on('click', '.btncontrato', function (event) {
+//   p=1;
+//   HoldOn.close();
+// });
 
-$(document).on('click', '.btnholdon', function (event) {
-  p=0;
-});
+// $(document).on('click', '.btnholdon', function (event) {
+//   p=0;
+// });
 
-window.onbeforeunload = function(e) {
-  if(p==0){
-    HoldOn.open(options);
-  }
-};
+// window.onbeforeunload = function(e) {
+//   if(p==0){
+//     HoldOn.open(options);
+//   }
+// };
 
 
 

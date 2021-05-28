@@ -1,27 +1,14 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
-<style>
-
-  .error{
-    border-color: red !important;
-  }
-</style>
-<div class="o-page-loader">
-  <div class="o-page-loader--content">
-    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
-      {{-- <div class=""></div> --}}
-      <div class="o-page-loader--message">
-          <span>Cargando...</span>
-      </div>
-  </div>
-</div>
-<link rel="stylesheet" href="{{asset('css/users.css')}}">
+<link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
+
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
 
 
-<form  action="{{Route('user.store')}}" method="POST" enctype="multipart/form-data" id="formulario"  >  
+<form  action="{{Route('Empleados.store')}}" method="POST" enctype="multipart/form-data" id="formulario"  >  
 @csrf
 
 
@@ -41,7 +28,7 @@
 
                         <div class="col-sm-4 mb-2{{ $errors->has('nombre') ? ' has-danger' : '' }}">
                             <label>{{ __('NOMBRE') }}</label>
-                            <input type="text" name="name" autofocus class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="{{ __('Nombre') }}" required >
+                            <input type="text" name="nombre" autofocus class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="{{ __('Nombre') }}" required >
                         
                         </div>
                         <div class="col-sm-4{{ $errors->has('apellido') ? ' has-danger' : '' }}">
@@ -56,7 +43,7 @@
                         </div>
                         <div class="col-sm-4 mb-2{{ $errors->has('edad') ? ' has-danger' : '' }}">
                             <label>{{ __('FECHA DE NACIMINETO') }}</label>
-                            <input type="date" name="edad" class="form-control{{ $errors->has('edad') ? ' is-invalid' : '' }}" required>
+                            <input type="date" name="edad" class="form-control{{ $errors->has('edad') ? ' is-invalid' : '' }}" >
                             
                         </div>
                         <div class="col-sm-7{{ $errors->has('direccion') ? ' has-danger' : '' }}">
@@ -67,7 +54,7 @@
 
                         <div class="col-sm-3{{ $errors->has('pais') ? ' has-danger' : '' }}">
                             <label>{{ __('PAIS') }}</label>
-                            <select class="form-control{{ $errors->has('pais') ? ' is-invalid' : '' }} selec" id="countries" name="pais" required >
+                            <select class="form-control{{ $errors->has('pais') ? ' is-invalid' : '' }} selec" id="countries" name="pais" >
                                 <option selected disabled value="{{old('pais')}}">ELEGIR...</option>
                                 @foreach ($pais as $paises)
                                 <option value="{{$paises->id}}">{{$paises->name}}</option>
@@ -76,21 +63,21 @@
                         </div>
                         <div class="col-sm-3 mb-2{{ $errors->has('state') ? ' has-danger' : '' }}">
                             <label>{{ __('ESTADO') }}</label>
-                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" id="state" name="state" required>
+                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" id="state" name="state">
                                 <option selected disabled value="{{old('state')}}">ELEGIR...</option>
 
                               </select>
                         </div>
                         <div class="col-sm-3 mb-2{{ $errors->has('Ciudad') ? ' has-danger' : '' }}">
                             <label>{{ __('CIUDAD') }}</label>
-                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" name="ciudad" id="cities" required >
+                            <select class="form-control{{ $errors->has('Ciudad') ? ' is-invalid' : '' }} selec" name="ciudad" id="cities" >
                                 <option selected disabled value="{{old('cities')}}">ELEGIR...</option>
                                 <option>...</option>
                               </select>
                         </div>
                         <div class="col-sm-3{{ $errors->has('telefono') ? ' has-danger' : '' }}">
                             <label>{{ __('TÉLEFONO') }}</label>
-                            <input type="tel" name="telefono" class="form-control{{ $errors->has('telefono') ? ' is-invalid' : '' }}" placeholder="{{ __('Télefono') }}" >
+                            <input type="tel" name="telefono" class="form-control{{ $errors->has('telefono') ? ' is-invalid' : '' }}" placeholder="{{ __('Télefono') }}" required>
                         
                         </div>
 
@@ -102,7 +89,7 @@
                         <div class="col-sm-3{{ $errors->has('genero') ? ' has-danger' : '' }}">
                             <label>{{ __('GENERO') }}</label>
                             <select class="form-control{{ $errors->has('genero') ? ' is-invalid' : '' }} selec" name="genero" required>
-                                <option selected value="" >ELEGIR...</option>
+                                <option selected >ELEGIR...</option>
                               @foreach ($sexo as $sex)
                                 <option value="{{$sex->id}}">{{$sex->name}}</option>
                                 @endforeach
@@ -141,87 +128,98 @@
 
 
                     <div class="form-row">
-                        <div class="col-sm-4 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
                             <label>{{ __('FECHA DE ENTRADA') }}</label>
-                            <input type="date" name="entrada" class="form-control{{ $errors->has('Fecha_Entrada') ? ' is-invalid' : '' }}" id="entrada" >
+                            <input type="date" name="Fecha_Entrada" class="form-control{{ $errors->has('Fecha_Entrada') ? ' is-invalid' : '' }}" id="entrada" required>
                            
                         </div>
                     
 
-                        <div class="col-sm-4{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
+                        <div class="col-sm-3{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
                             <label>{{ __('FECHA DE SALIDA') }}</label>
-                            <input type="date" name="salida" class="form-control{{ $errors->has('fecha_salida') ? ' is-invalid' : '' }}">
+                            <input type="date" name="fecha_salida" class="form-control{{ $errors->has('fecha_salida') ? ' is-invalid' : '' }}">
                            
                         </div>
 
-                        <div class="col-sm-4{{ $errors->has('salario') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
                             <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text" name="salario" onkeyup="calcular()" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }}" id="salario" placeholder="{{ __('Salario') }}" >
+                            <input type="text" name="salario" onkeyup="calcular();"  class="form-control money" id="salario" placeholder="{{ __('Salario') }}" required>
                        
                         </div>
-                        <div class="col-sm-4{{ $errors->has('pagos') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('dias') ? ' has-danger' : '' }}">
+                            <label>{{ __('SALARIO POR DIAS') }}</label>
+                            <input type="text" name="horas"  class="form-control  " id="salDias" placeholder="{{ __('$0.00') }}" required>
+                       
+                        </div>
+                        <div class="col-sm-3{{ $errors->has('pagos') ? ' has-danger' : '' }}">
                             <label>{{ __('FORMAS DE PAGOS') }}</label>
                             <div class="input-group mb-2">
-                                <select class="form-control{{ $errors->has('pagos') ? ' is-invalid' : '' }} selec" name="pagos" id="forma" >
+                                <select class="form-control{{ $errors->has('pagos') ? ' is-invalid' : '' }} selec" name="pagos" id="forma" required>
                                     <option selected >ELEGIR...</option>
                                     @foreach ($pago as $pag)
                                     @if ($pag->estado==0)
-                                    @if ($pag->id_empresa==Auth::user()->id_empresa) 
+                                    @if ($pag->id_empresa==Auth::user()->id_empresa)
+                            
                                     <option value="{{$pag->id}}">{{$pag->pago}}</option>
                                     @endif
                                     @endif
                                     @endforeach
                                   </select>                               
                                   <div class="input-group-append">
-                                  <button class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                  <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                                 </div>
                               </div>
                             @include('Empleados.modalpago')
                         </div>
-                        <div class="col-sm-4{{ $errors->has('cargo') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('cargo') ? ' has-danger' : '' }}">
                             <label>{{ __('CARGO') }}</label>
-                            <input type="text" name="cargo" class="form-control{{ $errors->has('cargo') ? ' is-invalid' : '' }}" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" id="cargo" placeholder="{{ __('Cargo') }}" >
+                            <input type="text" name="cargo" class="form-control{{ $errors->has('cargo') ? ' is-invalid' : '' }}" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" id="cargo" placeholder="{{ __('Cargo') }}" required>
                        
                         </div>
-                        <div class="col-sm-4{{ $errors->has('departa') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('departa') ? ' has-danger' : '' }}">
                             <label>{{ __('DEPARTAMENTO') }}</label>
                             <div class="input-group mb-3">
-                            <select class="form-control{{ $errors->has('departa') ? ' is-invalid' : '' }} selec" name="departa" id="depar"  >
+                            <select class="form-control{{ $errors->has('departa') ? ' is-invalid' : '' }} selec" name="departa" id="depar"  required>
                                 <option selected value="">ELEGIR...</option>
                                 @foreach ($puesto as $puest)
                                 @if ($puest->estado==0)
                                 @if ($puest->id_empresa==Auth::user()->id_empresa)
+                                    
                                 <option value="{{$puest->id}}">{{$puest->name}}</option>
                                 @endif
                                 @endif
                                 @endforeach
                               </select>
                               <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                               </div>
                             </div>
                         </div>
                         @include('Empleados.modaldepart')
 
-                        <div class="col-sm-4{{ $errors->has('rol') ? ' has-danger' : '' }}">
-                            <label>{{ __('ROL') }}</label>
-                            <div class="input-group mb-3">
-                            <select class="form-control{{ $errors->has('rol') ? ' is-invalid' : '' }} selec" name="rol" id="rol"  required>
-                                <option selected value="">ELEGIR...</option>
-                                @foreach ($roles as $role)
-                                @if ($role->estado==0)
-                                @if ($role->id_empresa==Auth::user()->id_empresa || $role->label=="rol")
-                                <option value="{{$role->id}}">{{$role->name}}</option>
-                                @endif
-                                @endif
-                                @endforeach
-                              </select>
-                              {{-- <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-sm"  data-toggle="modal" data-target="#rolesmodal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
-                              </div> --}}
+                        <div class="col-sm-4{{ $errors->has('grupo') ? ' has-danger' : '' }}">
+                          <label>{{ __('GRUPOS') }}</label>
+                          <div class="input-group mb-3">
+                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  required>
+                              <option selected value="">ELEGIR...</option>
+                              @foreach ($equipo as $equipos)
+                              @if ($equipos->estado==0)
+                              @if ($equipos->id_empresa==Auth::user()->id_empresa)
+                                  
+                              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              @endif
+                              @endif
+                              @endforeach
+                            </select>
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
                             </div>
+                          </div>
                         </div>
-                        {{-- @include('users.modalrole') --}}
+                        @include('Empleados.modalgroup') 
+
+
+
                     </div>
                 </div>
 
@@ -239,9 +237,9 @@
                         <li class="nav-item" role="presentation">
                           <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">REFERENCIAS</a>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        {{-- <li class="nav-item" role="presentation">
                           <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">ASIGNACIONES</a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item" role="presentation">
                           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">ADJUNTO</a>
                         </li>
@@ -253,9 +251,9 @@
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="card-body" style="height: 250px;" >
                                <div class="form-row">
-                                <div class="col-sm-4"><input type="text"   name="nop" class="form-control datosInput" id="NN" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
-                                <div class="col-sm-3"><input type="tel"   name="telp" class="form-control datosInput" id="tt" placeholder="{{ __('Telefono') }}" ></div>
-                                <div class="col-sm-3"><input type="text"  onFocus="GanoFoco2();" onBlur="PierdoFoco2();"  name="parp" class="form-control datosInput" id="parentesco" placeholder="{{ __('Parentesco') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
+                                <div class="col-sm-4"><input type="text"    name="nop" class="form-control datosInput" id="NN" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
+                                <div class="col-sm-3"><input type="tel"  onFocus="GanoFoco();"  onBlur="PierdoFoco();"  name="telp" class="form-control datosInput" id="tt" placeholder="{{ __('Telefono') }}" ></div>
+                                <div class="col-sm-3"><input type="text" onFocus="GanoFoco2();" onBlur="PierdoFoco2();"   name="parp" class="form-control datosInput" id="parentesco" placeholder="{{ __('Parentesco') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
                                 <button type="button" onclick="capturar();" class="btn btn-info btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button>
                                </div>
                                <div style=" max-height:189px; overflow:auto; position: relative; top: -10px; position: relative; top:-12px; ">
@@ -280,18 +278,32 @@
                                     <thead class=" text-primary">
                                         <tr>
                                         <th scope="col">NOMBRE</th>
-                                        <th scope="col">POCENTAJE</th>
+                                        <th scope="col">TIPO</th>
                                         <th scope="col">MONTO</th>
                                         <th></th>
                                       </tr>
                                     </thead>
-                                    <tbody>
+                                    {{-- <tbody>
+                                      @php
+                                          $cont=0;
+                                          $array=[ ]
+                                      @endphp
                                  @foreach ($asignaciones as $asigna)
-                                 @if ($asigna->id_empresa==0)
+                                      @if ($asigna->id_empresa==0)
+                                          
+                                      
                                     <tr>
                                         <td>{{$asigna->Nombre}}</td>
+                                        <td>{{$asigna->tipo_asigna}}</td>
+                                     <input type="text" value="{{$asigna->tipo_asigna}}" class="recipiente" hidden>
+
+                                        @if ($asigna->tipo=="Porcentaje")
                                         <td>{{$asigna->Monto}}%</td>
-                                        <td><span id="seguro{{$asigna->id}}"></span></td>
+                                        @else
+                                        <td>${{number_format($asigna->Monto,2)}}</td>
+                                        
+                                        @endif --}}
+                                        {{-- <td><span id="seguro{{$asigna->id}}"></span></td>
                                         <td>
                                             <div class="form-check">
                                                 <label class="form-check-label">
@@ -303,10 +315,14 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    @endif
+                                    @php
+                                    $cont++;
+                                @endphp
+                                @endif
                                   @endforeach
                                   <tr>
                                     <td>ISR</td>
+                                    <td>DEDUCCIÓN</td>
                                     <td><span id="porcentaje"></span></td>
                                     <td><span id="monto"></span></td>
                                     <td>
@@ -320,15 +336,17 @@
                                     </div>
                                     </td>
                                   </tr>
-                                    </tbody>
+                                    </tbody> --}}
                                 </table>
                                 </div>
-                                <button type="button" data-toggle="modal" data-target="#newasigna" style="top: 11px;" class="btn btn-success float-right btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button>
+                                {{-- <input type="text" name="" value="{{$cont}}" id="contador" hidden> --}}
+                                <input type="text"  value="" id="contenedor"  hidden>
+                                {{-- <button type="button" data-toggle="modal" data-target="#newasigna" style="top: 11px;" class="btn btn-success float-right btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button> --}}
                                 <div class="card-footer text-muted ">
                                   
                                   @include('Empleados.asignamodal')
-                                  <b class="float-left">SUELDO NETO: <span id="totalnomina"></span></b>
-                                  <b class="float-right">TOTAL DEDUCCIÓN: <span id="totaldedu"></span></b>
+                            <b class="float-left">SUELDO NETO: <span id="totalnomina"></span></b>
+                            <b class="float-right">TOTAL DEDUCCIÓN: <span id="totaldedu"></span></b>
                           </div>
                             </div>
                         </div>
@@ -346,7 +364,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                            <button type="button" onclick="newadjunto();" style="top: 307px; position: absolute; margin-left: 574px;" class="btn btn-info float-right btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button>
+                            <button type="button" onclick="newadjunto();" style="top: 91px; position: relative;"class="btn btn-info float-right btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button>
                         </div>
 
                         </div>
@@ -396,43 +414,59 @@
                   </div>
         </div>
 
+    @php
+    $user=Auth::user()->id_empresa;
+    @endphp
 
+    <input type="text" name="id_empresa" id="id_empresa" value="{{$user}}" hidden>
     <input type="text" name="porcentaje" value="" id="porcen" hidden>
     <input type="text" name="AFP" value="" id="AFP" hidden>
     <input type="text" name="SFS" value="" id="SFS" hidden>
     <input type="text" name="ISR" value="" id="ISR" hidden>
 
 
-    <button type="submit"  class="btn btn-fill btn-info mx-auto"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+    <button type="submit" class="btn btn-fill btn-info mx-auto"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
     </form>
     </div>
     </div>
 </div>
 
+<div class="o-page-loader">
+  <div class="o-page-loader--content">
+    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+      {{-- <div class=""></div> --}}
+      <div class="o-page-loader--message">
+          <span>Cargando...</span>
+      </div>
+  </div>
+</div>
 
-
-<div class="modal fade" id="adjunnowuser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-<input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
+<div class="modal fade" id="adjunnow"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<input type="button" id="back" title="Guardar Datos" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
 @endsection
 
 
 @section('js2')
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
-
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script> --}}
-{{-- <script src="{{asset('js/holdOn.js')}}"></script>
-<link rel="stylesheet" href="{{asset('css/holdOn.css')}}"> --}}
-<script src="{{asset('js/pageLoader.js')}}"></script>
 
-<script>
+<script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="{{asset('js/timepicker.min.js')}}"></script>
+
+<script  type="text/javascript">
   $(document).ready(function(){
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
     $("input[type='tel']").mask('(000) 000-0000');
+    $('.money').mask("#,##0.00", {reverse: true});
     $("#pass").val('');
+    $('.bs-timepicker').timepicker();
 
+// window.onbeforeunload = preguntarAntesDeSalir;
 
+// function preguntarAntesDeSalir(){
+// return "¿Seguro que quieres salir?";
+// }
 
  $("#exampleRadios1").attr("checked",true);
   $("#salida").hide();
@@ -463,17 +497,93 @@
 
  
 
-// document.addEventListener ("keydown", function (e) {
-//     if (e.keyCode== 13) {
-//         $("#subir").trigger("click");
-//     } 
-// });
+document.addEventListener ("keydown", function (e) {
+    if (e.keyCode== 13) {
+        $("#subir").trigger("click");
+    } 
+});
 
 
   }); 
+  
+  $('#exampleModal').keyup(function(e){
+    if(e.keyCode==13)
+    {
+      
+      $('#btnpago').trigger("click");
+      
+    }
+    if(e.keycode!=13)
+    {
+        
+        $("#newpago").focus();
+       
+    }
+});
+  $('#departament').keyup(function(e){
+    if(e.keyCode==13)
+    {
+      $('#btndepartamento').trigger("click");
+      
 
-  HayFoco=false;
+      
+    }
+    if(e.keycode!=13)
+    {
+       
+        $("#newdepart").focus();
+        
+    }
+});
+
+$("#newdepart").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#newpago").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#descr").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#entrada").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#salida").on('keypress', function(e) { return e.keyCode != 13; }); 
+
+$('#adjunnow').keyup(function(e){
+    if(e.keyCode==13)
+    {
+      
+      $('#btnadjunto').trigger("click");
+      
+    }
+    if(e.keycode!=13)
+    {
+        $("#nameadjunto").focus();
+    }
+});
+
+
+// $(window).unload( function () {  
+//   alert("seguro");
+// });
+
+
+
+
+// window.addEventListener('popstate', function (e) {
+//     var state = e.state;
+//     if (state !== null) {
+//         alert("hola");
+//     }
+// });
+
+
+HayFoco=false;
 HayFoco2=false;
+document.addEventListener ("keydown", function (e) {
+        $('input[type=submit]').attr('disabled', 'disabled');
+  if(HayFoco2==true ){
+    if (e.keyCode== 13) {
+        capturar();
+        event.preventDefault();
+    } 
+  } 
+});
+
+
 function PierdoFoco(){
    HayFoco = false;
 
@@ -489,283 +599,203 @@ function PierdoFoco2(){
 
 function GanoFoco2(){
   HayFoco2 = true;
-  // alert(HayFoco2);
   
 }
-  
-  $('#exampleModal').keyup(function(e){
-    if(e.keyCode==13)
-    {
-      
-      $('#btnpago').trigger("click");
-      return false;
-      
-    }
-    if(e.keycode!=13)
-    {
-        
-        $("#newpago").focus();
-    }
-});
-  $('#departament').keyup(function(e){
-    if(e.keyCode==13)
-    {
-      $('#btndepartamento').trigger("click");
-      return false;
-
-      
-    }
-    if(e.keycode!=13)
-    {
-       
-        $("#newdepart").focus();
-    }
-});
-
-document.addEventListener ("keydown", function (e) {
-  // alert(HayFoco2);
-  if(HayFoco2==true ){
-    if (e.keyCode== 13) {
-      capturar();
-      event.preventDefault();
-    } 
-  } 
-});
-
-
-$("#formulario").validate({
-
-errorPlacement: function(error, element) {
-      var name = element.attr('name');
-      element.addClass('error');
-      var errorSelector = '.validation_error_message[for="' + name + '"]';
-      var $element = $(errorSelector);
-      if ($element.length) { 
-        $(errorSelector).html(error.html());
-      } else {
-        
-          error.insertAfter(element);
-
-      }
-      ErroresGeneral();
-  }
-
-});
-
-jQuery.extend(jQuery.validator.messages, {
-    required: "",
-    remote: "Please fix this field.",
-    email: "Ingrese un Correo Electronico valido.",
-    url: "Please enter a valid URL.",
-    date: "Please enter a valid date.",
-    dateISO: "Please enter a valid date (ISO).",
-    number: "Please enter a valid number.",
-    digits: "Please enter only digits.",
-    creditcard: "Please enter a valid credit card number.",
-    equalTo: "",
-    accept: "Please enter a value with a valid extension.",
-    maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
-    minlength: jQuery.validator.format("Please enter at least {0} characters."),
-    rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
-    range: jQuery.validator.format("Please enter a value between {0} and {1}."),
-    max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
-    min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
-});
-
-function ErroresGeneral(){
-    Command: toastr["error"]("", "Error!")
-    toastr.options = {
-      "closeButton": false,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": true,
-      "positionClass": "toast-top-right",
-      "preventDuplicates": true,
-      "onclick": null,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "5000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-  }
-
-
-$("#newdepart").on('keypress', function(e) { return e.keyCode != 13; }); 
-$("#newpago").on('keypress', function(e) { return e.keyCode != 13; }); 
-$("#parentesco").on('keypress', function(e) {   return e.keyCode != 13; }); 
-$('#adjunnow').keyup(function(e){
-    if(e.keyCode==13)
-    {
-      return false
-      $('#btnadjunto').trigger("click");
-      
-    }
-    if(e.keycode!=13)
-    {
-        $("#nameadjunto").focus();
-    }
-});
 
 options2 = { style: 'currency', currency: 'USD' };
  numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
- 
-
  function calcular(){
- var  total=0;
- var templeado=0;
- var afp=0;
-  var sfs=0;
-  var isr=0;
-var final=0;
-  var porcentaje="";
-  var monto="";
+   var salario=$("#salario").val();
+   
+   var sum=0;
 
-  var checker=0;
-  var escala=0;
-
-var verficar =0;
-  var id=6;
-  var id1=7
-  var tdeducion=0;
+   var montoFormat = toInt(salario);
  
-        if(!isNaN(total)){
-          $("#salario").each(function() {
-            var sub=$(this).val();
-            
-            
-            if(sub!=''){
-
-              total=parseInt($(this).val(),10);
-              sfs=total*3.04;
-              sfs=sfs/100;
-
-              afp=total*2.87;
-              afp=afp/100;
-              
-              
-              $("#AFP").attr('value',afp);
-              $("#SFS").attr('value',sfs);
-
-              templeado=total-afp-sfs;
-              
-              
-
-              if(templeado<34685){
-                porcentaje="Exento";
-                monto="Exento";
-                verficar=0;
-                final=total-afp-sfs;
-                tdeducion=afp+sfs+escala;
-                $("#exent").prop('checked',false);
-                
-                $("#exent").attr('disabled',true);
-                
-              }
-              
-              if(templeado>34685){
-                isr=templeado*12;
-                final=0;
-                escala=0;
-
-                if (isr>867123){
-                 escala=isr-867123;
-                 isr=escala*25;
-                 escala=isr/100;
-                 escala=escala+79776;
-                 escala=escala/12;
-                  porcentaje="25%";
-                  $("#porcen").attr('value',porcentaje);
-                  verficar=1;
-                  final=total-afp-sfs-escala;
-                  tdeducion=afp+sfs+escala;
-                  $("#exent").attr('disabled',false);
-                  
-                }
-
-                
-                if (isr>416220 && isr<624329){
-                  escala=isr-416220.01;
-                  isr=escala*15;
-                  escala=isr/100;
-                  escala=escala/12;
-                  porcentaje="15%";
-                  $("#porcen").attr('value',porcentaje);
-                  verficar=1;
-                  final=total-afp-sfs-escala;
-                  tdeducion=afp+sfs+escala;
-                  $("#exent").attr('disabled',false);
-
-                }
-        
-
-                if (isr>624329 && isr<867123){
-                 escala=isr-624329;
-                 isr=escala*20;
-                 escala=isr/100;
-                 escala=escala+31216;
-                 escala=escala/12;
-                  porcentaje="20%";
-                  $("#porcen").attr('value',porcentaje);
-                  verficar=1;
-                  final=total-afp-sfs-escala;
-                  tdeducion=afp+sfs+escala;
-                  $("#exent").attr('disabled',false);
-                }
 
 
+   sum=montoFormat/23.83/8;
 
-              }
-
-              
-              
-            }
-          });
-          $("#ISR").attr('value',escala);
-          res= numberFormat2.format(sfs);
-          res1= numberFormat2.format(afp);
-          res2= numberFormat2.format(escala);
-          res3= numberFormat2.format(final);
-          res4=numberFormat2.format(tdeducion);
-        // $("#totl").attr('value',total);
-          
-        $("#seguro"+id).empty();
-        $("#seguro"+id).append(res)
-
-        $("#seguro"+id1).empty();
-        $("#seguro"+id1).append(res1)
-        
-        $("#totalnomina").empty();
-        $("#totalnomina").append(res3)
-
-        $("#porcentaje").empty();
-        $("#porcentaje").append(porcentaje);
-
-        $("#totaldedu").empty();
-        $("#totaldedu").append(res4);
+   $("#salario").attr('value',montoFormat);
+   $("#salDias").attr('value',financial(sum));
 
 
-
-
-        if(verficar==0){
-        $("#monto").empty();
-        $("#monto").append(monto);
-        }
-
-        if(verficar==1){
-         $("#monto").empty();
-        $("#monto").append(res2);
-        }
-
-        
-
-
-        }
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
 }
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+// Incluso pensándolo como algo más genérico:
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
+
+// function calcular(){
+//  var  total=0;
+//  var templeado=0;
+//  var afp=0;
+//   var sfs=0;
+//   var isr=0;
+// var final=0;
+//   var porcentaje="";
+//   var monto="";
+
+//   var checker=0;
+//   var escala=0;
+
+// var verficar =0;
+//   var id=6;
+//   var id1=7
+//   var tdeducion=0;
+ 
+//         if(!isNaN(total)){
+//           $("#salario").each(function() {
+//             var sub=$(this).val();
+            
+            
+//             if(sub!=''){
+
+//               total=parseInt($(this).val(),10);
+//               sfs=total*3.04;
+//               sfs=sfs/100;
+
+//               afp=total*2.87;
+//               afp=afp/100;
+              
+              
+//               $("#AFP").attr('value',afp);
+//               $("#SFS").attr('value',sfs);
+
+//               templeado=total-afp-sfs;
+              
+              
+
+//               if(templeado<34685){
+//                 porcentaje="Exento";
+//                 monto="Exento";
+//                 verficar=0;
+//                 final=total-afp-sfs;
+//                 tdeducion=afp+sfs+escala;
+//                 $("#exent").prop('checked',false);
+                
+//                 $("#exent").attr('disabled',true);
+                
+//               }
+              
+//               if(templeado>34685){
+//                 isr=templeado*12;
+//                 final=0;
+//                 escala=0;
+
+//                 if (isr>867123){
+//                  escala=isr-867123;
+//                  isr=escala*25;
+//                  escala=isr/100;
+//                  escala=escala+79776;
+//                  escala=escala/12;
+//                   porcentaje="25%";
+//                   $("#porcen").attr('value',porcentaje);
+//                   verficar=1;
+//                   final=total-afp-sfs-escala;
+//                   tdeducion=afp+sfs+escala;
+//                   $("#exent").attr('disabled',false);
+                  
+//                 }
+
+                
+//                 if (isr>416220 && isr<624329){
+//                   escala=isr-416220.01;
+//                   isr=escala*15;
+//                   escala=isr/100;
+//                   escala=escala/12;
+//                   porcentaje="15%";
+//                   $("#porcen").attr('value',porcentaje);
+//                   verficar=1;
+//                   final=total-afp-sfs-escala;
+//                   tdeducion=afp+sfs+escala;
+//                   $("#exent").attr('disabled',false);
+
+//                 }
+        
+
+//                 if (isr>624329 && isr<867123){
+//                  escala=isr-624329;
+//                  isr=escala*20;
+//                  escala=isr/100;
+//                  escala=escala+31216;
+//                  escala=escala/12;
+//                   porcentaje="20%";
+//                   $("#porcen").attr('value',porcentaje);
+//                   verficar=1;
+//                   final=total-afp-sfs-escala;
+//                   tdeducion=afp+sfs+escala;
+//                   $("#exent").attr('disabled',false);
+//                 }
+
+
+
+//               }
+
+              
+              
+//             }
+//           });
+//           $("#ISR").attr('value',escala);
+//           res= numberFormat2.format(sfs);
+//           res1= numberFormat2.format(afp);
+//           res2= numberFormat2.format(escala);
+//           res3= numberFormat2.format(final);
+//           res4=numberFormat2.format(tdeducion);
+//         // $("#totl").attr('value',total);
+          
+//         $("#seguro"+id).empty();
+//         $("#seguro"+id).append(res)
+
+//         $("#seguro"+id1).empty();
+//         $("#seguro"+id1).append(res1)
+        
+//         $("#totalnomina").empty();
+//         $("#totalnomina").append(res3)
+
+//         $("#porcentaje").empty();
+//         $("#porcentaje").append(porcentaje);
+
+//         $("#totaldedu").empty();
+//         $("#totaldedu").append(res4);
+
+
+
+
+//         if(verficar==0){
+//         $("#monto").empty();
+//         $("#monto").append(monto);
+//         }
+
+//         if(verficar==1){
+//          $("#monto").empty();
+//         $("#monto").append(res2);
+//         }
+
+        
+
+
+//         }
+// }
 
 
 
@@ -834,7 +864,7 @@ function savedepart(){
               $("#departament").modal("toggle");
               $("#depar").append(result);
               $("#depar option[value="+ $(result).val() +"]").attr("selected",true);
-            
+              document.getElementById('subir').disabled=false;
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -842,6 +872,32 @@ function savedepart(){
     }
              }); 
 }
+
+function savedgruop(){
+    var name=$("#descr").val();
+    var entrada=$("#entradaH").val();
+    var salida=$("#salidaH").val();
+
+    var url = "{{url('savegroup')}}"; 
+     var data ={name:name,entrada:entrada,salida:salida};
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              $("#group").modal("toggle");
+              $("#grupo").append(result);
+              $("#grupo option[value="+ $(result).val() +"]").attr("selected",true);
+              document.getElementById('subir').disabled=false;
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             }); 
+}
+
 
 function savepago(){
     var namew=$("#newpago").val();
@@ -857,6 +913,7 @@ function savepago(){
               $("#forma").append(result);
               $("#forma option[value="+ $(result).val() +"]").attr("selected",true);
             //   $("#forma").attr('selected',true);
+            document.getElementById('subir').disabled=false;
             
 
            },
@@ -865,30 +922,6 @@ function savepago(){
     }
              }); 
 }
-
-// function savedrole(){
-//     var namew=$("#newrol").val();
-//     var url = "{{url('savedrole')}}"; 
-//      var data ={namew:namew};
-//         $.ajax({
-//          method: "POST",
-//            data: data,
-//             url:url ,
-//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-//             success:function(result){
-//               $("#rolesmodal").modal("toggle");
-//               $("#rol").append(result);
-//               $("#rol option[value="+ $(result).val() +"]").attr("selected",true);
-
-            
-
-//            },
-//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-//     }
-//              }); 
-// }
-
 function saveasignar(){
     var noms=$("#noms").val();
     var tipos=$("#tipos").val();
@@ -931,8 +964,6 @@ $("#subirimaggen").on('change',function(){
 });
 
 
-
-
 document.getElementById("subirimaggen").onchange = function(e) {
   // Creamos el objeto de la clase FileReader
   let reader = new FileReader();
@@ -954,9 +985,8 @@ document.getElementById("subirimaggen").onchange = function(e) {
 
 
 
-
 function newadjunto(){
-    var url = "{{url('newadjuntouser')}}"; 
+    var url = "{{url('newadjunto')}}"; 
      var data ='';
         $.ajax({
          method: "POST",
@@ -964,7 +994,7 @@ function newadjunto(){
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
-            $("#adjunnowuser").html(result).modal("show");
+            $("#adjunnow").html(result).modal("show");
             
 
            },
@@ -1049,3 +1079,10 @@ $(document).on('click', '.remf', function (event) {
 
 </script>
 @endsection
+
+<style>
+  .selec option{
+    text:rgb(3, 3, 3);
+    background-color:#525f7f;;
+}
+</style>
