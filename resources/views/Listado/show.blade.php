@@ -5,19 +5,19 @@
 <div class="col-md-12">
     <div class="card ">
       <form action="{{route('Listado.update',$nominas->id)}}" method="POST">
-        <div class="card-header">
+        <div class="card-header" style="background: #4054b2 !important; height: 45px;">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">NOMINA</h4>
+                    <h4 class="card-title TitleCard" style="font-size: 16px !important; font-weight: bold !important;">NOMINA</h4>
                 </div>
                 <div class="col-4 text-right">
                     {{-- <a href="#" class="btn btn-sm btn-primary" title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus"></i></a> --}}
-                    <a href="#" class="btn btn-sm btn-info" title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus"></i></a>
-                    <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i></button>
-                   <a href="{{url('listadopdf').'/'.$nominas->id}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Nomina" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button></a>
+                    <a href="#" class="btn btn-sm btn-warning redondo" style="top: -16px;" title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -5px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                    <button id="btnexcel" type="button" style="top: -16px;" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo"><i class="fas fa-file-excel" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
+                   <a href="{{url('listadopdf').'/'.$nominas->id}}" target="_blank" rel="noopener noreferrer"><button  type="button" style="top: -16px;" title="Imprimir Nomina" class="btn btn-warning btn-sm redondo" ><i class="fas fa-print" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button></a>
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button> --}}
                     {{-- <button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button> --}}
-                    <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i></button>
+                    <button id="btnpdf" type="button" style="top: -16px;" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
                 </div>
                 @include('Nominas.perfiles')
                 @include('Nominas.empleado')
@@ -30,19 +30,22 @@
             @method('PUT')
             <div class="form-row">
                 <div class="col-sm-5">
+                  <label for=""><b>DESCRIPCION</b></label>
                     <input type="text" value="{{$nominas->descripcion}}" autofocus name="descripcion" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
                 </div>
                 <div class="col-sm-3">
+                  <label for=""><b>FECHA DE CREACION</b></label>
                     <input type="date" id="fech" value="{{$nominas->fecha}}" name="fecha" class="form-control"  >
                 </div>
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
-                <button type="submit" title="Guardar Nominas" class="btn btn-fill btn-info btn-sm float-right"><i class="fas fa-save"></i>&nbsp;</button>
-            </form>
-            <form action="{{Route('Listado.destroy',$nominas->id)}}" method="POST" id="deletelistado">
-                @csrf
-                @method('DELETE')
-            <button type="submit" style="margin-left: 2px;" title="Eliminar nomina" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-        </form>
+                <div class="col-sm-3">
+                  <label for=""><b>FECHA DE HORAS</b></label>
+                  <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; position: relative; top: 3px;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                  </div>
+                </div>
+
 
             </div>
             <br>
@@ -51,12 +54,13 @@
                     
                     <thead class=" text-primary">
                         <tr> 
-                            <th scope="col" style="text-align: center !important;">NOMBRE</th>
-                            <th scope="col" style="text-align: center !important;">CARGO</th>
-                            <th scope="col" style="text-align: center !important;">SALARIO BRUTO</th>
-                            <th scope="col" style="text-align: center !important;">DEDUCIONES</th>
-                            <th scope="col" style="text-align: center !important;">INCREMENTO</th>
-                            <th scope="col" style="text-align: center !important;">TOTAL</th>
+                          <th class="TitleNomi"><b>NOMBRE</b></th>
+                          <th class="TitleNomi"><b>CARGO</b></th>
+                          <th class="TitleNomi"><b>SALARIO BRUTO</b></th>
+                          <th class="TitleNomi"><b>DEDUCIONES</b></th>
+                          <th class="TitleNomi"><b>INCREMENTO</b></th>
+                          <th class="TitleNomi"><b>HORAS</b></th>
+                          <th class="TitleNomi"><b>TOTAL</b></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -65,15 +69,50 @@
             
         </div>
         <div class="card-footer text-muted ">
-            <nav class="d-flex justify-content-end" aria-label="...">
-              <b class="float-right" style="color: black; font-size: 15px;">TOTAL: <span id="totalnomina"></span></b>
-            </nav>
+            {{-- <nav class="d-flex justify-content-end" aria-label="...">
+              <b class="float-right" style="color: black; font-size: 15px;">TOTAL: <span id=""></span></b>
+            </nav> --}}
         </div>
      
     </div>
+
+    
+    
+    
+<div class="col-sm-6 float-right">  
+  <div class="card" style="float: inherit; height: 48px; width: 392px; margin-right: -14px;">
+  <div class="card-header">
+    <div class="row">
+        <div class="col-12">
+            <h4 class="car" style="font-size: 16px !important; font-weight: bold !important;" ><b>TOTAL GENERAL:</b></h4>
+          </div>
+
+        <div class="col-4 text-right">
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <nav class="d-flex justify-content-end" aria-label="...">
+        <b class="float-right" style="color: black;
+        margin-right: 15px;
+        font-size: 16px;
+        top: 16px;
+        position: absolute;"> <span id="totalnomina"></span></b>
+      </nav>
+    </div>
+  </div>
 </div>
+<button type="submit" class="btn btn-fill btn-info mx-auto float-left" title="Guardar Nomina" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+
+</form>
 
 
+<form action="{{Route('Listado.destroy',$nominas->id)}}" method="POST" id="deletelistado">
+  @csrf
+  @method('DELETE')
+  <button type="submit"  class="btn btn-fill btn-danger float-right" title="Eliminar Nomina" style="float: left !important; margin-left: 9px;;"><i class="fas fa-trash"></i>&nbsp;{{ __('Eliminar') }}</button>
+</form>
+</div>
 
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
@@ -91,6 +130,11 @@
 //       var hoy = new Date();
 //   var fecha = moment(hoy);
 //   document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
+start = moment().startOf('month');
+ end = moment().endOf('month');
+  $(document).ready(function(){
+
+$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
 $("#formardC").on('change',function(){
  if($(this).val()==3){
@@ -103,6 +147,27 @@ $("#formardC").on('change',function(){
  }   
 
 });
+
+$('#reportrange').daterangepicker({
+    startDate: start,
+    endDate: end,
+    ranges: {
+       'Hoy': [moment(), moment()],
+       'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+       'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+       'Este mes': [moment().startOf('month'), moment().endOf('month')],
+       'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
+}, function (start, end) {
+          
+          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+          start = start;
+          end = end;
+          tabla.ajax.reload();
+        });
+
+
 
 
   $.ajaxSetup({
@@ -138,7 +203,11 @@ headers: {
         if($("#input").val()!=''){
           d.dato1=$("#input").val();
           id=$("#input").val();
-            totalnomi(id);
+          var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+          var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+          d.start_date=start;
+          d.end_date=end;
+          totalnomi(id);
         }
       }
     },
@@ -166,38 +235,38 @@ headers: {
 
       }, 
 
-      columnDefs: [
-        {
-      "targets": 0, // your case first column
-      "className": "text-left",
-      "width": "20%",
-        },
-        {
-      "targets": 1, // your case second column
-      "className": "text-left",
-      "width": "10%"
-        },
-        {
-      "targets": 2, // your case second column
-      "className": "text-right",
-      "width": "10%"
-        },
-        {
-      "targets": 3, // your case second column
-      "className": "text-right",
-      "width": "13%"
-        },
-        {
-      "targets": 4, // your case second column
-      "className": "text-right",
-      "width": "13%"
-        },
-        {
-      "targets": 5, // your case second column
-      "className": "text-right",
-      "width": "13%"
-        },
-],
+//       columnDefs: [
+//         {
+//       "targets": 0, // your case first column
+//       "className": "text-left",
+//       "width": "20%",
+//         },
+//         {
+//       "targets": 1, // your case second column
+//       "className": "text-left",
+//       "width": "10%"
+//         },
+//         {
+//       "targets": 2, // your case second column
+//       "className": "text-right",
+//       "width": "10%"
+//         },
+//         {
+//       "targets": 3, // your case second column
+//       "className": "text-right",
+//       "width": "13%"
+//         },
+//         {
+//       "targets": 4, // your case second column
+//       "className": "text-right",
+//       "width": "13%"
+//         },
+//         {
+//       "targets": 5, // your case second column
+//       "className": "text-right",
+//       "width": "13%"
+//         },
+// ],
       buttons: [
             {
                 extend: 'excel',
@@ -226,19 +295,20 @@ headers: {
 
 
     columns:[
-    {data:'nombre',name:'nombre', },
-    {data:'cargo', name:'cargo', searchable:false},
-    {data:'salario',name:'salario', className: "text-right",},
-    {data:'Asigna',name:'Asigna', className: "text-right"},
-    {data:'amount',name:'amount', className: "text-right"},
-    {data:'total',name:'total', className: "text-right"},
+      {data:'nombre',name:'nombre', },
+    {data:'cargo', name:'cargo', class: "boldend", searchable:false},
+    {data:'salario',name:'salario', class: "right",},
+    {data:'Asigna',name:'Asigna', class: "right"},
+    {data:'amount',name:'amount', class: "right"},
+    {data:'horas',name:'horas', class: "right"},
+    {data:'total',name:'total', class: "right"},
     ],
 
 
    
 });
 
-
+});
 $('#Nominas').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
@@ -569,9 +639,10 @@ const options2 = { style: 'currency', currency: 'USD' };
 const numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
 function totalnomi(e){
-    // alert(e);
+  var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+      var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
     var url ="{{url('totalnominas')}}/"+e;
-     var data ={e:e};
+     var data ={e:e,start:start,end:end};
         $.ajax({
          method: "POST",
            data: data,
@@ -586,6 +657,7 @@ function totalnomi(e){
             
             totaldenomina=result;
             $("#totales").attr('value',result);
+            
    
              
            },
@@ -891,4 +963,24 @@ $(".buttons-pdf").click();
 });
 </script>
     
+
+<style>
+  .right{
+  text-align: right !important;
+}
+
+.TitleNomi{
+    font-size: 14px !important;
+    text-align: center !important;
+  }
+
+  .boldend{
+    width: 200px;
+  }
+
+  .serachEmpleado{
+    font-size: 13px;
+    color: black;
+  }
+</style>
 @endsection

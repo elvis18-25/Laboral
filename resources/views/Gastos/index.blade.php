@@ -12,8 +12,8 @@
                     <h4 class="card-title"  style="font-size: 16px !important; font-weight: bold !important;" ><b>GASTOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{route('Gasto.create')}}" title="Agregar Gastos" class="btn btn-sm btn-info float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
-                    <a href="{{url('GastosFijo')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-warning float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-coins"style="top: 5px; position: relative;" ></i></a>
+                    <a href="{{route('Gasto.create')}}" title="Agregar Gastos" class="btn btn-sm btn-info float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                    <a href="{{url('GastosFijo')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-warning float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-coins"style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;" ></i></a>
                 </div>
             </div>
         </div>

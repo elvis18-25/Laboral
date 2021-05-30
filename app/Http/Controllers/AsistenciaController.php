@@ -167,6 +167,8 @@ class AsistenciaController extends Controller
 
         if(!empty($tipo)){
             $empleados->where('equipos_empleados.equipos',$tipo);
+        }else if($tipo==-1){
+            $empleados->where('equipos_empleados.equipos',$tipo);
         }
         
             return datatables()->of($empleados)
@@ -190,7 +192,14 @@ class AsistenciaController extends Controller
 
             })
             ->addColumn('btn',function($row){
+                $tipo=request()->get('dato1');
+
+                if($tipo==-1){
+                $button='<div class="form-check"><label class="form-check-label"><input class="form-check-input check" name="Din[]"   type="checkbox" value="'.$row->id_empleado.'"><span class="form-check-sign"><span class="check"></span></span></label></div>';
+                }else{
                 $button='<div class="form-check"><label class="form-check-label"><input class="form-check-input check" name="Din[]"  checked type="checkbox" value="'.$row->id_empleado.'"><span class="form-check-sign"><span class="check"></span></span></label></div>';
+                }
+
                 return  $button;
                 
 

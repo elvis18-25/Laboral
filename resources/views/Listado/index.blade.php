@@ -17,8 +17,8 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>LISTADO DE NOMINAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                <a href="{{url('Nominas')}}" title="Crear Nueva Nomina " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
-                <a href="{{url('Perfiles')}}" title="Perfiles " class="btn btn-sm btn-warning redondo "><button  type="button"  style="display: none;"></button><i class="fas fa-users" style="top: 5px; position: relative; margin-left: -3px"></i></a>
+                <a href="{{url('Nominas')}}" title="Crear Nueva Nomina " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                <a href="{{url('Perfiles')}}" title="Perfiles " class="btn btn-sm btn-warning redondo "><button  type="button"  style="display: none;"></button><i class="fas fa-users" style="margin-left: -5px; top: 6px; position: relative; font-size: 17px;"></i></a>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                         <tr> 
                         <th class="titlelistado">DESCRIPCION</th>
                         <th style="font-size: 15px !important;">FECHA</th>
-                        <th style="font-size: 15px !important;">USUARIO</th>
+                        <th style="font-size: 15px !important; width: 9% !important;">USUARIO</th>
                         <th class="titlelistado">MONTO</th>
                       </tr>
                     </thead>

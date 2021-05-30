@@ -50,7 +50,7 @@
     </div> 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info redondo" id="saver" onclick="saveasignaciones();"><i class="fas fa-save" ></i></button>
+          <button type="button" class="btn btn-info redondo" id="saver" onclick="saveasignaciones();"><i class="fas fa-save" style="margin-left: -2px; position: relative; font-size: 17px;" ></i></button>
         </div>
       </div>
     </div>

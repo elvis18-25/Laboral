@@ -11,7 +11,7 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>ASIGNACIONES</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="#" title="Crear Nueva Asignacion" data-toggle="modal" data-target="#asignacionesmodal" class="btn btn-sm btn-info redondo"><button   type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="position: relative; top: 5px;"></i></a>
+                    <a href="#" title="Crear Nueva Asignacion" data-toggle="modal" data-target="#asignacionesmodal" class="btn btn-sm btn-info redondo"><button   type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
                     {{-- <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i></button> --}}
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button> --}}
                     {{-- <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button></a> --}}

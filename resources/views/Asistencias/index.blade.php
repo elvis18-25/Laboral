@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-4 text-right">
                 <a href="{{Route('Asistencia.create')}}" title="Crear Nuevo listado de Asistencia " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
-                <a href="{{url('Equipos')}}" title="Crear Grupo de Empleado " class="btn btn-sm btn-warning redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-users-cog" style="top: 5px; margin-left: -25%; position: relative; font-size: 15px;"></i> </a>
+                <a href="{{url('Equipos')}}" title="Crear Grupo de Empleado " class="btn btn-sm btn-warning redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-users-cog" style="margin-left: -4px; top: 6px; position: relative; font-size: 17px;"></i> </a>
                 </div>
             </div>
         </div>

@@ -154,10 +154,10 @@ headers: {
     columns:[
     {data:'btn',name:'btn', },
     {data:'nombre',name:'nombre',class: "boldend" },
-    {data:'cargo', name:'cargo', class: "boldend", searchable:false},
-    {data:'puesto', name:'puesto', class: "boldend"},
+    {data:'cargo', name:'cargo', class: "boldend"},
+    {data:'puesto', name:'puesto', class: "boldend",searchable:false},
     {data:'cedula',name:'cedula', class: "boldend"},
-    {data:'equipos',name:'equipos', class: "boldend"},
+    {data:'equipos',name:'equipos', class: "boldend",searchable:false},
     ],
 
 });
@@ -165,6 +165,7 @@ headers: {
 
 $("#inputState").on('change',function(){
     var id=$(this).val();
+    alert(id);
         $("#input").val(id);
         tabla.ajax.reload();
 

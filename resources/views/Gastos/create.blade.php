@@ -17,7 +17,6 @@
             </div>
             <div class="card-body">
               <form action="{{route('Gasto.store')}}" method="POST">
-                <button type="submit" title="Guardar Gastos" id="save" class="btn btn-fill btn-light btn-sm float-right  redondo whiter " style=""><i class="fas fa-save" style="font-size: 17px; margin-left: -1px">&nbsp;</i></button>
                 {{-- <button type="button" title="Guardar Gastos" id="save" class="btn btn-fill btn-primary btn-sm float-right " style="top: -59px;"><i class="fas fa-save"></i></button> --}}
                 {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacionCreate" class="btn btn-info  btn-sm float-right"  style="top: -59px;"><i class="fas fa-edit"></i></i></button> --}}
 
@@ -73,7 +72,7 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Agregar Gasto Fijo" onclick="Mcf();"   class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus"  style="font-size: 17px; margin-left: -1px"></i></button>
+              <button type="button" title="Agregar Gasto Fijo" onclick="Mcf();"   class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus"  style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button>
 
             
               {{-- <div style="max-height: 289px; overflow-x: hidden; width: auto; position: relative; overflow-y: auto; font-size:small; top:-12px; "> --}}
@@ -117,7 +116,7 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal " class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus" style="font-size: 17px; margin-left: -1px" ></i></button>
+              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal " class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus" style="margin-left: -2px; ; position: relative; font-size: 17px;" ></i></button>
           <div style="max-height: 289px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-77px; ">
               <table class="table tablesorter " id="gastoperido-table">
                 <thead class="text-primary">
@@ -216,11 +215,14 @@
         margin-right: 15px;
         font-size: 16px;
         top: 16px;
-        position: absolute;">TOTAL: <span id="totalgeneral"></span></b>
+        position: absolute;"> <span id="totalgeneral"></span></b>
       </nav>
     </div>
 </div>
+<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+
 </div>
+
 <div class="col-sm-6 float-left">
 
 <div class="card">
@@ -333,7 +335,7 @@ function totalgasto(){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });  
 }
@@ -526,7 +528,7 @@ var rest=0;
        
        },
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+            ErroresGeneral();
 }
          });  
   }
@@ -885,7 +887,7 @@ function vernomina(e){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });  
 }
@@ -904,7 +906,7 @@ function Mcf(){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });  
 }
@@ -925,11 +927,32 @@ function Mcf(){
            
 //            },
 //                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+//                 ErroresGeneral();
 //     }
 //              });  
  
 // }
+
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
 
 $("#gastos-table tbody").on('click','tr',function(){
  
@@ -949,7 +972,7 @@ $("#gastos-table tbody").on('click','tr',function(){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });  
  
@@ -981,6 +1004,10 @@ $("#gastos-table tbody").on('click','tr',function(){
     color: white !important;
     position: relative;
     top: -15px;
+}
+
+table tr td{
+  padding: 4px 7px !important;
 }
 
   </style>

@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content" style=" margin-top: -95px; ">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color: black">OTROS</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="font-size: 16px !important; font-weight: bold !important;">OTROS</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -11,12 +11,12 @@
         <div class="modal-body">
             <div class="form-row">
                 <div class="col-sm-6">
-                    <label style="color: black">{{ __('NOMBRE ') }}</label>
+                    <label style="color: black"> <b>{{ __('NOMBRE ') }}</b></label>
                     <input type="text" name="name" autofocus id="name" value="{{$otros->descripcion}}"   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                 </div>
     
                 <div class="col-sm-6">
-                    <label style="color: black">{{ __('TIPO ') }}</label>
+                    <label style="color: black"><b>{{ __('TIPO ') }}</b></label>
                     <select id="inputState" class="form-control selec"  name="tipo" >
                         <option selected disabled>ElEGIR...</option>
 
@@ -37,7 +37,7 @@
                 </div>
     
                 <div class="col-sm-5">
-                    <label style="color: black">{{ __('FORMA ') }}</label>
+                    <label style="color: black"><b>{{ __('FORMA ') }}</b></label>
                     <select  class="form-control selec" name="formae"  id="forma" >
                         <option selected disabled>ElEGIR...</option>
 

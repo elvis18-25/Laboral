@@ -89,8 +89,8 @@
     </div> 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info redondo" id="saveredit" onclick="updateasignaciones({{$asigna->id}});"><i class="fas fa-save"></i></button>
-          <button type="button" class="btn btn-danger redondo" id="deletesr" onclick="deleteasigna({{$asigna->id}});"><i class="fas fa-trash"></i></button>
+          <button type="button" class="btn btn-info redondo" id="saveredit" onclick="updateasignaciones({{$asigna->id}});"><i class="fas fa-save" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
+          <button type="button" class="btn btn-danger redondo" id="deletesr" onclick="deleteasigna({{$asigna->id}});"><i class="fas fa-trash" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
         </div>
       </div>
     </div>

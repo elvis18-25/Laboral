@@ -14,8 +14,8 @@
                     <h4 class="card-title TitleCard" style="font-size: 16px !important; font-weight: bold !important;"><b>NOMINAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                  <a href="#" class="btn btn-sm btn-warning redondo" style="top: -14px; position: relative;"  title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-users" style="top: 5px; position: relative; margin-left: -3px;"></i></a>
-                  <a href="#" class="btn btn-sm btn-success redondo"style="top: -14px; position: relative;" id="btnplusemple"  title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="top: 5px; position: relative; margin-left: -3px;" ></i></a>
+                  <a href="#" class="btn btn-sm btn-warning redondo" style="top: -14px; position: relative;"  title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-users" style="margin-left: -5px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                  <a href="#" class="btn btn-sm btn-success redondo"style="top: -14px; position: relative;" id="btnplusemple"  title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;" ></i></a>
                 
                 </div>
                 @include('Nominas.perfiles')
@@ -71,15 +71,31 @@
         </div>
         
       </div>
-   
-   <div class="card" style="height: 48px;">
-     <div class="card-body">
+
+      <div class="col-sm-6 float-right">  
+  <div class="card" style="float: inherit; height: 48px; width: 392px; margin-right: -14px;">
+  <div class="card-header">
+    <div class="row">
+        <div class="col-12">
+            <h4 class="car" style="font-size: 16px !important; font-weight: bold !important;" ><b>TOTAL GENERAL:</b></h4>
+          </div>
+
+        <div class="col-4 text-right">
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
       <nav class="d-flex justify-content-end" aria-label="...">
-        <b class="float-right" style="color: black; font-size: 15px;">TOTAL: <span id="totalnomina"></span></b>
+        <b class="float-right" style="color: black;
+        margin-right: 15px;
+        font-size: 16px;
+        top: 16px;
+        position: absolute;"> <span id="totalnomina"></span></b>
       </nav>
-      <button type="submit" style="top: -36px;"  class="btn btn-fill btn-info redondo btn-sm float-left"><i class="fas fa-save"></i></button>
-     </div>
-   </div>
+    </div>
+  </div>
+</div>
+<button type="submit" class="btn btn-fill btn-info mx-auto float-left" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
     </div>
     
   </form>
@@ -90,10 +106,10 @@
   <div class="modal fade" id="horassdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
   {{-- @include('Nominas.modalhoras') --}}
   
-  @include('Nominas.addGroup')
   <div class="modal fade" id="otrosedites" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+  @include('Nominas.otros')
+  @include('Nominas.addGroup')
 
-@include('Nominas.otros')
 
 
     <div class="o-page-loader">
@@ -144,8 +160,8 @@
 $('.bs-timepicker').timepicker();
 
 // $(function() {
-  start = moment().startOf('month');
- end = moment().endOf('month');
+  var start = moment().startOf('month');
+  var end = moment().endOf('month');
   $(document).ready(function(){
 
 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -153,6 +169,8 @@ $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('M
 // function cb(start, end) {
 //     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 // }
+
+
 
 $("#selecgrupo").hide();
 $("#exams1").change(function(){
@@ -187,10 +205,11 @@ $('#reportrange').daterangepicker({
 }, function (start, end) {
           
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-          start = start;
-          end = end;
-          totalnomi($("#input").val());
+          // start = start;
+          // end = end;
           tabla.ajax.reload();
+         
+          totalnomi($("#input").val());
         });
 
 });
@@ -669,11 +688,17 @@ var data={idperfi:idperfi};
 const options2 = { style: 'currency', currency: 'USD' };
 const numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
+var Priim=0;
+var reses= numberFormat2.format(Priim); 
+            $("#totalnomina").empty();
+            $("#totalnomina").append(reses);
+
+
 function totalnomi(e){
-  var Istart=start.format('YYYY-MM-DD');
-      var Iend=end.format('YYYY-MM-DD');
+  var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
     var url ="{{url('totalnominas')}}/"+e;
-     var data ={e:e,Istart:Istart,Iend:Iend};
+     var data ={e:e,start:start,end:end};
         $.ajax({
          method: "POST",
            data: data,

@@ -4,7 +4,7 @@
     <div class="modal-dialog">
       <div class="modal-content" style=" margin-top: -95px; ">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color: black">OTROS</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="color: black" style="font-size: 16px !important; font-weight: bold !important;"><b>OTROS</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -12,12 +12,12 @@
         <div class="modal-body">
             <div class="form-row">
                 <div class="col-sm-6">
-                    <label style="color: black">{{ __('NOMBRE ') }}</label>
+                    <label style="color: black"><b>{{ __('NOMBRE ') }}</b></label>
                     <input type="text" name="name" autofocus id="nameC"   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                 </div>
     
-                <div class="col-sm-6">
-                    <label style="color: black">{{ __('TIPO ') }}</label>
+                <div class="col-sm-6 mb-3">
+                    <label style="color: black"><b>{{ __('TIPO ') }}</b></label>
                     <select id="inputStateC" class="form-control selec"  name="tipo" >
                         <option selected disabled>ElEGIR...</option>
                         <option value="1">DEDUCIÓN</option>
@@ -25,8 +25,8 @@
                       </select>
                 </div>
     
-                <div class="col-sm-5">
-                    <label style="color: black">{{ __('FORMA ') }}</label>
+                <div class="col-sm-5 mb-3">
+                    <label style="color: black"><b>{{ __('FORMA ') }}</b></label>
                     <select  class="form-control selec" name="formae"  id="formardC" >
                         <option selected disabled>ElEGIR...</option>
                         <option value="3">MONTO</option>
@@ -48,7 +48,7 @@
         <div class="modal-footer">
             <input type="text" id="empleotros" value="" hidden>
           {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-          <button type="button" class="btn btn-info" onclick="saveotros();"><i class="fas fa-save"></i></button>
+          <button type="button" class="btn btn-info redondo" onclick="saveotros();"><i class="fas fa-save" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
         </div>
       </div>
     </div>

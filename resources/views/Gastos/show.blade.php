@@ -16,19 +16,14 @@
               </div>
             </div>
             <div class="card-body">
-                <form action="{{route('Gasto.destroy',$gasto->id)}}" method="POST">
-                  @csrf
-                  @method('DELETE')
-                  <button  type="submit" title="Eliminar" class="btn btn-danger btn-sm float-right redondo"  style="top: -92px;"><i class="fas fa-trash"></i></button>
-                </form>
+
                 <form action="{{route('Gasto.update',$gasto->id)}}" method="POST">
-                  <button type="submit" title="Guardar Gastos" id="save" class="btn btn-fill btn-info btn-sm float-right redondo whiter " style="top: -92px;"><i class="fas fa-save"></i></button>
-                  <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-excel"></i></button>
+                  <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-excel" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button>
                   {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacion" class="btn btn-info  btn-sm float-right whiter redondo"  style="top: -104px;"><i class="fas fa-edit"></i></i></button> --}}
                   {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm float-right"  style="top: -59px;"><i class="fas fa-print"></i></button> --}}
-                  <a href="{{url('listadopdfgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button  type="button"  style="top: -92px;" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo float-right"><i class="fas fa-print"></i></button></a>
+                  <a href="{{url('listadopdfgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button  type="button"  style="top: -92px;" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo float-right"><i class="fas fa-print" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button></a>
                   {{-- <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm float-right"  style="top: -59px;"><i class="fas fa-file-pdf"></i></button> --}}
-                 <a href="{{url('donwloadgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-pdf"></i></button></a>
+                 <a href="{{url('donwloadgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-pdf" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button></a>
                   @csrf   
                   @method('PUT') 
             <div class="form-row">
@@ -89,7 +84,7 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Agregar Gasto Fijo" onclick="MFDC();"   class="btn btn-fill btn-info btn-sm float-right redondo whiter" ><i class="fas fa-plus"></i></button>
+              <button type="button" title="Agregar Gasto Fijo" onclick="MFDC();"   class="btn btn-fill btn-info btn-sm float-right redondo whiter" ><i class="fas fa-plus" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button>
               <div style="max-height: 305px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-77px; ">
                 <table class="table tablesorter " id="gastofijo-table" style="top: -8px; position: relative;">
                 <thead class="text-primary">
@@ -143,7 +138,7 @@
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal" class="btn btn-fill btn-info btn-sm float-right redondo whiter " ><i class="fas fa-plus"></i></button>
+              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal" class="btn btn-fill btn-info btn-sm float-right redondo whiter " ><i class="fas fa-plus" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button>
               <div style="max-height: 305px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-77px; ">
                 <table class="table tablesorter " id="gastoperido-table" style="top: -8px; position: relative;">
                 <thead class="text-primary">
@@ -258,16 +253,17 @@
       </nav>
     </div>
 </div>
+
 </div>
 <div class="col-sm-6 float-left">
-
-<div class="card">
-  <div class="card-header">
-    <div class="row">
+  
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
         <div class="col-8">
-            <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>OBSERVACIONES</b></h4>
+          <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;" ><b>OBSERVACIONES</b></h4>
         </div>
-
+        
         <div class="col-4 text-right">
         </div>
       </div>
@@ -275,8 +271,15 @@
     <div class="card-body">
       <textarea class="form-control" style="color: black; font-size: 13px !important; font-weight: bold !important;" name="textarea" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" id="exampleFormControlTextarea1" rows="3">{{$gasto->observaciones}}</textarea>
     </div>
+  </div>
 </div>
-</div>
+<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+</form>
+
+<form action="{{route('Gasto.destroy',$gasto->id)}}" method="POST">
+  @csrf
+  @method('DELETE')
+  <button type="submit"  class="btn btn-fill btn-danger float-right" title="Eliminar Empleado" style="margin-right: 5px;"><i class="fas fa-trash"></i>&nbsp;{{ __('Eliminar') }}</button>
 </form>
 
 
@@ -360,7 +363,7 @@ function MFDC(){
               
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral();
     }
              });  
 }
@@ -450,7 +453,7 @@ var url = "{{ url('listmonto')}}/"+id;
               
            },
            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral();
               }
              });  
 }
@@ -510,7 +513,7 @@ var url = "{{ url('listmonto')}}/"+id;
            
 //            },
 //                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+//                ErroresGeneral();
 //     }
 //              });  
 // }
@@ -684,7 +687,7 @@ var rest=0;
        
        },
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+           ErroresGeneral();
 }
          });  
   }
@@ -1035,7 +1038,7 @@ if(concepto!=''&& monto!=''){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral();
     }
              }); 
             }else{
@@ -1219,7 +1222,7 @@ function vernomina(e){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral();
     }
              });  
 }
@@ -1238,7 +1241,7 @@ function Mcf(){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral();
     }
              });  
 }
@@ -1259,7 +1262,7 @@ function verconcept(e){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral();
     }
              });  
  
@@ -1304,12 +1307,33 @@ function ComparationGastos() {
            
 //            },
 //                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+//                ErroresGeneral();
 //     }
 //              });  
  
 // });
 
+
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
 </script>
 <style>
   .disabledclass{
@@ -1327,6 +1351,10 @@ function ComparationGastos() {
     position: relative;
     top: -15px;
 }
+
+/* table tr td{
+  padding: 4px 7px !important;
+} */
 
   </style>
 @endsection

@@ -110,8 +110,8 @@ class NominaController extends Controller
     {
         // $id=request("e");
 
-        $start =new DateTime(request('Istart'));
-        $end =new DateTime(request('Iend'));
+        $start =new DateTime(request('start'));
+        $end =new DateTime(request('end'));
 
         $perfiles=Perfiles_empleado::select('id')->where('id','=',$id)->first();
         $perf=Perfiles::all();

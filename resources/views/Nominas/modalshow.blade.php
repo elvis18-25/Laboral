@@ -98,7 +98,7 @@
                 </div>
                 
                 <div class="card-footer text-muted"  >
-                  <button type="button" id="btnnew" class="btn btn-info btn-sm redondo" style="position: absolute; margin-left: 679px; top: 308px;" data-toggle="modal" data-target="#otrosmodal"><i class="fas fa-plus"></i></button>
+                  <button type="button" id="btnnew" class="btn btn-info btn-sm redondo" style="position: absolute; margin-left: 679px; top: 308px;" data-toggle="modal" data-target="#otrosmodal"><i class="fas fa-plus" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
 
                   <b class="float-right" style="color: black;
                   font-size: 16px;
