@@ -1,6 +1,11 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
+<style>
+    #pagos-table_length{
+        margin-left: 3% !important;
+    }
+</style>
 <link rel="stylesheet" href="{{asset('css/pagos.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
@@ -11,7 +16,7 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>FORMAS DE PAGOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="#" data-toggle="modal" data-target="#create" class="btn btn-sm btn-info redondo"><button type="button" id="cretepagos"  style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#create" class="btn btn-sm btn-info redondo"><button type="button" id="cretepagos"  style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
                 @include('Pagos.modalcreate')
                 </div>
             </div>

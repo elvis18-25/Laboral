@@ -16,8 +16,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" onclick="eliminie({{$puesto->id}})"><i class="fas fa-trash"></i></button>
-            <button type="button" onclick="editdepart({{$puesto->id}});" id="btneditdepart" class="btn btn-info float-right"><i class="fas fa-save"></i></button>
+            <button type="button" class="btn btn-danger redondo" onclick="eliminie({{$puesto->id}})"><i class="fas fa-trash"></i></button>
+            <button type="button" onclick="editdepart({{$puesto->id}});" id="btneditdepart" class="btn btn-info float-right redondo"><i class="fas fa-save" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
         </div>
       </div>
     </div>

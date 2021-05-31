@@ -167,8 +167,6 @@ class AsistenciaController extends Controller
 
         if(!empty($tipo)){
             $empleados->where('equipos_empleados.equipos',$tipo);
-        }else if($tipo==-1){
-            $empleados->where('equipos_empleados.equipos',$tipo);
         }
         
             return datatables()->of($empleados)

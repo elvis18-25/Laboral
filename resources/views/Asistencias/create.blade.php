@@ -28,7 +28,7 @@
             <div class="form-inline ">
                 <label for="inputState"><b> SELECCIONAR POR GRUPO:</b> &nbsp;</label>
                     <select id="inputState" class="form-control form-control-sm" name="dinamico">
-                      <option  value="-1">NINGUNO...</option>
+                      <option  value="-1" >NINGUNO...</option>
                       <option selected value="0">TODOS</option>
                       @foreach ($equipo as $equipos)
                       @if ($equipos->id_empresa==Auth::user()->id_empresa && $equipos->estados==0)
@@ -164,10 +164,13 @@ headers: {
 
 
 $("#inputState").on('change',function(){
-    var id=$(this).val();
-    alert(id);
-        $("#input").val(id);
-        tabla.ajax.reload();
+        var id=$(this).val();
+        if(id!=-1){
+          $("#input").val(id);
+          tabla.ajax.reload();
+        }else{
+          checkendesd();
+        }
 
 });
 
@@ -200,18 +203,24 @@ $("#subir").on('click',function(){
 $("#formulario").submit(function(e){
   e.preventDefault();
   var valor=$("#inputState").val();
+  var p=0;
 
-  if(valor!=-1){
-    $("#horas").trigger("click");
-    this.submit();
-  }else{
-    errorEmptys();
-  }
+      $('#listado-table tbody input[type="checkbox"]:checked').each(function(row){
+        p=1;
+        $('#horas').trigger("click");
+    });
+
+if(p==0){
+  errorEmptys();
+}else{
+  this.submit();
+}
+
   });
 
 
 function errorEmptys() {
-  Command: toastr["error"]("Debes de elegir un Grupo", "Error")
+  Command: toastr["error"]("Debes seleccionar al menos un Empleado", "Error")
   toastr.options = {
     "closeButton": false,
     "debug": false,
@@ -230,6 +239,15 @@ function errorEmptys() {
     "hideMethod": "fadeOut"
   }
 }
+
+
+function checkendesd(){
+      
+        $('#listado-table tbody input[type="checkbox"]').prop('checked',false);
+ 
+  
+}
+
 $(function() {
   $('input[name="birthday"]').daterangepicker({
     singleDatePicker: true,
@@ -278,6 +296,8 @@ $(function() {
 .dataTables_filter{
   top: -37px !important;
 }
+
+
 </style>
 @endsection
 

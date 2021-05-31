@@ -341,6 +341,25 @@ function totalgasto(){
 }
 
 
+$("#montsC").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#nombreC").on('keypress', function(e) { return e.keyCode != 13; }); 
+
+
+$('#modalcreatefijo').keyup(function(e){
+    if(e.keyCode==13)
+    {
+      $('#btnsavefijos').trigger("click");
+      
+    }
+    if(e.keycode!=13)
+    {
+      var nom=$("#nombreC").val();
+       if(nom==""){
+         $("#nombreC").focus();
+       }
+        
+    }
+});
 
 $("#condiction").change(function(){
   if($(this).val()==0){
@@ -401,8 +420,8 @@ text: "{{url('phoneblade')}}",
 });
 
 
-HayFoco=true;
-HayFoco2=true;
+HayFoco=false;
+HayFoco2=false;
 document.addEventListener ("keydown", function (e) {
   if(HayFoco==true || HayFoco2==true ){
     HayFoco=true;
@@ -655,6 +674,7 @@ var baseDatos=[];
 var BDconceptos=[];
 var BDmonto=[];
 var p=0;
+
 function agregar(){
   $('.datosInput').val('');
   $("#concepto").focus();

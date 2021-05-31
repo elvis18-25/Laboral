@@ -155,7 +155,7 @@
                         <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
                             <label>{{ __('SALARIO BRUTO') }}</label>
                             <input type="text" onkeyup="calcular();"  value="{{number_format($empleados->salario,2)}}" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }} money" id="salario" placeholder="{{ __('Salario') }}" required>
-                            <input type="text" name="salario" value="" id="salarioOP" hidden>
+                            <input type="text" name="salario" value="{{$empleados->salario}}" id="salarioOP" hidden>
                        
                         </div>
                       {{-- </div> --}}
@@ -222,14 +222,24 @@
                           <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  required>
                               <option selected value="">ELEGIR...</option>
                               @foreach ($equipo as $equipos)
+
                               @if ($equipos->estado==0)
                               @if ($equipos->id_empresa==Auth::user()->id_empresa)
+
+                              @if ($emple_equipo!=null)
                               @if ($emple_equipo->equipos==$equipos->id)
                               <option value="{{$equipos->id}}" selected>{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
                               
                               @else
                               <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              @endif   
+                              
+                              @else
+                              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
                               @endif
+
+
+
                               @endif
                               @endif
                               @endforeach
@@ -555,6 +565,8 @@
     $('#salario').mask('0#');
     $('.money').mask("#,##0.00", {reverse: true});
 
+    // var saler=$("#salario").val();
+    // $("#salarioOP").attr('value',saler);
     $("input[type='tel']").mask('(000) 000-0000');
     $("#descradjunto").val(" ");
 

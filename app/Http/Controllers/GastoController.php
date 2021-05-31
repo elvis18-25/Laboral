@@ -70,7 +70,7 @@ class GastoController extends Controller
         $gasto->fecha=$request->get('fec');
         $gasto->monto=$request->get('total');
         $gasto->id_nomina=$request->get('idnomina');
-        $gasto->observaciones=$request->get('textaria');
+        $gasto->observaciones=$request->get('textarea');
         $gasto->id_empresa=Auth::user()->id_empresa;
         $gasto->user=Auth::user()->name;
         $gasto->estado=0;
@@ -222,12 +222,17 @@ class GastoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        // dd($request->all());
 
         $gasto=Gasto::findOrFail($id);
         $gasto->descripcion=$request->get('descripn');
         $gasto->fecha=$request->get('fec');
-        $gasto->id_nomina=$request->get('idnomina');
+        if($request->get('idnominaser')==0){
+            $gasto->id_nomina=$request->get('idnomina');
+        }else{
+            $gasto->id_nomina=$request->get('idnominaser');
+        }
+       
         $gasto->monto=$request->get('total');
         $gasto->user=Auth::user()->name;
         $gasto->observaciones=$request->get('textarea');

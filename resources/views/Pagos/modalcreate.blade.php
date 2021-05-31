@@ -5,7 +5,7 @@
     <div class="modal-dialog">
       <div class="modal-content" >
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color: black">NUEVA FORMA DE PAGO</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="color: black"><b>NUEVA FORMA DE PAGO</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -20,7 +20,7 @@
         </div>
         <div class="modal-footer">
           {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i></button> --}}
-          <button type="button" onclick="savepagos();" id="btnpago" class="btn btn-info float-right"><i class="fas fa-save"></i></button>
+          <button type="button" onclick="savepagos();" id="btnpago" class="btn btn-info float-right redondo"><i class="fas fa-save" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
         </div>
       </div>
     </div>

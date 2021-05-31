@@ -21,7 +21,7 @@
           </div>
           <div class="modal-footer">
               {{-- <button class="btn btn-danger elimini btn-sm"  type="button"><i class="fas fa-trash"></i>&nbsp;Eliminar</button>  --}}
-            <button type="button" class="btn btn-info save btn-sm redondo"><i class="fas fa-save"></i></button>
+            <button type="button" class="btn btn-info save btn-sm redondo" id="btnsavefijos"><i class="fas fa-save"></i></button>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
              
              },
                   error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                  alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                  ErroresGeneral();
       }
                });
     }
@@ -95,7 +95,7 @@
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
     }else{

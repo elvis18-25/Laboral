@@ -151,7 +151,8 @@
 
                         <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
                             <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text" name="salario" onkeyup="calcular();"  class="form-control money" id="salario" placeholder="{{ __('Salario') }}" required>
+                            <input type="text"  onkeyup="calcular();"  class="form-control money" id="salario"  placeholder="{{ __('Salario') }}" required>
+                            <input type="text" name="salario"   class="form-control money" id="recisalario"   hidden>
                        
                         </div>
                         <div class="col-sm-3{{ $errors->has('dias') ? ' has-danger' : '' }}">
@@ -684,7 +685,7 @@ options2 = { style: 'currency', currency: 'USD' };
 
    sum=montoFormat/23.83/8;
 
-   $("#salario").attr('value',montoFormat);
+   $("#recisalario").attr('value',montoFormat);
    $("#salDias").attr('value',financial(sum));
 
 

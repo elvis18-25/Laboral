@@ -159,11 +159,19 @@ class NominaController extends Controller
         }
 
 
+
             foreach($perf as $perfe){
                 if($perfiles->id==$perfe->id_perfiles){
                    foreach($empleados as $emple){
                        if($emple->id_empleado==$perfe->id_empleado){
-                        $salarioDias=$emple->horas*$p;
+
+                        if($emple->horas!=null){
+                            $salarioDias=$emple->horas*$p;
+                        }else{
+                            $sumer=$emple->salario/23.83/8;
+                            $salarioDias=$sumer*$p;
+                        }
+
                         $salario=$salario+$salarioDias;
                         
                         }
@@ -889,7 +897,12 @@ class NominaController extends Controller
                 
                 }
 
-                $salarioDias=$row->horas*$p;
+                if($row->horas!=null){
+                    $salarioDias=$row->horas*$p;
+                }else{
+                    $sumer=$row->salario/23.83/8;
+                    $salarioDias=$sumer*$p;
+                }
 
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){

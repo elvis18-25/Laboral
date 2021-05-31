@@ -20,7 +20,7 @@
         </div>
         <div class="modal-footer">
           {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i></button> --}}
-          <button type="button" onclick="savedepart();" id="btndepart" class="btn btn-info float-right redondo"><i class="fas fa-save"></i></button>
+          <button type="button" onclick="savedepart();" id="btndepart" class="btn btn-info float-right redondo"><i class="fas fa-save" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
         </div>
       </div>
     </div>

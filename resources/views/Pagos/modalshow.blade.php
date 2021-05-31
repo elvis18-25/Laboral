@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content" >
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color:black">FORMA DE PAGO</h5>
+          <h5 class="modal-title" id="exampleModalLabel" style="color:black"><b>FORMA DE PAGO</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -18,8 +18,8 @@
         </div>
         <input type="text" name="" id="idpagos" value="{{$pagos->id}}" hidden>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" onclick="eliminie({{$pagos->id}})"><i class="fas fa-trash"></i></button>
-          <button type="button" onclick="updatepagos({{$pagos->id}});" id="btneditpago" class="btn btn-info float-right"><i class="fas fa-save"></i></button>
+          <button type="button" class="btn btn-danger redondo" onclick="eliminie({{$pagos->id}})"><i class="fas fa-trash" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
+          <button type="button" onclick="updatepagos({{$pagos->id}});" id="btneditpago" class="btn btn-info float-right redondo"><i class="fas fa-save" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
         </div>
       </div>
     </div>

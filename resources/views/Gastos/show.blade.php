@@ -34,7 +34,6 @@
                 @php
                     $user=Auth::user()->id_empresa
                 @endphp
-
               <div class="col-sm-4">
                 <label>{{ __('ELEGIR NOMINA') }}</label>
                 <div class="input-group  mb-3">
@@ -43,7 +42,7 @@
                       <input type="checkbox" value="0" aria-label="Checkbox for following text input" id="condiction" >
                     </div>
                   </div>
-                  <select id="selecte" class="form-control " name="idnomina" disabled>
+                  <select id="selecte" class="form-control " value="" name="idnominaser" disabled>
                     <option selected value="0" >ELEGIR NOMINA</option>
                     @foreach ($nominas as $nomina)
                     @if ($nomina->id_empresa==Auth::user()->id_empresa && $nomina->estado==0 )

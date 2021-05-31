@@ -153,7 +153,7 @@ class EmpleadosController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
 
         $inputs=$request->all();
 
@@ -316,6 +316,8 @@ class EmpleadosController extends Controller
         $equipo=Equipos::all();
         $emple_equipo=empleados_equipo::where('id_empleado','=',$id)->first();
 
+
+
         $pais=Pais::all(['id','name']);
 
         if(sizeof(paises_empleado::select('pais')->where('id_empleado','=',$id)->get())!=0){
@@ -343,8 +345,7 @@ class EmpleadosController extends Controller
 
         
 
-        return view('Empleados.edit',compact('empleados','sexo','pago',
-        'puesto','asignaciones','contrato','tipo','referencias','Adjunto','pais','pais_emple','state','ciudades','emple_equipo','equipo','role'));
+        return view('Empleados.edit',compact('empleados','sexo','pago','puesto','asignaciones','contrato','tipo','referencias','Adjunto','pais','pais_emple','state','ciudades','emple_equipo','equipo','role'));
     }
 
     /**
@@ -480,11 +481,21 @@ class EmpleadosController extends Controller
         }
 
         // =$request->get('grupo');
+
         if($request->get('grupo')!=" "){
+            if(sizeof(empleados_equipo::select('id_empleado')->where('id_empleado','=',$id)->get())!=0){
             $equipo=empleados_equipo::where('id_empleado','=',$id)->first();
             $emple_equipo=empleados_equipo::findOrFail($equipo->id);
             $emple_equipo->equipos=$request->get('grupo');
             $emple_equipo->update();
+            }else{
+                $equipo= new empleados_equipo();
+                $equipo->equipos=$request->get('grupo');
+                $equipo->id_empleado=$id;
+                $equipo->id_empresa=Auth::user()->id_empresa;
+                $equipo->estado=0;
+                $equipo->save();
+            }
         }
 
         
