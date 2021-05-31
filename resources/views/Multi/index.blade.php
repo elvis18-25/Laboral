@@ -8,12 +8,16 @@
     <link rel="icon" type="image/png" href="{{ asset('black') }}/img/Favicon.png">
     <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    
+   
+    <div class="col-md-3">
+        <img src="{{asset('black')}}/img/logotipo.png" alt="" class="logotipo" style="height: 37%;  width: 37%;">
+    </div>
+
     <title>Laboral</title>
 </head>
 <body>
 
-    <form  class="sign-in-form" id="formulario" method="post" action="{{ url('SeleccionEmpresa') }}">
+    <form  class="sign-in-form" id="formulario" method="post" action="{{ url('SeleccionEmpresa') }}"  style="top: 62px;  position: relative;">
         @csrf
         @method('POST')
    <div class="container">
@@ -29,17 +33,18 @@
            @foreach ($empresa as $empresas)
            @foreach ($user as $users)
            @if ($users->id_empresa==$empresas->id)
+
            @php
            $color="";
                if($empresas->color==null){
-                $color="#eceded";
+                $color='#'.str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);;
                }else{
                 $color=$empresas->color;
                }
            @endphp
                
-           <div class="col-md-2 col-sm-2 col-xl-2 col-lg-2 pb-2 text-center empresas">
-               <button type="submit" class=" btn users" style='height: 150px ;background-color:<?php printf($color); ?>' value="{{$users->email}}" action="{{$users->password}}" id="{{$empresas->id}}" >
+           <div class="col-md-3 col-sm-3 col-xl-2 col-lg-2 pb-2 text-center empresas">
+               <button type="submit" class=" btn users" style='height: 156px; width: 172px;  background-color:<?php printf($color); ?>' value="{{$users->email}}" action="{{$users->password}}" id="{{$empresas->id}}" >
                 @if ($empresas->imagen!=null)
                 <img src="{{ asset('logo/'.$empresas->imagen)}}"  width="100%" height="100%" alt="">
                     
@@ -49,13 +54,11 @@
                     $numero=rand(1, 5);
                     $num=$numero.".png";
                     // dd($num);
-                    
-    
                 @endphp
-                <img src="{{asset('recuros/'.$num)}}" width="100%" height="100%"  alt="">
+                <img src="{{asset('recuros/empresa.png')}}" width="100%" height="100%"  alt="">
                 @endif
                 </button>
-                <h4>{{$empresas->nombre}}</h4>
+                <h4 style="font-size: 14px;">{{$empresas->nombre}}</h4>
             </div>
 
             @endif
