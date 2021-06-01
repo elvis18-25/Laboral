@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
 
 <form  action="{{Route('Empleados.update',$empleados->id_empleado)}}" method="POST" enctype="multipart/form-data" id="formulario"  >  
 @csrf
@@ -96,7 +97,7 @@
                         <div class="col-sm-3{{ $errors->has('genero') ? ' has-danger' : '' }}">
                             <label>{{ __('GENERO') }}</label>
                             <select class="form-control{{ $errors->has('genero') ? ' is-invalid' : '' }} selec" name="genero" required>
-                                <option selected >ELEGIR...</option>
+                                <option selected disabled >ELEGIR...</option>
                               @foreach ($sexo as $sex)
                               @if($sex->name == str_replace(array('["', '"]'), '',$empleados->tienesSexo()));
                                 <option value="{{$sex->id}}" selected>{{$sex->name}}</option>							
@@ -219,7 +220,7 @@
                         <div class="col-sm-4{{ $errors->has('grupo') ? ' has-danger' : '' }}">
                           <label>{{ __('GRUPOS') }}</label>
                           <div class="input-group mb-3">
-                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  required>
+                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  >
                               <option selected value="">ELEGIR...</option>
                               @foreach ($equipo as $equipos)
 
@@ -237,7 +238,6 @@
                               @else
                               <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
                               @endif
-
 
 
                               @endif
@@ -496,7 +496,7 @@
         </div>
         
         <div class="button" style="margin-right: 68px">
-        <button type="submit"  title="Guardar Datos" class="btn btn-fill btn-info btnholdon  float-right"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+        <button type="submit"  title="Guardar Datos" id="seave" class="btn btn-fill btn-info btnholdon  float-right"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
       </form>
       <form action="{{Route('Empleados.destroy',$empleados->id_empleado)}}" id="deleempleado" method="POST">
         @csrf
@@ -555,11 +555,43 @@
 {{-- <script src="{{asset('js/holdOn.js')}}"></script>
 <link rel="stylesheet" href="{{asset('css/holdOn.css')}}"> --}}
 <script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="{{asset('js/timepicker.min.js')}}"></script>
 <script>
 
 
   $(document).ready(function(){
-    // HoldOn.close();
+   
+    if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null, './#forward');
+
+$(window).on('popstate', function() {
+  backsave();
+});
+
+}
+
+
+function backsave(){
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, guardar!',
+  cancelButtonText: 'No, salir!',
+}).then((result) => {
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  }else{
+    history.back();
+  }
+
+});
+
+}
     $("#pass").val('');
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
@@ -569,7 +601,7 @@
     // $("#salarioOP").attr('value',saler);
     $("input[type='tel']").mask('(000) 000-0000');
     $("#descradjunto").val(" ");
-
+    $('.bs-timepicker').timepicker();
 
     $('#adjunnew').keyup(function(e){
     if(e.keyCode==13)
@@ -887,8 +919,6 @@ $('#exampleModal').keyup(function(e){
     {
       $('#btndepartamento').trigger("click");
       
-
-      
     }
     if(e.keycode!=13)
     {
@@ -945,6 +975,31 @@ function savepago(){
              }); 
 }
 
+
+function savedgruop(){
+    var name=$("#descr").val();
+    var entrada=$("#entradaH").val();
+    var salida=$("#salidaH").val();
+
+    var url = "{{url('savegroup')}}"; 
+     var data ={name:name,entrada:entrada,salida:salida};
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              $("#group").modal("toggle");
+              $("#grupo").append(result);
+              $("#grupo option[value="+ $(result).val() +"]").attr("selected",true);
+              document.getElementById('subir').disabled=false;
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             }); 
+}
 
 
 $i=0;

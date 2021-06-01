@@ -167,13 +167,14 @@ class EmpleadosController extends Controller
         $empleados->estado=0;
         $empleados->save();
 
+        if($request->get('grupo')!=" "){
         $equipos= new empleados_equipo();
         $equipos->id_empleado=$empleados->id_empleado;
         $equipos->equipos=$request->get('grupo');
         $equipos->estado=0;
         $equipos->id_empresa=Auth::user()->id_empresa;
         $equipos->save();
-
+        }
 
         
 
@@ -291,7 +292,7 @@ class EmpleadosController extends Controller
             return redirect('Empleados');
         }
        
-        return redirect('Empleados')->with('guardar','ya');;
+        return redirect('Empleados')->with('guardar','ya');
 
     }
 
@@ -472,6 +473,7 @@ class EmpleadosController extends Controller
             $empleados->asignarPuesto($request->get('departa'));
         }
 
+        if($request->get('genero')!="ELEGIR..." && $request->get('genero')!=null){
         $sexo=$empleados->sexo;
         if(count($sexo)>0){
             $sexo_id=$puesto[0]->id;
@@ -479,10 +481,11 @@ class EmpleadosController extends Controller
         }else{
             $empleados->asignarSexo($request->get('genero'));
         }
+    }
 
         // =$request->get('grupo');
 
-        if($request->get('grupo')!=" "){
+        if($request->get('grupo')!=null){
             if(sizeof(empleados_equipo::select('id_empleado')->where('id_empleado','=',$id)->get())!=0){
             $equipo=empleados_equipo::where('id_empleado','=',$id)->first();
             $emple_equipo=empleados_equipo::findOrFail($equipo->id);
@@ -501,7 +504,7 @@ class EmpleadosController extends Controller
         
     
 
-        return redirect('Empleados');
+        return redirect('Empleados')->with('guardar','ya');
 
 
         

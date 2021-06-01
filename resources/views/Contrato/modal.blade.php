@@ -80,7 +80,7 @@
 <script>
   
 $(document).ready(function(){
-  HoldOn.close();
+  // HoldOn.close();
 var current = 1,current_step,next_step,steps;
 steps = $("fieldset").length;
 $(".next").click(function(){

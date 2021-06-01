@@ -209,7 +209,7 @@
                         <div class="col-sm-4{{ $errors->has('grupo') ? ' has-danger' : '' }}">
                           <label>{{ __('GRUPOS') }}</label>
                           <div class="input-group mb-3">
-                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  required>
+                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo">
                               <option selected value="">ELEGIR...</option>
                               @foreach ($equipo as $equipos)
                               @if ($equipos->estado==0)
@@ -413,7 +413,7 @@
 
                         <p class="description">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="image"   aria-describedby="inputGroupFileAddon01" id="subirimaggen" hidden>
+                                <input type="file" class="custom-file-input" name="image" accept="image/*"   aria-describedby="inputGroupFileAddon01" id="subirimaggen" hidden>
                                 <label class="custom-file-label" for="inputGroupFile01" hidden>Choose file</label>
                               </div>
                         </p>
@@ -453,10 +453,13 @@
 <div class="modal fade" id="adjunnow"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <input type="button" id="back" title="Guardar Datos" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
+@include('Empleados.cropper')
 @endsection
 
-
 @section('js2')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script> --}}
 
 <script src="{{asset('js/pageLoader.js')}}"></script>
@@ -465,6 +468,41 @@
 
 <script  type="text/javascript">
   $(document).ready(function(){
+
+    if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null, './#forward');
+
+$(window).on('popstate', function() {
+  backsave();
+});
+
+}
+
+
+function backsave(){
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, guardar!',
+  cancelButtonText: 'No, salir!',
+}).then((result) => {
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  }else{
+    history.back();
+  }
+
+});
+
+}
+
+
+
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
     $("input[type='tel']").mask('(000) 000-0000');
@@ -1028,29 +1066,29 @@ $("#image").on('click',function(){
 
 });
 
-$("#subirimaggen").on('change',function(){
-    $("#image").append()
-});
+// $("#subirimaggen").on('change',function(){
+//     $("#image").append()
+// });
 
 
-document.getElementById("subirimaggen").onchange = function(e) {
-  // Creamos el objeto de la clase FileReader
-  let reader = new FileReader();
+// document.getElementById("subirimaggen").onchange = function(e) {
+//   // Creamos el objeto de la clase FileReader
+//   let reader = new FileReader();
 
-  // Leemos el archivo subido y se lo pasamos a nuestro fileReader
-  reader.readAsDataURL(e.target.files[0]);
+//   // Leemos el archivo subido y se lo pasamos a nuestro fileReader
+//   reader.readAsDataURL(e.target.files[0]);
 
-  // Le decimos que cuando este listo ejecute el código interno
-  reader.onload = function(){
-    let preview = document.getElementById('image'),
-            image = document.createElement('img');
+//   // Le decimos que cuando este listo ejecute el código interno
+//   reader.onload = function(){
+//     let preview = document.getElementById('image'),
+//             image = document.createElement('img');
 
-    image.src = reader.result;
+//     image.src = reader.result;
 
-    preview.innerHTML = '';
-    preview.append(image);
-  };
-}
+//     preview.innerHTML = '';
+//     preview.append(image);
+//   };
+// }
 
 
 
@@ -1166,6 +1204,47 @@ function ErroresGeneral(){
     }
   }
 
+     var canvas  = $("#canvas"),
+    context = canvas.get(0).getContext("2d"),
+    $result = 0;
+
+$('#subirimaggen').on( 'change', function(){
+    if (this.files && this.files[0]) {
+      if ( this.files[0].type.match(/^image\//) ) {
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+           var img = new Image();
+           img.onload = function() {
+             context.canvas.height = img.height;
+             context.canvas.width  = img.width;
+             context.drawImage(img, 0, 0);
+             var cropper = canvas.cropper({
+               aspectRatio: 16 / 9
+             });
+             $("#crpimg").modal('toggle');
+             $('#btnCrop').click(function() {
+                // Get a string base 64 data url
+                var croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png"); 
+                $result.append( $('<img>').attr('src', croppedImageDataURL) );
+             });
+             $('#btnRestore').click(function() {
+               canvas.cropper('reset');
+               $result.empty();
+             });
+           };
+           img.src = evt.target.result;
+				};
+        reader.readAsDataURL(this.files[0]);
+      }
+      else {
+        alert("Invalid file type! Please select an image file.");
+      }
+    }
+    else {
+      alert('No file(s) selected.');
+    }
+});
+
 </script>
 @endsection
 
@@ -1173,5 +1252,17 @@ function ErroresGeneral(){
   .selec option{
     text:rgb(3, 3, 3);
     background-color:#525f7f;;
+}
+
+#canvas {
+  height: 400px;
+  width: 400px;
+  background-color: #ffffff;
+  cursor: default;
+  border: 1px solid black;
+}
+
+img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
 }
 </style>

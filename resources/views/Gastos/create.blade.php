@@ -1,5 +1,11 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
+<style>
+
+  .error{
+    border-color: red !important;
+  }
+</style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -16,7 +22,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="{{route('Gasto.store')}}" method="POST">
+              <form action="{{route('Gasto.store')}}" method="POST" id="formulario">
                 {{-- <button type="button" title="Guardar Gastos" id="save" class="btn btn-fill btn-primary btn-sm float-right " style="top: -59px;"><i class="fas fa-save"></i></button> --}}
                 {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacionCreate" class="btn btn-info  btn-sm float-right"  style="top: -59px;"><i class="fas fa-edit"></i></i></button> --}}
 
@@ -264,6 +270,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous"></script>
 <script src="{{asset('js/jquery-qrcode-0.18.0.min.js')}}"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+
 <script>
 
 // $(document).ready(function(){
@@ -273,6 +281,77 @@
 // window.addEventListener("onbeforeunload",function(e){
 // return "h";
 // });
+
+if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null, './#forward');
+
+$(window).on('popstate', function() {
+  backsave();
+});
+
+}
+
+function backsave(){
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, guardar!',
+  cancelButtonText: 'No, salir!',
+}).then((result) => {
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  }else{
+    history.back();
+  }
+
+});
+
+}
+
+
+jQuery.extend(jQuery.validator.messages, {
+    required: "",
+    remote: "Please fix this field.",
+    email: "Please enter a valid email address.",
+    url: "Please enter a valid URL.",
+    date: "Please enter a valid date.",
+    dateISO: "Please enter a valid date (ISO).",
+    number: "Please enter a valid number.",
+    digits: "Please enter only digits.",
+    creditcard: "Please enter a valid credit card number.",
+    equalTo: "",
+    accept: "Please enter a value with a valid extension.",
+    maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
+    minlength: jQuery.validator.format("Please enter at least {0} characters."),
+    rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+    range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+    max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+    min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+});
+
+$("#formulario").validate({
+
+errorPlacement: function(error, element) {
+      var name = element.attr('name');
+      element.addClass('error');
+      var errorSelector = '.validation_error_message[for="' + name + '"]';
+      var $element = $(errorSelector);
+      if ($element.length) { 
+        $(errorSelector).html(error.html());
+      } else {
+        
+          error.insertAfter(element);
+
+      }
+      ErroresGeneral();
+  }
+
+});
 
 $("#monto").mask('0#');
 totalgasto();

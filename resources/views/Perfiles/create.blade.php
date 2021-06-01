@@ -78,6 +78,36 @@
 <script>
     $(document).ready(function(){
  
+if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null, './#forward');
+
+$(window).on('popstate', function() {
+  backsave();
+});
+
+}
+
+function backsave(){
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, guardar!',
+  cancelButtonText: 'No, salir!',
+}).then((result) => {
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  }else{
+    history.back();
+  }
+
+});
+
+}
 
     document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {

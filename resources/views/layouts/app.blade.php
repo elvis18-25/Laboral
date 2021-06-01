@@ -140,9 +140,6 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-        
-
-
         {{-- <!-- Paises  -->
         <script src="https://restcountries.eu/rest/v2/name/{name}"></script>
         <script src="https://restcountries.eu/rest/v2/name/eesti"></script>
