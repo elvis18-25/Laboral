@@ -29,7 +29,7 @@
                 @endphp
 
         @if (sizeof(App\Models\User::where('email','=',Auth::user()->email)->get())>1)
-            <form action="{{url('SearchUser')}}" method="post">
+            <form action="{{url('SearchUser')}}" method="post" id="SearcFormulario">
                 @csrf
                 <select class="custom-select" id="validationDefault04" name="selecet" >
                     @foreach ($empresa as $empresas)

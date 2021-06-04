@@ -183,7 +183,6 @@ $(window).on('popstate', function() {
 }
 
 
-
 function backhome(){
   if (window.history && window.history.pushState) {
 
@@ -191,18 +190,11 @@ window.history.pushState('forward', null);
 
 $(window).on('popstate', function() {
   backsave();
-
 });
 
 }
 }
 
-$("#validationDefault04").on('change',function(e){
-  e.preventDefault();
-  var Bolean=backsaveEmpresa();
-
-  // this.submit();
-});
 
 
 function backsaveEmpresa(){
@@ -244,6 +236,30 @@ function backsave(){
 })
 
 }
+
+
+
+$("#SearcFormulario").on('submit',function(e){
+e.preventDefault();
+Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    this.submit();
+  }else{
+    backhome();
+  }
+})
+});
 
 $('#reportrange').daterangepicker({
     startDate: start,

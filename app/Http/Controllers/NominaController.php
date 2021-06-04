@@ -182,14 +182,17 @@ class NominaController extends Controller
             }
           }
         }
-        $p=0;
-        foreach($otro as $otros){
-            if($arrayID[$p]== $otros->id_empleado){
-                $otros->delete();
-               
-            }
-            $p++;
-        }
+        // $p=0;
+        // foreach($otro as $otros){
+        //     if($n<$p){
+        //     if($arrayID[$p]== $otros->id_empleado){
+        //         $otros->delete();
+        //         $p++;
+        //     }else{
+        //         $p++;
+        //     }
+        //     }
+        // }
 
 
 
@@ -1160,25 +1163,25 @@ foreach($perf as $perfe){
                 $sum=0;
                 $sumEstado=0;
 
-                foreach($perf as $perfe){
-                    if($tipo==$perfe->id_perfiles){
-                        if($row->id_empleado==$perfe->id_empleado){
-                            foreach($otro as $otros){
-                                if($otros->id_empresa==Auth::user()->id_empresa){
-                                if($otros->id_empleado==$row->id_empleado){
-                             if($otros->tipo_asigna=="DEDUCIÓN"){
-                                    if($otros->p_monto!=null){
-                                        $otrosCont=$otrosCont+$otros->p_monto;
-                                    }else{
-                                        $otrosCont=$otrosCont+$otros->monto;
-                                    }
-                                }
-                                 }
-                              }
-                              }
-                            }
-                        }  
-                    }
+                // foreach($perf as $perfe){
+                //     if($tipo==$perfe->id_perfiles){
+                //         if($row->id_empleado==$perfe->id_empleado){
+                //             foreach($otro as $otros){
+                //                 if($otros->id_empresa==Auth::user()->id_empresa){
+                //                 if($otros->id_empleado==$row->id_empleado){
+                //              if($otros->tipo_asigna=="DEDUCIÓN"){
+                //                     if($otros->p_monto!=null){
+                //                         $otrosCont=$otrosCont+$otros->p_monto;
+                //                     }else{
+                //                         $otrosCont=$otrosCont+$otros->monto;
+                //                     }
+                //                 }
+                //                  }
+                //               }
+                //               }
+                //             }
+                //         }  
+                //     }
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
@@ -1231,7 +1234,7 @@ foreach($perf as $perfe){
                             }
                             
                         }
-                    return $otrosCont+$sum-$sumEstado;
+                    return $sum-$sumEstado;
                 },
                 'bono'=>function($row){
                     $cont=0;
@@ -1266,25 +1269,25 @@ foreach($perf as $perfe){
                                }
                            }
     
-                        foreach($perf as $perfe){
-                            if($tipo==$perfe->id_perfiles){
-                                if($row->id_empleado==$perfe->id_empleado){
-                                    foreach($otro as $otros){
-                                        if($otros->id_empresa==Auth::user()->id_empresa){
-                                        if($otros->id_empleado==$row->id_empleado){
-                                     if($otros->tipo_asigna=="INCREMENTO"){
-                                            if($otros->p_monto!=null){
-                                                $otrostotal=$otrostotal+$otros->p_monto;
-                                            }else{
-                                                $otrostotal=$otrostotal+$otros->monto;
-                                            }
-                                        }
-                                         }
-                                      }
-                                      }
-                                    }
-                                }  
-                            }
+                        // foreach($perf as $perfe){
+                        //     if($tipo==$perfe->id_perfiles){
+                        //         if($row->id_empleado==$perfe->id_empleado){
+                        //             foreach($otro as $otros){
+                        //                 if($otros->id_empresa==Auth::user()->id_empresa){
+                        //                 if($otros->id_empleado==$row->id_empleado){
+                        //              if($otros->tipo_asigna=="INCREMENTO"){
+                        //                     if($otros->p_monto!=null){
+                        //                         $otrostotal=$otrostotal+$otros->p_monto;
+                        //                     }else{
+                        //                         $otrostotal=$otrostotal+$otros->monto;
+                        //                     }
+                        //                 }
+                        //                  }
+                        //               }
+                        //               }
+                        //             }
+                        //         }  
+                        //     }
     
                             foreach($perf as $perfe){
                                 if($tipo==$perfe->id_perfiles){
@@ -1318,7 +1321,7 @@ foreach($perf as $perfe){
                                         }
                                        }
                                    }
-                        return $otrostotal+$sum-$sumEstado;
+                        return $sum-$sumEstado;
                 },
 
                 'otros'=>function($row){

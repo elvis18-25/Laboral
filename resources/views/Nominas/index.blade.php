@@ -1201,6 +1201,7 @@ function verificate(){
 
 function Add(e){
     var idPerfiles =$("#input").val();
+    alert(idPerfiles);
     var url = "{{url('addempleado')}}/"+e;
      var data ={idPerfiles:idPerfiles};
         $.ajax({
