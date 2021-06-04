@@ -20,6 +20,10 @@ use App\Models\Listado;
 use App\Models\empleados_nominas;
 use App\Models\Equipos;
 use DateTime;
+use App\Models\nomina_asignaciones;
+use App\Models\nomina_otros;
+use App\Models\nomina_empleados;
+
 
 class NominaController extends Controller
 {
@@ -91,8 +95,16 @@ class NominaController extends Controller
      */
     public function store(Request $request)
     {
-        $nominas= new Listado();
 
+        $arrayID = explode(",", $request->get('arregloID'));
+        $arregloSalario = explode(",", $request->get('arregloSalario'));
+        $arregloHoras = explode(",", $request->get('arregloHoras'));
+        $arregloDedu = explode(",", $request->get('arregloDedu'));
+        $arregloBono = explode(",", $request->get('arregloBono'));
+        $arregloOtros = explode(",", $request->get('arregloOtros'));
+        
+        
+        $nominas= new Listado();
         $nominas->descripcion=$request->get('descripcion');
         $nominas->fecha=$request->get('fecha');
         $nominas->user=Auth::user()->name;
@@ -100,7 +112,85 @@ class NominaController extends Controller
         $nominas->id_perfiles=$request->get('perfil');
         $nominas->id_empresa=Auth::user()->id_empresa;
         $nominas->estado=0;
+        $nominas->start=$request->get('start');
+        $nominas->end=$request->get('end');
         $nominas->save();
+
+        $n=count($arrayID);
+
+        for ($i=0; $i<=$n ; $i++) { 
+            if(!empty($arrayID[$i])){
+               $input['id_empleado']=$arrayID[$i];
+               $input['id_nomina']=$nominas->id;
+               $input['deducion']=$arregloDedu[$i];
+               $input['salarioBruto']=$arregloSalario[$i];
+               $input['incremento']=$arregloBono[$i];
+               $input['horas']=$arregloHoras[$i];
+               $input['estado']=0;
+               $input['id_empresa']=Auth::user()->id_empresa;
+               $perfiles=nomina_empleados::create($input);
+            }
+        }
+        
+        $empleado=Empleado::whereIn('id_empleado',$arrayID)->get();
+        $asigna=Asignaciones::where('id_empresa','=',Auth::user()->id_empresa)->get();
+        $estado=estado_asignaciones::all();
+        
+        foreach($asigna as $asignas){
+            foreach($empleado as $empleados){
+                if($asignas->estado==0){
+            $input['id_empleado']=$empleados->id_empleado;
+            $input['id_nomina']=$nominas->id;
+            $input['id_asignaciones']= $asignas->id;
+            $input['salarioBruto']= $empleados->salario;
+            $input['nombre']=$asignas->Nombre;
+            $input['tipo_asigna']=$asignas->tipo_asigna;
+            $input['tipo']=$asignas->tipo;
+            $input['montos']=$asignas->Monto;
+            $input['id_empresa']=Auth::user()->id_empresa;
+            $input['estado']=0;
+            nomina_asignaciones::create($input);   
+          }
+          }
+        }
+
+        $nominasAsigna=nomina_asignaciones::where('id_nomina','=',$nominas->id)->get();
+        $otro=otros::all();
+
+        foreach($nominasAsigna as $nominasAsignas){
+            foreach( $estado as  $estados){
+                if($estados->id_asignaciones==$nominasAsignas->id_asignaciones && $estados->id_empleado==$nominasAsignas->id_empleado ){
+                    $nominasAsignas->estado_asigna=$estados->estado;
+                }
+                $nominasAsignas->save();
+            }
+        }
+
+        foreach($otro as $otros){
+            foreach($empleado as $empleados){
+            if($empleados->id_empleado== $otros->id_empleado){
+            $inputs['id_empleado']=$empleados->id_empleado;
+            $inputs['id_nomina']=$nominas->id;
+            $inputs['descripcion']= $otros->descripcion;
+            $inputs['tipo']=$otros->tipo;
+            $inputs['tipo_asigna']=$otros->tipo_asigna;
+            $inputs['monto']=$otros->monto;
+            $inputs['p_monto']=$otros->p_monto;
+            $inputs['id_empresa']=Auth::user()->id_empresa;
+            $inputs['estado']=0;
+            nomina_otros::create($inputs);   
+            }
+          }
+        }
+        $p=0;
+        foreach($otro as $otros){
+            if($arrayID[$p]== $otros->id_empleado){
+                $otros->delete();
+               
+            }
+            $p++;
+        }
+
 
 
         return redirect('Listado');
@@ -412,9 +502,6 @@ class NominaController extends Controller
         }
         
 
-
-        
-
     }
 
     /**
@@ -697,7 +784,7 @@ class NominaController extends Controller
                                     $cont=$cont/100;
                                     $sum=$sum+$cont;
                                     }else{
-                                     $cont=$cont+$tsse->Monto;
+                                     $cont=$tsse->Monto;
                                      $sum=$sum+$cont;
                                     }
                               }  
@@ -743,7 +830,7 @@ class NominaController extends Controller
                                                             $cont2=$cont2/100;
                                                             $sum2=$sum2+$cont2;
                                                             }else{
-                                                             $cont2=$cont2+$tsse->Monto;
+                                                             $cont2=$tsse->Monto;
                                                              $sum2=$sum2+$cont2;
                                                             }
                                                     }
@@ -809,7 +896,7 @@ class NominaController extends Controller
                                     $cont=$cont/100;
                                     $sum2=$sum2+$cont;
                                     }else{
-                                     $cont=$cont+$tsse->Monto;
+                                     $cont=$tsse->Monto;
                                      $sum2=$sum2+$cont;
                                     }
                                 }
@@ -835,7 +922,7 @@ class NominaController extends Controller
                                         $cont2=$cont2/100;
                                         $sum=$sum+$cont2;
                                         }else{
-                                         $cont2=$cont2+$tsse->Monto;
+                                         $cont2=$tsse->Monto;
                                          $sum=$sum+$cont2;
                                         }
                                     }
@@ -945,7 +1032,7 @@ class NominaController extends Controller
                                         $cont=$cont/100;
                                         $sumEstado=$sumEstado+$cont;
                                         }else{
-                                         $cont=$cont+$tsse->Monto;
+                                         $cont=$tsse->Monto;
                                          $sumEstado=$sumEstado+$cont;
                                         }
                                     }
@@ -972,7 +1059,7 @@ class NominaController extends Controller
                                             $cont2=$cont2/100;
                                             $sum=$sum+$cont2;
                                             }else{
-                                             $cont2=$cont2+$tsse->Monto;
+                                             $cont2=$tsse->Monto;
                                              $sum=$sum+$cont2;
                                             }
                                         }
@@ -1023,7 +1110,7 @@ foreach($perf as $perfe){
                                             $Cont4bono=$Cont4bono/100;
                                             $sumBono=$sumBono+$Cont4bono;
                                             }else{
-                                             $Cont4bono=$Cont4bono+$tsse->Monto;
+                                             $Cont4bono=$tsse->Monto;
                                              $sumBono=$sumBono+$Cont4bono;
                                             }
                                     }
@@ -1053,6 +1140,13 @@ foreach($perf as $perfe){
                 },
                 'name'=>function($row){
                     return $row->nombre." ".$row->apellido;    
+                },
+                'salario'=>function($row){
+                    return $row->salario;    
+                },
+                'horas'=>function($row){
+                    return $row->horas;
+
                 },
                 'dedu'=>function($row){
                 $cont=0;
@@ -1126,7 +1220,7 @@ foreach($perf as $perfe){
                                         $cont2=$cont2/100;
                                         $sum=$sum+$cont2;
                                         }else{
-                                         $cont2=$cont2+$tsse->Monto;
+                                         $cont2=$tsse->Monto;
                                          $sum=$sum+$cont2;
                                         }
                                     }
@@ -1137,7 +1231,7 @@ foreach($perf as $perfe){
                             }
                             
                         }
-                    return '$'.number_format($otrosCont+$sum-$sumEstado,2);
+                    return $otrosCont+$sum-$sumEstado;
                 },
                 'bono'=>function($row){
                     $cont=0;
@@ -1224,7 +1318,7 @@ foreach($perf as $perfe){
                                         }
                                        }
                                    }
-                        return '$'.number_format($otrostotal+$sum-$sumEstado,2);
+                        return $otrostotal+$sum-$sumEstado;
                 },
 
                 'otros'=>function($row){
@@ -1237,7 +1331,6 @@ foreach($perf as $perfe){
 
                     foreach($perf as $perfe){
                         if($tipo==$perfe->id_perfiles){
-  
                             if($row->id_empleado==$perfe->id_empleado){
                                 foreach($otro as $otros){
                                     if($otros->id_empleado==$row->id_empleado){
@@ -1260,7 +1353,7 @@ foreach($perf as $perfe){
                                 
                             }  
                         }
-                        return '$'.number_format($otrosI-$otrosD,2);
+                        return $otrosI-$otrosD;
                 },
                 
                 ])->toJson();

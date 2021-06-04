@@ -29,7 +29,6 @@
                 @endphp
 
         @if (sizeof(App\Models\User::where('email','=',Auth::user()->email)->get())>1)
-    
             <form action="{{url('SearchUser')}}" method="post">
                 @csrf
                 <select class="custom-select" id="validationDefault04" name="selecet" >
@@ -50,8 +49,8 @@
                 </select>
                 <button type="submit" id="btnsubmit" hidden></button>
             </form>
-
             @endif
+
 
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">

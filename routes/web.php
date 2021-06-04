@@ -95,6 +95,7 @@ Route::get('datatableCoop','App\Http\Controllers\CoopController@datatableCoop');
 Route::get('datatablEquipos','App\Http\Controllers\EquiposController@datatablEquipos');
 Route::get('datatableAsistencia','App\Http\Controllers\AsistenciaController@datatableAsistencia');
 Route::get('datatableHAS','App\Http\Controllers\AsistenciaController@datatableHAS');
+Route::get('datatableListado','App\Http\Controllers\ListadoContrller@datatableListado');
 
 
 //Empleados
@@ -160,6 +161,18 @@ Route::post('eliminipuesto/{id}','App\Http\Controllers\PuestoController@eliminip
 
 //Listado
 Route::get('listadopdf/{id}','App\Http\Controllers\ListadoContrller@listadopdf');
+Route::post('totalnominasListado/{id}','App\Http\Controllers\ListadoContrller@totalnominasListado');
+Route::get('DetalleListado/{id}','App\Http\Controllers\ListadoContrller@DetalleListado');
+Route::get('incrementoListado/{id}','App\Http\Controllers\ListadoContrller@incrementoListado');
+Route::get('otrosListado/{id}','App\Http\Controllers\ListadoContrller@otrosListado');
+Route::post('switchetssListado/{id}','App\Http\Controllers\ListadoContrller@switchetssListado');
+Route::post('switchetssbonoListado/{id}','App\Http\Controllers\ListadoContrller@switchetssbonoListado');
+Route::post('otroseditListado/{id}','App\Http\Controllers\ListadoContrller@otroseditListado');
+Route::post('otrosupdateListado/{id}','App\Http\Controllers\ListadoContrller@otrosupdateListado');
+Route::post('deleteotrosListado/{id}','App\Http\Controllers\ListadoContrller@deleteotrosListado');
+Route::post('Otrosstorea','App\Http\Controllers\ListadoContrller@Otrosstorea');
+Route::post('addempleadoListado/{id}','App\Http\Controllers\ListadoContrller@addempleadoListado');
+Route::post('deleteempleListado/{id}','App\Http\Controllers\ListadoContrller@deleteempleListado');
 
 //Eventos
 Route::get('SerchEventos','App\Http\Controllers\EventosController@SerchEventos');

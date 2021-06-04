@@ -20,7 +20,7 @@
                     <button id="btnpdf" type="button" style="top: -16px;" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
                 </div>
                 @include('Nominas.perfiles')
-                @include('Nominas.empleado')
+                @include('Listado.empleado')
             </div>
         </div>
         <br>
@@ -45,11 +45,13 @@
                     <span></span> <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
+                {{-- <input type="text"  name="ste"  class="form-control" value="{{$nominas->start}}" hidden>
+                <input type="text"   name="ene"  class="form-control" value="{{$nominas->end}}" hidden> --}}
 
 
             </div>
             <br>
-            <input type="text" name="perfil" id="input" hidden value="{{$nominas->id_perfiles}}">
+            <input type="text" name="perfil" id="input" hidden value="{{$nominas->id}}">
                 <table class="table tablesorter" id="Nominas" >
                     
                     <thead class=" text-primary">
@@ -102,7 +104,13 @@
     </div>
   </div>
 </div>
+
+<input type="text" id="started" name="st"  class="form-control" value="{{$nominas->start}}" hidden>
+<input type="text" id="ended" name="en"  class="form-control" value="{{$nominas->end}}" hidden>
 <button type="submit" class="btn btn-fill btn-info mx-auto float-left" title="Guardar Nomina" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+
+
+
 
 </form>
 
@@ -117,9 +125,9 @@
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
-@include('Nominas.modalshow')
+@include('Listado.modalshowEdit')
 <div class="modal fade" id="otrosedites" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-@include('Nominas.otros')
+@include('Listado.otros')
 
 
 @endsection
@@ -130,8 +138,22 @@
 //       var hoy = new Date();
 //   var fecha = moment(hoy);
 //   document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
-start = moment().startOf('month');
- end = moment().endOf('month');
+const options2 = { style: 'currency', currency: 'USD' };
+const numberFormat2 = new Intl.NumberFormat('en-US', options2);
+
+if($("#started").attr('value')!=" "){
+startComes = new Date($("#started").attr('value'));
+ endComes = new Date($("#ended").attr('value'));
+
+ start = moment(startComes);
+ end = moment(endComes);
+}else{
+  var start = moment().startOf('month');
+  var end = moment().endOf('month');
+
+}
+
+
   $(document).ready(function(){
 
 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -147,6 +169,81 @@ $("#formardC").on('change',function(){
  }   
 
 });
+
+
+if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+
+
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+}
+
+$("#validationDefault04").on('change',function(e){
+  e.preventDefault();
+  var Bolean=backsaveEmpresa();
+
+  // this.submit();
+});
+
+
+function backsaveEmpresa(){
+  event.preventDefault();
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } 
+})
+}
+
+function backsave(){
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    history.back();
+  }else{
+    backhome();
+  }
+})
+
+}
 
 $('#reportrange').daterangepicker({
     startDate: start,
@@ -164,6 +261,11 @@ $('#reportrange').daterangepicker({
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
           start = start;
           end = end;
+          var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+          var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+          $("#started").attr('value',start);
+          $("#ended").attr('value',end);
           tabla.ajax.reload();
         });
 
@@ -198,7 +300,7 @@ headers: {
     serverSide:true,
     ajax:
     {
-      url:"{{ url('datatable') }}",
+      url:"{{ url('datatableListado') }}",
       "data":function(d){
         if($("#input").val()!=''){
           d.dato1=$("#input").val();
@@ -295,12 +397,12 @@ headers: {
 
 
     columns:[
-      {data:'nombre',name:'nombre', },
+    {data:'nombre',name:'nombre', },
     {data:'cargo', name:'cargo', class: "boldend", searchable:false},
-    {data:'salario',name:'salario', class: "right",},
+    {data:'salarioBruto',name:'salarioBruto', class: "right",},
     {data:'Asigna',name:'Asigna', class: "right"},
     {data:'amount',name:'amount', class: "right"},
-    {data:'horas',name:'horas', class: "right"},
+    {data:'time',name:'time', class: "right"},
     {data:'total',name:'total', class: "right"},
     ],
 
@@ -463,17 +565,22 @@ $("#Nominas tbody").on('click','tr',function(){
    
 
 $("#empleotros").val(id);
+
+
    $("#nameemple").empty();
    $("#nameemple").append(name);
 
+   var Dedures= numberFormat2.format(dedu); 
    $("#totald").empty();
-   $("#totald").append(dedu);
+   $("#totald").append(Dedures);
 
+   var bonores= numberFormat2.format(bonus); 
    $("#totalI").empty();
-   $("#totalI").append(bonus);
+   $("#totalI").append(bonores);
 
+   var Otrosres= numberFormat2.format(otros); 
    $("#totalO").empty();
-   $("#totalO").append(otros);
+   $("#totalO").append(Otrosres);
 
 
 
@@ -493,7 +600,7 @@ function switchetss(e,p){
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
               tabla.ajax.reload();
-              totalnomi(idnomina);
+              totalnomi($("#input").attr('value'));
 
               $("#detalle").trigger("click")
    
@@ -505,27 +612,7 @@ function switchetss(e,p){
              });
   }
 
-function switchetssisr(e,p){
-    var url = e;
-     var data = {p:p};
-        $.ajax({
-         method: "POST",
-           data: data,
-            url:url ,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(result){
-              tabla.ajax.reload();
-              totalnomi(idnomina);
-              $("#detalle").trigger("click")
-   
-             
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-    }
-             });
- 
-  }
+
 function switchetssbono(e,p){
     var url = e;
      var data = {p:p};
@@ -536,7 +623,7 @@ function switchetssbono(e,p){
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
               tabla.ajax.reload();
-              totalnomi(idnomina);
+              totalnomi($("#input").attr('value'));
               $("#detalle").trigger("click")
    
              
@@ -555,7 +642,7 @@ function detalle(e){
   $("#idempleados").attr('value',e);
 $("#otrosbutton").attr('hidden',false);
   // otrosSinre(m);
-  var url = "{{ url('Detalle') }}/"+e;
+  var url = "{{ url('DetalleListado') }}/"+e;
      var data = '';
         $.ajax({
          method: "GET",
@@ -576,7 +663,7 @@ $("#otrosbutton").attr('hidden',false);
 }
 
 function otros(e){
-  var url="{{url('otros')}}/"+e; 
+  var url="{{url('otrosListado')}}/"+e; 
   var data='';
   $.ajax({
          method: "GET",
@@ -595,7 +682,7 @@ function otros(e){
 }
 
 function incremento(r){
-  var url="{{url('incremento')}}/"+r; 
+  var url="{{url('incrementoListado')}}/"+r; 
   var data='';
   $.ajax({
          method: "GET",
@@ -605,7 +692,6 @@ function incremento(r){
               $('#aumeto tbody').empty();
               $('#aumeto tbody').append(result)
               
-
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
@@ -614,9 +700,20 @@ function incremento(r){
 }
 
 function eliminaremple(){
+  Swal.fire({
+  title: 'Encerio quieres eliminarli?',
+  text: "No podras revertir esto!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, Elimarlo!'
+}).then((result) => {
+  if (result.isConfirmed) {
 var id=$("#idempleados").val();
 var idperfi= $("#input").val();
-var url="{{url('deleteemple')}}/"+id; 
+
+var url="{{url('deleteempleListado')}}/"+id; 
 var data={idperfi:idperfi};
   $.ajax({
          method: "POST",
@@ -625,7 +722,7 @@ var data={idperfi:idperfi};
             success:function(result){
               tabla.ajax.reload();
               $("#detalle").trigger("click")
-              totalnomi(idnomina);
+              totalnomi($("#input").attr('value'));
               
 
            },
@@ -633,15 +730,17 @@ var data={idperfi:idperfi};
                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
     }
              });
+  }
+})  
+
 }
 
-const options2 = { style: 'currency', currency: 'USD' };
-const numberFormat2 = new Intl.NumberFormat('en-US', options2);
+
 
 function totalnomi(e){
   var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
       var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
-    var url ="{{url('totalnominas')}}/"+e;
+    var url ="{{url('totalnominasListado')}}/"+e;
      var data ={e:e,start:start,end:end};
         $.ajax({
          method: "POST",
@@ -667,10 +766,7 @@ function totalnomi(e){
              });
 }
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+
 
 
 
@@ -694,14 +790,14 @@ $('#otrosmodal').keyup(function(e){
 
 
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+// window.onbeforeunload = function(e) {
+//     HoldOn.open(options);
+// };
 
 
 function editotros(e,p){
 
-var url="{{url('otrosedit')}}/"+e; 
+var url="{{url('otroseditListado')}}/"+e; 
 var data={p:p};
   $.ajax({
          method: "POST",
@@ -810,18 +906,19 @@ tebl=$('#Empleadotable').DataTable({
 
 
 function Add(e){
-    var idPerfiles =$("#input").val();
-    var url = "{{url('addempleado')}}/"+e;
-     var data ={idPerfiles:idPerfiles};
+    var id =$("#input").val();
+    var url = "{{url('addempleadoListado')}}/"+e;
+     var data ={id:id};
         $.ajax({
          method: "POST",
            data: data,
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
+              // alert(result);
                 if(result==1){
                 tabla.ajax.reload();
-                totalnomi(idPerfiles);
+                totalnomi(id);
                  $("#emplados").trigger('click');
                  corect();
                  
@@ -901,7 +998,7 @@ function saveotros(){
    if(name==""|| tipo==""||forma==""||monto==""){
     Errore();
    }else{
-    var url = "{{route('Otros.store')}}"; 
+    var url = "{{url('Otrosstorea')}}"; 
      var data ={name:name,tipo:tipo,forma:forma,monto:monto,idempl:idempl,idperfil:idperfil};
         $.ajax({
          method: "POST",

@@ -196,6 +196,18 @@ class EmpresaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $empresa=Empresa::findOrFail($id);
+        $empresa->estado=1;
+        $empresa->save();
+
+        $user=User::where('id_empresa','=',$id)->Where('email','=',Auth::user()->email)->first();
+
+        $myVariable =Auth::logout($user);
+
+        return redirect('/');
+
+
+
+
     }
 }

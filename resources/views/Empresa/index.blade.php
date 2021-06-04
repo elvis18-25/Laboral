@@ -126,6 +126,12 @@
                             <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 197px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
                         </form>
 
+                        <form action="{{Route('Empresa.destroy',$empresa->id)}}" id="deleempleado" method="POST">
+                            @csrf
+                            @method('DELETE')
+                         <button type="submit"  class="btn btn-danger btn-round btn-lg" title="Eliminar Empresa" style="margin-left: 373px; top: -58px;"><i class="fas fa-trash"></i>&nbsp;{{ __('Eliminar') }}</button>
+                        </form>
+
 
                         </div>
                              
@@ -302,6 +308,23 @@ document.addEventListener ("keydown", function (e) {
     } 
 });
 
+
+$("#deleempleado").submit(function(e){
+    e.preventDefault();
+    Swal.fire({
+  title: 'Estas seguro?',
+  text: "Ya no se podra revertir los cambios!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, Eliminar!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    this.submit();
+  }
+})
+})
 
 
 // $("input[name='custom_color']").mask('0#');

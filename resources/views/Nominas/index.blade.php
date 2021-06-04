@@ -1,13 +1,19 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
+<style>
+
+  .error{
+    border-color: red !important;
+  }
+</style>
 <link rel="stylesheet" href="{{asset('css/nominas.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
 
 <div class="col-md-12">
     <div class="card ">
-      <form action="{{route('Nominas.store')}}" method="POST">
+      <form action="{{route('Nominas.store')}}" method="POST" id="formulario">
         <div class="card-header" style="background: #4054b2 !important; height: 45px;">
             <div class="row">
                 <div class="col-8">
@@ -97,11 +103,20 @@
 </div>
 <button type="submit" class="btn btn-fill btn-info mx-auto float-left" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
     </div>
+    <input type="date" id="start" name="start" class="form-control" value="" hidden >
+    <input type="date" id="end" name="end" class="form-control" value="" hidden >
+
     
+    <input type="text" id="arregloID" name="arregloID" class="form-control" value="" hidden>
+    <input type="text" id="arregloSalario" name="arregloSalario" class="form-control" value="" hidden >
+    <input type="text" id="arregloHoras" name="arregloHoras" class="form-control" value="" hidden>
+    <input type="text" id="arregloDedu" name="arregloDedu" class="form-control" value="" hidden>
+    <input type="text" id="arregloBono" name="arregloBono" class="form-control" value="" hidden>
+    <input type="text" id="arregloOtros" name="arregloOtros" class="form-control" value="" hidden>
   </form>
+
   <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
   <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
-  
   @include('Nominas.modalshow')
   <div class="modal fade" id="horassdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
   {{-- @include('Nominas.modalhoras') --}}
@@ -123,6 +138,7 @@
   </div>
   
 
+
 @endsection
 
 
@@ -132,6 +148,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script> 
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+
 @if (session('eliminado')=='ya')
 <script>
     Swal.fire(
@@ -146,6 +164,78 @@
   var fecha = moment(hoy);
   document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
 
+
+  const options2 = { style: 'currency', currency: 'USD' };
+const numberFormat2 = new Intl.NumberFormat('en-US', options2);
+
+  $("#formulario").on('submit',function(e){
+  e.preventDefault();
+  event.preventDefault();
+  var arregloID=[];
+  var arregloSalario=[];
+  var arregloHoras=[];
+  var arregloDedu=[];
+  var arregloBono=[];
+  var arregloOtros=[];
+  var i=0;
+    $("#Nominas tbody tr").each(function(){
+      arregloID[i]=$(this).attr('data-href');
+      arregloSalario[i]=$(this).attr('salario');
+      arregloHoras[i]=$(this).attr('horas');
+      arregloDedu[i]=$(this).attr('dedu');
+      arregloBono[i]=$(this).attr('bono');
+      arregloOtros[i]=$(this).attr('otros');
+      i++;
+    });
+
+    $("#arregloID").attr('value',arregloID);
+    $("#arregloSalario").attr('value',arregloSalario);
+    $("#arregloHoras").attr('value',arregloHoras);
+    $("#arregloDedu").attr('value',arregloDedu);
+    $("#arregloBono").attr('value',arregloBono);
+    $("#arregloOtros").attr('value',arregloOtros);
+    Verifacte();
+    this.submit();
+});
+
+function Verifacte(){
+$("#formulario").validate({
+errorPlacement: function(error, element) {
+      var name = element.attr('name');
+      element.addClass('error');
+      var errorSelector = '.validation_error_message[for="' + name + '"]';
+      var $element = $(errorSelector);
+      if ($element.length) { 
+        $(errorSelector).html(error.html());
+      } else {
+          error.insertAfter(element);
+      }
+      ErroresGeneral();
+  }
+});
+}
+
+jQuery.extend(jQuery.validator.messages, {
+  required: "",
+  remote: "Please fix this field.",
+  email: "Please enter a valid email address.",
+  url: "Please enter a valid URL.",
+  date: "Please enter a valid date.",
+  dateISO: "Please enter a valid date (ISO).",
+  number: "Please enter a valid number.",
+  digits: "Please enter only digits.",
+  creditcard: "Please enter a valid credit card number.",
+  equalTo: "",
+  accept: "Please enter a value with a valid extension.",
+  maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
+  minlength: jQuery.validator.format("Please enter at least {0} characters."),
+  rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+  range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+  max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+  min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+});
+
+
   $("#formardC").on('change',function(){
  if($(this).val()==3){
      $("#figures").empty();
@@ -153,7 +243,6 @@
  }else{
     $("#figures").empty();
     $("#figures").append("%");
-
  }   
 
 });
@@ -162,16 +251,35 @@ $('.bs-timepicker').timepicker();
 // $(function() {
   var start = moment().startOf('month');
   var end = moment().endOf('month');
+
+
+
   $(document).ready(function(){
     
     if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null, './#forward');
+window.history.pushState('forward', null);
 
 $(window).on('popstate', function() {
   backsave();
+
 });
 
+}
+
+
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
 }
 
 
@@ -180,28 +288,26 @@ function backsave(){
   title: 'Seguro que deseas salir?',
   text: "No se podra revertir,¿Deseas guardarlo? !",
   icon: 'warning',
+  showDenyButton: true,
   showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, guardar!',
-  cancelButtonText: 'No, salir!',
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
 }).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
   if (result.isConfirmed) {
     $("#seave").trigger("click");
-  }else{
+  } else if (result.isDenied) {
     history.back();
+  }else{
+    backhome();
   }
-
-});
+})
 
 }
+
+
+
 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-
-// function cb(start, end) {
-//     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-// }
-
-
 
 $("#selecgrupo").hide();
 $("#exams1").change(function(){
@@ -236,13 +342,21 @@ $('#reportrange').daterangepicker({
 }, function (start, end) {
           
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-          // start = start;
-          // end = end;
+          var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+          var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+          $("#start").attr('value',start);
+          $("#end").attr('value',end);
           tabla.ajax.reload();
          
           totalnomi($("#input").val());
         });
 
+        var startComes=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+          var endComes=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+          $("#start").attr('value',startComes);
+          $("#end").attr('value',endComes);
 });
 
   $.ajaxSetup({
@@ -445,8 +559,8 @@ headers: {
     {data:'id',name:'id'},
     {data:'descripcion',name:'descripcion'},
     {data:'created_at',name:'created_at'},
-    {data:'emple',name:'emple',searchable:false},
-    {data:'user',name:'user'},
+    {data:'emple',name:'emple',searchable:false,class: "center"},
+    {data:'user',name:'user', class: "center"},
     ],
  
     language: {
@@ -531,8 +645,8 @@ $("#perfiles tbody").on('click','tr',function(){
     tabla.ajax.reload();
     $("#Mnomina").trigger('click');
     totalnomi(e);
-    
 });
+
 $("#Nominas tbody").on('click','tr',function(){
    var id=$(this).attr('data-href');
    var name=$(this).attr('name');
@@ -540,19 +654,22 @@ $("#Nominas tbody").on('click','tr',function(){
    var bonus=$(this).attr('bono');
    var otros=$(this).attr('otros');
    
+  $("#empleotros").val(id);
 
-$("#empleotros").val(id);
    $("#nameemple").empty();
    $("#nameemple").append(name);
 
+   var Dedures= numberFormat2.format(dedu); 
    $("#totald").empty();
-   $("#totald").append(dedu);
+   $("#totald").append(Dedures);
 
+   var bonores= numberFormat2.format(bonus); 
    $("#totalI").empty();
-   $("#totalI").append(bonus);
+   $("#totalI").append(bonores);
 
+   var Otrosres= numberFormat2.format(otros); 
    $("#totalO").empty();
-   $("#totalO").append(otros);
+   $("#totalO").append(Otrosres);
 
 
 
@@ -560,6 +677,29 @@ $("#empleotros").val(id);
    $("#detalle").modal('toggle');
 
 });
+
+
+
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
 
 function switchetss(e,p){
     var url = e;
@@ -579,7 +719,7 @@ function switchetss(e,p){
              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
   }
@@ -601,7 +741,7 @@ function switchetssisr(e,p){
              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
  
@@ -622,7 +762,7 @@ function switchetssbono(e,p){
              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
  
@@ -650,7 +790,7 @@ $("#otrosbutton").attr('hidden',false);
               
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
  
@@ -670,7 +810,7 @@ function otros(e){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -692,7 +832,7 @@ function incremento(r){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -714,13 +854,12 @@ var data={idperfi:idperfi};
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
 
-const options2 = { style: 'currency', currency: 'USD' };
-const numberFormat2 = new Intl.NumberFormat('en-US', options2);
+
 
 var Priim=0;
 var reses= numberFormat2.format(Priim); 
@@ -752,7 +891,7 @@ function totalnomi(e){
              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -785,7 +924,7 @@ function savegruop(){
               
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
             } 
@@ -810,7 +949,7 @@ function savegruop(){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
       }else{
@@ -843,7 +982,7 @@ function VerificateHours(){
           
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -865,7 +1004,7 @@ var data='';
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -927,7 +1066,7 @@ var data={p:p};
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });
 }
@@ -1084,7 +1223,7 @@ function Add(e){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              });   
 }
@@ -1174,7 +1313,7 @@ function saveotros(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral();
     }
              }); 
    }
@@ -1258,6 +1397,10 @@ Command: toastr["success"]("Se ha guardado", "Correcto!")
 <style>
   .right{
   text-align: right !important;
+}
+
+.center{
+  text-align: center !important;
 }
 
 .TitleNomi{
