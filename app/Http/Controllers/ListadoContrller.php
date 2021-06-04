@@ -506,8 +506,8 @@ class ListadoContrller extends Controller
 
             // return $otrosD;
 
-            //  return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
-             return $totalincremento;
+             return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
+            //  return $totalincremento;
     }
 
     /**
