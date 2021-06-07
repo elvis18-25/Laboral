@@ -165,6 +165,9 @@ class EmpleadosController extends Controller
 
         $empleados->password=bcrypt($empleados->cedula);
         $empleados->estado=0;
+        if($request->get('imagen')!=null){
+        $empleados->imagen=$request->get('imagen');
+        }
         $empleados->save();
 
         if($request->get('grupo')!=" "){
@@ -258,14 +261,14 @@ class EmpleadosController extends Controller
         }
 
 
-        if($request->hasFile('image')){
+        // if($request->hasFile('image')){
 
-            $file=$request->image;
-            $file->move(public_path().'/img', $file->getClientOriginalName());
-            $empleados->imagen=$file->getClientOriginalName();
-            $empleados->save();
+        //     $file=$request->image;
+        //     $file->move(public_path().'/img', $file->getClientOriginalName());
+        //     $empleados->imagen=$file->getClientOriginalName();
+        //     $empleados->save();
 
-        }
+        // }
 
 
 
@@ -383,6 +386,9 @@ class EmpleadosController extends Controller
 
         $empleados=Empleado::findOrFail($id);
         $empleados->fill($request->all());
+        if($request->get('imagen')!=null){
+          $empleados->imagen=$request->get('imagen');
+        }
         $empleados->update();
         
         //Pais
@@ -448,14 +454,14 @@ class EmpleadosController extends Controller
             }  
         }
         
-        if($request->hasFile('image')){
+        // if($request->hasFile('image')){
 
-            $file=$request->image;
-            $file->move(public_path().'/img', $file->getClientOriginalName());
-            $empleados->imagen=$file->getClientOriginalName();
-            $empleados->save();
+        //     $file=$request->image;
+        //     $file->move(public_path().'/img', $file->getClientOriginalName());
+        //     $empleados->imagen=$file->getClientOriginalName();
+        //     $empleados->save();
 
-        }
+        // }
 
         $pagos=$empleados->pagos;
         if(count($pagos)>0){
@@ -691,6 +697,31 @@ public function downloadContrato(Request $request)
     $pdf =PDF::loadView('Empleados.listadopdf',compact('empleados','puesto','fecha'));
     $pdf->setPaper("letter", "portrait");
     return $pdf->stream('Empleado.pdf');
+  }
+  public function Emplephoto(Request $request)
+  {
+
+    if(isset($_POST['image']))
+    {
+        $data = $_POST['image'];
+    
+    
+        $image_array_1 = explode(";", $data);
+    
+    
+        $image_array_2 = explode(",", $image_array_1[1]);
+    
+    
+        $data = base64_decode($image_array_2[1]);
+        $b=time();
+    
+        $image_name = 'img/' .$b. '.png';
+
+
+        file_put_contents($image_name, $data);
+    
+        return  view('Empleados.Plantillas.image',compact('b','image_name'));
+    }
   }
   public function ConverterUsuario(Request $request)
   {

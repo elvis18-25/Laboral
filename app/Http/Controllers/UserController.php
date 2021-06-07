@@ -39,7 +39,7 @@ class UserController extends Controller
         $empresa=Empresa::select('id')->where('id','=',Auth::user()->id_empresa)->first();
         // dd($empresa);
         $empre=$empresa->id;
-        return view('Users.index',compact('users','puesto','empre'));
+        return view('users.index',compact('users','puesto','empre'));
     }
 
     /**
@@ -80,6 +80,9 @@ class UserController extends Controller
 
         $user->password=bcrypt(($user->cedula));
         $user->estado=0;
+        if($request->get('imagen')!=null){
+            $user->imagen=$request->get('imagen');
+        }
         $user->id_empresa=$empresa->id;
         $user->entrada=$request->get('entrada');
         $user->save();
@@ -243,6 +246,9 @@ class UserController extends Controller
     {
         $users=User::findOrFail($id);
         $users->fill($request->all());
+        if($request->get('imagen')!=null){
+        $users->imagen=$request->get('imagen');
+        }
         $users->entrada=$request->get('entrada');
         $users->update();
 
@@ -316,12 +322,12 @@ class UserController extends Controller
             }  
         }
 
-        if($request->hasFile('image')){
-            $file=$request->image;
-            $file->move(public_path().'/img', $file->getClientOriginalName());
-            $users->imagen=$file->getClientOriginalName();
-            $users->save();
-        }
+        // if($request->hasFile('image')){
+        //     $file=$request->image;
+        //     $file->move(public_path().'/img', $file->getClientOriginalName());
+        //     $users->imagen=$file->getClientOriginalName();
+        //     $users->save();
+        // }
 
         $pagos=$users->pagosU;
         if(count($pagos)>0){
@@ -339,6 +345,7 @@ class UserController extends Controller
             $users->asignarPuestoU($request->get('departa'));
         }
 
+        if($request->get('genero')!="ELEGIR..."){
         $sexo=$users->sexoU;
         if(count($sexo)>0){
             $sexo_id=$sexo[0]->id;
@@ -346,6 +353,7 @@ class UserController extends Controller
         }else{
             $users->asignarSexoU($request->get('genero'));
         }
+    }
 
         $role=$users->roles;
         if(count($role)>0){

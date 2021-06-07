@@ -73,6 +73,7 @@ Route::post('updateasignaciones/{id}','App\Http\Controllers\AsignacionesControll
 Route::post('deleteasigna/{id}','App\Http\Controllers\AsignacionesController@deleteasigna');
 //Empresa
 Route::post('SearchUser','App\Http\Controllers\EmpresaController@SearchUser');
+Route::post('Empresaphoto','App\Http\Controllers\EmpresaController@Empresaphoto');
 
 //Multi
 Route::post('MultiEmpresa','App\Http\Controllers\MultiController@MultiEmpresa');
@@ -115,6 +116,7 @@ Route::post('empleciudad/{id}','App\Http\Controllers\EmpleadosController@empleci
 Route::post('downloadContrato','App\Http\Controllers\EmpleadosController@downloadContrato');
 Route::get('listadopdf','App\Http\Controllers\EmpleadosController@listadopdf');
 Route::post('ConverterUsuario','App\Http\Controllers\EmpleadosController@ConverterUsuario');
+Route::post('Emplephoto','App\Http\Controllers\EmpleadosController@Emplephoto');
 
 
 //users

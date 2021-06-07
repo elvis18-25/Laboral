@@ -46,12 +46,9 @@ class MultiController extends Controller
         // dd($request->all());
         $all=$request->all();
         $user=User::where('email','=',$request->get('email'))->get();
-
-        
         if(sizeof(User::where('email','=',$request->get('email'))->where('estado','=',0)->get())>1){
-            $userID=User::where('email','=',$request->get('email'))->first();
+            $empresa=Empresa::where('estado','=',0)->get();
             return view('Multi.index',compact('user','empresa'));
-
         }else{
             $objeto = new LoginController();
             $myVariable = $objeto->authenticate($request);

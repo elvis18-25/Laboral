@@ -138,6 +138,30 @@ class EmpresaController extends Controller
         //
     }
 
+    public function Empresaphoto(Request $request)
+    {
+      if(isset($_POST['image']))
+      {
+          $data = $_POST['image'];
+      
+      
+          $image_array_1 = explode(";", $data);
+      
+      
+          $image_array_2 = explode(",", $image_array_1[1]);
+      
+      
+          $data = base64_decode($image_array_2[1]);
+          $b=time();
+      
+          $image_name = 'logo/' .$b. '.png';
+  
+  
+          file_put_contents($image_name, $data);
+      
+          return  view('Empleados.Plantillas.image',compact('b','image_name'));
+      }
+    }
     public function SearchUser(Request $request)
     {
         $user=User::where('id_empresa','=',$request->get('selecet'))->Where('email','=',Auth::user()->email)->first();
@@ -172,16 +196,17 @@ class EmpresaController extends Controller
         $empresa->rnc=$request->get('rncUP');
         $empresa->email=$request->get('emailUP');
         $empresa->color=$request->get('custom_color');
+        $empresa->imagen=$request->get('imagen');
         
 
-        if($request->hasFile('archiveUP')){
+        // if($request->hasFile('archiveUP')){
 
-            $file=$request->archiveUP;
-            // dd($file);
-            $file->move(public_path().'/logo', $file->getClientOriginalName());
-            $empresa->imagen=$file->getClientOriginalName();
+        //     $file=$request->archiveUP;
+        //     // dd($file);
+        //     $file->move(public_path().'/logo', $file->getClientOriginalName());
+        //     $empresa->imagen=$file->getClientOriginalName();
             
-        }
+        // }
 
         $empresa->update();
         return redirect('Empresa');

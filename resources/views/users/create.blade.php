@@ -6,6 +6,34 @@
   .error{
     border-color: red !important;
   }
+  .selec option{
+    text:rgb(3, 3, 3);
+    background-color:#525f7f;;
+}
+
+#canvas {
+  height: 400px;
+  width: 400px;
+  background-color: #ffffff;
+  cursor: default;
+  border: 1px solid black;
+}
+
+img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
+		.preview {
+  			overflow: hidden;
+  			width: 160px; 
+  			height: 160px;
+  			margin: 10px;
+  			border: 1px solid red;
+		}
+
+    .modal-lg{
+  			max-width: 1000px !important;
+		}
 </style>
 <div class="o-page-loader">
   <div class="o-page-loader--content">
@@ -380,8 +408,8 @@
                         <div class="block block-three"></div>
                         <div class="block block-four"></div>
 
-                      <div class="avatar mx-auto " id="image" ></div>
-                    {{-- <img class="avatar" src="{{ asset('black') }}/img/default-user-image.png" id="image" alt=""> --}}
+                      {{-- <div class="avatar mx-auto " id="image" ></div> --}}
+                      <img class="avatar" src="{{asset('black') }}/img/default-user-image.png" id="image" alt="">
                             
 
                         <p class="description">
@@ -403,8 +431,9 @@
     <input type="text" name="ISR" value="" id="ISR" hidden>
 
 
-    <button type="submit"  class="btn btn-fill btn-info mx-auto"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
-    </form>
+    <button type="submit" id="seave"  class="btn btn-fill btn-info mx-auto"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+    <input type="text" name="imagen"  id="idphoto" hidden value="">
+  </form>
     </div>
     </div>
 </div>
@@ -414,10 +443,13 @@
 <div class="modal fade" id="adjunnowuser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
+@include('Empleados.cropper')
 @endsection
 
 
 @section('js2')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script> --}}
@@ -427,6 +459,75 @@
 
 <script>
   $(document).ready(function(){
+
+    if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+});
+
+}
+}
+
+function backsave(){
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    history.back();
+  }else{
+    backhome();
+  }
+})
+
+}
+
+$("#SearcFormulario").on('submit',function(e){
+e.preventDefault();
+Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    this.submit();
+  }else{
+    backhome();
+  }
+})
+});
+
+
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
     $("input[type='tel']").mask('(000) 000-0000');
@@ -926,9 +1027,9 @@ $("#image").on('click',function(){
 
 });
 
-$("#subirimaggen").on('change',function(){
-    $("#image").append()
-});
+// $("#subirimaggen").on('change',function(){
+//     $("#image").append()
+// });
 
 
 
@@ -1045,7 +1146,73 @@ $(document).on('click', '.remf', function (event) {
 
 });
 
+var $modal = $('#crpimg');
 
+var image = document.getElementById('sample_image');
+
+var cropper;
+
+$('#subirimaggen').change(function(event){
+  var files = event.target.files;
+
+  var done = function(url){
+    image.src = url;
+    $modal.modal('show');
+  };
+
+  if(files && files.length > 0)
+  {
+    reader = new FileReader();
+    reader.onload = function(event)
+    {
+      done(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+});
+
+$modal.on('shown.bs.modal', function() {
+  cropper = new Cropper(image, {
+    aspectRatio: 1,
+    viewMode: 3,
+    preview:'.preview'
+  });
+}).on('hidden.bs.modal', function(){
+  cropper.destroy();
+     cropper = null;
+});
+
+$('#crop').click(function(){
+  canvas = cropper.getCroppedCanvas({
+    width:400,
+    height:400
+  });
+
+  canvas.toBlob(function(blob){
+    url = URL.createObjectURL(blob);
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function(){
+      var base64data = reader.result;
+      $.ajax({
+        url:"{{url('Emplephoto')}}",
+        method:'POST',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data:{image:base64data},
+        success:function(data)
+        {
+          $("#btnclose").trigger("click");
+          var route=$(data).attr('value');
+          var file=$(data).attr('action');
+
+          var union="{{asset('')}}/"+route;
+          $("#idphoto").attr('value',file+".png")
+          $('#image').attr('src', union);
+        }
+      });
+    };
+  });
+});
 
 </script>
 @endsection

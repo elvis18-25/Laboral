@@ -4,6 +4,34 @@
   .error{
     border-color: red !important;
   }
+  .selec option{
+    text:rgb(3, 3, 3);
+    background-color:#525f7f;;
+}
+
+#canvas {
+  height: 400px;
+  width: 400px;
+  background-color: #ffffff;
+  cursor: default;
+  border: 1px solid black;
+}
+
+img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
+		.preview {
+  			overflow: hidden;
+  			width: 160px; 
+  			height: 160px;
+  			margin: 10px;
+  			border: 1px solid red;
+		}
+
+    .modal-lg{
+  			max-width: 1000px !important;
+		}
 </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/users.css')}}">
@@ -96,7 +124,7 @@
                         <div class="col-sm-3{{ $errors->has('genero') ? ' has-danger' : '' }}">
                             <label>{{ __('GENERO') }}</label>
                             <select class="form-control{{ $errors->has('genero') ? ' is-invalid' : '' }} selec" name="genero" required>
-                                <option selected >ELEGIR...</option>
+                                <option selected disabled>ELEGIR...</option>
                               @foreach ($sexo as $sex)
                               @if($sex->name == str_replace(array('["', '"]'), '',$users->tienesSexoU()));
                                 <option value="{{$sex->id}}" selected>{{$sex->name}}</option>							
@@ -410,11 +438,11 @@
                         <div class="block block-four"></div>
 
                         @if ($users->imagen==null)
-                        <div class="avatar mx-auto"  id="image" ></div>
+                        <img class="avatar" src="{{asset('black') }}/img/default-user-image.png" id="image" alt="">
                         @endif
 
                         @if ($users->imagen!=null)
-                        <img class="avatar" src="{{ asset('img/'.$users->imagen)}}" >
+                        <img class="avatar" src="{{ asset('img/'.$users->imagen)}}" id="image" alt="" >
                         @endif
                         
                         
@@ -481,6 +509,8 @@
         
         <div class="button" style="margin-right: 68px">
         <button type="submit" id="subir" class="btn btn-fill btn-info btnholdon float-right"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+        <input type="text" name="imagen"  id="idphoto" hidden value="">
+
       </form>
       <form action="{{Route('user.destroy',$users->id)}}" id="deleempleado" method="POST">
         @csrf
@@ -521,6 +551,7 @@
       </div>
   </div>
 </div>
+@include('Empleados.cropper')
 
 <div class="modal fade" id="adjunnew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 @endsection
@@ -528,6 +559,9 @@
 @section('js')
 @include('Contrato.modal')
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 {{-- <script src="{{asset('js/holdOn.js')}}"></script>
 <link rel="stylesheet" href="{{asset('css/holdOn.css')}}"> --}}
 <script src="{{asset('js/pageLoader.js')}}"></script>
@@ -899,24 +933,24 @@ $("#image").on('click',function(){
 
 });
 
-document.getElementById("subirimaggen").onchange = function(e) {
-  // Creamos el objeto de la clase FileReader
-  let reader = new FileReader();
+// document.getElementById("subirimaggen").onchange = function(e) {
+//   // Creamos el objeto de la clase FileReader
+//   let reader = new FileReader();
 
-  // Leemos el archivo subido y se lo pasamos a nuestro fileReader
-  reader.readAsDataURL(e.target.files[0]);
+//   // Leemos el archivo subido y se lo pasamos a nuestro fileReader
+//   reader.readAsDataURL(e.target.files[0]);
 
-  // Le decimos que cuando este listo ejecute el código interno
-  reader.onload = function(){
-    let preview = document.getElementById('image'),
-            image = document.createElement('img');
+//   // Le decimos que cuando este listo ejecute el código interno
+//   reader.onload = function(){
+//     let preview = document.getElementById('image'),
+//             image = document.createElement('img');
 
-    image.src = reader.result;
+//     image.src = reader.result;
 
-    preview.innerHTML = '';
-    preview.append(image);
-  };
-}
+//     preview.innerHTML = '';
+//     preview.append(image);
+//   };
+// }
 
 $('#adjunnew').keyup(function(e){
     if(e.keyCode==13)
@@ -1068,6 +1102,74 @@ function ciudad(e){
 //     }
 //              });
 // });
+
+var $modal = $('#crpimg');
+
+var image = document.getElementById('sample_image');
+
+var cropper;
+
+$('#subirimaggen').change(function(event){
+  var files = event.target.files;
+
+  var done = function(url){
+    image.src = url;
+    $modal.modal('show');
+  };
+
+  if(files && files.length > 0)
+  {
+    reader = new FileReader();
+    reader.onload = function(event)
+    {
+      done(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+});
+
+$modal.on('shown.bs.modal', function() {
+  cropper = new Cropper(image, {
+    aspectRatio: 1,
+    viewMode: 3,
+    preview:'.preview'
+  });
+}).on('hidden.bs.modal', function(){
+  cropper.destroy();
+     cropper = null;
+});
+
+$('#crop').click(function(){
+  canvas = cropper.getCroppedCanvas({
+    width:400,
+    height:400
+  });
+
+  canvas.toBlob(function(blob){
+    url = URL.createObjectURL(blob);
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function(){
+      var base64data = reader.result;
+      $.ajax({
+        url:"{{url('Emplephoto')}}",
+        method:'POST',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data:{image:base64data},
+        success:function(data)
+        {
+          $("#btnclose").trigger("click");
+          var route=$(data).attr('value');
+          var file=$(data).attr('action');
+
+          var union="{{asset('')}}/"+route;
+          $("#idphoto").attr('value',file+".png")
+          $('#image').attr('src', union);
+        }
+      });
+    };
+  });
+});
 </script>
     
 @endsection

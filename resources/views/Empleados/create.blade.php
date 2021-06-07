@@ -407,8 +407,8 @@
                         <div class="block block-three"></div>
                         <div class="block block-four"></div>
 
-                      <div class="avatar mx-auto " id="image" ></div>
-                    {{-- <img class="avatar" src="{{ asset('black') }}/img/default-user-image.png" id="image" alt=""> --}}
+                      {{-- <div class="avatar mx-auto " id="image" ></div> --}}
+                    <img class="avatar" src="{{asset('black') }}/img/default-user-image.png" id="image" alt="">
                             
 
                         <p class="description">
@@ -435,6 +435,7 @@
 
 
     <button type="submit" class="btn btn-fill btn-info mx-auto" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+    <input type="text" name="imagen"  id="idphoto" hidden value="">
     </form>
     </div>
     </div>
@@ -471,35 +472,72 @@
 
     if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null, './#forward');
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
 
 $(window).on('popstate', function() {
   backsave();
 });
 
 }
-
+}
 
 function backsave(){
   Swal.fire({
   title: 'Seguro que deseas salir?',
   text: "No se podra revertir,¿Deseas guardarlo? !",
   icon: 'warning',
+  showDenyButton: true,
   showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, guardar!',
-  cancelButtonText: 'No, salir!',
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
 }).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
   if (result.isConfirmed) {
     $("#seave").trigger("click");
-  }else{
+  } else if (result.isDenied) {
     history.back();
+  }else{
+    backhome();
   }
-
-});
+})
 
 }
+
+
+$("#SearcFormulario").on('submit',function(e){
+e.preventDefault();
+Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    this.submit();
+  }else{
+    backhome();
+  }
+})
+});
+
 
 
 
@@ -662,20 +700,6 @@ $('#adjunnow').keyup(function(e){
     }
 });
 
-
-// $(window).unload( function () {  
-//   alert("seguro");
-// });
-
-
-
-
-// window.addEventListener('popstate', function (e) {
-//     var state = e.state;
-//     if (state !== null) {
-//         alert("hola");
-//     }
-// });
 
 
 HayFoco=false;
@@ -1061,34 +1085,7 @@ function toggle(source) {
 
 }
 
-$("#image").on('click',function(){
- $("#subirimaggen").click();
 
-});
-
-// $("#subirimaggen").on('change',function(){
-//     $("#image").append()
-// });
-
-
-// document.getElementById("subirimaggen").onchange = function(e) {
-//   // Creamos el objeto de la clase FileReader
-//   let reader = new FileReader();
-
-//   // Leemos el archivo subido y se lo pasamos a nuestro fileReader
-//   reader.readAsDataURL(e.target.files[0]);
-
-//   // Le decimos que cuando este listo ejecute el código interno
-//   reader.onload = function(){
-//     let preview = document.getElementById('image'),
-//             image = document.createElement('img');
-
-//     image.src = reader.result;
-
-//     preview.innerHTML = '';
-//     preview.append(image);
-//   };
-// }
 
 
 
@@ -1204,46 +1201,81 @@ function ErroresGeneral(){
     }
   }
 
-     var canvas  = $("#canvas"),
-    context = canvas.get(0).getContext("2d"),
-    $result = 0;
 
-$('#subirimaggen').on( 'change', function(){
-    if (this.files && this.files[0]) {
-      if ( this.files[0].type.match(/^image\//) ) {
-        var reader = new FileReader();
-        reader.onload = function(evt) {
-           var img = new Image();
-           img.onload = function() {
-             context.canvas.height = img.height;
-             context.canvas.width  = img.width;
-             context.drawImage(img, 0, 0);
-             var cropper = canvas.cropper({
-               aspectRatio: 16 / 9
-             });
-             $("#crpimg").modal('toggle');
-             $('#btnCrop').click(function() {
-                // Get a string base 64 data url
-                var croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png"); 
-                $result.append( $('<img>').attr('src', croppedImageDataURL) );
-             });
-             $('#btnRestore').click(function() {
-               canvas.cropper('reset');
-               $result.empty();
-             });
-           };
-           img.src = evt.target.result;
-				};
-        reader.readAsDataURL(this.files[0]);
-      }
-      else {
-        alert("Invalid file type! Please select an image file.");
-      }
-    }
-    else {
-      alert('No file(s) selected.');
-    }
+$("#image").on('click',function(){
+  $("#subirimaggen").click();
+
 });
+
+
+var $modal = $('#crpimg');
+
+var image = document.getElementById('sample_image');
+
+var cropper;
+
+$('#subirimaggen').change(function(event){
+  var files = event.target.files;
+
+  var done = function(url){
+    image.src = url;
+    $modal.modal('show');
+  };
+
+  if(files && files.length > 0)
+  {
+    reader = new FileReader();
+    reader.onload = function(event)
+    {
+      done(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+});
+
+$modal.on('shown.bs.modal', function() {
+  cropper = new Cropper(image, {
+    aspectRatio: 1,
+    viewMode: 3,
+    preview:'.preview'
+  });
+}).on('hidden.bs.modal', function(){
+  cropper.destroy();
+     cropper = null;
+});
+
+$('#crop').click(function(){
+  canvas = cropper.getCroppedCanvas({
+    width:400,
+    height:400
+  });
+
+  canvas.toBlob(function(blob){
+    url = URL.createObjectURL(blob);
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function(){
+      var base64data = reader.result;
+      $.ajax({
+        url:"{{url('Emplephoto')}}",
+        method:'POST',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data:{image:base64data},
+        success:function(data)
+        {
+          $("#btnclose").trigger("click");
+          var route=$(data).attr('value');
+          var file=$(data).attr('action');
+
+          var union="{{asset('')}}/"+route;
+          $("#idphoto").attr('value',file+".png")
+          $('#image').attr('src', union);
+        }
+      });
+    };
+  });
+});
+
 
 </script>
 @endsection
@@ -1265,4 +1297,16 @@ $('#subirimaggen').on( 'change', function(){
 img {
   max-width: 100%; /* This rule is very important, please do not ignore this! */
 }
+
+		.preview {
+  			overflow: hidden;
+  			width: 160px; 
+  			height: 160px;
+  			margin: 10px;
+  			border: 1px solid red;
+		}
+
+    .modal-lg{
+  			max-width: 1000px !important;
+		}
 </style>

@@ -1,0 +1,1 @@
+<input type="text" name="" value="{{$image_name}}" action="{{$b}}" id="">

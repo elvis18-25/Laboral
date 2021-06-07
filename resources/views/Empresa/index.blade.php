@@ -1,5 +1,52 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
+<style>
+    .selec option{
+      text:rgb(3, 3, 3);
+      background-color:#525f7f;;
+  }
+  
+  #canvas {
+    height: 400px;
+    width: 400px;
+    background-color: #ffffff;
+    cursor: default;
+    border: 1px solid black;
+  }
+  
+  img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+  
+          .preview {
+                overflow: hidden;
+                width: 160px; 
+                height: 160px;
+                margin: 10px;
+                border: 1px solid red;
+          }
+  
+      .modal-lg{
+                max-width: 1000px !important;
+          }
 
+.Logo{
+    margin-right: 8px;
+    height: 100%;
+    overflow: hidden;
+    margin-bottom: 15px;
+    float: right;
+          }
+
+.color{
+    width: 27%;
+    height: 65%;
+    overflow: hidden;
+    margin-bottom: 15px;
+    /* margin-top: -217px; */
+    float: right;
+    
+}
+  </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/empresa.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -28,6 +75,14 @@
                         {{-- <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a> --}}
                       </div>
                     </div>
+                    @php
+                    $color="";
+                        if($empresa->color==null){
+                         $color='#'.str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);;
+                        }else{
+                         $color=$empresa->color;
+                        }
+                    @endphp
                     <div class="col-9">
                       <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
@@ -35,6 +90,9 @@
                                 @csrf
                                 @method('PUT')
                             <div class="card-body" style="height: 300px;">
+                            <div class="color" style=' background-color:<?php printf($color); ?>'>
+                                <img class="Logo" src="{{ asset('logo/'.$empresa->imagen)}}"  id="image" alt="">
+                            </div>
                                 <div class="form-row">
 
                                  <div class="col-sm-5">
@@ -63,6 +121,8 @@
                                 </div>
                                 <span class="focus-input100"></span>
                             </div>
+
+
                   
                             <div class="col-sm-3">
                                 <label for=""><b>RNC:</b></label>
@@ -87,7 +147,7 @@
                                     <input type="text" name="direcionUP" class="form-control"value="{{$empresa->direcion}}" placeholder="Direccion" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                                 </div>
                             </div>
-
+                            
                             <div class="col-sm-4">
                                 <label for=""><b>EMAIL:</b></label>
                                 <div class="input-group mb-3">
@@ -109,7 +169,7 @@
                                 </div>
                               </div>
 
-                            <div class="col-sm-4">
+                              <div class="col-sm-4">
                                 <label for=""><b>IMAGEN:</b></label><br>
                                 <button type="button" type="button" id="btnuploa" for="actual-btn"  class="btn btn-success btn-sm"><i class="fas fa-folder-open"></i></button>
                                 <input type="file" id="actual-btn" max-file-size="1" accept=".png" name="archiveUP" hidden/>
@@ -118,18 +178,20 @@
                               </div>
 
 
-                       
-                        
-
                             </div>
                             
+                
+                                    
                             <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 197px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+                            <input type="text" name="imagen"  id="idphoto" hidden value="">
                         </form>
 
                         <form action="{{Route('Empresa.destroy',$empresa->id)}}" id="deleempleado" method="POST">
                             @csrf
                             @method('DELETE')
                          <button type="submit"  class="btn btn-danger btn-round btn-lg" title="Eliminar Empresa" style="margin-left: 373px; top: -58px;"><i class="fas fa-trash"></i>&nbsp;{{ __('Eliminar') }}</button>
+                        
+                        
                         </form>
 
 
@@ -278,7 +340,7 @@
         </div>
     </div>
 </div>
-  
+  @include('Empresa.cropper')
 <div class="o-page-loader">
     <div class="o-page-loader--content">
       <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner logotipo">
@@ -294,6 +356,9 @@
 @section('js')
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/js/bootstrap-colorpicker.js"></script>
 
@@ -332,18 +397,6 @@ $(".rnc").mask('0#');
 $("input[type='tel']").mask('(000) 000-0000');
 
 
-document.getElementById('actual-btn').onchange = function () {
-  console.log(this.value);
-  document.getElementById('file-chosen').innerHTML = document.getElementById('actual-btn').files[0].name;
-}
-
-$("#btnuploa").on('click',function(){
-    $("#actual-btn").trigger("click");
-  });
-// const inputElement = document.querySelector('input[type="file"]');
-// const pond = FilePond.create( inputElement );
-
-// $("#filepond--drop-label-6ece2zz3j").change()
 
 var colorList = [ '000000', '993300', '333300', '003300', '003366', '000066', '333399', '333333', 
 '660000', 'FF6633', '666633', '336633', '336666', '0066FF', '666699', '666666', 'CC3333', 'FF9933', '99CC33', '669966', '66CCCC', '3366FF', '663366', '999999', 'CC66FF', 'FFCC33', 'FFFF66', '99FF66', '99CCCC', '66CCFF', '993366', 'CCCCCC', 'FF99CC', 'FFCC99', 'FFFF99', 'CCffCC', 'CCFFff', '99CCFF', 'CC99FF', 'FFFFFF' ];
@@ -365,8 +418,82 @@ var colorList = [ '000000', '993300', '333300', '003300', '003366', '000066', '3
 
 				$('.color-holder').css('background-color', codeHex);
 				$('#pickcolor').val(codeHex);
+                $('.color').css('background-color', codeHex);
 			});
 		});
+
+$("#btnuploa").on('click',function(){
+    $("#actual-btn").trigger("click");
+  });     
+
+var $modal = $('#crpimg');
+
+var image = document.getElementById('sample_image');
+
+var cropper;
+
+$('#actual-btn').change(function(event){
+  var files = event.target.files;
+
+  var done = function(url){
+    image.src = url;
+    $modal.modal('show');
+  };
+
+  if(files && files.length > 0)
+  {
+    reader = new FileReader();
+    reader.onload = function(event)
+    {
+      done(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+});
+
+$modal.on('shown.bs.modal', function() {
+  cropper = new Cropper(image, {
+    aspectRatio: 1,
+    viewMode: 3,
+    preview:'.preview'
+  });
+}).on('hidden.bs.modal', function(){
+  cropper.destroy();
+     cropper = null;
+});
+
+$('#crop').click(function(){
+  canvas = cropper.getCroppedCanvas({
+    width:400,
+    height:400
+  });
+
+  canvas.toBlob(function(blob){
+    url = URL.createObjectURL(blob);
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function(){
+      var base64data = reader.result;
+      $.ajax({
+        url:"{{url('Empresaphoto')}}",
+        method:'POST',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data:{image:base64data},
+        success:function(data)
+        {
+          $modal.trigger("click");
+          var route=$(data).attr('value');
+          var file=$(data).attr('action');
+
+          var union="{{asset('')}}/"+route;
+          $("#idphoto").attr('value',file+".png")
+          $('#image').attr('src', union);
+        }
+      });
+    };
+  });
+});
+      
 </script>
-    
+   
 @endsection

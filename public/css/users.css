@@ -42,7 +42,8 @@ margin-left: -26px;
   }
 
   .dataTables_filter{
-    width: 1001px !important;
+    /* width: 1001px !important; */
+    width: 73% !important;
    
   }
 

@@ -427,19 +427,19 @@
                         <div class="block block-four"></div>
 
                         @if ($empleados->imagen==null)
-                        <div class="avatar mx-auto"  id="image" ></div>
+                        <img class="avatar" src="{{asset('black') }}/img/default-user-image.png" id="image" alt="">
                         @endif
 
                         @if ($empleados->imagen!=null)
-                        <img class="avatar" src="{{ asset('img/'.$empleados->imagen)}}" >
+                        <img class="avatar" src="{{ asset('img/'.$empleados->imagen)}}" id="image" alt="" >
                         @endif
                         
                         
                         <p class="description">
                             {{$empleados->nombre." ".$empleados->apellido}}
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="image"   aria-describedby="inputGroupFileAddon01" id="subirimaggen" hidden>
-                                <label class="custom-file-label" for="inputGroupFile01" hidden>Choose file</label>
+                              <input type="file" class="custom-file-input" name="image" accept="image/*"   aria-describedby="inputGroupFileAddon01" id="subirimaggen" hidden>
+                              <label class="custom-file-label" for="inputGroupFile01" hidden>Choose file</label>
                               </div>
 
                               {{-- <div class="col-sm-8" style="top: -42px; margin-left: -27px;" >
@@ -497,7 +497,10 @@
         
         <div class="button" style="margin-right: 68px">
         <button type="submit"  title="Guardar Datos" id="seave" class="btn btn-fill btn-info btnholdon  float-right"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+        <input type="text" name="imagen"  id="idphoto" hidden value="">
       </form>
+
+
       <form action="{{Route('Empleados.destroy',$empleados->id_empleado)}}" id="deleempleado" method="POST">
         @csrf
         @method('DELETE');
@@ -547,9 +550,13 @@
       </div>
   </div>
 </div>
+@include('Empleados.cropper')
 @endsection
 
 @section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 @include('Contrato.modal')
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 {{-- <script src="{{asset('js/holdOn.js')}}"></script>
@@ -563,35 +570,73 @@
    
     if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null, './#forward');
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
 
 $(window).on('popstate', function() {
   backsave();
 });
 
 }
-
+}
 
 function backsave(){
   Swal.fire({
   title: 'Seguro que deseas salir?',
   text: "No se podra revertir,¿Deseas guardarlo? !",
   icon: 'warning',
+  showDenyButton: true,
   showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, guardar!',
-  cancelButtonText: 'No, salir!',
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
 }).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
   if (result.isConfirmed) {
     $("#seave").trigger("click");
-  }else{
+  } else if (result.isDenied) {
     history.back();
+  }else{
+    backhome();
   }
-
-});
+})
 
 }
+
+$("#SearcFormulario").on('submit',function(e){
+e.preventDefault();
+Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    this.submit();
+  }else{
+    backhome();
+  }
+})
+});
+
+
+
     $("#pass").val('');
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
@@ -1273,6 +1318,103 @@ function ciudad(e){
 //     }
 //              });
 // });
+
+var $modal = $('#crpimg');
+
+var image = document.getElementById('sample_image');
+
+var cropper;
+
+$('#subirimaggen').change(function(event){
+  var files = event.target.files;
+
+  var done = function(url){
+    image.src = url;
+    $modal.modal('show');
+  };
+
+  if(files && files.length > 0)
+  {
+    reader = new FileReader();
+    reader.onload = function(event)
+    {
+      done(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+});
+
+$modal.on('shown.bs.modal', function() {
+  cropper = new Cropper(image, {
+    aspectRatio: 1,
+    viewMode: 3,
+    preview:'.preview'
+  });
+}).on('hidden.bs.modal', function(){
+  cropper.destroy();
+     cropper = null;
+});
+
+$('#crop').click(function(){
+  canvas = cropper.getCroppedCanvas({
+    width:400,
+    height:400
+  });
+
+  canvas.toBlob(function(blob){
+    url = URL.createObjectURL(blob);
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function(){
+      var base64data = reader.result;
+      $.ajax({
+        url:"{{url('Emplephoto')}}",
+        method:'POST',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data:{image:base64data},
+        success:function(data)
+        {
+          $("#btnclose").trigger("click");
+          var route=$(data).attr('value');
+          var file=$(data).attr('action');
+
+          var union="{{asset('')}}/"+route;
+          $("#idphoto").attr('value',file+".png")
+          $('#image').attr('src', union);
+        }
+      });
+    };
+  });
+});
 </script>
-    
+<style>
+  .selec option{
+    text:rgb(3, 3, 3);
+    background-color:#525f7f;;
+}
+
+#canvas {
+  height: 400px;
+  width: 400px;
+  background-color: #ffffff;
+  cursor: default;
+  border: 1px solid black;
+}
+
+img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
+		.preview {
+  			overflow: hidden;
+  			width: 160px; 
+  			height: 160px;
+  			margin: 10px;
+  			border: 1px solid red;
+		}
+
+    .modal-lg{
+  			max-width: 1000px !important;
+		}
+</style>   
 @endsection
