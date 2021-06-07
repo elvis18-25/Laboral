@@ -170,7 +170,7 @@ class EmpleadosController extends Controller
         }
         $empleados->save();
 
-        if($request->get('grupo')!=" "){
+        if($request->get('grupo')!=null){
         $equipos= new empleados_equipo();
         $equipos->id_empleado=$empleados->id_empleado;
         $equipos->equipos=$request->get('grupo');

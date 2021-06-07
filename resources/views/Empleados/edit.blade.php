@@ -1416,5 +1416,10 @@ img {
     .modal-lg{
   			max-width: 1000px !important;
 		}
+    #silverfox {
+  min-height: 600px;
+  background-size: cover;
+  background-position: center;
+}
 </style>   
 @endsection

@@ -5,6 +5,11 @@
   .error{
     border-color: red !important;
   }
+
+  /* .cropper-container{
+  width: 664px !important;
+  height: 489px !important;
+} */
 </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
@@ -175,7 +180,7 @@
                                     @endforeach
                                   </select>                               
                                   <div class="input-group-append">
-                                  <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                  <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                                 </div>
                               </div>
                             @include('Empleados.modalpago')
@@ -200,7 +205,7 @@
                                 @endforeach
                               </select>
                               <div class="input-group-append">
-                                <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                               </div>
                             </div>
                         </div>
@@ -221,7 +226,7 @@
                               @endforeach
                             </select>
                             <div class="input-group-append">
-                              <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
+                              <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
                             </div>
                           </div>
                         </div>
@@ -1239,15 +1244,16 @@ $modal.on('shown.bs.modal', function() {
     viewMode: 3,
     preview:'.preview'
   });
-}).on('hidden.bs.modal', function(){
+})
+$modal.on('hidden.bs.modal', function(){
   cropper.destroy();
      cropper = null;
 });
 
 $('#crop').click(function(){
   canvas = cropper.getCroppedCanvas({
-    width:400,
-    height:400
+    width:800,
+    height:800,
   });
 
   canvas.toBlob(function(blob){
@@ -1269,6 +1275,7 @@ $('#crop').click(function(){
 
           var union="{{asset('')}}/"+route;
           $("#idphoto").attr('value',file+".png")
+          // $('#image').attr('src', " ");
           $('#image').attr('src', union);
         }
       });
@@ -1286,6 +1293,7 @@ $('#crop').click(function(){
     background-color:#525f7f;;
 }
 
+
 #canvas {
   height: 400px;
   width: 400px;
@@ -1294,9 +1302,10 @@ $('#crop').click(function(){
   border: 1px solid black;
 }
 
-img {
-  max-width: 100%; /* This rule is very important, please do not ignore this! */
-}
+/* .cropper-hide{
+  width: 655px;
+    height: 458.697px;
+} */
 
 		.preview {
   			overflow: hidden;
@@ -1309,4 +1318,10 @@ img {
     .modal-lg{
   			max-width: 1000px !important;
 		}
+    #silverfox {
+  /* Asignamos una altura mínima */
+  min-height: 600px;
+  background-size: cover;
+  background-position: center;
+}
 </style>

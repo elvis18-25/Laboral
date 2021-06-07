@@ -11,7 +11,7 @@
         <div class="modal-body">
           <div class="img-container">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-8 " id="silverfox">
                     <img src="" id="sample_image" />
                 </div>
                 <div class="col-md-4">
@@ -22,7 +22,7 @@
         </div>
         <div class="modal-footer">
           {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-          <button type="button" class="btn btn-primary" id="crop"><i class="fas fa-save"></i></button>
+          <button type="button" class="btn btn-info redondo" id="crop"><i class="fas fa-save"></i></button>
         </div>
       </div>
     </div>

@@ -34,6 +34,18 @@ img {
     .modal-lg{
   			max-width: 1000px !important;
 		}
+
+    .card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+#rol-error{
+  top: 38px;
+    position: absolute;
+}
 </style>
 <div class="o-page-loader">
   <div class="o-page-loader--content">
@@ -122,7 +134,7 @@ img {
                         
                         </div>
 
-                        <div class="col-sm-6{{ $errors->has('email') ? ' has-danger' : '' }}">
+                        <div class="col-sm-5{{ $errors->has('email') ? ' has-danger' : '' }}">
                             <label>{{ __('EMAIL') }}</label>
                             <input type="email" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email address') }}" required>
                     
@@ -136,6 +148,21 @@ img {
                                 @endforeach
                               </select>
                         </div>
+                        <div class="col-sm-3{{ $errors->has('rol') ? ' has-danger' : '' }}">
+                          <label>{{ __('ROL') }}</label>
+                          
+                          <select class="form-control{{ $errors->has('rol') ? ' is-invalid' : '' }} selec" name="rol" id="rol"  required>
+                              <option selected value="">ELEGIR...</option>
+                              @foreach ($roles as $role)
+                              @if ($role->estado==0)
+                              @if ($role->id_empresa==Auth::user()->id_empresa || $role->label=="rol")
+                              <option value="{{$role->id}}">{{$role->name}}</option>
+                              @endif
+                              @endif
+                              @endforeach
+                            </select>
+                          
+                      </div>
                     </div>
 
                 </div>
@@ -147,8 +174,13 @@ img {
         <div class="card" style="top: -10px;">
             <div class="card-header">
                 <h5 class="title">{{ __('DATOS LABORALES') }}</h5>
+                <a data-toggle="collapse" href="#collapse-example" id="btncollapse" style="top: -33px;  position: relative;" aria-expanded="false" aria-controls="collapse-example" class="d-block">
+                  <i class="fa fa-chevron-down pull-right"></i>
+                  
+              </a>
             </div>
 
+            <div id="collapse-example" class="collapse">
                 <div class="card-body">
 
                     <div class="form-inline" style="top: -20px; position:relative">
@@ -169,29 +201,34 @@ img {
 
 
                     <div class="form-row">
-                        <div class="col-sm-4 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
                             <label>{{ __('FECHA DE ENTRADA') }}</label>
-                            <input type="date" name="entrada" class="form-control{{ $errors->has('Fecha_Entrada') ? ' is-invalid' : '' }}" id="entrada" >
+                            <input type="date" name="entrada"  class="form-control{{ $errors->has('Fecha_Entrada') ? ' is-invalid' : '' }}" id="entrada" >
                            
                         </div>
                     
 
-                        <div class="col-sm-4{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
+                        <div class="col-sm-3{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
                             <label>{{ __('FECHA DE SALIDA') }}</label>
                             <input type="date" name="salida" class="form-control{{ $errors->has('fecha_salida') ? ' is-invalid' : '' }}">
                            
                         </div>
 
-                        <div class="col-sm-4{{ $errors->has('salario') ? ' has-danger' : '' }}">
-                            <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text" name="salario" onkeyup="calcular()" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }}" id="salario" placeholder="{{ __('Salario') }}" >
-                       
-                        </div>
-                        <div class="col-sm-4{{ $errors->has('pagos') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
+                          <label>{{ __('SALARIO BRUTO') }}</label>
+                          <input type="text"  onkeyup="calcular();"  class="form-control money" id="salario"  placeholder="{{ __('Salario') }}" >
+                          <input type="text" name="salario"   class="form-control money" id="recisalario"   hidden>
+                      </div>
+                        <div class="col-sm-3{{ $errors->has('dias') ? ' has-danger' : '' }}">
+                          <label>{{ __('SALARIO POR DIAS') }}</label>
+                          <input type="text" name="horas"  class="form-control  " id="salDias" placeholder="{{ __('$0.00') }}" >
+                     
+                      </div>
+                        <div class="col-sm-3{{ $errors->has('pagos') ? ' has-danger' : '' }}">
                             <label>{{ __('FORMAS DE PAGOS') }}</label>
                             <div class="input-group mb-2">
                                 <select class="form-control{{ $errors->has('pagos') ? ' is-invalid' : '' }} selec" name="pagos" id="forma" >
-                                    <option selected >ELEGIR...</option>
+                                    <option selected disabled >ELEGIR...</option>
                                     @foreach ($pago as $pag)
                                     @if ($pag->estado==0)
                                     @if ($pag->id_empresa==Auth::user()->id_empresa) 
@@ -201,21 +238,21 @@ img {
                                     @endforeach
                                   </select>                               
                                   <div class="input-group-append">
-                                  <button class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                  <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                                 </div>
                               </div>
                             @include('Empleados.modalpago')
                         </div>
-                        <div class="col-sm-4{{ $errors->has('cargo') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('cargo') ? ' has-danger' : '' }}">
                             <label>{{ __('CARGO') }}</label>
                             <input type="text" name="cargo" class="form-control{{ $errors->has('cargo') ? ' is-invalid' : '' }}" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" id="cargo" placeholder="{{ __('Cargo') }}" >
                        
                         </div>
-                        <div class="col-sm-4{{ $errors->has('departa') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('departa') ? ' has-danger' : '' }}">
                             <label>{{ __('DEPARTAMENTO') }}</label>
                             <div class="input-group mb-3">
                             <select class="form-control{{ $errors->has('departa') ? ' is-invalid' : '' }} selec" name="departa" id="depar"  >
-                                <option selected value="">ELEGIR...</option>
+                                <option selected disabled value="">ELEGIR...</option>
                                 @foreach ($puesto as $puest)
                                 @if ($puest->estado==0)
                                 @if ($puest->id_empresa==Auth::user()->id_empresa)
@@ -225,33 +262,38 @@ img {
                                 @endforeach
                               </select>
                               <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                               </div>
                             </div>
                         </div>
                         @include('Empleados.modaldepart')
 
-                        <div class="col-sm-4{{ $errors->has('rol') ? ' has-danger' : '' }}">
-                            <label>{{ __('ROL') }}</label>
-                            <div class="input-group mb-3">
-                            <select class="form-control{{ $errors->has('rol') ? ' is-invalid' : '' }} selec" name="rol" id="rol"  required>
-                                <option selected value="">ELEGIR...</option>
-                                @foreach ($roles as $role)
-                                @if ($role->estado==0)
-                                @if ($role->id_empresa==Auth::user()->id_empresa || $role->label=="rol")
-                                <option value="{{$role->id}}">{{$role->name}}</option>
-                                @endif
-                                @endif
-                                @endforeach
-                              </select>
-                              {{-- <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-sm"  data-toggle="modal" data-target="#rolesmodal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
-                              </div> --}}
+                        <div class="col-sm-4{{ $errors->has('grupo') ? ' has-danger' : '' }}">
+                          <label>{{ __('GRUPOS') }}</label>
+                          <div class="input-group mb-3">
+                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo">
+                              <option selected value="">ELEGIR...</option>
+                              @foreach ($equipo as $equipos)
+                              @if ($equipos->estado==0)
+                              @if ($equipos->id_empresa==Auth::user()->id_empresa)
+                                  
+                              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              @endif
+                              @endif
+                              @endforeach
+                            </select>
+                            <div class="input-group-append">
+                              <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
                             </div>
+                          </div>
                         </div>
+                        @include('Empleados.modalgroup') 
+
+
                         {{-- @include('users.modalrole') --}}
                     </div>
                 </div>
+              </div>
 
             
         </div>
@@ -260,8 +302,13 @@ img {
         <div class="card" style="top: -20px;">
             <div class="card-header">
                 <h5 class="title">{{ __('DATOS OPCIONALES') }}</h5>
+                <a data-toggle="collapse" href="#collapse-opcional"  style="top: -33px;  position: relative;" aria-expanded="false" aria-controls="collapse-example" class="d-block">
+                  <i class="fa fa-chevron-down pull-right"></i>
+                
+              </a>      
             </div>
 
+            <div id="collapse-opcional" class="collapse">
                 <div class="card-body" >
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -394,6 +441,7 @@ img {
                         </div>
                       </div>
                 </div>
+                </div>
         </div>
 
     </div>
@@ -456,10 +504,14 @@ img {
 {{-- <script src="{{asset('js/holdOn.js')}}"></script>
 <link rel="stylesheet" href="{{asset('css/holdOn.css')}}"> --}}
 <script src="{{asset('js/pageLoader.js')}}"></script>
-
+<script src="{{asset('js/timepicker.min.js')}}"></script>
 <script>
   $(document).ready(function(){
+// $("#btncollapse").trigger("click");
 
+// $("#btncollapse").on('click',function(){
+//   $("#collapse-example").attr('hidden',false);
+// });
     if (window.history && window.history.pushState) {
 
 window.history.pushState('forward', null);
@@ -528,16 +580,18 @@ Swal.fire({
 });
 
 
-    $("#cedula").mask('000-0000000-0');
+$("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
     $("input[type='tel']").mask('(000) 000-0000');
+    $('.money').mask("#,##0.00", {reverse: true});
     $("#pass").val('');
+    $('.bs-timepicker').timepicker();
 
 
 
  $("#exampleRadios1").attr("checked",true);
   $("#salida").hide();
- 
+  // $("#btncollapse").trigger("click");
 
  $("#exampleRadios1").change(function(){
   if($(this).val()=="fijo"){
@@ -716,160 +770,195 @@ options2 = { style: 'currency', currency: 'USD' };
 
  
 
- function calcular(){
- var  total=0;
- var templeado=0;
- var afp=0;
-  var sfs=0;
-  var isr=0;
-var final=0;
-  var porcentaje="";
-  var monto="";
+//  function calcular(){
+//  var  total=0;
+//  var templeado=0;
+//  var afp=0;
+//   var sfs=0;
+//   var isr=0;
+// var final=0;
+//   var porcentaje="";
+//   var monto="";
 
-  var checker=0;
-  var escala=0;
+//   var checker=0;
+//   var escala=0;
 
-var verficar =0;
-  var id=6;
-  var id1=7
-  var tdeducion=0;
+// var verficar =0;
+//   var id=6;
+//   var id1=7
+//   var tdeducion=0;
  
-        if(!isNaN(total)){
-          $("#salario").each(function() {
-            var sub=$(this).val();
+//         if(!isNaN(total)){
+//           $("#salario").each(function() {
+//             var sub=$(this).val();
             
             
-            if(sub!=''){
+//             if(sub!=''){
 
-              total=parseInt($(this).val(),10);
-              sfs=total*3.04;
-              sfs=sfs/100;
+//               total=parseInt($(this).val(),10);
+//               sfs=total*3.04;
+//               sfs=sfs/100;
 
-              afp=total*2.87;
-              afp=afp/100;
+//               afp=total*2.87;
+//               afp=afp/100;
               
               
-              $("#AFP").attr('value',afp);
-              $("#SFS").attr('value',sfs);
+//               $("#AFP").attr('value',afp);
+//               $("#SFS").attr('value',sfs);
 
-              templeado=total-afp-sfs;
+//               templeado=total-afp-sfs;
               
               
 
-              if(templeado<34685){
-                porcentaje="Exento";
-                monto="Exento";
-                verficar=0;
-                final=total-afp-sfs;
-                tdeducion=afp+sfs+escala;
-                $("#exent").prop('checked',false);
+//               if(templeado<34685){
+//                 porcentaje="Exento";
+//                 monto="Exento";
+//                 verficar=0;
+//                 final=total-afp-sfs;
+//                 tdeducion=afp+sfs+escala;
+//                 $("#exent").prop('checked',false);
                 
-                $("#exent").attr('disabled',true);
+//                 $("#exent").attr('disabled',true);
                 
-              }
+//               }
               
-              if(templeado>34685){
-                isr=templeado*12;
-                final=0;
-                escala=0;
+//               if(templeado>34685){
+//                 isr=templeado*12;
+//                 final=0;
+//                 escala=0;
 
-                if (isr>867123){
-                 escala=isr-867123;
-                 isr=escala*25;
-                 escala=isr/100;
-                 escala=escala+79776;
-                 escala=escala/12;
-                  porcentaje="25%";
-                  $("#porcen").attr('value',porcentaje);
-                  verficar=1;
-                  final=total-afp-sfs-escala;
-                  tdeducion=afp+sfs+escala;
-                  $("#exent").attr('disabled',false);
+//                 if (isr>867123){
+//                  escala=isr-867123;
+//                  isr=escala*25;
+//                  escala=isr/100;
+//                  escala=escala+79776;
+//                  escala=escala/12;
+//                   porcentaje="25%";
+//                   $("#porcen").attr('value',porcentaje);
+//                   verficar=1;
+//                   final=total-afp-sfs-escala;
+//                   tdeducion=afp+sfs+escala;
+//                   $("#exent").attr('disabled',false);
                   
-                }
+//                 }
 
                 
-                if (isr>416220 && isr<624329){
-                  escala=isr-416220.01;
-                  isr=escala*15;
-                  escala=isr/100;
-                  escala=escala/12;
-                  porcentaje="15%";
-                  $("#porcen").attr('value',porcentaje);
-                  verficar=1;
-                  final=total-afp-sfs-escala;
-                  tdeducion=afp+sfs+escala;
-                  $("#exent").attr('disabled',false);
+//                 if (isr>416220 && isr<624329){
+//                   escala=isr-416220.01;
+//                   isr=escala*15;
+//                   escala=isr/100;
+//                   escala=escala/12;
+//                   porcentaje="15%";
+//                   $("#porcen").attr('value',porcentaje);
+//                   verficar=1;
+//                   final=total-afp-sfs-escala;
+//                   tdeducion=afp+sfs+escala;
+//                   $("#exent").attr('disabled',false);
 
-                }
+//                 }
         
 
-                if (isr>624329 && isr<867123){
-                 escala=isr-624329;
-                 isr=escala*20;
-                 escala=isr/100;
-                 escala=escala+31216;
-                 escala=escala/12;
-                  porcentaje="20%";
-                  $("#porcen").attr('value',porcentaje);
-                  verficar=1;
-                  final=total-afp-sfs-escala;
-                  tdeducion=afp+sfs+escala;
-                  $("#exent").attr('disabled',false);
-                }
+//                 if (isr>624329 && isr<867123){
+//                  escala=isr-624329;
+//                  isr=escala*20;
+//                  escala=isr/100;
+//                  escala=escala+31216;
+//                  escala=escala/12;
+//                   porcentaje="20%";
+//                   $("#porcen").attr('value',porcentaje);
+//                   verficar=1;
+//                   final=total-afp-sfs-escala;
+//                   tdeducion=afp+sfs+escala;
+//                   $("#exent").attr('disabled',false);
+//                 }
 
 
 
-              }
+//               }
 
               
               
-            }
-          });
-          $("#ISR").attr('value',escala);
-          res= numberFormat2.format(sfs);
-          res1= numberFormat2.format(afp);
-          res2= numberFormat2.format(escala);
-          res3= numberFormat2.format(final);
-          res4=numberFormat2.format(tdeducion);
-        // $("#totl").attr('value',total);
+//             }
+//           });
+//           $("#ISR").attr('value',escala);
+//           res= numberFormat2.format(sfs);
+//           res1= numberFormat2.format(afp);
+//           res2= numberFormat2.format(escala);
+//           res3= numberFormat2.format(final);
+//           res4=numberFormat2.format(tdeducion);
+//         // $("#totl").attr('value',total);
           
-        $("#seguro"+id).empty();
-        $("#seguro"+id).append(res)
+//         $("#seguro"+id).empty();
+//         $("#seguro"+id).append(res)
 
-        $("#seguro"+id1).empty();
-        $("#seguro"+id1).append(res1)
+//         $("#seguro"+id1).empty();
+//         $("#seguro"+id1).append(res1)
         
-        $("#totalnomina").empty();
-        $("#totalnomina").append(res3)
+//         $("#totalnomina").empty();
+//         $("#totalnomina").append(res3)
 
-        $("#porcentaje").empty();
-        $("#porcentaje").append(porcentaje);
+//         $("#porcentaje").empty();
+//         $("#porcentaje").append(porcentaje);
 
-        $("#totaldedu").empty();
-        $("#totaldedu").append(res4);
-
-
+//         $("#totaldedu").empty();
+//         $("#totaldedu").append(res4);
 
 
-        if(verficar==0){
-        $("#monto").empty();
-        $("#monto").append(monto);
-        }
 
-        if(verficar==1){
-         $("#monto").empty();
-        $("#monto").append(res2);
-        }
+
+//         if(verficar==0){
+//         $("#monto").empty();
+//         $("#monto").append(monto);
+//         }
+
+//         if(verficar==1){
+//          $("#monto").empty();
+//         $("#monto").append(res2);
+//         }
 
         
 
 
-        }
+//         }
+// }
+
+function calcular(){
+   var salario=$("#salario").val();
+   
+   var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+   sum=montoFormat/23.83/8;
+
+   $("#recisalario").attr('value',montoFormat);
+   $("#salDias").attr('value',financial(sum));
+
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
 }
 
 
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
 
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
 // var options = {
 //      theme:"sk-cube-grid",
 //      message:'Cargando.... ',

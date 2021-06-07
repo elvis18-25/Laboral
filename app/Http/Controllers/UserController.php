@@ -22,6 +22,8 @@ use App\Models\Contrato;
 use App\Models\adjunto_user;
 use Illuminate\Support\Carbon;
 use PhpOffice\PhpWord\TemplateProcessor;
+use App\Models\Equipos;
+use App\Models\equipos_users;
 
 
 
@@ -57,8 +59,9 @@ class UserController extends Controller
         $sexo=Sexo::all();
         $pais=Pais::select('id','name')->orderBy('name')->get();
         $roles=Role::all();
+        $equipo=Equipos::all();
 
-        return view('users.create',compact('pago','puesto','asignaciones','pais','sexo','roles'));
+        return view('users.create',compact('pago','equipo','puesto','asignaciones','pais','sexo','roles'));
     }
 
     /**
@@ -70,6 +73,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $inputs=$request->all();
+        // dd($inputs);
 
         if($request->get('checkasgina')!=''){
 
@@ -85,33 +89,35 @@ class UserController extends Controller
         }
         $user->id_empresa=$empresa->id;
         $user->entrada=$request->get('entrada');
+        $user->horas=$request->get('horas');
         $user->save();
 
-        if($request->get('checkasgina')!=''){
-            for($i = 0; $i <= $size; $i++){
-                if(!empty(collect($request)->get('checkasgina')[$i])){
-                  $input2['id_user']=$user->id;
-                  $input2['asignaciones_id']=$request->get('checkasgina')[$i];
-                  $input2['id_empresa'] =$empresa->id;
-                  if($request->get('checkasgina')[$i]==6){
-                   $input2['monto'] = $request->get('AFP');
-                  }
-                  if($request->get('checkasgina')[$i]==7){
-                   $input2['monto'] = $request->get('SFS');
-                  }
-                  $oneswui=asignaciones_user::create($input2);
-                }
-            }  
-        }
+        // if($request->get('checkasgina')!=''){
+        //     for($i = 0; $i <= $size; $i++){
+        //         if(!empty(collect($request)->get('checkasgina')[$i])){
+        //           $input2['id_user']=$user->id;
+        //           $input2['asignaciones_id']=$request->get('checkasgina')[$i];
+        //           $input2['id_empresa'] =$empresa->id;
+        //           if($request->get('checkasgina')[$i]==6){
+        //            $input2['monto'] = $request->get('AFP');
+        //           }
+        //           if($request->get('checkasgina')[$i]==7){
+        //            $input2['monto'] = $request->get('SFS');
+        //           }
+        //           $oneswui=asignaciones_user::create($input2);
+        //         }
+        //     }  
+        // }
 
-                if($request->get('isres')!=''){
-                    $isr= new isr_user();
-                    $isr->porcentaje=$request->get('porcentaje');
-                    $isr->id_user=$user->id;
-                    $isr->id_empresa=$empresa->id;
-                    $isr->monto=$request->get('ISR');
-                    $isr->save();
-                }
+
+                if($request->get('grupo')!=null){
+                    $equipos= new equipos_users();
+                    $equipos->id_users=$user->id;
+                    $equipos->equipo=$request->get('grupo');
+                    $equipos->estado=0;
+                    $equipos->id_empresa=Auth::user()->id_empresa;
+                    $equipos->save();
+                    }
 
                   //Pais
                   if(!empty($request->get('pais'))){
@@ -140,35 +146,36 @@ class UserController extends Controller
                     $state->save();
                     }
 
-        if($request->get('no')!=''){
-            for($i = 0; $i < count($request->get('no')); $i++){
+        if($request->get('nop')!=''){
+            for($i = 0; $i < count($request->get('nop')); $i++){
                 $input['user_id']=$user->id;
-                $input['nombre'] = $request->get('no')[$i];
+                $input['nombre'] = $request->get('nop')[$i];
                 $input['telefono'] = $request->get('parentesco')[$i];
-                $input['parentesco'] = $request->get('tel')[$i];
+                $input['parentesco'] = $request->get('telp')[$i];
                 $input['id_empresa'] = $empresa->id;
                 $input['estado'] = 0;
                 $referencia=referencias_user::create($input);
             }  
         }
 
-        if($request->hasFile('image')){
 
-            $file=$request->image;
-            $file->move(public_path().'/img', $file->getClientOriginalName());
-            $user->imagen=$file->getClientOriginalName();
-            $user->save();
 
+        if($request->get('departa')!=null && $request->get('departa')!="ELEGIR..." ){
+        $user->asignarPuestoU($request->get('departa'));
         }
 
-        $user->asignarPuestoU($request->get('departa'));
-
+        if($request->get('genero')!=null && $request->get('genero')!="ELEGIR..." ){
         $user->asignarSexoU($request->get('genero'));
+        }
 
+        if($request->get('pagos')!=null && $request->get('pagos')!="ELEGIR..." ){
         $user->asignarPagosU($request->get('pagos'));
+        }
 
+        if($request->get('rol')!=null && $request->get('rol')!="ELEGIR..."){
         $user->asignarRol($request->get('rol'));
-
+        }
+        
         return redirect('user');
     }
 
@@ -189,6 +196,8 @@ class UserController extends Controller
         $referencias=referencias_user::all();
         $contrato=Contrato::all();
         $Adjunto=adjunto_user::all();
+        $equipo=Equipos::all();
+        $emple_equipo=equipos_users::where('id_users','=',$id)->first();
        
 
         $pais=Pais::all(['id','name']);
@@ -220,7 +229,7 @@ class UserController extends Controller
         
 
         return view('users.edit',compact('sexo','pago','roles',
-        'puesto','asignaciones','referencias','pais','pais_emple','state','Adjunto','users','ciudades','contrato'));
+        'puesto','asignaciones','emple_equipo','equipo','referencias','pais','pais_emple','state','Adjunto','users','ciudades','contrato'));
        
     }
 
@@ -244,6 +253,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $users=User::findOrFail($id);
         $users->fill($request->all());
         if($request->get('imagen')!=null){
@@ -322,13 +332,8 @@ class UserController extends Controller
             }  
         }
 
-        // if($request->hasFile('image')){
-        //     $file=$request->image;
-        //     $file->move(public_path().'/img', $file->getClientOriginalName());
-        //     $users->imagen=$file->getClientOriginalName();
-        //     $users->save();
-        // }
 
+    if($request->get('pagos')!=null && $request->get('pagos')!="ELEGIR..."){
         $pagos=$users->pagosU;
         if(count($pagos)>0){
             $pagos_id=$pagos[0]->id;
@@ -336,7 +341,9 @@ class UserController extends Controller
         }else{
             $users->asignarPagosU($request->get('pagos'));
         }
+    }
 
+    if($request->get('departa')!=null && $request->get('departa')!="ELEGIR..."){
         $puesto=$users->puestoU;
         if(count($puesto)>0){
             $puesto_id=$puesto[0]->id;
@@ -344,8 +351,9 @@ class UserController extends Controller
         }else{
             $users->asignarPuestoU($request->get('departa'));
         }
+    }
 
-        if($request->get('genero')!="ELEGIR..."){
+    if($request->get('genero')!=null && $request->get('genero')!="ELEGIR..."){
         $sexo=$users->sexoU;
         if(count($sexo)>0){
             $sexo_id=$sexo[0]->id;
@@ -355,6 +363,7 @@ class UserController extends Controller
         }
     }
 
+    if($request->get('rol')!=null && $request->get('rol')!="ELEGIR..."){
         $role=$users->roles;
         if(count($role)>0){
             $roles_id=$role[0]->id;
@@ -362,10 +371,9 @@ class UserController extends Controller
         }else{
             $users->asignarRol($request->get('rol'));
         }
-
         return redirect('user');
-
     }
+}
 
     public function openadjuntouser(Request $request)
     {

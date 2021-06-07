@@ -22,14 +22,15 @@ class User extends Authenticatable
         'cedula',
         'telefono',
         'direccion',
-        'Fecha_Entrada',
-        'fecha_salida',
+        'entrada',
+        'salida',
         'salario',
         'id_empresa',
         'edad',
         'email',
         'password',
         'cargo',
+        'horas',
     ];
 
     /**

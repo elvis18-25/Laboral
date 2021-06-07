@@ -32,11 +32,24 @@ img {
     .modal-lg{
   			max-width: 1000px !important;
 		}
+    
+    .card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+#rol-error{
+  top: 38px;
+    position: absolute;
+}
 </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/users.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
 
 
 <form  action="{{Route('user.update',$users->id)}}" method="POST" enctype="multipart/form-data" id="formulario"  >  
@@ -116,7 +129,7 @@ img {
                         
                         </div>
 
-                        <div class="col-sm-6{{ $errors->has('email') ? ' has-danger' : '' }}">
+                        <div class="col-sm-5{{ $errors->has('email') ? ' has-danger' : '' }}">
                             <label>{{ __('EMAIL') }}</label>
                             <input type="email" name="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{$users->email}}" placeholder="{{ __('Email address') }}" required>
                     
@@ -134,6 +147,26 @@ img {
                                 @endforeach
                               </select>
                         </div>
+                        <div class="col-sm-3{{ $errors->has('rol') ? ' has-danger' : '' }}">
+                          <label>{{ __('ROL') }}</label>
+                          <select class="form-control{{ $errors->has('rol') ? ' is-invalid' : '' }} selec" name="rol" id="rol"  required>
+                              <option selected value="">ELEGIR...</option>
+                              @foreach ($roles as $role)
+                              @if ($role->estado==0)
+                              @if ($role->id_empresa==Auth::user()->id_empresa || $role->label=="rol")
+                              @if($role->name == str_replace(array('["', '"]'), '',$users->tieneRol()));
+                              <option value="{{$role->id}}" selected >{{$role->name}}</option>
+                              @else
+                              <option value="{{$role->id}}">{{$role->name}}</option>
+                              @endif
+                              @endif
+                              @endif
+                              @endforeach
+                            </select>
+                            {{-- <div class="input-group-append">
+                              <button class="btn btn-outline-secondary btn-sm"  data-toggle="modal" data-target="#rolesmodal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                            </div> --}}
+                          </div>
                     </div>
 
                 </div>
@@ -145,8 +178,13 @@ img {
         <div class="card" style="top: -12px;">
             <div class="card-header">
                 <h5 class="title">{{ __('DATOS LABORALES') }}</h5>
-            </div>
+                <a data-toggle="collapse" href="#collapse-example" id="btncollapse" style="top: -33px;  position: relative;" aria-expanded="false" aria-controls="collapse-example" class="d-block">
+                  <i class="fa fa-chevron-down pull-right"></i>
+                  
+              </a>
+              </div>
 
+              <div id="collapse-example" class="collapse">
                 <div class="card-body">
 
                     <div class="form-inline" style="top: -20px; position:relative">
@@ -167,28 +205,35 @@ img {
 
 
                     <div class="form-row">
-                        <div class="col-sm-4 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3 mb-2{{ $errors->has('Fecha_Entrada') ? ' has-danger' : '' }}">
                             <label>{{ __('FECHA DE ENTRADA') }}</label>
-                            <input type="date" name="entrada" value="{{$users->entrada}}" class="form-control{{ $errors->has('Fecha_Entrada') ? ' is-invalid' : '' }}" id="entrada" required>
+                            <input type="date" name="entrada" value="{{$users->entrada}}" class="form-control{{ $errors->has('Fecha_Entrada') ? ' is-invalid' : '' }}" id="entrada" >
                            
                         </div>
                     
 
-                        <div class="col-sm-4{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
+                        <div class="col-sm-3{{ $errors->has('fecha_salida') ? ' has-danger' : '' }}" id="salida">
                             <label>{{ __('FECHA DE SALIDA') }}</label>
                             <input type="date" name="salida" value="{{$users->salida}}" class="form-control{{ $errors->has('fecha_salida') ? ' is-invalid' : '' }}">
                            
                         </div>
 
-                        <div class="col-sm-4{{ $errors->has('salario') ? ' has-danger' : '' }}">
-                            <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text" name="salario" value="{{$users->salario}}" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }}" id="salario" placeholder="{{ __('Salario') }}" required>
-                       
-                        </div>
-                        <div class="col-sm-4{{ $errors->has('pagos') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
+                          <label>{{ __('SALARIO BRUTO') }}</label>
+                          <input type="text" onkeyup="calcular();" value="{{number_format($users->salario,2)}}" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }} money" id="salario" placeholder="{{ __('Salario') }}" >
+                          <input type="text" name="salario" value="{{$users->salario}}" id="salarioOP" hidden>
+                      </div>
+
+                      <div class="col-sm-3{{ $errors->has('dias') ? ' has-danger' : '' }}">
+                        <label>{{ __('SALARIO POR DIAS') }}</label>
+                        <input type="text" name="horas" value="{{$users->horas}}"  class="form-control" id="salDias" placeholder="{{ __('$0.00') }}" >
+                   
+                    </div>
+
+                        <div class="col-sm-3{{ $errors->has('pagos') ? ' has-danger' : '' }}">
                             <label>{{ __('FORMAS DE PAGOS') }}</label>
                             <div class="input-group mb-2">
-                                <select class="form-control{{ $errors->has('pagos') ? ' is-invalid' : '' }} selec" name="pagos" id="forma" required>
+                                <select class="form-control{{ $errors->has('pagos') ? ' is-invalid' : '' }} selec" name="pagos" id="forma" >
                                     <option selected disabled value="" >ELEGIR...</option>
                                     @foreach ($pago as $pag)      
                                     @if ($pag->estado==0)
@@ -208,16 +253,17 @@ img {
                               </div>
                             @include('Empleados.modalpago')
                         </div>
+
                         <div class="col-sm-4{{ $errors->has('cargo') ? ' has-danger' : '' }}">
                             <label>{{ __('CARGO') }}</label>
                             <input type="text" name="cargo" value="{{$users->cargo}}" class="form-control{{ $errors->has('cargo') ? ' is-invalid' : '' }}" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" id="cargo" placeholder="{{ __('Cargo') }}" required>
                        
                         </div>
-                        <div class="col-sm-4{{ $errors->has('departa') ? ' has-danger' : '' }}">
+                        <div class="col-sm-3{{ $errors->has('departa') ? ' has-danger' : '' }}">
                             <label>{{ __('DEPARTAMENTO') }}</label>
                             <div class="input-group mb-3">
                             <select class="form-control{{ $errors->has('departa') ? ' is-invalid' : '' }} selec" name="departa" id="depar"  required>
-                                <option  value="">ELEGIR...</option>
+                                <option value="" selected disabled>ELEGIR...</option>
                                 @foreach ($puesto as $puest)
                                 @if ($puest->estado==0)
                                 @if ($puest->id_empresa==Auth::user()->id_empresa)
@@ -238,42 +284,53 @@ img {
                         </div>
                         @include('Empleados.modaldepart')
 
-                        <div class="col-sm-4{{ $errors->has('rol') ? ' has-danger' : '' }}">
-                          <label>{{ __('ROL') }}</label>
+                        <div class="col-sm-3{{ $errors->has('grupo') ? ' has-danger' : '' }}">
+                          <label>{{ __('GRUPOS') }}</label>
                           <div class="input-group mb-3">
-                          <select class="form-control{{ $errors->has('rol') ? ' is-invalid' : '' }} selec" name="rol" id="rol"  required>
-                              <option selected value="">ELEGIR...</option>
-                              @foreach ($roles as $role)
-                              @if ($role->estado==0)
-                              @if ($role->id_empresa==Auth::user()->id_empresa || $role->label=="rol")
-                              @if($role->name == str_replace(array('["', '"]'), '',$users->tieneRol()));
-                              <option value="{{$role->id}}" selected >{{$role->name}}</option>
+                          <select class="form-control{{ $errors->has('grupo') ? ' is-invalid' : '' }} selec" name="grupo" id="grupo"  >
+                              <option selected disabled value="">ELEGIR...</option>
+                              @foreach ($equipo as $equipos)
+
+                              @if ($equipos->estado==0)
+                              @if ($equipos->id_empresa==Auth::user()->id_empresa)
+
+                              @if ($emple_equipo!=null)
+                              @if ($emple_equipo->equipo==$equipos->id)
+                              <option value="{{$equipos->id}}" selected>{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              
                               @else
-                              <option value="{{$role->id}}">{{$role->name}}</option>
+                              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
+                              @endif   
+                              
+                              @else
+                              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
                               @endif
+
+
                               @endif
                               @endif
                               @endforeach
                             </select>
-                            {{-- <div class="input-group-append">
-                              <button class="btn btn-outline-secondary btn-sm"  data-toggle="modal" data-target="#rolesmodal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
-                            </div> --}}
+                            <div class="input-group-append">
+                              <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
+                            </div>
                           </div>
-                      </div>
-                       
+                        </div>
 
                     </div>
+                    </div>
                 </div>
-
-            
         </div>
 
 
         <div class="card" style="top: -23px;">
             <div class="card-header">
                 <h5 class="title">{{ __('DATOS OPCIONALES') }}</h5>
-            </div>
-
+                <a data-toggle="collapse" href="#collapse-opcional"  style="top: -33px;  position: relative;" aria-expanded="false" aria-controls="collapse-example" class="d-block">
+                  <i class="fa fa-chevron-down pull-right"></i>
+              </a>   
+              </div>
+              <div id="collapse-opcional" class="collapse">
                 <div class="card-body" >
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -417,7 +474,7 @@ img {
                       </div>
                       
                       
-                    
+                    </div>
 
                 </div>
  
@@ -486,6 +543,7 @@ img {
                   </select> 
               </div>
             </div>
+            
         </div>
         <div class="card" style="top: -4px;">
             <div class="card-header">
@@ -565,6 +623,7 @@ img {
 {{-- <script src="{{asset('js/holdOn.js')}}"></script>
 <link rel="stylesheet" href="{{asset('css/holdOn.css')}}"> --}}
 <script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="{{asset('js/timepicker.min.js')}}"></script>
 
 <script>
 
@@ -573,8 +632,13 @@ img {
     $("#pass").val('');
     $("#cedula").mask('000-0000000-0');
     $('#salario').mask('0#');
+    $('.money').mask("#,##0.00", {reverse: true});
+
+    // var saler=$("#salario").val();
+    // $("#salarioOP").attr('value',saler);
     $("input[type='tel']").mask('(000) 000-0000');
     $("#descradjunto").val(" ");
+    // $('.bs-timepicker').timepicker();
 
 
     $('#adjunnew').keyup(function(e){
@@ -589,7 +653,74 @@ img {
         $("#nameadjunto").focus();
     }
 });
-      
+ 
+
+if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+});
+
+}
+}
+
+function backsave(){
+  Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    history.back();
+  }else{
+    backhome();
+  }
+})
+
+}
+
+$("#SearcFormulario").on('submit',function(e){
+e.preventDefault();
+Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    this.submit();
+  }else{
+    backhome();
+  }
+})
+});
 
 
     if($("#countries").val()!=''){
@@ -933,24 +1064,45 @@ $("#image").on('click',function(){
 
 });
 
-// document.getElementById("subirimaggen").onchange = function(e) {
-//   // Creamos el objeto de la clase FileReader
-//   let reader = new FileReader();
+function calcular(){
+   var salario=$("#salario").val();
+   
+   var sum=0;
 
-//   // Leemos el archivo subido y se lo pasamos a nuestro fileReader
-//   reader.readAsDataURL(e.target.files[0]);
+   var montoFormat = toInt(salario);
+ 
 
-//   // Le decimos que cuando este listo ejecute el código interno
-//   reader.onload = function(){
-//     let preview = document.getElementById('image'),
-//             image = document.createElement('img');
 
-//     image.src = reader.result;
+   sum=montoFormat/23.83/8;
 
-//     preview.innerHTML = '';
-//     preview.append(image);
-//   };
-// }
+   $("#salarioOP").attr('value',montoFormat);
+   $("#salDias").attr('value',financial(sum));
+
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+// Incluso pensándolo como algo más genérico:
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
 
 $('#adjunnew').keyup(function(e){
     if(e.keyCode==13)
