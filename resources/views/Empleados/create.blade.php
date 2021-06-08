@@ -1248,6 +1248,7 @@ $modal.on('shown.bs.modal', function() {
 $modal.on('hidden.bs.modal', function(){
   cropper.destroy();
      cropper = null;
+     $('#subirimaggen').val("");
 });
 
 $('#crop').click(function(){
@@ -1320,7 +1321,7 @@ $('#crop').click(function(){
 		}
     #silverfox {
   /* Asignamos una altura mínima */
-  min-height: 600px;
+  min-height: 500px;
   background-size: cover;
   background-position: center;
 }

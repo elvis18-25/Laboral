@@ -25,9 +25,9 @@
                 border: 1px solid red;
           }
   
-      .modal-lg{
-                max-width: 1000px !important;
-          }
+.modal-lg{
+ max-width: 1000px !important;
+}
 
 .Logo{
     margin-right: 8px;
@@ -38,14 +38,21 @@
           }
 
 .color{
-    width: 27%;
+    width: 21%;
     height: 65%;
     overflow: hidden;
     margin-bottom: 15px;
     /* margin-top: -217px; */
     float: right;
-    
 }
+
+#silverfox{
+min-height: 600px;
+min-width: 600px;
+background-size: cover;
+background-position: center;
+}
+
   </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/empresa.css')}}">
@@ -91,7 +98,12 @@
                                 @method('PUT')
                             <div class="card-body" style="height: 300px;">
                             <div class="color" style=' background-color:<?php printf($color); ?>'>
-                                <img class="Logo" src="{{ asset('logo/'.$empresa->imagen)}}"  id="image" alt="">
+                              @if ($empresa->imagen!=null)
+                              <img class="Logo" src="{{ asset('logo/'.$empresa->imagen)}}"  id="image" alt="">
+                                  
+                              @else
+                              <img src="{{asset('recuros/empresa.png')}}" width="100%" height="100%" id="image"  alt="">
+                              @endif
                             </div>
                                 <div class="form-row">
 
@@ -481,7 +493,7 @@ $('#crop').click(function(){
         data:{image:base64data},
         success:function(data)
         {
-          $modal.trigger("click");
+          $("#btnclose").trigger("click");
           var route=$(data).attr('value');
           var file=$(data).attr('action');
 

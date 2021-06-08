@@ -24,16 +24,27 @@
                 </li> --}}
 
                 @php
-                    $user=App\Models\User::where('email','=',Auth::user()->email)->where('estado','=',0)->get();
+                    $userres=App\Models\User::where('email','=',Auth::user()->email)->where('estado','=',0)->get();
                     $empresa=App\Models\Empresa::where('estado','=',0)->get();
+                    $user=Auth::user()->id;
+
+                    if(sizeof(App\Models\Role_users::select('role_id')->where('user_id','=',$user)->get())!=0){
+                        $role=App\Models\Role_users::select('role_id')->where('user_id','=',$user)->first();
+                    }
+                    // dd($permiso);
+                    if(sizeof(App\Models\Permisos::where('role_id','=',$role->role_id)->get())!=0) {
+                        $permiso=App\Models\Permisos::select('role_id')->where('role_id','=',$role->role_id)->first();
+                    }
                 @endphp
 
+
+    @if ($permiso->role_id==1)
         @if (sizeof(App\Models\User::where('email','=',Auth::user()->email)->get())>1)
             <form action="{{url('SearchUser')}}" method="post" id="SearcFormulario">
                 @csrf
                 <select class="custom-select" id="validationDefault04" name="selecet" >
                     @foreach ($empresa as $empresas)
-                    @foreach ($user as $users)
+                    @foreach ($userres as $users)
 
                     @if ($users->id_empresa==$empresas->id)
                     @if ($empresas->id==Auth::user()->id_empresa)
@@ -50,6 +61,7 @@
                 <button type="submit" id="btnsubmit" hidden></button>
             </form>
             @endif
+    @endif
 
 
                 <li class="dropdown nav-item">

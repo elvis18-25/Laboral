@@ -46,6 +46,13 @@ img {
   top: 38px;
     position: absolute;
 }
+
+#silverfox {
+  /* Asignamos una altura mínima */
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+}
 </style>
 <div class="o-page-loader">
   <div class="o-page-loader--content">
@@ -1269,6 +1276,7 @@ $modal.on('shown.bs.modal', function() {
 }).on('hidden.bs.modal', function(){
   cropper.destroy();
      cropper = null;
+     $('#subirimaggen').val("");
 });
 
 $('#crop').click(function(){

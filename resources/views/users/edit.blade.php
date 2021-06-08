@@ -44,6 +44,13 @@ img {
   top: 38px;
     position: absolute;
 }
+
+#silverfox {
+  /* Asignamos una altura mínima */
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+}
 </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/users.css')}}">
@@ -186,7 +193,6 @@ img {
 
               <div id="collapse-example" class="collapse">
                 <div class="card-body">
-
                     <div class="form-inline" style="top: -20px; position:relative">
                         <label id="tipo">{{ __('TIPO DE CONTRATO:') }}&nbsp;</label>
                     <div class="form-check">
@@ -1289,6 +1295,7 @@ $modal.on('shown.bs.modal', function() {
 }).on('hidden.bs.modal', function(){
   cropper.destroy();
      cropper = null;
+     $('#subirimaggen').val("");
 });
 
 $('#crop').click(function(){

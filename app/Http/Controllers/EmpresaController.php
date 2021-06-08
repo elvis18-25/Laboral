@@ -196,7 +196,9 @@ class EmpresaController extends Controller
         $empresa->rnc=$request->get('rncUP');
         $empresa->email=$request->get('emailUP');
         $empresa->color=$request->get('custom_color');
-        $empresa->imagen=$request->get('imagen');
+        if($request->get('imagen')!=null){
+            $empresa->imagen=$request->get('imagen');
+        }
         
 
         // if($request->hasFile('archiveUP')){

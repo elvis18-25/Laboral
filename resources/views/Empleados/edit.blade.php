@@ -1353,6 +1353,7 @@ $modal.on('shown.bs.modal', function() {
 }).on('hidden.bs.modal', function(){
   cropper.destroy();
      cropper = null;
+     $('#subirimaggen').val("");
 });
 
 $('#crop').click(function(){
@@ -1417,7 +1418,7 @@ img {
   			max-width: 1000px !important;
 		}
     #silverfox {
-  min-height: 600px;
+  min-height: 500px;
   background-size: cover;
   background-position: center;
 }
