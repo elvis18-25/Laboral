@@ -19,6 +19,7 @@ class nomina_empleados extends Model
         'horas',
         'id_empresa',
         'estado',
+        'salarioneto',
     ];
 
 

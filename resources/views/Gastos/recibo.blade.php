@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <span class="encabezado" style="margin-top: -60px;" ><b>Listado de Gastos</b></span><br><br>
+      <span class="encabezado" style="margin-top: -60px;" ><b>LISTADO DE GASTOS</b></span><br><br>
 
       <table  border="0" cellspacing="1" cellpadding="1" style="margin-top: -1px;"   id="princpial" >
      <thead style="thd" style="">
@@ -117,7 +117,7 @@
       </table>
       
   {{-- <div  class="col-md-3 egreso"><b>Egreso por Nomina:&nbsp;(+)&nbsp;${{number_format(,2)}}</b></div> --}}
-  <span class="encabezado"  ><b>Egreso de Nomina</b></span><br><br>
+  <span class="encabezado"  ><b>EGRESO DE NOMINA</b></span><br><br>
   <table border="0" cellspacing="1" cellpadding="1"  >
     <thead style="thd" style="">
       <tr>
@@ -149,14 +149,13 @@
         <td id="#space" style="background-color: white"></td>
         <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total General:&nbsp;${{number_format($cont+$nomina->monto,2)}}</b></td>
       </tr>
-
     </tbody>
   </table>
   <br>
 
-<table id="obser" style="margin-top: -5%; position: absolute;">
+<table id="obser" style="margin-top: -54%;">
   <div class="obersrvaciones" >
-    <span ><b >Observaciones:</b>&nbsp;{{$gasto->observaciones}}</span><br>
+    <span><b>OBSERVACIONES:</b>&nbsp;{{$gasto->observaciones}}</span>
     {{-- <span></span> --}}
   </div>
 </table>

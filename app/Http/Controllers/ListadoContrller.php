@@ -521,6 +521,11 @@ class ListadoContrller extends Controller
     {
         // dd($request->all());
         $nominas=Listado::findOrFail($id);
+        $empleados=nomina_empleados::where('id_nomina','=',$id)->where('estado','=',0)->orderBy('id_empleado')->get();
+
+        // dd($empleados);
+        $arrayID = explode(",", $request->get('arregloID'));
+        $arregloSalario = explode(",", $request->get('arregloSalario'));
 
         $nominas->descripcion=$request->get('descripcion');
         $nominas->fecha=$request->get('fecha');
@@ -532,8 +537,16 @@ class ListadoContrller extends Controller
         $nominas->id_empresa=Auth::user()->id_empresa;
         $nominas->estado=0;
 
+        $i=0;
+        foreach($empleados as $empleado){
+        $nomi=nomina_empleados::findOrFail($empleado->id);
+        $nomi->salarioneto=$arregloSalario[$i];
+        $nomi->update();
+        $i++;
+        }
+
         $nominas->save();
-        return redirect('Listado');
+        return redirect('Listado')->with('guardar','ya');
     }
 
     /**
@@ -549,7 +562,7 @@ class ListadoContrller extends Controller
 
         $nominas->save();
 
-        return redirect('Listado')->with('eliminado','ya');
+        return redirect('Listado')->with('Eliminado','ya');
     }
     public function datatableListado()
     {
@@ -1073,6 +1086,176 @@ class ListadoContrller extends Controller
              
                             return $otrosI-$otrosD;
                     },
+                    'total'=>function($row){
+                        $tipo=request()->get('dato1');
+                        $nominaAsignaciones=nomina_asignaciones::all();
+                        $nominaOtros=nomina_otros::all();
+                        //Asignaciones
+                        $otrosContAsigna=0;
+                        $contAsigna=0;
+                        $contAsignaEstado=0;
+                        $sum=0;
+                        $sum2=0;
+                        //Bonos
+                        $otrosContBono=0;
+                        $contBono=0;
+                        $contBonoEstado=0;
+                        $sumbono=0;
+                        $sum2bono=0;
+        
+                        $totalBono=0;
+                        $totalAsigna=0;
+                        $salarioDias=0;
+        
+                        $start=request()->start_date;
+                        $end=request()->end_date;
+        
+                        $begin = new DateTime($start);
+                        $end   = new DateTime($end);
+                        $p=0;
+                        
+                        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+                            
+                        switch($nombre_dia)
+                        {
+                            case 1: $p=$p+8;
+                            break;
+                            case 2: $p=$p+8;
+                            break;
+                            case 3: $p=$p+8;
+                            break;
+                            case 4: $p=$p+8;
+                            break;
+                            case 5: $p=$p+8;
+                            break;
+                            case 6: $p=$p+4;
+                            break;
+                        }
+                        
+                        }
+        
+                        if($row->horas!=null){
+                            $salarioDias=$row->horas*$p;
+                        }else{
+                            $sumer=$row->salarioBruto/23.83/8;
+                            $salarioDias=$sumer*$p;
+                        }
+        
+                     
+                        foreach($nominaOtros as $nominaOtro){
+                            if($tipo==$nominaOtro->id_nomina){
+                                if($nominaOtro->tipo_asigna=="DEDUCCIÓN"){
+                                if($nominaOtro->id_empleado==$row->id_empleado){
+                                    if($nominaOtro->p_monto!=null){
+                                        $otrosContAsigna=$otrosContAsigna+$nominaOtro->p_monto;
+                                    }else{
+                                        $otrosContAsigna=$otrosContAsigna+$nominaOtro->monto;
+                                    }
+                                    }
+                                }
+                            }
+                        }
+        
+                            foreach($nominaAsignaciones as $nominaAsignacione){
+                                if($tipo==$nominaAsignacione->id_nomina){
+                                    if($row->id_empleado==$nominaAsignacione->id_empleado){
+                                        if($nominaAsignacione->tipo_asigna=="DEDUCCIÓN"){
+                                            if($nominaAsignacione->estado_asigna==1){
+                                                if($nominaAsignacione->tipo=="PORCENTAJE"){
+                                                    $contAsignaEstado=$nominaAsignacione->montos*$row->salarioBruto;
+                                                    $contAsignaEstado=$contAsignaEstado/100;
+                                                    $sum2=$sum2+$contAsignaEstado;
+                                                    }else{
+                                                     $contAsignaEstado=$nominaAsignacione->montos;
+                                                     $sum2=$sum2+$contAsignaEstado;
+                                                    }
+                                                }
+                                        }
+                                    }
+             
+                                    }
+                                }
+                            foreach($nominaAsignaciones as $nominaAsignacione){
+                                if($tipo==$nominaAsignacione->id_nomina){
+                                    if($row->id_empleado==$nominaAsignacione->id_empleado){
+                                        if($nominaAsignacione->tipo_asigna=="DEDUCCIÓN"){
+                                            if($nominaAsignacione->tipo=="PORCENTAJE"){
+                                                $contAsigna=$nominaAsignacione->montos*$row->salarioBruto;
+                                                $contAsigna=$contAsigna/100;
+                                                $sum=$sum+$contAsigna;
+                                                }else{
+                                                 $contAsigna=$nominaAsignacione->montos;
+                                                 $sum=$sum+$contAsigna;
+                                                }
+                                            }
+                                                
+                                        }
+                                    }
+             
+                                    }
+                    //---------------------------------------------------------------------------------------------------------------
+                    foreach($nominaOtros as $nominaOtro){
+                        if($tipo==$nominaOtro->id_nomina){
+                            if($nominaOtro->tipo_asigna=="INCREMENTO"){
+                                if($nominaOtro->id_empleado==$row->id_empleado){
+                                if($nominaOtro->p_monto!=null){
+                                    $otrosContBono=$otrosContBono+$nominaOtro->p_monto;
+                                }else{
+                                    $otrosContBono=$otrosContBono+$nominaOtro->monto;
+        
+                                }
+                                }
+                            }
+                        }
+                    }
+        
+                    foreach($nominaAsignaciones as $nominaAsignacione){
+                        if( $tipo==$nominaAsignacione->id_nomina){
+                            if($row->id_empleado==$nominaAsignacione->id_empleado){
+                                if($nominaAsignacione->tipo_asigna=="INCREMENTO"){
+                                    if($nominaAsignacione->estado_asigna==1){
+                                       
+                                        if($nominaAsignacione->tipo=="PORCENTAJE"){
+                                            $contBonoEstado=$nominaAsignacione->montos*$row->salarioBruto;
+                                            $contBonoEstado=$contBonoEstado/100;
+                                            $sum2bono=$sum2bono+$contBonoEstado;
+                                            }else{
+                                             $contBonoEstado=$nominaAsignacione->montos;
+                                             $sum2bono=$sum2bono+$contBonoEstado;
+                                            }
+                                        }
+                                }
+                            }
+        
+                            }
+                        }
+                    foreach($nominaAsignaciones as $nominaAsignacione){
+                        if($tipo==$nominaAsignacione->id_nomina){
+                            if($row->id_empleado==$nominaAsignacione->id_empleado){
+                                if($nominaAsignacione->tipo_asigna=="INCREMENTO"){
+                                    if($nominaAsignacione->tipo=="PORCENTAJE"){
+                                        $p=1;
+                                        $contBono=$nominaAsignacione->montos*$row->salarioBruto;
+                                        $contBono=$contBono/100;
+                                        $sumbono=$sumbono+$contBono;
+                                        }else{
+                                         $contBono=$nominaAsignacione->montos;
+                                         $sumbono=$sumbono+$contBono;
+                                        }
+                                    }
+                                        
+                                }
+                            }
+        
+                            }
+                    
+                    
+                    $totalAsigna=$otrosContAsigna-$sum2+$sum;
+                    $totalBono=$otrosContBono-$sum2bono+$sumbono;
+        
+                    return round($salarioDias+$totalBono-$totalAsigna,2);
+                    },
                     
                     ])->toJson();
             
@@ -1083,16 +1266,102 @@ class ListadoContrller extends Controller
     {
   
         $nominas=Listado::findOrFail($id);
-        $perfiles=Perfiles::where('id_perfiles','=',$nominas->id_perfiles)->get();
-        $empleados=Empleado::all();
+        $nomina_empleador=nomina_empleados::where('id_nomina','=',$id)->where('estado','=',0)->get();
+        $nominaAsignaciones=nomina_asignaciones::where('id_nomina','=',$id)->where('estado','=',0)->get();
+        $nominaOtros=nomina_otros::where('id_nomina','=',$id)->where('estado','=',0)->get();
+        $db=[];
+        
+        $begin=new DateTime($nominas->start);
+        $end=new DateTime($nominas->end);
+        $p=0;
 
-    $fecha=Carbon::now();
-    $idempresa=Auth::user()->id_empresa;
-    $empresa=Empresa::findOrFail($idempresa);
-    // $empresa=Empresa::all();
+                        
+        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+            
+        switch($nombre_dia)
+        {
+            case 1: $p=$p+8;
+            break;
+            case 2: $p=$p+8;
+            break;
+            case 3: $p=$p+8;
+            break;
+            case 4: $p=$p+8;
+            break;
+            case 5: $p=$p+8;
+            break;
+            case 6: $p=$p+4;
+            break;
+        }
+        
+        }
 
+            $i=0;
+        foreach($nomina_empleador as $nomina_empleadores){
+            $db[$i]=$nomina_empleadores->id_empleado;
+            $i++;
+        }
+
+        $empleados=Empleado::whereIn('id_empleado',$db)->get();
+
+        $fecha=Carbon::now();
+        $idempresa=Auth::user()->id_empresa;
+        $empresa=Empresa::findOrFail($idempresa);
+
+      $pdf =PDF::loadView('Listado.recibo',compact('fecha','p','empresa','nominaAsignaciones','nominaOtros','nominas','nomina_empleador','empleados'));
+      $pdf->setPaper("letter", "portrait");
+      return $pdf->stream('Nomina.pdf');
+    }
+
+    public function EmpleRecibopdf($id)
+    {
   
-      $pdf =PDF::loadView('Listado.recibo',compact('fecha','empresa','nominas','perfiles','empleados'));
+        $nominas=Listado::findOrFail($id);
+        $nomina_empleador=nomina_empleados::where('id_nomina','=',$id)->where('estado','=',0)->get();
+        $nominaAsignaciones=nomina_asignaciones::where('id_nomina','=',$id)->where('estado','=',0)->get();
+        $nominaOtros=nomina_otros::where('id_nomina','=',$id)->where('estado','=',0)->get();
+        $db=[];
+        
+        $begin=new DateTime($nominas->start);
+        $end=new DateTime($nominas->end);
+        $p=0;
+
+                        
+        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+            
+        switch($nombre_dia)
+        {
+            case 1: $p=$p+8;
+            break;
+            case 2: $p=$p+8;
+            break;
+            case 3: $p=$p+8;
+            break;
+            case 4: $p=$p+8;
+            break;
+            case 5: $p=$p+8;
+            break;
+            case 6: $p=$p+4;
+            break;
+        }
+        
+        }
+
+            $i=0;
+        foreach($nomina_empleador as $nomina_empleadores){
+            $db[$i]=$nomina_empleadores->id_empleado;
+            $i++;
+        }
+
+        $empleados=Empleado::whereIn('id_empleado',$db)->get();
+
+        $fecha=Carbon::now();
+        $idempresa=Auth::user()->id_empresa;
+        $empresa=Empresa::findOrFail($idempresa);
+
+      $pdf =PDF::loadView('Listado.ReciboEmpleado',compact('fecha','p','empresa','nominaAsignaciones','nominaOtros','nominas','nomina_empleador','empleados'));
       $pdf->setPaper("letter", "portrait");
       return $pdf->stream('Nomina.pdf');
     }

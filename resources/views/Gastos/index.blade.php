@@ -70,6 +70,15 @@
 @endsection
 
 @section('js')
+@if (session('guardar')=='ya')
+<script>
+    Swal.fire(
+      'Guardado!',
+      'se ha sido guardado los cambios exitosamente.',
+      'success'
+    )
+  </script>    
+@endif
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
    table=$('#gastos-table').DataTable({

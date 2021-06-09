@@ -103,7 +103,7 @@ class GastoController extends Controller
 
 
 
-        return redirect('Gasto');
+        return redirect('Gasto')->with('guardar','ya');
 
         
     }
@@ -259,7 +259,7 @@ class GastoController extends Controller
         //     }   
         // }
 
-        return redirect('Gasto');
+        return redirect('Gasto')->with('guardar','ya');
 
     }
 

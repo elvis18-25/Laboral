@@ -109,6 +109,7 @@
     
     <input type="text" id="arregloID" name="arregloID" class="form-control" value="" hidden>
     <input type="text" id="arregloSalario" name="arregloSalario" class="form-control" value="" hidden >
+    <input type="text" id="arregloSalarioNeto" name="arregloSalarioNeto" class="form-control" value="" hidden >
     <input type="text" id="arregloHoras" name="arregloHoras" class="form-control" value="" hidden>
     <input type="text" id="arregloDedu" name="arregloDedu" class="form-control" value="" hidden>
     <input type="text" id="arregloBono" name="arregloBono" class="form-control" value="" hidden>
@@ -168,6 +169,8 @@
   const options2 = { style: 'currency', currency: 'USD' };
 const numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
+
+
   $("#formulario").on('submit',function(e){
   e.preventDefault();
   event.preventDefault();
@@ -177,6 +180,7 @@ const numberFormat2 = new Intl.NumberFormat('en-US', options2);
   var arregloDedu=[];
   var arregloBono=[];
   var arregloOtros=[];
+  var arreglonNeto=[];
   var i=0;
     $("#Nominas tbody tr").each(function(){
       arregloID[i]=$(this).attr('data-href');
@@ -185,6 +189,7 @@ const numberFormat2 = new Intl.NumberFormat('en-US', options2);
       arregloDedu[i]=$(this).attr('dedu');
       arregloBono[i]=$(this).attr('bono');
       arregloOtros[i]=$(this).attr('otros');
+      arreglonNeto[i]=$(this).attr('total');
       i++;
     });
 
@@ -194,6 +199,7 @@ const numberFormat2 = new Intl.NumberFormat('en-US', options2);
     $("#arregloDedu").attr('value',arregloDedu);
     $("#arregloBono").attr('value',arregloBono);
     $("#arregloOtros").attr('value',arregloOtros);
+    $("#arregloSalarioNeto").attr('value',arreglonNeto);
     Verifacte();
     this.submit();
 });

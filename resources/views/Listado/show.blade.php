@@ -4,21 +4,36 @@
 <link rel="stylesheet" href="{{asset('css/nominas.css')}}">
 <div class="col-md-12">
     <div class="card ">
-      <form action="{{route('Listado.update',$nominas->id)}}" method="POST">
+      <form action="{{route('Listado.update',$nominas->id)}}" method="POST" id="formulashow">
         <div class="card-header" style="background: #4054b2 !important; height: 45px;">
             <div class="row">
                 <div class="col-8">
                     <h4 class="card-title TitleCard" style="font-size: 16px !important; font-weight: bold !important;">NOMINA</h4>
                 </div>
                 <div class="col-4 text-right">
+                  
                     {{-- <a href="#" class="btn btn-sm btn-primary" title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus"></i></a> --}}
                     <a href="#" class="btn btn-sm btn-warning redondo" style="top: -16px;" title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -5px; top: 6px; position: relative; font-size: 17px;"></i></a>
                     <button id="btnexcel" type="button" style="top: -16px;" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo"><i class="fas fa-file-excel" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
-                   <a href="{{url('listadopdf').'/'.$nominas->id}}" target="_blank" rel="noopener noreferrer"><button  type="button" style="top: -16px;" title="Imprimir Nomina" class="btn btn-warning btn-sm redondo" ><i class="fas fa-print" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button></a>
+                
+
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button> --}}
                     {{-- <button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button> --}}
                     <button id="btnpdf" type="button" style="top: -16px;" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
-                </div>
+                    <div class="dropdown" style="top: -44px; margin-right: 141px;">
+                      <button  type="button" style="top: -16px;" title="Imprimir Nomina" id="dropdownMenuButton" data-toggle="dropdown" class="btn btn-warning btn-sm redondo dropdown-toggle" ><i class="fas fa-print" style="margin-left: 2px;  position: relative; font-size: 17px;"></i>
+                      
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a href="{{url('listadopdf').'/'.$nominas->id}}" target="_blank" rel="noopener noreferrer"  class="dropdown-item">Listado de Nomina</a>
+                        <a href="{{url('EmpleRecibopdf').'/'.$nominas->id}}" target="_blank" rel="noopener noreferrer"  class="dropdown-item">Recibos para todos los Empleados</a>
+                        <a class="dropdown-item" href="#">Recibo para un Empleado</a>
+                      </div>
+                    </div>
+
+
+                  </div>
+
                 @include('Nominas.perfiles')
                 @include('Listado.empleado')
             </div>
@@ -105,6 +120,8 @@
   </div>
 </div>
 
+<input type="text" id="arregloID" name="arregloID" class="form-control" value="" hidden>
+<input type="text" id="arregloSalario" name="arregloSalario" class="form-control" value="" hidden >
 <input type="text" id="started" name="st"  class="form-control" value="{{$nominas->start}}" hidden>
 <input type="text" id="ended" name="en"  class="form-control" value="{{$nominas->end}}" hidden>
 <button type="submit" class="btn btn-fill btn-info mx-auto float-left" title="Guardar Nomina" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
@@ -152,6 +169,7 @@ startComes = new Date($("#started").attr('value'));
   var end = moment().endOf('month');
 
 }
+
 
 
   $(document).ready(function(){
@@ -237,7 +255,25 @@ function backsave(){
 
 }
 
+$("#formulashow").on('submit',function(e){
+  i=0;
+  e.preventDefault();
+  event.preventDefault();
+  var arregloSalario=[];
+  var arregloID=[];
 
+  $("#Nominas tbody tr").each(function(){
+      arregloSalario[i]=$(this).attr('total');
+      arregloID[i]=$(this).attr('data-href');
+      i++;
+    });
+    $("#arregloSalario").attr('value',arregloSalario);
+    $("#arregloID").attr('value',arregloID);
+    this.submit();
+    console.log(arregloSalario);
+    console.log(arregloID);
+
+});
 
 $("#SearcFormulario").on('submit',function(e){
 e.preventDefault();

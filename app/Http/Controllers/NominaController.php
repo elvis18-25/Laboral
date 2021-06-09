@@ -95,13 +95,14 @@ class NominaController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
 
         $arrayID = explode(",", $request->get('arregloID'));
         $arregloSalario = explode(",", $request->get('arregloSalario'));
         $arregloHoras = explode(",", $request->get('arregloHoras'));
         $arregloDedu = explode(",", $request->get('arregloDedu'));
         $arregloBono = explode(",", $request->get('arregloBono'));
-        $arregloOtros = explode(",", $request->get('arregloOtros'));
+        $arreglonNeto = explode(",", $request->get('arregloSalarioNeto'));
         
         
         $nominas= new Listado();
@@ -124,6 +125,7 @@ class NominaController extends Controller
                $input['id_nomina']=$nominas->id;
                $input['deducion']=$arregloDedu[$i];
                $input['salarioBruto']=$arregloSalario[$i];
+               $input['salarioneto']=$arreglonNeto[$i];
                $input['incremento']=$arregloBono[$i];
                $input['horas']=$arregloHoras[$i];
                $input['estado']=0;
@@ -1149,6 +1151,202 @@ foreach($perf as $perfe){
                 },
                 'horas'=>function($row){
                     return $row->horas;
+
+                },
+                'total'=>function($row){
+                    $tducion=0;
+                    $tincremnt=0;
+                    $cont=0;
+                    $cont2=0;
+                    $Cont4bono=0;
+                    $contbono=0;
+                    $otroI=0;
+                    $tipo=request()->get('dato1');
+                    $tss=Asignaciones::all();
+                    $perf=Perfiles::all();
+                    $otro=Otros::all();
+                    $estadoasigna=estado_asignaciones::all();
+                    $otroD=0;
+                    $sum=0;
+                    $sum2=0;
+                    $sumEstado=0;
+                    $sumBono=0;
+                    $salarioDias=0;
+    
+                    $start=request()->start_date;
+                    $end=request()->end_date;
+    
+                    $begin = new DateTime($start);
+                    $end   = new DateTime($end);
+                    $p=0;
+                    
+                    for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                        $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+                        
+                    switch($nombre_dia)
+                    {
+                        case 1: $p=$p+8;
+                        break;
+                        case 2: $p=$p+8;
+                        break;
+                        case 3: $p=$p+8;
+                        break;
+                        case 4: $p=$p+8;
+                        break;
+                        case 5: $p=$p+8;
+                        break;
+                        case 6: $p=$p+4;
+                        break;
+                    }
+                    
+                    }
+    
+                    if($row->horas!=null){
+                        $salarioDias=$row->horas*$p;
+                    }else{
+                        $sumer=$row->salario/23.83/8;
+                        $salarioDias=$sumer*$p;
+                    }
+    
+                    foreach($perf as $perfe){
+                        if($tipo==$perfe->id_perfiles){
+                            if($row->id_empleado==$perfe->id_empleado){
+                                foreach($otro as $otros){
+                                    if($otros->id_empresa==Auth::user()->id_empresa){
+                                    if($otros->id_empleado==$row->id_empleado){
+                                 if($otros->tipo_asigna=="DEDUCIÓN"){
+                                        if($otros->p_monto!=null){
+                                            $otroD=$otroD+$otros->p_monto;
+                                        }else{
+                                            $otroD=$otroD+$otros->monto;
+                                        }
+                                    }else{
+                                        if($otros->p_monto!=null){
+                                            $otroI=$otroI+$otros->p_monto;
+                                        }else{
+                                            $otroI=$otroI+$otros->monto;
+                                        }
+                                    }
+                                     }
+                                  }
+                                  }
+                                }
+                            }  
+                        }
+    
+                        foreach($perf as $perfe){
+                            if($tipo==$perfe->id_perfiles){
+                                if($row->id_empleado==$perfe->id_empleado){
+                                foreach( $tss as $tsse){
+                                    if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
+                                    if($tsse->tipo_asigna=="DEDUCCIÓN"){
+                                        foreach($estadoasigna as $estados)
+                                        if($estados->id_empleado==$row->id_empleado){
+                                        if($estados->id_asignaciones==$tsse->id){
+                                            if($estados->estado==1){
+                                        if($tsse->tipo=="PORCENTAJE"){
+                                            $cont=$tsse->Monto*$row->salario;
+                                            $cont=$cont/100;
+                                            $sumEstado=$sumEstado+$cont;
+                                            }else{
+                                             $cont=$tsse->Monto;
+                                             $sumEstado=$sumEstado+$cont;
+                                            }
+                                        }
+                                        }
+                                        }
+                                        }
+                                        }
+                        
+                                    }
+                                   }
+                                }
+                                
+                            }
+        
+                            
+                            foreach($perf as $perfe){
+                                if($tipo==$perfe->id_perfiles){
+                                    if($row->id_empleado==$perfe->id_empleado){
+                                    foreach( $tss as $tsse){
+                                        if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
+                                        if($tsse->tipo_asigna=="DEDUCCIÓN"){
+                                            if($tsse->tipo=="PORCENTAJE"){
+                                                $cont2=$tsse->Monto*$row->salario;
+                                                $cont2=$cont2/100;
+                                                $sum=$sum+$cont2;
+                                                }else{
+                                                 $cont2=$tsse->Monto;
+                                                 $sum=$sum+$cont2;
+                                                }
+                                            }
+                            
+                                        }
+                                        }
+                                       }
+                                    }
+                                    
+                                }
+    
+    //--------------------------------------------------------------------------------------------------------------------------
+    foreach($perf as $perfe){
+        if($tipo==$perfe->id_perfiles){
+            if($row->id_empleado==$perfe->id_empleado){
+            foreach( $tss as $tsse){
+                if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
+                if($tsse->tipo_asigna=="INCREMENTO"){
+                        if($tsse->tipo=="PORCENTAJE"){
+                        $contbono=$tsse->Monto * $row->salario;
+                        $contbono=$contbono/100;
+                        $sum2=$sum2+$contbono;
+                        }else{
+                         $contbono=$tsse->Monto;
+                         $sum2=$sum2+$contbono;
+                        }
+                  }  
+                }
+                }
+                }
+               }
+           }
+    
+    
+    
+            foreach($perf as $perfe){
+                if($tipo==$perfe->id_perfiles){
+                    if($row->id_empleado==$perfe->id_empleado){
+                    foreach( $tss as $tsse){
+                        if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
+                        if($tsse->tipo_asigna=="INCREMENTO"){
+                          foreach( $estadoasigna as $esta){
+                                if($esta->id_empleado==$row->id_empleado){
+                                    if($esta->id_asignaciones==$tsse->id){
+                                        if($esta->estado==1){
+                                            if($tsse->tipo=="PORCENTAJE"){
+                                                $Cont4bono=$tsse->Monto*$row->salario;
+                                                $Cont4bono=$Cont4bono/100;
+                                                $sumBono=$sumBono+$Cont4bono;
+                                                }else{
+                                                 $Cont4bono=$tsse->Monto;
+                                                 $sumBono=$sumBono+$Cont4bono;
+                                                }
+                                        }
+                                    }
+                                  }
+                                  
+    
+                            }
+                            }
+                          }  
+                        }
+                        }
+                       }
+                   }
+                                
+    
+                    $tducion= $otroD+$sum-$sumEstado;
+                    $tincremnt=$otroI+$sum2-$sumBono;
+                    return round($salarioDias+$tincremnt-$tducion,2);
 
                 },
                 'dedu'=>function($row){

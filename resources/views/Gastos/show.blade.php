@@ -316,35 +316,71 @@
 
 if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null, './#forward');
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
 
 $(window).on('popstate', function() {
   backsave();
 });
 
 }
-
+}
 
 function backsave(){
   Swal.fire({
   title: 'Seguro que deseas salir?',
   text: "No se podra revertir,¿Deseas guardarlo? !",
   icon: 'warning',
+  showDenyButton: true,
   showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, guardar!',
-  cancelButtonText: 'No, salir!',
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
 }).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
   if (result.isConfirmed) {
     $("#seave").trigger("click");
-  }else{
+  } else if (result.isDenied) {
     history.back();
+  }else{
+    backhome();
   }
-
-});
+})
 
 }
+
+
+$("#SearcFormulario").on('submit',function(e){
+e.preventDefault();
+Swal.fire({
+  title: 'Seguro que deseas salir?',
+  text: "No se podra revertir,¿Deseas guardarlo? !",
+  icon: 'warning',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    $("#seave").trigger("click");
+  } else if (result.isDenied) {
+    this.submit();
+  }else{
+    backhome();
+  }
+})
+});
 
 formpago=parseInt($("#totalconcepto").val(),10);
 cont=0;
@@ -444,15 +480,16 @@ function totalgasto(){
             $("#totalperiodo").append(restotal);
             var idnominas=$("#idnomina").val();
             if(idnominas!=0){
+              
               VerficateNomina();
             }
 
           }
 
 
-          function VerficateNomina(){
-var id=$("#idnomina").val();
-var url = "{{ url('listmonto')}}/"+id;
+function VerficateNomina(){
+  var id=$("#idnomina").val();
+  var url = "{{url('listmonto')}}/"+id;
      var data = '';
      $.ajax({
          method: "POST",

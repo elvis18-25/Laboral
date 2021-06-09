@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 
 <style>
-    #listado-table tbody {
-        cursor: 'pointer';
+    #listado-table tbody tr {
+        cursor: pointer;
     }  
   </style>
 <div class="col-md-12">
@@ -76,6 +76,24 @@
 @endsection
 
 @section('js2')
+@if (session('guardar')=='ya')
+<script>
+    Swal.fire(
+      'Guardado!',
+      'se ha sido guardado los cambios exitosamente.',
+      'success'
+    )
+  </script>    
+@endif
+@if (session('Eliminado')=='ya')
+<script>
+    Swal.fire(
+      'Guardado!',
+      'se ha sido Eliminado exitosamente.',
+      'success'
+    )
+  </script>    
+@endif
 <script src="{{asset('js/pageLoader.js')}}"></script>
 
 <script>
