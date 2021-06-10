@@ -16,6 +16,11 @@
     text-align: left;
 }
 
+.spam{
+    /* margin-top: -40px !important;  */
+    position: absolute;
+}
+
 .invoice-box table td {
     padding: 5px;
     vertical-align: top;

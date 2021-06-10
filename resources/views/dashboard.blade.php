@@ -20,13 +20,114 @@
       min-height: 90% !important;
   }
   }
+  .circulo {
+    width: 60px;
+    height: 60px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: #4054b2;
+
+      float: right;
+      top: -86px;
+      position: relative;
+      margin-right: 31px;
+}
+.icons{
+  font-size: 22px;
+    color: white !important;
+    position: relative;
+    top: 18px;
+    margin-right: 16px;
+}
 </style>
 <div class="row">
+  
+  <div class="col-lg-4">
+    <div class="card card-chart" style="height: 118px;">
+        <div class="card-header">
+          <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Empleados</b></h5>
+            <h3 class="card-title">{{$count_empleado}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-users text-light icons"></i></i></span></div>
+        </div>
+    </div>
+</div>
+  <div class="col-lg-4">
+    <div class="card card-chart" style="height: 118px;">
+        <div class="card-header">
+          <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Usuarios</b></h5>
+            <h3 class="card-title">{{$count_users}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-user-friends text-light icons"></i></i></span></div>
+        </div>
+    </div>
+</div>
+  <div class="col-lg-4">
+    <div class="card card-chart" style="height: 118px;">
+        <div class="card-header">
+          <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Departamentos</b></h5>
+            <h3 class="card-title">{{$count_puesto}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
+        </div>
+    </div>
+</div>
+  <div class="col-lg-4">
+    <div class="card card-chart" style="height: 118px;">
+        <div class="card-header">
+          <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>FORMAS DE PAGOS</b></h5>
+            <h3 class="card-title">{{$count_pagos}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-file-invoice-dollar text-light icons" style="font-size: 25px !important;
+            margin-right: 20px !important;"></i></i></span></div>
+        </div>
+    </div>
+</div>
+  <div class="col-lg-4">
+    <div class="card card-chart" style="height: 118px;">
+        <div class="card-header">
+          <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Roles</b></h5>
+            <h3 class="card-title">{{$count_roles}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-user-cog text-light icons" style="font-size: 25px !important;
+            margin-right: 11px !important;"></i></i></span></div>
+        </div>
+    </div>
+</div>
+  <div class="col-lg-4">
+    <div class="card card-chart" style="height: 118px;">
+        <div class="card-header">
+          <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Reuniones pendiente</b></h5>
+            <h3 class="card-title">0</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-user-clock text-light icons" style="font-size: 25px !important;
+            margin-right: 11px !important;"></i></i></span></div>
+        </div>
+    </div>
+</div>
   <div class="col-lg-4">
     <div class="card card-chart">
         <div class="card-header">
-            <h5 class="card-category"><b>Empleados</b></h5>
-            <h3 class="card-title"><i class="fas fa-user text-info" title="Inativos" style="font-size: 18px "></i></i>{{$count_empleado}}</h3>
+            <h5 class="card-category" style="color: black"><b>Empleados</b></h5>
         </div>
         <div class="card-body">
             <div class="chart-area">
@@ -38,8 +139,7 @@
     <div class="col-lg-4">
         <div class="card card-chart">
             <div class="card-header">
-                <h5 class="card-category"><b>DEPARTAMENTOS</b></h5>
-                <h3 class="card-title"><i class="fas fa-warehouse"></i>{{$count_puesto}}</h3>
+                <h5 class="card-category" style="color: black"><b>DEPARTAMENTOS</b></h5>
             </div>
             <div class="card-body">
                 <div class="chart-area">
@@ -52,11 +152,11 @@
     <div class="col-lg-4">
         <div class="card card-chart">
             <div class="card-header">
-                <h5 class="card-category"><b> Generos</b></h5>
+                <h5 class="card-category" style="color: black"><b> Generos</b></h5>
                 <div class="form-inline">
-                <h3 class="card-title"><i class="fas fa-female text-primary" title="Mujeres" style="font-size: 20px "></i>{{$count_mujeres}}</h3>&nbsp;&nbsp;&nbsp;&nbsp;
+                {{-- <h3 class="card-title"><i class="fas fa-female text-primary" title="Mujeres" style="font-size: 20px "></i>{{$count_mujeres}}</h3>&nbsp;&nbsp;&nbsp;&nbsp;
                 <h3 class="card-title"> <i class="fas fa-male text-info" title="Hombres" style="font-size: 20px "></i>{{$count_hombres}}</h3>&nbsp;&nbsp;&nbsp;&nbsp;
-                <h3 class="card-title"> <i class="fas fa-male" title="Indefinido" style="font-size: 20px "></i>{{$count_indefinido}}</h3>
+                <h3 class="card-title"> <i class="fas fa-male" title="Indefinido" style="font-size: 20px "></i>{{$count_indefinido}}</h3> --}}
               </div>
             </div>
             <div class="card-body">
@@ -104,7 +204,7 @@
         <div class="col-lg-6 col-md-12">
             <div class="card card-tasks">
                 <div class="card-header ">
-                    <h4 class="title d-inline">EVENTOS</h4>
+                    <h4 class="title d-inline">HISTORIAL DE EMPLEADOS</h4>
 
                     <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: right; color: black;">
                       <i class="fa fa-calendar"></i>&nbsp;
@@ -558,7 +658,7 @@
 
     
     var myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'polarArea',
       responsive: true,
       legend: {
         display: false
@@ -619,14 +719,17 @@
     var cData = <?php echo $data; ?>;
     var cMoth = <?php echo $moth; ?>;
 
+    console.log(cMoth);
+
     var cDatanom = <?php echo $datanom; ?>;
     var cMothnom = <?php echo $mothnom; ?>;
     
 
     var meses=[];
     var monto=[];
+    var a=0,b=0,c=0,d=0,e=0,f=0,g=0;
     var list=0;
-  for (var mes = 1; mes <=12; mes++) {
+    for (var mes = 1; mes <=12; mes++) {
     list++;
     for (pos=0; pos <12; pos++) {
 
@@ -700,10 +803,10 @@
   // }
 
 
-    // var meses = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
-    // var chart_data = [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100];
+    var meses_chart = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
+    var chart_data = [400000, 70, 900000, 700000, 85, 60000, 75, 60, 90, 80, 110, 100];
 
-
+console.log(meses);
     var ctx = document.getElementById("chartBig1d").getContext('2d');
 
     var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
@@ -711,11 +814,17 @@
     gradientStroke.addColorStop(1, 'rgba(72,72,176,0.1)');
     gradientStroke.addColorStop(0.4, 'rgba(72,72,176,0.0)');
     gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
+
+    var gradientStrokes = ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStrokes.addColorStop(1, 'rgba(29,140,248,0.2)');
+    gradientStrokes.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+    gradientStrokes.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
     var config = {
       type: 'line',
       data: {
-        labels: meses,
         datasets: [{
+
           label: "Monto",
           fill: true,
           backgroundColor: gradientStroke,
@@ -731,10 +840,59 @@
           pointHoverBorderWidth: 15,
           pointRadius: 4,
           data: monto,
-        }]
+        },{
+          
+          label: "Monto",
+          fill: true,
+          backgroundColor: gradientStrokes,
+          borderColor: '#1f8ef1',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          pointBackgroundColor: '#1f8ef1',
+          pointBorderColor: 'rgba(255,255,255,0)',
+          pointHoverBackgroundColor: '#1f8ef1',
+          pointBorderWidth: 20,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 15,
+          pointRadius: 4,
+          data: chart_data,
+        }],
+        labels: meses,
+        
       },
       options: gradientChartOptionsConfigurationWithTooltipPurple
     };
+
+//     var gradientStrokes = ctx.createLinearGradient(0,230,01,50);
+
+// gradientStrokes.addColorStop(1, 'rgba(72,72,176,0.2)');
+// gradientStrokes.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+// gradientStrokes.addColorStop(0, 'rgba(119,52,50,0)'); //purple colors
+//     var config = {
+//       type: 'line',
+//       data: {
+//         labels: meses_chart,
+//         datasets: [{
+//           label: "Monto",
+//           fill: true,
+//           backgroundColor: gradientStrokes,
+//           borderColor: '#d346b1',
+//           borderWidth: 2,
+//           borderDash: [],
+//           borderDashOffset: 0.0,
+//           pointBackgroundColor: '#d346b1',
+//           pointBorderColor: 'rgba(255,255,255,0)',
+//           pointHoverBackgroundColor: '#d346b1',
+//           pointBorderWidth: 20,
+//           pointHoverRadius: 4,
+//           pointHoverBorderWidth: 15,
+//           pointRadius: 4,
+//           data: chart_data,
+//         }]
+//       },
+//       options: gradientChartOptionsConfigurationWithTooltipPurple
+//     };
     var myChartData = new Chart(ctx, config);
     $("#0").click(function() {
       var data = myChartData.config.data;

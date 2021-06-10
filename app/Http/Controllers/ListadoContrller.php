@@ -1355,7 +1355,11 @@ class ListadoContrller extends Controller
             $i++;
         }
 
-        $empleados=Empleado::whereIn('id_empleado',$db)->get();
+        $empleados=Listado::leftjoin('nomina_empleador','nomina_empleador.id_nomina','=','nomina.id')
+        ->leftjoin('empleado','empleado.id_empleado','=','nomina_empleador.id_empleado')
+        ->where('nomina_empleador.id_nomina',$id)
+        ->get();
+
 
         $fecha=Carbon::now();
         $idempresa=Auth::user()->id_empresa;
