@@ -115,6 +115,7 @@ class NominaController extends Controller
         $nominas->estado=0;
         $nominas->start=$request->get('start');
         $nominas->end=$request->get('end');
+        $nominas->id_horas=$request->get('inputCheckBox');
         $nominas->save();
 
         $n=count($arrayID);
@@ -207,6 +208,7 @@ class NominaController extends Controller
 
         $start =new DateTime(request('start'));
         $end =new DateTime(request('end'));
+        $valor=request('valor');
 
         $perfiles=Perfiles_empleado::select('id')->where('id','=',$id)->first();
         $perf=Perfiles::all();
@@ -231,7 +233,8 @@ class NominaController extends Controller
         $salarioDias=0;
 
         $p=0;
-                
+             
+        if($valor==0){
         for($i = $start; $i <= $end; $i->modify('+1 day')){
             $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
             
@@ -252,27 +255,43 @@ class NominaController extends Controller
         }
         
         }
+        foreach($perf as $perfe){
+            if($perfiles->id==$perfe->id_perfiles){
+               foreach($empleados as $emple){
+                   if($emple->id_empleado==$perfe->id_empleado){
 
+                    if($emple->horas!=null){
+                        $salarioDias=$emple->horas*$p;
+                    }else{
+                        $sumer=$emple->salario/23.83/8;
+                        $salarioDias=$sumer*$p;
+                    }
 
-
-            foreach($perf as $perfe){
-                if($perfiles->id==$perfe->id_perfiles){
-                   foreach($empleados as $emple){
-                       if($emple->id_empleado==$perfe->id_empleado){
-
-                        if($emple->horas!=null){
-                            $salarioDias=$emple->horas*$p;
-                        }else{
-                            $sumer=$emple->salario/23.83/8;
-                            $salarioDias=$sumer*$p;
-                        }
-
-                        $salario=$salario+$salarioDias;
-                        
-                        }
-                       }
+                    $salario=$salario+$salarioDias;
+                    
+                    }
                    }
-                }
+               }
+            }
+    }else{
+        foreach($perf as $perfe){
+            if($perfiles->id==$perfe->id_perfiles){
+               foreach($empleados as $emple){
+                   if($emple->id_empleado==$perfe->id_empleado){
+
+                    $salarioDias=$emple->salario;
+
+                    $salario=$salario+$salarioDias;
+                    
+                    }
+                   }
+               }
+            }
+    }
+
+
+
+
 
 
                 foreach($perf as $perfe){
@@ -434,7 +453,7 @@ class NominaController extends Controller
              $totalincremento=$otrosI+$contbono-$desbonoCont;
              
              return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
-            //  return  $p;
+            //  return  $salario;
             //  return $p;
     }
 
@@ -710,6 +729,7 @@ class NominaController extends Controller
          $tipo=request()->get('dato1');
 
 
+
      
         $empleados=Empleado::leftjoin('perfiles','perfiles.id_empleado','=','empleado.id_empleado')
         ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','perfiles.id_empleado')
@@ -735,6 +755,7 @@ class NominaController extends Controller
 
             })
             ->editColumn('horas',function($row){
+                $valor=request()->get('valor');
                 $start=request()->start_date;
                 $end=request()->end_date;
 
@@ -742,6 +763,7 @@ class NominaController extends Controller
                 $end   = new DateTime($end);
                 $p=0;
                 
+                if($valor==0){
                 for($i = $begin; $i <= $end; $i->modify('+1 day')){
                     $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
                     
@@ -762,6 +784,7 @@ class NominaController extends Controller
                 }
                 
                 }
+            }
 
                 return  $p;
 
@@ -949,7 +972,10 @@ class NominaController extends Controller
                 $Cont4bono=0;
                 $contbono=0;
                 $otroI=0;
+
                 $tipo=request()->get('dato1');
+                $valor=request()->get('valor');
+
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
                 $otro=Otros::all();
@@ -968,6 +994,7 @@ class NominaController extends Controller
                 $end   = new DateTime($end);
                 $p=0;
                 
+                if($valor==0){
                 for($i = $begin; $i <= $end; $i->modify('+1 day')){
                     $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
                     
@@ -988,13 +1015,16 @@ class NominaController extends Controller
                 }
                 
                 }
-
+           
                 if($row->horas!=null){
                     $salarioDias=$row->horas*$p;
                 }else{
                     $sumer=$row->salario/23.83/8;
                     $salarioDias=$sumer*$p;
                 }
+            }else{
+                $salarioDias=$row->salario;
+            }
 
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
@@ -1162,6 +1192,7 @@ foreach($perf as $perfe){
                     $contbono=0;
                     $otroI=0;
                     $tipo=request()->get('dato1');
+                    $valor=request()->get('valor');
                     $tss=Asignaciones::all();
                     $perf=Perfiles::all();
                     $otro=Otros::all();
@@ -1180,33 +1211,39 @@ foreach($perf as $perfe){
                     $end   = new DateTime($end);
                     $p=0;
                     
-                    for($i = $begin; $i <= $end; $i->modify('+1 day')){
-                        $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+   
+                    if($valor==0){
+                        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+                            
+                        switch($nombre_dia)
+                        {
+                            case 1: $p=$p+8;
+                            break;
+                            case 2: $p=$p+8;
+                            break;
+                            case 3: $p=$p+8;
+                            break;
+                            case 4: $p=$p+8;
+                            break;
+                            case 5: $p=$p+8;
+                            break;
+                            case 6: $p=$p+4;
+                            break;
+                        }
                         
-                    switch($nombre_dia)
-                    {
-                        case 1: $p=$p+8;
-                        break;
-                        case 2: $p=$p+8;
-                        break;
-                        case 3: $p=$p+8;
-                        break;
-                        case 4: $p=$p+8;
-                        break;
-                        case 5: $p=$p+8;
-                        break;
-                        case 6: $p=$p+4;
-                        break;
-                    }
-                    
-                    }
-    
-                    if($row->horas!=null){
-                        $salarioDias=$row->horas*$p;
+                        }
+                   
+                        if($row->horas!=null){
+                            $salarioDias=$row->horas*$p;
+                        }else{
+                            $sumer=$row->salario/23.83/8;
+                            $salarioDias=$sumer*$p;
+                        }
                     }else{
-                        $sumer=$row->salario/23.83/8;
-                        $salarioDias=$sumer*$p;
+                        $salarioDias=$row->salario;
                     }
+        
     
                     foreach($perf as $perfe){
                         if($tipo==$perfe->id_perfiles){

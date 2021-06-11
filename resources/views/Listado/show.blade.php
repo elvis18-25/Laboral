@@ -1,6 +1,12 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
+
 @section('content')
+<style>
+  .dropdown-menu.show{
+    left: 250px !important;
+  }
+</style>
 <link rel="stylesheet" href="{{asset('css/nominas.css')}}">
 <div class="col-md-12">
     <div class="card ">
@@ -15,11 +21,10 @@
                     {{-- <a href="#" class="btn btn-sm btn-primary" title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus"></i></a> --}}
                     <a href="#" class="btn btn-sm btn-warning redondo" style="top: -16px;" title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -5px; top: 6px; position: relative; font-size: 17px;"></i></a>
                     <button id="btnexcel" type="button" style="top: -16px;" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo"><i class="fas fa-file-excel" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
-                
-
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm"><i class="fas fa-print"></i></button> --}}
                     {{-- <button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button> --}}
                     <button id="btnpdf" type="button" style="top: -16px;" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
+                    
                     <div class="dropdown" style="top: -44px; margin-right: 141px;">
                       <button  type="button" style="top: -16px;" title="Imprimir Nomina" id="dropdownMenuButton" data-toggle="dropdown" class="btn btn-warning btn-sm redondo dropdown-toggle" ><i class="fas fa-print" style="margin-left: 2px;  position: relative; font-size: 17px;"></i>
                       
@@ -44,25 +49,35 @@
             @csrf
             @method('PUT')
             <div class="form-row">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                   <label for=""><b>DESCRIPCION</b></label>
                     <input type="text" value="{{$nominas->descripcion}}" autofocus name="descripcion" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <label for=""><b>FECHA DE CREACION</b></label>
                     <input type="date" id="fech" value="{{$nominas->fecha}}" name="fecha" class="form-control"  >
                 </div>
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <label for=""><b>FECHA DE HORAS</b></label>
                   <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; position: relative; top: 3px;">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span> <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
-                {{-- <input type="text"  name="ste"  class="form-control" value="{{$nominas->start}}" hidden>
-                <input type="text"   name="ene"  class="form-control" value="{{$nominas->end}}" hidden> --}}
-
+                <div class="form-check" style="top: 25px;
+                margin-left: 10px;">
+                  <label class="form-check-label">
+                    @if ($nominas->id_horas==0)
+                    <input class="form-check-input check"   id="btnCheck" checked   type="checkbox" >
+                    @else
+                    <input class="form-check-input check"   id="btnCheck"    type="checkbox" >
+                    @endif
+                    <span class="form-check-sign"><span class="check">
+                      <b style="font-size: 14px; ">Calcular Horas</b>
+                      </span></span>
+                    </label>
+                  </div>
 
             </div>
             <br>
@@ -119,6 +134,8 @@
     </div>
   </div>
 </div>
+
+<input type="text" id="inputCheckBox" name="inputCheckBox" value="{{$nominas->id_horas}}" hidden>
 
 <input type="text" id="arregloID" name="arregloID" class="form-control" value="" hidden>
 <input type="text" id="arregloSalario" name="arregloSalario" class="form-control" value="" hidden >
@@ -215,7 +232,19 @@ $(window).on('popstate', function() {
 }
 }
 
+$("#btnCheck").on('click',function(){
+var valor =$("#inputCheckBox").val();
 
+  if(valor==0){
+    $("#inputCheckBox").attr('value',1)
+  }else{
+    $("#inputCheckBox").attr('value',0)
+  }
+  tabla.ajax.reload();
+  totalnomi($("#input").attr('value'));
+  // alert($("#inputCheckBox").val())
+
+});
 
 function backsaveEmpresa(){
   event.preventDefault();
@@ -361,8 +390,10 @@ headers: {
           id=$("#input").val();
           var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
           var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+          var valor =$("#inputCheckBox").val();
           d.start_date=start;
           d.end_date=end;
+          d.valor=valor;
           totalnomi(id);
         }
       }
@@ -795,8 +826,9 @@ var data={idperfi:idperfi};
 function totalnomi(e){
   var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
       var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
-    var url ="{{url('totalnominasListado')}}/"+e;
-     var data ={e:e,start:start,end:end};
+      var valor =$("#inputCheckBox").val();
+      var url ="{{url('totalnominasListado')}}/"+e;
+     var data ={e:e,start:start,end:end,valor:valor};
         $.ajax({
          method: "POST",
            data: data,

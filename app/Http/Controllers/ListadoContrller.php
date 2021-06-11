@@ -343,6 +343,7 @@ class ListadoContrller extends Controller
 
         $start =new DateTime(request('start'));
         $end =new DateTime(request('end'));
+        $valor=request('valor');
 
         $nomina=Listado::findOrFail($id);
         $nominaEmpleado=nomina_empleados::where('id_nomina','=',$id)->get();
@@ -365,7 +366,8 @@ class ListadoContrller extends Controller
         $salarioDias=0;
 
         $p=0;
-                
+         
+        if($valor==0){
         for($i = $start; $i <= $end; $i->modify('+1 day')){
             $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
             
@@ -398,7 +400,15 @@ class ListadoContrller extends Controller
                 $salario=$salario+$salarioDias;
                 }
             }
-                
+        }else{
+        foreach($nominaEmpleado as $nominaEmpleados){
+                if($nomina->id==$nominaEmpleados->id_nomina){
+                $salarioDias=$nominaEmpleados->salarioBruto;
+  
+            $salario=$salario+$salarioDias;
+            }
+        }
+        }
 
 
                 foreach($NominaAsigna as $NominaAsignas){
@@ -540,7 +550,7 @@ class ListadoContrller extends Controller
         $nominas->start=$request->get('st');
         $nominas->end=$request->get('en');
         $nominas->id_empresa=Auth::user()->id_empresa;
-        $nominas->estado=0;
+        $nominas->id_horas=$request->get('inputCheckBox');
 
         $i=0;
         foreach($empleados as $empleado){
@@ -673,30 +683,33 @@ class ListadoContrller extends Controller
             ->editColumn('time',function($row){
                 $start=request()->start_date;
                 $end=request()->end_date;
+                $valor=request()->get('valor');
 
                 $begin = new DateTime($start);
                 $end   = new DateTime($end);
                 $p=0;
                 
-                for($i = $begin; $i <= $end; $i->modify('+1 day')){
-                    $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+                if($valor==0){
+                    for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                        $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+                        
+                    switch($nombre_dia)
+                    {
+                        case 1: $p=$p+8;
+                        break;
+                        case 2: $p=$p+8;
+                        break;
+                        case 3: $p=$p+8;
+                        break;
+                        case 4: $p=$p+8;
+                        break;
+                        case 5: $p=$p+8;
+                        break;
+                        case 6: $p=$p+4;
+                        break;
+                    }
                     
-                switch($nombre_dia)
-                {
-                    case 1: $p=$p+8;
-                    break;
-                    case 2: $p=$p+8;
-                    break;
-                    case 3: $p=$p+8;
-                    break;
-                    case 4: $p=$p+8;
-                    break;
-                    case 5: $p=$p+8;
-                    break;
-                    case 6: $p=$p+4;
-                    break;
-                }
-                
+                    }
                 }
 
                 return  $p;
@@ -705,6 +718,8 @@ class ListadoContrller extends Controller
             })
             ->editColumn('total',function($row){
                 $tipo=request()->get('dato1');
+                $valor=request()->get('valor');
+                
                 $nominaAsignaciones=nomina_asignaciones::all();
                 $nominaOtros=nomina_otros::all();
                 //Asignaciones
@@ -731,6 +746,7 @@ class ListadoContrller extends Controller
                 $end   = new DateTime($end);
                 $p=0;
                 
+                if($valor==0){
                 for($i = $begin; $i <= $end; $i->modify('+1 day')){
                     $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
                     
@@ -758,7 +774,9 @@ class ListadoContrller extends Controller
                     $sumer=$row->salarioBruto/23.83/8;
                     $salarioDias=$sumer*$p;
                 }
-
+            }else{
+                $salarioDias=$row->salarioBruto;
+            }
              
                 foreach($nominaOtros as $nominaOtro){
                     if($tipo==$nominaOtro->id_nomina){

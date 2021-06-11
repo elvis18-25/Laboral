@@ -33,21 +33,33 @@
           
           @csrf
             <div class="form-row">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                   <label for=""><b>DESCRIPCION</b></label>
                     <input type="text" autofocus name="descripcion" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <label for=""><b>FECHA DE CREACION</b></label>
                     <input type="date" id="fech" name="fecha" class="form-control"  >
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <label for=""><b>FECHA DE HORAS</b></label>
                   <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; position: relative; top: 3px;">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span> <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
+                <div class="form-check" style="top: 25px;
+                margin-left: 10px;">
+                  <label class="form-check-label">
+                    <input class="form-check-input check"   id="btnCheck" checked   type="checkbox" >
+                    <span class="form-check-sign"><span class="check">
+                      <b style="font-size: 14px; ">Calcular Horas</b>
+                      </span></span>
+                    </label>
+                  </div>
+                
+
+
 
                
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
@@ -105,6 +117,7 @@
     </div>
     <input type="date" id="start" name="start" class="form-control" value="" hidden >
     <input type="date" id="end" name="end" class="form-control" value="" hidden >
+    <input type="text" id="inputCheckBox" name="inputCheckBox" value="" hidden>
 
     
     <input type="text" id="arregloID" name="arregloID" class="form-control" value="" hidden>
@@ -273,7 +286,19 @@ $(window).on('popstate', function() {
 
 }
 
+$("#btnCheck").on('click',function(){
+var valor =$("#inputCheckBox").val();
 
+  if(valor==0){
+    $("#inputCheckBox").attr('value',1)
+  }else{
+    $("#inputCheckBox").attr('value',0)
+  }
+  tabla.ajax.reload();
+  totalnomi(idnomina);
+  // alert($("#inputCheckBox").val())
+
+});
 
 function backhome(){
   if (window.history && window.history.pushState) {
@@ -398,9 +423,12 @@ headers: {
         if($("#input").val()!=''){
           d.dato1=$("#input").val();
           var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
-        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
-        d.start_date=start;
+          var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+          var valor =$("#inputCheckBox").val();
+          d.start_date=start;
           d.end_date=end;
+          d.valor=valor;
+
 
         }
       }
@@ -876,8 +904,9 @@ var reses= numberFormat2.format(Priim);
 function totalnomi(e){
   var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
         var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+        var valor =$("#inputCheckBox").val();
     var url ="{{url('totalnominas')}}/"+e;
-     var data ={e:e,start:start,end:end};
+     var data ={e:e,start:start,end:end,valor:valor};
         $.ajax({
          method: "POST",
            data: data,
