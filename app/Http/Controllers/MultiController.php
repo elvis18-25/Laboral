@@ -7,6 +7,7 @@ use App\Models\Empresa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
+use App\Models\Empleado;
 
 class MultiController extends Controller
 {
@@ -43,16 +44,24 @@ class MultiController extends Controller
 
     public function MultiEmpresa(Request $request)
     {
-        // dd($request->all());
         $all=$request->all();
         $user=User::where('email','=',$request->get('email'))->get();
         if(sizeof(User::where('email','=',$request->get('email'))->where('estado','=',0)->get())>1){
             $empresa=Empresa::where('estado','=',0)->get();
             return view('Multi.index',compact('user','empresa'));
         }else{
+            // dd($request->all());
+
+            if(sizeof(Empleado::where('email','=',$request->get('email'))->where('estado','=',0)->get())!=0){
+                // dd("Este es un Empleado");
+                $objeto = new LoginController();
+                $myVariable = $objeto->authenticateEmpleado($request);
+                return redirect('/home');
+            }else{
             $objeto = new LoginController();
             $myVariable = $objeto->authenticate($request);
             return redirect('/home');
+            }
            
         }
         

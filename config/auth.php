@@ -46,6 +46,13 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'EmplLogin' => [
+            'driver' => 'session',
+            'provider' => 'EmplLogin',
+            'table' => 'empleado',
+        ],
+
     ],
 
     /*
@@ -69,6 +76,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'EmplLogin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\EmplLogin::class,
         ],
 
         // 'users' => [

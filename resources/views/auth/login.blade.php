@@ -21,6 +21,7 @@
         <div class="signin-signup">
           {{-- <form  class="sign-in-form" method="post" action="{{ route('login') }}"> --}}
           <form  class="sign-in-form" method="POST" action="{{url('MultiEmpresa')}}">
+ 
             @csrf
             @method('POST')
             <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="logotipo">
@@ -32,6 +33,27 @@
             <div class="input-field">
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Contraseña" name="password" />
+              @if ($errors->any())
+              <div class="alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                      {{-- <span>{{ $error }}</span> --}}
+                      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+                      <script>
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'El Correo o La Contraseña es Incorrecta...Intente de Nuevo!',
+                          // footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                      </script>
+                          {{-- <li>{{ $error }}</li>
+                          <input type="text" value="{{ $error }}"> --}}
+                      @endforeach
+                  </ul>
+              </div>
+          @endif
+
             </div>
 
             <input type="submit" value="Entrar" class="btn solid" />
@@ -39,7 +61,7 @@
           </form>
 
 		  
-
+  
           <form method="post" id="formulario" action="{{ route('register') }}" class="sign-up-form register">
             @csrf
             
@@ -140,6 +162,7 @@
     <script src="{{asset('js/login.js')}}"></script>
 	<script src="{{ asset('black') }}/js/core/jquery.min.js"></script>
   <script src="{{asset('js/pageLoader.js')}}"></script>
+
   </body>
 </html>
 {{-- <script src="{{asset('logincss/bootstrap/js/bootstrap.min.js')}}"></script>

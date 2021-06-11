@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\ValidationException;
+use App\Models\Empleado;
+use App\Models\EmplLogin;
 
 class LoginController extends Controller
 {
@@ -33,12 +36,46 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             return redirect()->intended('/home');
+        }else{
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.failed')],
+            ]);
+        }
+        
+        // return back()->withErrors([
+        //     'email' => 'Este Email no es valido.',
+        //     ]);
+        }
+
+       
+
+    public function authenticateEmpleado(Request $request)
+    {
+
+        $credentials = $request->only('email','password');
+        
+        // dd(Auth::guard('EmplLogin')->attempt(['email' => $request->email, 'password' => $request->password]));
+
+        if (Auth::guard('EmplLogin')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            dd("S");
+            $request->session()->regenerate();
+            return redirect()->intended('/home');
+        }else{
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.failed')],
+            ]);
         }
         
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Este Email no es valido.',
             ]);
+
+
+
         }
+        
+
+        
         
     public function authenticate2(Request $request)
     {
@@ -84,5 +121,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        // $this->middleware('guest:EmplLogin')->except('logout');
     }
 }

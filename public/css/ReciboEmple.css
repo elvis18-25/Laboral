@@ -19,6 +19,8 @@
 .spam{
     /* margin-top: -40px !important;  */
     position: absolute;
+    text-align: center;
+    margin-left: 40%;
 }
 
 .invoice-box table td {
