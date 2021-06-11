@@ -382,7 +382,7 @@ class NominaController extends Controller
                                             $totals=$totals/100;
                                             $contdeducion=$contdeducion+$totals;
                                             }else{
-                                             $totals=$totals+$tsse->Monto;
+                                             $totals=$tsse->Monto;
                                              $contdeducion=$contdeducion+$totals;
                                             }
                                         }
@@ -938,8 +938,8 @@ class NominaController extends Controller
                             }
                             
                         }
-                    return '$'.number_format($otrosCont-$sum2+$sum,2);
-                    // return '$'.number_format($sum2,2);
+                    return '$'.number_format($otrosCont+$sum-$sum2,2);
+                    // return ;
             })
             ->editColumn('total',function($row){
                 $tducion=0;

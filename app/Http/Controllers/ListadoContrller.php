@@ -83,8 +83,9 @@ class ListadoContrller extends Controller
     function DetalleListado($ide)
     {
         $p=0;
-        $NominaAsigna=nomina_asignaciones::where('id_empleado','=',$ide)->get();
-        $empleado=nomina_empleados::where('id_empleado','=',$ide)->first();
+        $nomina=request('nomina');
+        $NominaAsigna=nomina_asignaciones::where('id_empleado','=',$ide)->where('id_nomina','=',$nomina)->get();
+        $empleado=nomina_empleados::where('id_empleado','=',$ide)->where('id_nomina','=',$nomina)->first();
         
         return view('Listado.Plantillas.detalles',compact('NominaAsigna','empleado'));
     }
@@ -143,8 +144,10 @@ class ListadoContrller extends Controller
     public function otroseditListado($id,Request $request)
     {
         $emple=request('p');
+        $nomina=request('idperfil');
 
-        $empleados=nomina_empleados::where('id_empleado','=',$emple)->first();
+
+        $empleados=nomina_empleados::where('id_empleado','=',$emple)->where('id_nomina','=',$nomina)->first();
         $otros=nomina_otros::findOrFail($id);
 
         return view('Listado.otrosedit',compact('empleados','otros'));
@@ -160,7 +163,7 @@ class ListadoContrller extends Controller
         $monto=request('monto');
         $idperfil=request('idperfil');
 
-        $empleados=nomina_empleados::where('id_empleado','=',$id)->first();
+        $empleados=nomina_empleados::where('id_empleado','=',$id)->where('id_nomina','=',$idperfil)->first();
 
         $otros=new nomina_otros();
         $otros->descripcion=$name;
@@ -206,8 +209,9 @@ class ListadoContrller extends Controller
         $tipo=request('tipo');
         $forma=request('forma');
         $monto=request('monto');
+        $nomina=request('perfil');
 
-        $empleados=nomina_empleados::where('id_empleado','=',$idempl)->first();
+        $empleados=nomina_empleados::where('id_empleado','=',$idempl)->where('id_nomina','=',$nomina)->first();
 
         $otros->descripcion=$name;
 
@@ -247,11 +251,12 @@ class ListadoContrller extends Controller
         $otro->delete();
         
         $emple=request('p');
-        $empleados=nomina_empleados::where('id_empleado','=',$emple)->first();
+        $nomina=request('perfil');
+        $empleado=nomina_empleados::where('id_empleado','=',$emple)->where('id_nomina','=',$nomina)->first();
 
         $NominaOtros=nomina_otros::all();
         
-        return view('Listado.Plantillas.otro',compact('empleados','NominaOtros'));
+        return view('Listado.Plantillas.otro',compact('empleado','NominaOtros'));
     }
 
     public function addempleadoListado($id, Request $request)
@@ -883,7 +888,7 @@ class ListadoContrller extends Controller
 
                 foreach($nominaOtros as $nominaOtro){
                     if($tipo==$nominaOtro->id_nomina){
-                        if($nominaOtro->tipo_asigna=="DEDUCCIÓN"){
+                        if($nominaOtro->tipo_asigna=="DEDUCIÓN"){
                             if($nominaOtro->id_empleado==$row->id_empleado){
                             if($nominaOtro->p_monto!=null){
                                 $otrosCont=$otrosCont+$nominaOtro->p_monto;
@@ -1084,7 +1089,7 @@ class ListadoContrller extends Controller
                                     }
                                       
              
-                            return $otrosI-$otrosD;
+                            return $otrosI+$otrosD;
                     },
                     'total'=>function($row){
                         $tipo=request()->get('dato1');

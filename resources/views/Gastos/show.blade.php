@@ -324,7 +324,7 @@ $(window).on('popstate', function() {
 });
 
 }
-
+$("#monto").mask('0#');
 function backhome(){
   if (window.history && window.history.pushState) {
 

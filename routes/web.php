@@ -165,7 +165,7 @@ Route::post('eliminipuesto/{id}','App\Http\Controllers\PuestoController@eliminip
 Route::get('listadopdf/{id}','App\Http\Controllers\ListadoContrller@listadopdf');
 Route::get('EmpleRecibopdf/{id}','App\Http\Controllers\ListadoContrller@EmpleRecibopdf');
 Route::post('totalnominasListado/{id}','App\Http\Controllers\ListadoContrller@totalnominasListado');
-Route::get('DetalleListado/{id}','App\Http\Controllers\ListadoContrller@DetalleListado');
+Route::post('DetalleListado/{id}','App\Http\Controllers\ListadoContrller@DetalleListado');
 Route::get('incrementoListado/{id}','App\Http\Controllers\ListadoContrller@incrementoListado');
 Route::get('otrosListado/{id}','App\Http\Controllers\ListadoContrller@otrosListado');
 Route::post('switchetssListado/{id}','App\Http\Controllers\ListadoContrller@switchetssListado');

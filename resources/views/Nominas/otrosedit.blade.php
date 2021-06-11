@@ -103,6 +103,7 @@
              $("#ot tbody").empty();
              $("#ot tbody").append(result); 
              $("#otrosedites").trigger("click");
+             $("#detalle").trigger("click");
              tabla.ajax.reload();
              totalnomi(perfil);
         

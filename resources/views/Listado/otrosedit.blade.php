@@ -81,6 +81,7 @@
 
 
   <script>
+    $('#monto').mask('0#');
       function updateotros(e){
   var name=$("#name").val();
  var tipo=$("#inputState").val();
@@ -93,7 +94,7 @@
   Errore();
  }else{
   var url = "{{url('otrosupdateListado')}}/"+e; 
-   var data ={name:name,tipo:tipo,forma:forma,monto:monto,idempl:idempl};
+   var data ={name:name,tipo:tipo,forma:forma,monto:monto,idempl:idempl,perfil:perfil};
       $.ajax({
        method: "POST",
          data: data,
@@ -103,14 +104,16 @@
            $("#ot tbody").empty();
            $("#ot tbody").append(result); 
            $("#otrosedites").trigger("click");
+           $("#detalle").trigger("click");
            tabla.ajax.reload();
+           SuccesGen();
            totalnomi(perfil);
       
           
 
          },
               error: function(XMLHttpRequest, textStatus, errorThrown) { 
-              alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+              ErroreGen();
   }
            }); 
  }
@@ -131,7 +134,7 @@ if($(this).val()==3){
 function deleteotros(e,p){
   var url="{{url('deleteotrosListado')}}/"+e; 
   var perfil=$("#perfile").val();
-var data={p:p};
+var data={p:p,perfil:perfil};
 $.ajax({
        method: "POST",
          data: data,
@@ -140,14 +143,57 @@ $.ajax({
           $("#ot tbody").empty();
            $("#ot tbody").append(result); 
            $("#otrosedites").trigger("click");
+           $("#detalle").trigger("click");
            tabla.ajax.reload();
+           SuccesGen();
            totalnomi(perfil);
             
 
          },
               error: function(XMLHttpRequest, textStatus, errorThrown) { 
-              alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroreGen();
   }
            });
 }
+
+function ErroreGen(){
+    Command: toastr["error"]("", "Error")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
+function SuccesGen(){
+    Command: toastr["success"]("", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
   </script>

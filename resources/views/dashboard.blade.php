@@ -825,7 +825,7 @@ console.log(meses);
       data: {
         datasets: [{
 
-          label: "Monto",
+          label: "Gasto",
           fill: true,
           backgroundColor: gradientStroke,
           borderColor: '#d346b1',
@@ -842,7 +842,7 @@ console.log(meses);
           data: monto,
         },{
           
-          label: "Monto",
+          label: "Nomina",
           fill: true,
           backgroundColor: gradientStrokes,
           borderColor: '#1f8ef1',
@@ -858,7 +858,7 @@ console.log(meses);
           pointRadius: 4,
           data: chart_data,
         }],
-        labels: meses,
+        labels: meses_chart,
         
       },
       options: gradientChartOptionsConfigurationWithTooltipPurple

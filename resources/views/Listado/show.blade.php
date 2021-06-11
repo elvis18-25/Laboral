@@ -174,6 +174,8 @@ startComes = new Date($("#started").attr('value'));
 
   $(document).ready(function(){
 
+    $('#montoC').mask('0#');
+
 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
 $("#formardC").on('change',function(){
@@ -688,6 +690,7 @@ function switchetssbono(e,p){
   }
 
 function detalle(e){
+  var nomina=$("#input").val();
   $("#otre").attr('value',e);
   idotros_emple=e;
   $("#emple").attr('value',e);
@@ -695,9 +698,9 @@ function detalle(e){
 $("#otrosbutton").attr('hidden',false);
   // otrosSinre(m);
   var url = "{{ url('DetalleListado') }}/"+e;
-     var data = '';
+     var data = {nomina:nomina};
         $.ajax({
-         method: "GET",
+         method: "POST",
            data: data,
             url:url ,
             success:function(result){
@@ -848,9 +851,9 @@ $('#otrosmodal').keyup(function(e){
 
 
 function editotros(e,p){
-
+  var idperfil= $("#input").val();
 var url="{{url('otroseditListado')}}/"+e; 
-var data={p:p};
+var data={p:p,idperfil:idperfil};
   $.ajax({
          method: "POST",
            data: data,
@@ -1064,6 +1067,7 @@ function saveotros(){
             tabla.ajax.reload();
             $("#nameC").val(" ");
           $("#montoC").val(" ");
+          SuccesGen();
                       totalnomi(idperfil);
 
 
@@ -1110,6 +1114,28 @@ $(".buttons-print").click();
 $("#btnpdf").on('click',function(){
 $(".buttons-pdf").click();
 });
+
+
+function SuccesGen(){
+    Command: toastr["success"]("", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
 </script>
     
 
