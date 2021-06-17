@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Permisos;
+use App\Models\Pais;
+use App\Models\Ciudad;
+use App\Models\Estado;
 use App\Http\Controllers\Auth\LoginController;
 
 class EmpresaController extends Controller
@@ -22,7 +25,27 @@ class EmpresaController extends Controller
     {
         $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
         $contrato=Contrato::all();
-        return view('Empresa.index',compact('empresa','contrato'));
+        $pais_start=0;
+        $state_start=0;
+        $city_start=0;
+        $state=0;
+        $city=0;
+        
+        $pais=Pais::select('id','name')->orderBy('name')->get();
+        
+        if($empresa->contry!=null){
+            $pais_start=$empresa->contry;
+        }
+        if($empresa->state!=null){
+            $state_start=$empresa->state;
+            $state=Estado::select('id','name')->where('country_id','=',$pais_start)->orderBy('name')->get();
+        }
+        if($empresa->city!=null){
+            $city_start=$empresa->city;
+            $city=Ciudad::select('id','name')->where('state_id','=',$state_start)->orderBy('name')->get();
+        }
+        
+        return view('Empresa.index',compact('empresa','contrato','pais','pais_start','state_start','city_start','state','city'));
     }
 
     /**
@@ -43,8 +66,6 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        
-
         $empresa= new Empresa();
         $empresa->nombre=$request->get('nombre');
         $empresa->telefono=$request->get('telefono');
@@ -95,10 +116,6 @@ class EmpresaController extends Controller
         ]);
 
         return redirect('Empresa');
-
-
-
-
     }
 
     /**
@@ -200,17 +217,23 @@ class EmpresaController extends Controller
             $empresa->imagen=$request->get('imagen');
         }
         
-
-        // if($request->hasFile('archiveUP')){
-
-        //     $file=$request->archiveUP;
-        //     // dd($file);
-        //     $file->move(public_path().'/logo', $file->getClientOriginalName());
-        //     $empresa->imagen=$file->getClientOriginalName();
-            
-        // }
-
         $empresa->update();
+        return redirect('Empresa');
+        
+    }
+    public function Empresaupdate(Request $request, $id)
+    {
+        // dd($request->all());
+        // dd("llego");
+        $empresa=Empresa::findOrFail($id);
+        $empresa->zipcode=$request->get('zipcode');
+        $empresa->timestart=$request->get('HoraEn');
+        $empresa->timeend=$request->get('HoraSa');
+        $empresa->contry=$request->get('pais');
+        $empresa->state=$request->get('state');
+        $empresa->city=$request->get('ciudad');
+        $empresa->update();
+        
         return redirect('Empresa');
         
     }

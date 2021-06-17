@@ -5,6 +5,62 @@
 		margin-bottom: 5px;
 	}
 
+	.selec option{
+		text:rgb(3, 3, 3);
+		background-color:#525f7f;;
+	}
+	.error{
+	  border-color: red !important;
+	}
+	
+	#canvas {
+	  height: 400px;
+	  width: 400px;
+	  background-color: #ffffff;
+	  cursor: default;
+	  border: 1px solid black;
+	}
+	
+	img {
+	  max-width: 100%; /* This rule is very important, please do not ignore this! */
+	}
+	
+			.preview {
+				  overflow: hidden;
+				  width: 160px; 
+				  height: 160px;
+				  margin: 10px;
+				  border: 1px solid red;
+			}
+	
+  .modal-lg{
+   max-width: 1000px !important;
+  }
+  
+  .Logo{
+	  margin-right: 8px;
+	  height: 100%;
+	  overflow: hidden;
+	  margin-bottom: 15px;
+	  float: right;
+			}
+  
+  .color{
+	  width: 21%;
+	  height: 65%;
+	  overflow: hidden;
+	  margin-bottom: 15px;
+	  /* margin-top: -217px; */
+	  float: right;
+  }
+  
+  #silverfox{
+  min-height: 600px;
+  min-width: 600px;
+  background-size: cover;
+  background-position: center;
+  }
+
 	input.call-picker {
 		border: 1px solid #AAA;
 		color: #666;

@@ -18,7 +18,7 @@
                   <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">DEDUCIONES</a>
                   <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">INCREMENTOS</a>
                   <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">OTROS</a>
-                  {{-- <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#horas" role="tab" aria-controls="nav-contact" aria-selected="false">HORAS</a> --}}
+                  <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#horas" role="tab" aria-controls="nav-contact" aria-selected="false">HORAS</a>
                 </div>
               </nav>
               <div class="tab-content" id="nav-tabContent">
@@ -110,15 +110,15 @@
               <div class="tab-pane fade" id="horas" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="card-body" style="height: 276px;">
                   <div style="max-height: 214px; font-size: small; top: -12px; overflow-y: auto;  overflow-x: hidden; max-width: 755px; ">
-                    <table class="table table-striped table-hover" id="horas">
+                    <table class="table table-striped table-hover" id="horasTables">
                 <thead>
               <tr>
-                <th class="TitleP">SALARIO X DIAS</th>
                 <th class="TitleP">FECHA DE ENTRADA</th>
                 <th class="TitleP">FECHA DE SALIDA</th>
                 <th class="TitleP">HORA EXTRA</th>
                 <th class="TitleP">HORA DESCONTADA</th>
-                <th></th>
+                <th class="TitleP">JORNADA</th>
+                <th class="TitleP">MONTO</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -128,11 +128,11 @@
                 </div>
                 
                 <div class="card-footer text-muted" >
-                <button type="button" id="btnnew" class="btn btn-info btn-sm redondo" style="position: absolute; margin-left: 679px; top: 308px;" onclick="VerificateHours();"><i class="fas fa-plus"></i></button>
+                <button type="button" id="btnnew" class="btn btn-info btn-sm redondo" style="position: absolute; margin-left: 679px; top: 308px;" onclick="modalhours();"><i class="fas fa-plus"></i></button>
                <b class="float-right" style="color: black;
                font-size: 16px;
                position: relative;
-               top: -12px;">TOTAL:<span id="totalI"></span></b>
+               top: -12px;">TOTAL:<span id="totalTimes"></span></b>
               </div>
             </div>
 
@@ -140,7 +140,7 @@
               </div>      
           </div>
           <div class="modal-footer">
-            <button type="button" onclick="eliminaremple();" class="btn btn-danger" style="position: absolute; top: 388px;"><i class="fas fa-trash"></i>&nbsp;Eliminar</button>
+            <button type="button" onclick="eliminaremple();" class="btn btn-danger redondo" style="position: absolute; top: 388px;"><i class="fas fa-trash"></i></button>
           </div>
         </div>
       </div>

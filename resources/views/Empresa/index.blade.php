@@ -1,59 +1,4 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
-<style>
-    .selec option{
-      text:rgb(3, 3, 3);
-      background-color:#525f7f;;
-  }
-  
-  #canvas {
-    height: 400px;
-    width: 400px;
-    background-color: #ffffff;
-    cursor: default;
-    border: 1px solid black;
-  }
-  
-  img {
-    max-width: 100%; /* This rule is very important, please do not ignore this! */
-  }
-  
-          .preview {
-                overflow: hidden;
-                width: 160px; 
-                height: 160px;
-                margin: 10px;
-                border: 1px solid red;
-          }
-  
-.modal-lg{
- max-width: 1000px !important;
-}
-
-.Logo{
-    margin-right: 8px;
-    height: 100%;
-    overflow: hidden;
-    margin-bottom: 15px;
-    float: right;
-          }
-
-.color{
-    width: 21%;
-    height: 65%;
-    overflow: hidden;
-    margin-bottom: 15px;
-    /* margin-top: -217px; */
-    float: right;
-}
-
-#silverfox{
-min-height: 600px;
-min-width: 600px;
-background-size: cover;
-background-position: center;
-}
-
-  </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/empresa.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -64,7 +9,7 @@ background-position: center;
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>CONFIGURACION DE LA EMPRESA</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>CONFIGURACIÓN</b></h4>
                 </div>
                 <div class="col-4 text-right">
                     {{-- <a href="{{url('Nominas')}}" class="btn btn-sm btn-info"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"></i></a> --}}
@@ -76,10 +21,10 @@ background-position: center;
                 <div class="row">
                     <div class="col-3">
                       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">EMPRESA</a>
+                        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">CONFIGURACIÓN DEL SITIO</a>
+                        <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#VLO" role="tab" aria-controls="v-pills-settings" aria-selected="false">VALOR DE EMPRESA</a>
                         <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">CONTRATO</a>
                         <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">NUEVA EMPRESA</a>
-                        {{-- <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a> --}}
                       </div>
                     </div>
                     @php
@@ -93,7 +38,7 @@ background-position: center;
                     <div class="col-9">
                       <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <form action="{{Route('Empresa.update',$empresa->id)}}" method="POST"  enctype="multipart/form-data">
+                            <form action="{{Route('Empresa.update',$empresa->id)}}" method="POST"  enctype="multipart/form-data" id="formulario">
                                 @csrf
                                 @method('PUT')
                             <div class="card-body" style="height: 300px;">
@@ -111,11 +56,11 @@ background-position: center;
                                      <label for=""><b>NOMBRE:</b></label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text">
+                                            <div class="input-group-text input-required">
                                             <i class="fas fa-address-card" style="color: black"></i>
                                         </div>
                                     </div>
-                                    <input type="text" name="nombreUP" value="{{$empresa->nombre}}" autofocus class="form-control" placeholder="Nombre de la Empresa" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+                                    <input type="text" name="nombreUP" value="{{$empresa->nombre}}" autofocus class="form-control" required placeholder="Nombre de la Empresa" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                                 </div>
                             </div>
                  
@@ -125,11 +70,11 @@ background-position: center;
                                 <label for=""><b>TELÉFONO:</b></label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text" style="color: black">
+                                        <div class="input-group-text input-required" style="color: black">
                                             <i class="fas fa-mobile-alt"></i>
                                         </div>
                                     </div>
-                                    <input type="tel" name="telefonoUP" value="{{$empresa->telefono}}" class="form-control" placeholder="Télefono">
+                                    <input type="tel" name="telefonoUP" required value="{{$empresa->telefono}}" class="form-control" placeholder="Télefono">
                                 </div>
                                 <span class="focus-input100"></span>
                             </div>
@@ -152,11 +97,11 @@ background-position: center;
                                 <label for=""><b>DIRECCION:</b></label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text" style="color: black">
+                                        <div class="input-group-text input-required" style="color: black">
                                             <i class="tim-icons icon-map-big"></i>
                                         </div>
                                     </div>
-                                    <input type="text" name="direcionUP" class="form-control"value="{{$empresa->direcion}}" placeholder="Direccion" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+                                    <input type="text" name="direcionUP" required class="form-control"value="{{$empresa->direcion}}" placeholder="Direccion" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                                 </div>
                             </div>
                             
@@ -164,11 +109,11 @@ background-position: center;
                                 <label for=""><b>EMAIL:</b></label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text" style="color: black">
+                                        <div class="input-group-text input-required" style="color: black">
                                             <i class="fas fa-at"></i>
                                         </div>
                                     </div>
-                                    <input type="email" name="emailUP" class="form-control"value="{{$empresa->email}}" placeholder="Email" >
+                                    <input type="email" name="emailUP" required class="form-control"value="{{$empresa->email}}" placeholder="Email" >
                                 </div>
                             </div>
             
@@ -212,7 +157,7 @@ background-position: center;
                         </div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                             <div class="card-body" style="height: 300px;">
-                                <button type="button" class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#contrato"><i class="fa fa-plus"></i></button>
+                                <button type="button" class="btn btn-info btn-sm float-right redondo" data-toggle="modal" data-target="#contrato"><i class="fa fa-plus"></i></button>
                                 <table class="table tablesorter " id="contratos-table">
                                     <thead class=" text-primary">
                                         <tr> 
@@ -244,6 +189,146 @@ background-position: center;
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                        <div class="tab-pane fade" id="VLO" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            
+                              <form action={{url('Empresaupdate/'.$empresa->id)}} method="POST" id="form2">
+                                @csrf
+                                <div class="form-row">
+                                  <div class="form-group col-md-3">
+                                    <label for="inputState"><b>PAIS</b></label>
+                                    <select  class="form-control" value="{{old('pais')}}" id="countries" name="pais" required>
+                                      <option selected disabled>ELEGIR...</option>
+                                      @foreach ($pais as $paises)
+                                      @if ($paises->id==$empresa->contry)
+                                      <option value="{{$paises->id}}" selected>{{$paises->name}}</option >
+                                      @else
+                                      <option value="{{$paises->id}}">{{$paises->name}}</option >
+                                      @endif
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="inputState"><b>ESTADO</b></label>
+                                    <select  class="form-control" value="{{old('state')}}" id="state" name="state" required>
+                                      @if ($state_start!=0)
+
+                                      @foreach ($state as $states)
+                                      @if ($states->id==$state_start)
+                                      <option value="{{$states->id}}" selected>{{$states->name}}</option >
+                                      @else
+                                      <option value="{{$states->id}}" >{{$states->name}}</option >
+                                       @endif
+                                          
+                                      @endforeach
+                                          
+                                      @else
+                                      <option selected disabled value="{{old('state')}}">ELEGIR...</option>
+                                          
+                                      @endif
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="inputState"><b>CIUDAD</b></label>
+                                    <select  class="form-control" value="{{old('ciudad')}}"  name="ciudad" id="cities" required>
+                                      @if ($city_start!=0)
+
+                                      @foreach ($city as $cities)
+                                      @if ($cities->id==$city_start)
+                                      <option value="{{$cities->id}}" selected>{{$cities->name}}</option >
+                                        
+                                        @else
+                                        <option value="{{$cities->id}}" >{{$cities->name}}</option >
+                                          
+                                      @endif
+                                          
+                                      @endforeach
+                                          
+                                      @else
+                                      <option selected disabled value="{{old('ciudad')}}">ELEGIR...</option>
+                                          
+                                      @endif
+                                    </select>
+                                  </div>
+                                  <div class="form-group col-md-3">
+                                    <label for="inputCity"><b>CODIGO POSTAL</b></label>
+                                    <input type="text" class="form-control" id="inputCity" value="{{$empresa->zipcode}}" name="zipcode">
+                                  </div>
+                                </div>
+                                <div class="form-row">
+
+                                  <div class="col-sm-3">
+                                    <label for="inputZip"><b>HORA DE INICIO DE EMPRESA</b></label>
+                                  <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <div class="input-group-text">
+                                        <i style="color: black !important;" class="fas fa-clock"></i>
+                                     </div>      
+                                   </div>
+                                  <input type="text" class="form-control" id="HoraEn" value="{{$empresa->timestart}}" name="HoraEn" readonly style="cursor: pointer !important; " >
+                                </div>
+                                </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                  <label for="inputZip"><b>HORA DE FINALIZACIÓN DE EMPRESA</b></label>
+                                  <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                      <i style="color: black !important;" class="fas fa-clock"></i>
+                                   </div>      
+                                 </div>
+                                <input type="text" class="form-control" id="HoraSa" value="{{$empresa->timeend}}" name="HoraSa" readonly style="cursor: pointer !important; " >
+                              </div>
+                              </div>
+                              </div> 
+
+                              <div class="col-sm-3" id="ColWeekendeEn">
+                                <label for="inputZip"><b>HORA DE INICIO DEl FIN DE SEMANA</b></label>
+                              <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text">
+                                    <i style="color: black !important;" class="fas fa-clock"></i>
+                                 </div>      
+                               </div>
+                              <input type="text" class="form-control" id="HoraEn"  name="HoraEnWeenkded" readonly style="cursor: pointer !important; " >
+                            </div>
+                            </div>
+                            </div>
+
+                              <div class="col-sm-3" id="ColWeekendeSa">
+                                <label for="inputZip"><b>HORA DE FINALIZACIÓN DEl FIN DE SEMANA</b></label>
+                              <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text">
+                                    <i style="color: black !important;" class="fas fa-clock"></i>
+                                 </div>      
+                               </div>
+                              <input type="text" class="form-control" id="HoraSaWeenkded"  name="HoraEn" readonly style="cursor: pointer !important; " >
+                            </div>
+                            </div>
+                            </div>
+
+                              <div class="col-sm-4">
+                              <div class="form-check">
+                                <label class="form-check-label">
+                                  <input class="form-check-input check" value="0"  id="btnCheck"  type="checkbox" >
+                                  <span class="form-check-sign"><span class="check">
+                                    <b style="font-size: 14px; ">HORARIO FIN DE SEMANA</b>
+                                    </span></span>
+                                  </label>
+                                </div>
+                              </div>
+                              <br>
+                                </div>
+                      
+                                <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 197px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+                              </form>
+                        
                         </div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                             <div class="card-body"  style="height: 300px;">
@@ -373,9 +458,66 @@ background-position: center;
 
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/js/bootstrap-colorpicker.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 
+<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-clockpicker.min.css')}}">
+<script type="text/javascript" src="{{asset('js/bootstrap-clockpicker.min.js')}}"></script>
 
 <script>
+
+  $("#ColWeekendeEn").hide();
+  $("#ColWeekendeSa").hide();
+
+  $("#btnCheck").on('click',function(){
+    if($(this).val()==0){
+      $("#ColWeekendeEn").show();
+      $("#ColWeekendeSa").show();
+      $("#btnCheck").attr('value',1);
+    }else{
+      $("#ColWeekendeEn").hide();
+      $("#ColWeekendeSa").hide();
+      $("#btnCheck").attr('value',0);
+    }
+  });
+
+$("#formulario").validate({
+
+errorPlacement: function(error, element) {
+      var name = element.attr('name');
+      element.addClass('error');
+      var errorSelector = '.validation_error_message[for="' + name + '"]';
+      var $element = $(errorSelector);
+      if ($element.length) { 
+        $(errorSelector).html(error.html());
+      } else {
+        error.insertAfter(element);
+        
+
+      }
+      ErroresCampo();
+  }
+
+});
+
+jQuery.extend(jQuery.validator.messages, {
+  required: "",
+  remote: "Please fix this field.",
+  email: "Please enter a valid email address.",
+  url: "Please enter a valid URL.",
+  date: "Please enter a valid date.",
+  dateISO: "Please enter a valid date (ISO).",
+  number: "Please enter a valid number.",
+  digits: "Please enter only digits.",
+  creditcard: "Please enter a valid credit card number.",
+  equalTo: "",
+  accept: "Please enter a value with a valid extension.",
+  maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
+  minlength: jQuery.validator.format("Please enter at least {0} characters."),
+  rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+  range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+  max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+  min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+});
 
 
 document.addEventListener ("keydown", function (e) {
@@ -505,7 +647,104 @@ $('#crop').click(function(){
     };
   });
 });
-      
-</script>
-   
+
+$("#countries").on('change',function(){
+    var id=$(this).val();
+
+    $("#state").empty(); 
+    $("#cities").empty(); 
+    var url = "{{url('emplepaises')}}/"+id; 
+     var data ='';
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+            $("#state").empty();    
+            $("#state").append(result);
+            
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             });
+});
+
+$("#state").on('change',function(){
+    var id=$(this).val();
+    var url = "{{url('empleciudad')}}/"+id; 
+     var data ='';
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+            $("#cities").empty();    
+            $("#cities").append(result);
+            
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             });
+});
+
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+function ErroresCampo(){
+    Command: toastr["error"]("Estos Campos son obligatorios", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+
+$('.clockpicker').clockpicker();
+
+$('#inputCity').mask('0#');
+    </script>
+
+    <style>
+      .form-control[readonly]{
+        background-color: rgb(255 255 255 / 50%);
+      }
+
+
+
+    </style>
 @endsection

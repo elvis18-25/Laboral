@@ -243,7 +243,7 @@
       </div>
     </div>
     <div class="card-body">
-      <textarea class="form-control" style="color: black; font-size: 13px !important; font-weight: bold !important;" name="textarea" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"id="exampleFormControlTextarea1" rows="3"></textarea>
+      <textarea class="form-control" style="color: black; font-size: 13px !important; font-weight: bold !important;" name="textarea" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"id="exampleFormControlTextarea1" rows="5"></textarea>
     </div>
 </div>
 </div>

@@ -12,7 +12,6 @@ use App\Models\Asignaciones_empleado;
 use App\Models\empleados_equipo;
 use App\Models\estado_asignaciones;
 use App\Models\isr_empleado;
-use App\Models\Puesto;
 use App\Models\Perfiles_empleado;
 use Illuminate\Support\Facades\Auth;
 use App\Models\estados_isr;
@@ -23,6 +22,8 @@ use DateTime;
 use App\Models\nomina_asignaciones;
 use App\Models\nomina_otros;
 use App\Models\nomina_empleados;
+use App\Models\Empresa;
+use App\Models\Horas;
 
 
 class NominaController extends Controller
@@ -216,6 +217,9 @@ class NominaController extends Controller
         $otro=Otros::all();
         $tss=Asignaciones::all();
         $estado=estado_asignaciones::all();
+        $hora=Horas::all();
+        $sumHoraDescontada=0;
+        $sumHoraExtra=0;
 
         $cont2=0;
         $cont3=0;
@@ -273,7 +277,8 @@ class NominaController extends Controller
                    }
                }
             }
-    }else{
+    }
+    else{
         foreach($perf as $perfe){
             if($perfiles->id==$perfe->id_perfiles){
                foreach($empleados as $emple){
@@ -291,9 +296,23 @@ class NominaController extends Controller
 
 
 
-
-
-
+                foreach($perf as $perfe){
+                    if($perfiles->id==$perfe->id_perfiles){
+                        foreach($empleados as $emple){
+                        if($emple->id_empleado==$perfe->id_empleado){
+                            foreach($hora as $horas){
+                                if($horas->id_empleado==$emple->id_empleado){
+                                    if($horas->type=="EXTRAS"){
+                                        $sumHoraExtra= $sumHoraExtra+$horas->monto;
+                                    }else{
+                                        $sumHoraDescontada=$sumHoraDescontada+$horas->monto;
+                                    }
+                                }
+                             }
+                            }
+                            }
+                           }
+                       }
                 foreach($perf as $perfe){
                     if($perfiles->id==$perfe->id_perfiles){
                         foreach($empleados as $emple){
@@ -449,8 +468,8 @@ class NominaController extends Controller
 
              $totaldeducion=0;
              $totalincremento=0;
-             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3;
-             $totalincremento=$otrosI+$contbono-$desbonoCont;
+             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3+$sumHoraDescontada;
+             $totalincremento=$otrosI+$contbono-$desbonoCont+$sumHoraExtra;
              
              return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
             //  return  $salario;
@@ -471,6 +490,140 @@ class NominaController extends Controller
     public function show($id)
     {
         //
+    }
+    public function showHoras($id)
+    {
+        $horas=Horas::findOrFail($id);
+        return view('Nominas.showHoras',compact('horas'));
+    }
+
+    public function savehoras($id)
+    {
+        $empleado=Empleado::findOrFail($id);
+        $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
+
+        $entrada=new DateTime($empresa->timestart);
+        $salida=new DateTime($empresa->timeend);
+        $jornada=request('jornada');
+        $fechaenrada=new datetime(request('fechaentrada'));
+        $fechasalidad= new datetime(request('fechasalidad'));
+        $start=request('start');
+        $end=request('end');
+        $valor=request('valor');
+
+        $p=0;
+        $b=0;
+        $type="EXTRAS";
+
+
+
+        for($i = $fechaenrada; $i <= $fechasalidad; $i->modify('+1 day')){
+            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+            
+        switch($nombre_dia)
+        {
+            case 1:
+                $veri=0;
+
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $timeempresa = date_diff($entrada, $salida);
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            break;
+            case 2: 
+                $veri=0;
+
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $timeempresa = date_diff($entrada, $salida);
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            break;
+            case 3: 
+                $veri=0;
+
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $timeempresa = date_diff($entrada, $salida);
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            break;
+            case 4: 
+                $veri=0;
+
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $timeempresa = date_diff($entrada, $salida);
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            break;
+            case 5: 
+                $veri=0;
+
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $timeempresa = date_diff($entrada, $salida);
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            break;
+            case 6: 
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $timeempresa = date_diff($entrada, $salida);
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            break;
+        }
+        
+        }
+
+        
+        if($p<0){
+            $type="DESCONTADA";
+            $p=abs($p);
+        }
+
+        if($empleado->horas!=0){
+            if($jornada==0){
+                $jorni="DIURNA";
+                $sum=$empleado->horas*1.35;
+                $sum=$sum*$p;
+            }else{
+                $jorni="NOCTURNA";
+                $mensual=$empleado->horas*1.35;
+                $semanal=$empleado->horas*1.15;
+                $sum=$mensual+$semanal;
+                $sum=$sum*$p;
+            }
+        }else{
+            if($jornada==0){
+                $jorni="DIURNA";
+                $sumer=$empleado->salario/23.83/8;
+                $sum=round($sumer,2)*1.35;
+                $sum=$sum*$p;
+            }else{
+                $jorni="NOCTURNA";
+                $sumer=$empleado->salario/23.83/8;
+                $mensual=round($sumer,2)*1.35;
+                $semanal=round($sumer,2)*1.15;
+                $sum=$mensual+$semanal;
+                $sum=$sum*$p;
+            }
+
+        }
+
+        $horas=new Horas();
+        $horas->id_empleado=$id;
+        $horas->horaentrada=$empresa->timestart;
+        $horas->horasalidad=$empresa->timeend;
+        $horas->jornada=$jorni;
+        $horas->fechainicio= request('fechaentrada');
+        $horas->fechafinalizado=request('fechasalidad');
+        $horas->monto=round($sum,2);
+        $horas->horas=(int)$p;
+        $horas->id_empresa=Auth::user()->id_empresa;
+        $horas->estado=0;
+        $horas->type=$type;
+        $horas->save();
+
+        return view('Nominas.Plantillas.horas',compact('horas'));
+        // return  round($sum,2);;
+
     }
     public function deleteemple($id)
     {
@@ -501,6 +654,13 @@ class NominaController extends Controller
     public function edit($id)
     {
         //
+    }
+    public function horasemple($id)
+    {
+        $empleado=Empleado::findOrFail($id);
+        $hora=Horas::where('id_empleado','=',$id)->get();
+        
+        return view('Nominas.Plantillas.horasEmple',compact('empleado','hora'));
     }
 
     public function addempleado($id, Request $request)
@@ -550,9 +710,18 @@ class NominaController extends Controller
         ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
         ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
         ->get();
-        // $equipos_emple=empleados_equipo::select('equipos')->where('id_empleado','=',$id)->first();
-        // $equipos=Equipos::where('id','=',$equipos_emple->equipos)->get();
-        return view("Nominas.modalhoras",compact('equipos'));
+
+        $start=request('start');
+        $end=request('end');
+        $valor=request('valor');
+        $p=0;
+
+        $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
+        if($empresa->timestart==null){
+            return $p=1;
+        }else{
+           return view("Nominas.modalhoras",compact('equipos','id','empresa','start','end','valor'));
+        }
 
     }
     public function VerificateHours($id)
@@ -565,11 +734,6 @@ class NominaController extends Controller
             return 1;
         }
 
-        // if(!empty(sizeof(empleados_equipo::select('id_empleado')->where('id_empleado','=',$id)->get()))){
-        //     $equipos=empleados_equipo::select('id_empleado')->where('id_empleado','=',$id)->first();
-        //     return view("Nominas.Plantillas.verificatehor",compact('equipos'));
-            
-        // }
 
         
     }
@@ -734,9 +898,9 @@ class NominaController extends Controller
         $empleados=Empleado::leftjoin('perfiles','perfiles.id_empleado','=','empleado.id_empleado')
         ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','perfiles.id_empleado')
         ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
+        ->leftjoin('horas','horas.id_empleado','=','empleado.id_empleado')
         ->leftjoin('asignaciones_empleado','asignaciones_empleado.empleado_id_empleado','=','perfiles.id_empleado')
         ->leftjoin('asignaciones','asignaciones.id','=','asignaciones_empleado.asignaciones_id')
-
         ->where('perfiles.estados','=',0)
         ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.horas','empleado.cedula','puesto.name as puesto','empleado.salario',DB::raw('sum(asignaciones_empleado.monto) as Asigna'))->GroupBy('empleado.id_empleado','empleado.cedula','empleado.horas','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario');
        
@@ -794,10 +958,12 @@ class NominaController extends Controller
                 $cont2=0;
                 $sum=0;
                 $sum2=0;
+                $sumHoras=0;
                 $tipo=request()->get('dato1');
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
                 $estado=estado_asignaciones::all();
+                $horas=Horas::where('type','=','EXTRAS')->get();
                 $otro=Otros::all();
                 $otrostotal=0;
 
@@ -841,6 +1007,11 @@ class NominaController extends Controller
                                 }
                             }  
                         }
+                        foreach($horas as $hora){
+                            if($hora->id_empleado==$row->id_empleado){
+                                $sumHoras=$sumHoras+$hora->monto;
+                            }
+                        }
 
                         foreach($perf as $perfe){
                             if($tipo==$perfe->id_perfiles){
@@ -874,8 +1045,8 @@ class NominaController extends Controller
                                     }
                                    }
                                }
-                    return '$'.number_format($otrostotal-$sum2+$sum,2);
-                // return 0;
+                    return '$'.number_format($otrostotal-$sum2+$sum+$sumHoras,2);
+                // return $sumHoras;
             })
             ->editColumn('Asigna',function($row){
                 $cont=0;
@@ -884,6 +1055,8 @@ class NominaController extends Controller
                 $sum2=0;
                 $otrosCont=0;
                 $tipo=request()->get('dato1');
+                $horas=Horas::where('type','=','DESCONTADA')->get();
+                $sumHoras=0;
                 $otro=Otros::all();
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
@@ -961,8 +1134,14 @@ class NominaController extends Controller
                             }
                             
                         }
-                    return '$'.number_format($otrosCont+$sum-$sum2,2);
-                    // return ;
+
+                        foreach($horas as $hora){
+                            if($hora->id_empleado==$row->id_empleado){
+                                $sumHoras=$sumHoras+$hora->monto;
+                            }
+                        }
+                    return '$'.number_format($otrosCont+$sum-$sum2+$sumHoras,2);
+                    // return $sumHoras ;
             })
             ->editColumn('total',function($row){
                 $tducion=0;
@@ -980,6 +1159,11 @@ class NominaController extends Controller
                 $perf=Perfiles::all();
                 $otro=Otros::all();
                 $estadoasigna=estado_asignaciones::all();
+                $horasDescontada=Horas::where('type','=','DESCONTADA')->get();
+                $horasExtras=Horas::where('type','=','EXTRAS')->get();
+                $sumHorasDescontada=0;
+                $sumHorasExtras=0;
+
                 $otroD=0;
                 $sum=0;
                 $sum2=0;
@@ -1161,9 +1345,19 @@ foreach($perf as $perfe){
                    }
                }
                             
+               foreach($horasDescontada as $hora){
+                if($hora->id_empleado==$row->id_empleado){
+                    $sumHorasDescontada=$sumHorasDescontada+$hora->monto;
+                }
+            }
+               foreach($horasExtras as $hora){
+                if($hora->id_empleado==$row->id_empleado){
+                    $sumHorasExtras=$sumHorasExtras+$hora->monto;
+                }
+            }
 
-                $tducion= $otroD+$sum-$sumEstado;
-                $tincremnt=$otroI+$sum2-$sumBono;
+                $tducion= $otroD+$sum-$sumEstado+$sumHorasDescontada;
+                $tincremnt=$otroI+$sum2-$sumBono+$sumHorasExtras;
                 return '$'.number_format($salarioDias+$tincremnt-$tducion,2);
                 // return $begin;
 
@@ -1181,6 +1375,26 @@ foreach($perf as $perfe){
                 },
                 'horas'=>function($row){
                     return $row->horas;
+
+                },
+                'times'=>function($row){
+                    $horasDescontada=Horas::where('type','=','DESCONTADA')->get();
+                    $horasExtras=Horas::where('type','=','EXTRAS')->get();
+                    $sumHorasDescontada=0;
+                    $sumHorasExtras=0;
+
+                    foreach($horasDescontada as $hora){
+                        if($hora->id_empleado==$row->id_empleado){
+                            $sumHorasDescontada=$sumHorasDescontada+$hora->monto;
+                        }
+                    }
+                       foreach($horasExtras as $hora){
+                        if($hora->id_empleado==$row->id_empleado){
+                            $sumHorasExtras=$sumHorasExtras+$hora->monto;
+                        }
+                    }
+
+                    return $sumHorasExtras-$sumHorasDescontada;
 
                 },
                 'total'=>function($row){
@@ -1398,25 +1612,7 @@ foreach($perf as $perfe){
                 $sum=0;
                 $sumEstado=0;
 
-                // foreach($perf as $perfe){
-                //     if($tipo==$perfe->id_perfiles){
-                //         if($row->id_empleado==$perfe->id_empleado){
-                //             foreach($otro as $otros){
-                //                 if($otros->id_empresa==Auth::user()->id_empresa){
-                //                 if($otros->id_empleado==$row->id_empleado){
-                //              if($otros->tipo_asigna=="DEDUCIÓN"){
-                //                     if($otros->p_monto!=null){
-                //                         $otrosCont=$otrosCont+$otros->p_monto;
-                //                     }else{
-                //                         $otrosCont=$otrosCont+$otros->monto;
-                //                     }
-                //                 }
-                //                  }
-                //               }
-                //               }
-                //             }
-                //         }  
-                //     }
+
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
@@ -1504,26 +1700,7 @@ foreach($perf as $perfe){
                                }
                            }
     
-                        // foreach($perf as $perfe){
-                        //     if($tipo==$perfe->id_perfiles){
-                        //         if($row->id_empleado==$perfe->id_empleado){
-                        //             foreach($otro as $otros){
-                        //                 if($otros->id_empresa==Auth::user()->id_empresa){
-                        //                 if($otros->id_empleado==$row->id_empleado){
-                        //              if($otros->tipo_asigna=="INCREMENTO"){
-                        //                     if($otros->p_monto!=null){
-                        //                         $otrostotal=$otrostotal+$otros->p_monto;
-                        //                     }else{
-                        //                         $otrostotal=$otrostotal+$otros->monto;
-                        //                     }
-                        //                 }
-                        //                  }
-                        //               }
-                        //               }
-                        //             }
-                        //         }  
-                        //     }
-    
+
                             foreach($perf as $perfe){
                                 if($tipo==$perfe->id_perfiles){
                                     if($row->id_empleado==$perfe->id_empleado){

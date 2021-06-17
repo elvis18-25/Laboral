@@ -16,5 +16,13 @@ class Empresa extends Model
         'rnc',
         'direcion',
         'estado',
+        'zipcode',
+        'state',
+        'contry',
+        'city',
+        'timeend',
+        'timestart',
+
+
     ];
 }

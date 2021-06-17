@@ -133,6 +133,7 @@
   <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
   @include('Nominas.modalshow')
   <div class="modal fade" id="horassdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+  <div class="modal fade" id="showhorasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
   {{-- @include('Nominas.modalhoras') --}}
   
   <div class="modal fade" id="otrosedites" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
@@ -164,6 +165,9 @@
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 
+<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-clockpicker.min.css')}}">
+<script type="text/javascript" src="{{asset('js/bootstrap-clockpicker.min.js')}}"></script>
+
 @if (session('eliminado')=='ya')
 <script>
     Swal.fire(
@@ -174,6 +178,7 @@
   </script>    
 @endif
 <script>
+
       var hoy = new Date();
   var fecha = moment(hoy);
   document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
@@ -687,6 +692,7 @@ $("#Nominas tbody").on('click','tr',function(){
    var dedu=$(this).attr('dedu');
    var bonus=$(this).attr('bono');
    var otros=$(this).attr('otros');
+   var time=$(this).attr('times');
    
   $("#empleotros").val(id);
 
@@ -704,6 +710,10 @@ $("#Nominas tbody").on('click','tr',function(){
    var Otrosres= numberFormat2.format(otros); 
    $("#totalO").empty();
    $("#totalO").append(Otrosres);
+
+   var Timesmonto= numberFormat2.format(time); 
+   $("#totalTimes").empty();
+   $("#totalTimes").append(Timesmonto);
 
 
 
@@ -821,6 +831,7 @@ $("#otrosbutton").attr('hidden',false);
               
               incremento(e);
               otros(e);
+              horas(e);
               
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -830,6 +841,24 @@ $("#otrosbutton").attr('hidden',false);
  
 }
 
+function horas(e){
+  var url="{{url('horasemple')}}/"+e; 
+  var data='';
+  $.ajax({
+         method: "GET",
+           data: data,
+            url:url ,
+            success:function(result){
+              $('#horasTables tbody').empty();
+              $('#horasTables tbody').append(result)
+              
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             });
+}
 function otros(e){
   var url="{{url('otros')}}/"+e; 
   var data='';
@@ -932,109 +961,15 @@ function totalnomi(e){
 }
 
 
-function savegruop(){
-     var name=$("#txtDescrip").val();
-     var entrada=$("#txtentrada").val();
-     var salida=$("#txtsalida").val();
-     var elegir=$("#idgrupos").val();
-     var idempl=$("#empleotros").val();
-
-
-     if(name!=0 && entrada!=0 && salida!=0){
-       if(elegir!=0){
-        errorMult();
-       }else{
-      var url = "{{ url('savegrupos')}}/"+idempl;
-     var data = {name:name, entrada:entrada,salida:salida,elegir:elegir};
-        $.ajax({
-         method: "POST",
-           data: data,
-            url:url ,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(result){
-              $("#equipos").val(result);
-              $("#addgrup").trigger("click");
-              modalhours(idempl);
-              exitos();
-              
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                ErroresGeneral();
-    }
-             }); 
-            } 
-
-     }else{
-      if(elegir!=0){
-        var url = "{{ url('savegrupos')}}/"+idempl;
-     var data = {elegir:elegir};
-        $.ajax({
-         method: "POST",
-           data: data,
-            url:url ,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(result){
-              $("#equipos").val(result);
-              $("#addgrup").trigger("click");
-              modalhours(idempl);
-              exitos();
- 
-        
-          
-           
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                ErroresGeneral();
-    }
-             }); 
-      }else{
-        erroresCon();
-
-      }
-     }
-}
-function VerificateHours(){
-  var idempl=$("#empleotros").val();
-  var url ="{{url('VerificateHours')}}/"+idempl;
-     var data ='';
-        $.ajax({
-         method: "POST",
-           data: data,
-            url:url ,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(result){
-              var valor=parseInt($(result).attr('value'),10);
-              var equipos=$(result).attr('action');
-              if(result==0){
-                nothing();
-              }else{
-                modalhours(idempl);
-              }
-
-
-
-
-          
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                ErroresGeneral();
-    }
-             });
-}
-
-
-
-
-
-function modalhours(e){
-  var url="{{url('modalhours')}}/"+e; 
+function showHoras(e){
+  var url="{{url('showHoras')}}/"+e; 
 var data='';
   $.ajax({
          method: "POST",
            data: data,
             url:url ,
             success:function(result){
-              $("#horassdd").html(result).modal("show");
+              $("#showhorasModal").html(result).modal("show");
               
 
            },
@@ -1044,26 +979,72 @@ var data='';
              });
 }
 
-function nothing(){
-  Swal.fire({
-  title: 'Este empleado no esta en ningun grupo?',
-  text: "Deseas agregarlo en algun grupo?",
-  icon: 'info',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, agregar!'
-}).then((result) => {
-  if (result.isConfirmed) {
-    $('#addgrup').modal('toggle');
-    // $('#Mnomina')
-  }
-})
+
+
+function modalhours(){
+  var e=$("#empleotros").val();
+  var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+  var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+  var valor =$("#inputCheckBox").val();
+  var url="{{url('modalhours')}}/"+e; 
+var data={start:start,end:end,valor:valor};
+  $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            success:function(result){
+              alert(result);
+              if(result==1){
+                NothigHours();
+              }else{
+              $("#horassdd").html(result).modal("show");
+              }
+              
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             });
 }
 
 
+function NothigHours(){
+  const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-info',
+    cancelButton: 'btn btn-danger'
+  },
+  buttonsStyling: false
+})
 
-
+swalWithBootstrapButtons.fire({
+  title: 'No tiene un Horario Establecido en su empresa',
+  text: "Deseas Asignarle un horario?",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Si, Asignar!',
+  cancelButtonText: 'No, cancelar!',
+  reverseButtons: true
+}).then((result) => {
+  if (result.isConfirmed) {
+    swalWithBootstrapButtons.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    )
+  } else if (
+    /* Read more about handling dismissals below */
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'Your imaginary file is safe :)',
+      'error'
+    )
+  }
+})
+}
 
 $('#detalle').keyup(function(e){
     if(e.keyCode==107)
@@ -1451,6 +1432,9 @@ Command: toastr["success"]("Se ha guardado", "Correcto!")
   .serachEmpleado{
     font-size: 13px;
     color: black;
+  }
+  .titleCenter{
+    text-align: center;
   }
 </style>
 

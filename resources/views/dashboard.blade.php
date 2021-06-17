@@ -47,7 +47,7 @@
     <div class="card card-chart" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Empleados</b></h5>
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL EMPLEADOS</b></h5>
             <h3 class="card-title">{{$count_empleado}}</h3>
           </div>
         </div>
@@ -60,7 +60,7 @@
     <div class="card card-chart" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Usuarios</b></h5>
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL USUARIOS</b></h5>
             <h3 class="card-title">{{$count_users}}</h3>
           </div>
         </div>
@@ -73,7 +73,7 @@
     <div class="card card-chart" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Departamentos</b></h5>
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL DEPARTAMENTOS</b></h5>
             <h3 class="card-title">{{$count_puesto}}</h3>
           </div>
         </div>
@@ -100,7 +100,7 @@
     <div class="card card-chart" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Total Roles</b></h5>
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL ROLES</b></h5>
             <h3 class="card-title">{{$count_roles}}</h3>
           </div>
         </div>
@@ -114,7 +114,7 @@
     <div class="card card-chart" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>Reuniones pendiente</b></h5>
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>REUNIONES PENDIENTE</b></h5>
             <h3 class="card-title">0</h3>
           </div>
         </div>

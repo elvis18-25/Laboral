@@ -74,10 +74,12 @@ Route::post('deleteasigna/{id}','App\Http\Controllers\AsignacionesController@del
 //Empresa
 Route::post('SearchUser','App\Http\Controllers\EmpresaController@SearchUser');
 Route::post('Empresaphoto','App\Http\Controllers\EmpresaController@Empresaphoto');
+Route::post('Empresaupdate/{id}','App\Http\Controllers\EmpresaController@Empresaupdate');
 
 //Multi
 Route::post('MultiEmpresa','App\Http\Controllers\MultiController@MultiEmpresa');
 Route::post('SeleccionEmpresa','App\Http\Controllers\MultiController@SeleccionEmpresa');
+
 
 
 //datatables
@@ -133,6 +135,9 @@ Route::PUT('agregarGruopEdit/{id}','App\Http\Controllers\EquiposController@agreg
 Route::post('AllGroupEDIT','App\Http\Controllers\EquiposController@AllGroupEDIT');
 Route::get('AllGroup','App\Http\Controllers\EquiposController@AllGroup');
 
+//Horas
+Route::post('updatehoras/{id}','App\Http\Controllers\HorasController@updatehoras');
+Route::post('deletehoras/{id}','App\Http\Controllers\HorasController@deletehoras');
 
 
 //Cooperativa
@@ -195,6 +200,9 @@ Route::post('deleteemple/{id}','App\Http\Controllers\NominaController@deleteempl
 Route::post('VerificateHours/{id}','App\Http\Controllers\NominaController@VerificateHours');
 Route::post('savegrupos/{id}','App\Http\Controllers\NominaController@savegrupos');
 Route::post('modalhours/{id}','App\Http\Controllers\NominaController@modalhours');
+Route::post('savehoras/{id}','App\Http\Controllers\NominaController@savehoras');
+Route::get('horasemple/{id}','App\Http\Controllers\NominaController@horasemple');
+Route::post('showHoras/{id}','App\Http\Controllers\NominaController@showHoras');
 
 //Pagos
 Route::post('Pagosshow/{id}','App\Http\Controllers\PagosController@Pagosshow');
