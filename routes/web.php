@@ -137,7 +137,11 @@ Route::get('AllGroup','App\Http\Controllers\EquiposController@AllGroup');
 
 //Horas
 Route::post('updatehoras/{id}','App\Http\Controllers\HorasController@updatehoras');
+Route::post('updatehorasListado/{id}','App\Http\Controllers\HorasController@updatehorasListado');
 Route::post('deletehoras/{id}','App\Http\Controllers\HorasController@deletehoras');
+Route::post('deletehorasListado/{id}','App\Http\Controllers\HorasController@deletehorasListado');
+Route::post('savehorasListado/{id}','App\Http\Controllers\HorasController@savehorasListado');
+Route::post('showHorasListado/{id}','App\Http\Controllers\HorasController@showHorasListado');
 
 
 //Cooperativa
@@ -181,6 +185,8 @@ Route::post('deleteotrosListado/{id}','App\Http\Controllers\ListadoContrller@del
 Route::post('Otrosstorea','App\Http\Controllers\ListadoContrller@Otrosstorea');
 Route::post('addempleadoListado/{id}','App\Http\Controllers\ListadoContrller@addempleadoListado');
 Route::post('deleteempleListado/{id}','App\Http\Controllers\ListadoContrller@deleteempleListado');
+Route::get('horasempleListado/{id}','App\Http\Controllers\ListadoContrller@horasempleListado');
+Route::post('modalhoursListado/{id}','App\Http\Controllers\ListadoContrller@modalhoursListado');
 
 //Eventos
 Route::get('SerchEventos','App\Http\Controllers\EventosController@SerchEventos');

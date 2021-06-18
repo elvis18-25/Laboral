@@ -160,7 +160,10 @@
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
 @include('Listado.modalshowEdit')
+<div class="modal fade" id="horassdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <div class="modal fade" id="otrosedites" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<div class="modal fade" id="showhorasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+
 @include('Listado.otros')
 
 
@@ -168,6 +171,10 @@
 
 
 @section('js')
+<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-clockpicker.min.css')}}">
+<script type="text/javascript" src="{{asset('js/bootstrap-clockpicker.min.js')}}"></script>
+{{-- <script src="{{asset('js/pageLoader.js')}}"></script> --}}
+<script src="{{asset('js/timepicker.min.js')}}"></script>
 <script>
 //       var hoy = new Date();
 //   var fecha = moment(hoy);
@@ -647,7 +654,8 @@ $("#Nominas tbody").on('click','tr',function(){
    var dedu=$(this).attr('dedu');
    var bonus=$(this).attr('bono');
    var otros=$(this).attr('otros');
-   
+   var time=$(this).attr('times');
+
 
 $("#empleotros").val(id);
 
@@ -667,7 +675,9 @@ $("#empleotros").val(id);
    $("#totalO").empty();
    $("#totalO").append(Otrosres);
 
-
+   var Timesmonto= numberFormat2.format(time); 
+   $("#totalTimes").empty();
+   $("#totalTimes").append(Timesmonto);
 
 
    detalle(id);
@@ -692,7 +702,7 @@ function switchetss(e,p){
              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });
   }
@@ -714,7 +724,7 @@ function switchetssbono(e,p){
              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });
  
@@ -739,14 +749,53 @@ $("#otrosbutton").attr('hidden',false);
               $('#Detalles tbody').append(result);
               incremento(e);
               otros(e);
+              horas(e);
               
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });
  
 }
+
+function showHoras(e){
+  var url="{{url('showHorasListado')}}/"+e; 
+var data='';
+  $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            success:function(result){
+              $("#showhorasModal").html(result).modal("show");
+              
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             });
+}
+
+function horas(e){
+  var url="{{url('horasempleListado')}}/"+e; 
+  var data='';
+  $.ajax({
+         method: "GET",
+           data: data,
+            url:url ,
+            success:function(result){
+              $('#horasTables tbody').empty();
+              $('#horasTables tbody').append(result)
+              
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             });
+}
+
 
 function otros(e){
   var url="{{url('otrosListado')}}/"+e; 
@@ -762,7 +811,7 @@ function otros(e){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });
 }
@@ -780,7 +829,35 @@ function incremento(r){
               
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
+    }
+             });
+}
+
+
+function modalhours(){
+  var e=$("#empleotros").val();
+  var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+  var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+  var valor =$("#inputCheckBox").val();
+  var url="{{url('modalhoursListado')}}/"+e; 
+var data={start:start,end:end,valor:valor};
+  $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            success:function(result){
+              // alert(result);
+              if(result==1){
+                NothigHours();
+              }else{
+              $("#horassdd").html(result).modal("show");
+              }
+              
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
     }
              });
 }
@@ -813,7 +890,7 @@ var data={idperfi:idperfi};
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });
   }
@@ -848,7 +925,7 @@ function totalnomi(e){
              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });
 }
@@ -896,7 +973,7 @@ var data={p:p,idperfil:idperfil};
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });
 }
@@ -1017,7 +1094,7 @@ function Add(e){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              });   
 }
@@ -1108,7 +1185,7 @@ function saveotros(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
     }
              }); 
    }
@@ -1168,6 +1245,27 @@ function SuccesGen(){
       "hideMethod": "fadeOut",
     }
   }
+
+  function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
 </script>
     
 
@@ -1188,6 +1286,9 @@ function SuccesGen(){
   .serachEmpleado{
     font-size: 13px;
     color: black;
+  }
+  .titleCenter{
+    text-align: center;
   }
 </style>
 @endsection

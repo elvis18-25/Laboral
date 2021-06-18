@@ -139,7 +139,9 @@
   <div class="modal fade" id="otrosedites" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
   @include('Nominas.otros')
   @include('Nominas.addGroup')
+ 
 
+  <a href="{{url('Empresa')}}" class="btn btn-sm btn-success redondo"style="top: -14px; position: relative;"  ><button type="button" id="empresas" hidden style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;" ></i></a>
 
 
     <div class="o-page-loader">
@@ -993,7 +995,7 @@ var data={start:start,end:end,valor:valor};
            data: data,
             url:url ,
             success:function(result){
-              alert(result);
+              // alert(result);
               if(result==1){
                 NothigHours();
               }else{
@@ -1028,20 +1030,16 @@ swalWithBootstrapButtons.fire({
   reverseButtons: true
 }).then((result) => {
   if (result.isConfirmed) {
-    swalWithBootstrapButtons.fire(
-      'Deleted!',
-      'Your file has been deleted.',
-      'success'
-    )
+    $("#empresas").trigger('click');
   } else if (
     /* Read more about handling dismissals below */
     result.dismiss === Swal.DismissReason.cancel
   ) {
-    swalWithBootstrapButtons.fire(
-      'Cancelled',
-      'Your imaginary file is safe :)',
-      'error'
-    )
+    // swalWithBootstrapButtons.fire(
+    //   'Cancelado',
+    //   'Your imaginary file is safe :)',
+    //   'error'
+    // )
   }
 })
 }

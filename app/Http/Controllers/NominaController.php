@@ -22,6 +22,7 @@ use DateTime;
 use App\Models\nomina_asignaciones;
 use App\Models\nomina_otros;
 use App\Models\nomina_empleados;
+use App\Models\nomina_horas;
 use App\Models\Empresa;
 use App\Models\Horas;
 
@@ -137,6 +138,27 @@ class NominaController extends Controller
         }
         
         $empleado=Empleado::whereIn('id_empleado',$arrayID)->get();
+        $horas=Horas::all();
+
+        foreach($horas as $hora){
+            foreach($empleado as $empleados){
+            if($empleados->id_empleado==$hora->id_empleado){
+            $inputs['id_empleado']=$empleados->id_empleado;
+            $inputs['id_nomina']=$nominas->id;
+            $inputs['horaentrada']=$hora->horaentrada;
+            $inputs['horasalidad']= $hora->horasalidad;
+            $inputs['jornada']=$hora->jornada;
+            $inputs['fechainicio']=$hora->fechainicio;
+            $inputs['fechafinalizado']=$hora->fechafinalizado;
+            $inputs['monto']=$hora->monto;
+            $inputs['type']=$hora->type;
+            $inputs['horas']=$hora->horas;
+            $inputs['id_empresa']=Auth::user()->id_empresa;
+            $inputs['estado']=0;
+            nomina_horas::create($inputs);   
+            }
+          }
+        }
         $asigna=Asignaciones::where('id_empresa','=',Auth::user()->id_empresa)->get();
         $estado=estado_asignaciones::all();
         
@@ -186,17 +208,9 @@ class NominaController extends Controller
             }
           }
         }
-        // $p=0;
-        // foreach($otro as $otros){
-        //     if($n<$p){
-        //     if($arrayID[$p]== $otros->id_empleado){
-        //         $otros->delete();
-        //         $p++;
-        //     }else{
-        //         $p++;
-        //     }
-        //     }
-        // }
+    
+
+
 
 
 
@@ -505,6 +519,7 @@ class NominaController extends Controller
         $entrada=new DateTime($empresa->timestart);
         $salida=new DateTime($empresa->timeend);
         $jornada=request('jornada');
+        
         $fechaenrada=new datetime(request('fechaentrada'));
         $fechasalidad= new datetime(request('fechasalidad'));
         $start=request('start');
@@ -701,7 +716,7 @@ class NominaController extends Controller
     }
     public function modalhours($id)
     {
-        $equipos=Equipos::
+        $equipo=Equipos::
         leftjoin('equipos_empleados','equipos_empleados.equipos','=','equipos.id')
         ->leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
         ->where('equipos.id_empresa',Auth::user()->id_empresa)
@@ -710,17 +725,25 @@ class NominaController extends Controller
         ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
         ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
         ->get();
+        // dd($equipo);
 
         $start=request('start');
         $end=request('end');
         $valor=request('valor');
         $p=0;
+        $b=0;
+
+        if(count($equipo)==0){
+            $b=1;
+        }
+
+
 
         $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
         if($empresa->timestart==null){
             return $p=1;
         }else{
-           return view("Nominas.modalhoras",compact('equipos','id','empresa','start','end','valor'));
+           return view("Nominas.modalhoras",compact('equipo','id','empresa','start','end','valor','b'));
         }
 
     }
@@ -1394,7 +1417,7 @@ foreach($perf as $perfe){
                         }
                     }
 
-                    return $sumHorasExtras-$sumHorasDescontada;
+                    return $sumHorasDescontada+$sumHorasExtras;
 
                 },
                 'total'=>function($row){

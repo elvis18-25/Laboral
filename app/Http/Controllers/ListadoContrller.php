@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\nomina_asignaciones;
 use App\Models\nomina_otros;
 use App\Models\nomina_empleados;
+use App\Models\nomina_horas;
 use App\Models\otros;
 use DateTime;
 
@@ -152,6 +153,14 @@ class ListadoContrller extends Controller
 
         return view('Listado.otrosedit',compact('empleados','otros'));
 
+    }
+
+    public function horasempleListado($id)
+    {
+        $empleado=Empleado::findOrFail($id);
+        $hora=nomina_horas::where('id_empleado','=',$id)->get();
+        
+        return view('Listado.Plantillas.horasemple',compact('empleado','hora'));
     }
     public function Otrosstorea(Request $request)
     {
@@ -349,6 +358,9 @@ class ListadoContrller extends Controller
         $nominaEmpleado=nomina_empleados::where('id_nomina','=',$id)->get();
         $NominaOtros=nomina_otros::where('id_nomina','=',$id)->get();
         $NominaAsigna=nomina_asignaciones::where('id_nomina','=',$id)->get();
+        $NominaHoras=nomina_horas::where('id_nomina','=',$id)->get();
+        $sumHoraExtra=0;
+        $sumHoraDescontada=0;
 
         $cont2=0;
         $cont3=0;
@@ -447,6 +459,16 @@ class ListadoContrller extends Controller
                                   }  
                                 }
                                 }
+                            foreach($NominaHoras as $NominaHora){
+                                if($NominaHora->id_empresa==Auth::user()->id_empresa && $NominaHora->estado==0){
+                                    if($NominaHora->type=="EXTRAS"){
+                                        $sumHoraExtra= $sumHoraExtra+$NominaHora->monto;
+                                    }else{
+                                        $sumHoraDescontada=$sumHoraDescontada+$NominaHora->monto;
+                                    }
+                                    }
+                                  }  
+                   
 
 
 
@@ -516,13 +538,31 @@ class ListadoContrller extends Controller
 
              $totaldeducion=0;
              $totalincremento=0;
-             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3;
-             $totalincremento=$otrosI+$contbono-$desbonoCont;
+             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3+$sumHoraDescontada;
+             $totalincremento=$otrosI+$contbono-$desbonoCont+$sumHoraExtra;
 
             // return $otrosD;
 
              return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
             //  return $totalincremento;
+    }
+
+    public function modalhoursListado($id)
+    {
+        // $equipo=Equipos::
+        // leftjoin('equipos_empleados','equipos_empleados.equipos','=','equipos.id')
+        // ->leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
+        // ->where('equipos.id_empresa',Auth::user()->id_empresa)
+        // ->where('equipos.estado','!=','1')
+        // ->where('equipos_empleados.id_empleado','=',$id)
+        // ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
+        // ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
+        // ->get();
+        // dd($equipo);
+
+        return view("Listado.modalhoras",compact('id'));
+
+
     }
 
     /**
@@ -615,6 +655,8 @@ class ListadoContrller extends Controller
                 $tipo=request()->get('dato1');
                 $nominaAsignaciones=nomina_asignaciones::all();
                 $nominaOtros=nomina_otros::all();
+                $horas=nomina_horas::where('type','=','EXTRAS')->where('id_nomina','=', $tipo)->get();
+                $sumHoras=0;
                 $otro=otros::all();
                 $otrosCont=0;
                 $cont=0;
@@ -676,8 +718,14 @@ class ListadoContrller extends Controller
                             }
      
                             }
+
+                            foreach($horas as $hora){
+                                if($hora->id_empleado==$row->id_empleado){
+                                    $sumHoras=$sumHoras+$hora->monto;
+                                }
+                            }
                         
-                            return '$'.number_format($otrosCont-$sum2+$sum,2);
+                            return '$'.number_format($otrosCont-$sum2+$sum+$sumHoras,2);
             
             })
             ->editColumn('time',function($row){
@@ -722,6 +770,10 @@ class ListadoContrller extends Controller
                 
                 $nominaAsignaciones=nomina_asignaciones::all();
                 $nominaOtros=nomina_otros::all();
+                $horasDescontada=nomina_horas::where('type','=','DESCONTADA')->where('id_nomina','=', $tipo)->get();
+                $horasExtras=nomina_horas::where('type','=','EXTRAS')->where('id_nomina','=', $tipo)->get();
+                $sumHorasExtras=0;
+                $sumHorasDescontada=0;
                 //Asignaciones
                 $otrosContAsigna=0;
                 $contAsigna=0;
@@ -884,10 +936,20 @@ class ListadoContrller extends Controller
                     }
 
                     }
+                    foreach($horasDescontada as $hora){
+                        if($hora->id_empleado==$row->id_empleado){
+                            $sumHorasDescontada=$sumHorasDescontada+$hora->monto;
+                        }
+                    }
+                       foreach($horasExtras as $hora){
+                        if($hora->id_empleado==$row->id_empleado){
+                            $sumHorasExtras=$sumHorasExtras+$hora->monto;
+                        }
+                    }
             
             
-            $totalAsigna=$otrosContAsigna-$sum2+$sum;
-            $totalBono=$otrosContBono-$sum2bono+$sumbono;
+            $totalAsigna=$otrosContAsigna-$sum2+$sum+$sumHorasDescontada;
+            $totalBono=$otrosContBono-$sum2bono+$sumbono+$sumHorasExtras;
 
             return '$'.number_format($salarioDias+$totalBono-$totalAsigna,2);
 
@@ -897,6 +959,8 @@ class ListadoContrller extends Controller
                 $nominaAsignaciones=nomina_asignaciones::all();
                 $nominaOtros=nomina_otros::all();
                 $otro=otros::all();
+                $horas=nomina_horas::where('type','=','DESCONTADA')->where('id_nomina','=', $tipo)->get();
+                $sumHoras=0;
                 $otrosCont=0;
                 $cont=0;
                 $cont2=0;
@@ -957,8 +1021,13 @@ class ListadoContrller extends Controller
                             }
      
                             }
+                            foreach($horas as $hora){
+                                if($hora->id_empleado==$row->id_empleado){
+                                    $sumHoras=$sumHoras+$hora->monto;
+                                }
+                            }
                         
-                            return '$'.number_format($otrosCont-$sum2+$sum,2);
+                            return '$'.number_format($otrosCont-$sum2+$sum+$sumHoras,2);
 
             })->setRowAttr([
                 'data-href'=>function($row){
@@ -966,6 +1035,27 @@ class ListadoContrller extends Controller
                 },
                 'name'=>function($row){
                     return $row->nombre." ".$row->apellido;    
+                },
+                'times'=>function($row){
+                    $tipo=request()->get('dato1');
+                    $horasDescontada=nomina_horas::where('type','=','DESCONTADA')->where('id_nomina','=', $tipo)->get();
+                    $horasExtras=nomina_horas::where('type','=','EXTRAS')->where('id_nomina','=', $tipo)->get();
+                    $sumHorasDescontada=0;
+                    $sumHorasExtras=0;
+
+                    foreach($horasDescontada as $hora){
+                        if($hora->id_empleado==$row->id_empleado){
+                            $sumHorasDescontada=$sumHorasDescontada+$hora->monto;
+                        }
+                    }
+                       foreach($horasExtras as $hora){
+                        if($hora->id_empleado==$row->id_empleado){
+                            $sumHorasExtras=$sumHorasExtras+$hora->monto;
+                        }
+                    }
+
+                    return $sumHorasDescontada+$sumHorasExtras;
+
                 },
                 'dedu'=>function($row){
                     $tipo=request()->get('dato1');

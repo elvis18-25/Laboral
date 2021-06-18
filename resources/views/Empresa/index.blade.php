@@ -284,7 +284,7 @@
                               </div>
                               </div>
                               </div> 
-
+{{-- 
                               <div class="col-sm-3" id="ColWeekendeEn">
                                 <label for="inputZip"><b>HORA DE INICIO DEl FIN DE SEMANA</b></label>
                               <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
@@ -294,11 +294,11 @@
                                     <i style="color: black !important;" class="fas fa-clock"></i>
                                  </div>      
                                </div>
-                              <input type="text" class="form-control" id="HoraEn"  name="HoraEnWeenkded" readonly style="cursor: pointer !important; " >
+                              <input type="text" class="form-control"   name="HoraEnWeenkded" readonly style="cursor: pointer !important; " >
                             </div>
                             </div>
-                            </div>
-
+                            </div> --}}
+{{-- 
                               <div class="col-sm-3" id="ColWeekendeSa">
                                 <label for="inputZip"><b>HORA DE FINALIZACIÓN DEl FIN DE SEMANA</b></label>
                               <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
@@ -308,10 +308,10 @@
                                     <i style="color: black !important;" class="fas fa-clock"></i>
                                  </div>      
                                </div>
-                              <input type="text" class="form-control" id="HoraSaWeenkded"  name="HoraEn" readonly style="cursor: pointer !important; " >
+                              <input type="text" class="form-control" id="HoraSaWeenkded"  readonly style="cursor: pointer !important; " >
                             </div>
                             </div>
-                            </div>
+                            </div> --}}
 
                               <div class="col-sm-4">
                               <div class="form-check">

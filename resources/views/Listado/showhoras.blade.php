@@ -10,24 +10,6 @@
         <div class="form-row">
 
          
-          {{-- <div class="col-sm-12">
-            <div class="form-inline">
-            <div class="form-check form-check-radio">
-              <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked >
-                  AÑADIR MANUALMENTE
-                  <span class="form-check-sign"></span>
-              </label>
-          </div>
-          <div class="form-check form-check-radio" style="margin-left: 12px;">
-              <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" >
-                  AÑADIR POR GRUPO
-                  <span class="form-check-sign"></span>
-              </label>
-          </div>
-        </div>
-        </div> --}}
          <br>
           <br>
 
@@ -60,17 +42,10 @@
           <label for=""><b> FECHA DE FINALIZADO</b></label><br>
           <input type="text" name="datetimes" class="form-control" value="{{$horas->fechafinalizado}}" id="fechasalidadW" style="cursor: pointer !important; " readonly />
         </div>
-        <input type="text" id="started" value="{{$horas->fechainicio}}" hidden>
-        <input type="text" id="ended" value="{{$horas->fechafinalizado}}" hidden>
+        <input type="text" id="started_wek" value="{{$horas->fechainicio}}" hidden>
+        <input type="text" id="ended_wek" value="{{$horas->fechafinalizado}}" hidden>
         {{-- <input type="text" id="ended" value="{{$horas->fechafinalizado}}" hidden> --}}
-{{-- 
-       <div class="col-sm-6">
-            <input type="text" class="form-control" value="13:14" readonly>
-            <span class="input-group-addon">
-                <span ></span>
-            </span>
-        </div>
-      </div> --}}
+
 
 
         </div>
@@ -84,8 +59,8 @@
 
   <script>
 
-startComes = new Date($("#started").attr('value'));
- endComes = new Date($("#ended").attr('value'));
+startComes = new Date($("#started_wek").attr('value'));
+ endComes = new Date($("#ended_wek").attr('value'));
 
  start = moment(startComes);
  end = moment(endComes);
@@ -118,8 +93,9 @@ function updatehoras(e){
 var jornada=$("#inputState").val();
 var fechaentrada=$("#fechaentradaW").data('daterangepicker').startDate.format('YYYY-MM-DD H:mm');
 var fechasalidad=$("#fechasalidadW").data('daterangepicker').startDate.format('YYYY-MM-DD H:mm');
-var url="{{url('updatehoras')}}/"+e; 
-var data={jornada:jornada,fechaentrada:fechaentrada,fechasalidad:fechasalidad};
+var id_nomina=$("#input").attr('value');
+var url="{{url('updatehorasListado')}}/"+e; 
+var data={jornada:jornada,fechaentrada:fechaentrada,fechasalidad:fechasalidad,id_nomina:id_nomina};
 $.ajax({
        method: "POST",
          data: data,
@@ -131,7 +107,7 @@ $.ajax({
             $("#detalle").trigger("click");
             succesGneral();
             tabla.ajax.reload();
-            totalnomi(idnomina);
+            totalnomi($("#input").attr('value'));
 
             
 
@@ -154,7 +130,7 @@ function deletehoras(e){
   confirmButtonText: 'Si, Eliminarlo!'
 }).then((result) => {
   if (result.isConfirmed) {
-    var url="{{url('deletehoras')}}/"+e; 
+    var url="{{url('deletehorasListado')}}/"+e; 
 var data='';
   $.ajax({
          method: "POST",
@@ -167,7 +143,7 @@ var data='';
             $("#detalle").trigger("click");
             succesEliminar();
             tabla.ajax.reload();
-            totalnomi(idnomina);
+            totalnomi($("#input").attr('value'));
               
 
            },
