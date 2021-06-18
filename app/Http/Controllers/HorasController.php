@@ -429,6 +429,6 @@ class HorasController extends Controller
     public function showHorasListado($id)
     {
         $horas=nomina_horas::findOrFail($id);
-        return view('Listado.showHoras',compact('horas'));
+        return view('Listado.showhoras',compact('horas'));
     }
 }

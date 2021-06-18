@@ -132,6 +132,7 @@ var url="{{url('savehoras')}}/"+id;
               $("#horassdd").trigger("click");
               $("#detalle").trigger("click");
               tabla.ajax.reload();
+              succesGneral();
               totalnomi(idnomina);
 
            },
@@ -182,6 +183,26 @@ function ErroresGeneral(){
     }
   }
 
+  function succesGneral(){
+  Command: toastr["success"]("Se ha Actualizado Correctamente", "")
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+}
   $("#grupo").hide();
   $("#exampleRadios1").change(function(){
   if($(this).val()=="option1"){

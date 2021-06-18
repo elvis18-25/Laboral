@@ -313,7 +313,7 @@
                             </div>
                             </div> --}}
 
-                              <div class="col-sm-4">
+                              {{-- <div class="col-sm-4">
                               <div class="form-check">
                                 <label class="form-check-label">
                                   <input class="form-check-input check" value="0"  id="btnCheck"  type="checkbox" >
@@ -322,7 +322,7 @@
                                     </span></span>
                                   </label>
                                 </div>
-                              </div>
+                              </div> --}}
                               <br>
                                 </div>
                       

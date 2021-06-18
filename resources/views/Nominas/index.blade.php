@@ -1355,6 +1355,8 @@ function Errore(){
     }
   }
 
+
+
   function errorMult() {
   Command: toastr["error"]("Solo debes Elegir una de las dos Opciones", "Error")
   toastr.options = {

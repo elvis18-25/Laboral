@@ -803,8 +803,8 @@
   // }
 
 
-    var meses_chart = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
-    var chart_data = [400000, 70, 900000, 700000, 85, 60000, 75, 60, 90, 80, 110, 100];
+    // var meses_chart = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
+    // var chart_data = [400000, 70, 900000, 700000, 85, 60000, 75, 60, 90, 80, 110, 100];
 
 console.log(meses);
     var ctx = document.getElementById("chartBig1d").getContext('2d');
@@ -840,25 +840,27 @@ console.log(meses);
           pointHoverBorderWidth: 15,
           pointRadius: 4,
           data: monto,
-        },{
+        },
+        // {
           
-          label: "Nomina",
-          fill: true,
-          backgroundColor: gradientStrokes,
-          borderColor: '#1f8ef1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: '#1f8ef1',
-          pointBorderColor: 'rgba(255,255,255,0)',
-          pointHoverBackgroundColor: '#1f8ef1',
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          data: chart_data,
-        }],
-        labels: meses_chart,
+        //   label: "Nomina",
+        //   fill: true,
+        //   backgroundColor: gradientStrokes,
+        //   borderColor: '#1f8ef1',
+        //   borderWidth: 2,
+        //   borderDash: [],
+        //   borderDashOffset: 0.0,
+        //   pointBackgroundColor: '#1f8ef1',
+        //   pointBorderColor: 'rgba(255,255,255,0)',
+        //   pointHoverBackgroundColor: '#1f8ef1',
+        //   pointBorderWidth: 20,
+        //   pointHoverRadius: 4,
+        //   pointHoverBorderWidth: 15,
+        //   pointRadius: 4,
+        //   data: chart_data,
+        // }
+        ],
+        labels: meses,
         
       },
       options: gradientChartOptionsConfigurationWithTooltipPurple
