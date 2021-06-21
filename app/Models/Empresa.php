@@ -20,8 +20,7 @@ class Empresa extends Model
         'state',
         'contry',
         'city',
-        'timeend',
-        'timestart',
+
 
 
     ];

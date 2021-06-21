@@ -12,8 +12,6 @@ class Horas extends Model
 
     protected $fillable = [
         'id_empleado',
-        'horaentrada',
-        'horasalidad',
         'jornada',
         'fechainicio',
         'fechafinalizado',

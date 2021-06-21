@@ -31,9 +31,9 @@
            <br>
             <br>
           
-            <input type="text" value="{{$start}}" name="" id="start" hidden>
+            {{-- <input type="text" value="{{$start}}" name="" id="start" hidden>
             <input type="text" value="{{$end}}"  name="" id="end" hidden>
-            <input type="text" value="{{$valor}}"  name="" id="valor" hidden>
+            <input type="text" value="{{$valor}}"  name="" id="valor" hidden> --}}
 
           <div class="form-group col-md-4" id="jornada">
             <label for="inputState"><b>JORNADA LABORAL</b></label>
@@ -53,24 +53,6 @@
             <input type="text" name="datetimes" class="form-control" id="fechasalidad" style="cursor: pointer !important; " readonly />
           </div>
           <input type="text" id="empleado" value="{{$id}}" hidden>
-
-
-          {{-- <div class="form-group col-md-5" id="grupo">
-            <label for="inputState"><b>GRUPO</b></label>
-            <select id="grupoInput" class="form-control">
-              @if ($b==0)
-              <option value="-1" selected disabled>ElEGIR....</option>
-              @foreach ($equipo as $equipos)
-              <option value="{{$equipos->id}}">{{$equipos->descripcion}} {{$equipos->entrada."  "."A"."  ".$equipos->salida}}</option>
-              @endforeach
-              @endif
-             
-              @if ($b==1)
-              <option value="-1"><b style="color: black;">NO DISPONIBLE</option>
-              @endif
-            </select>
-          </div> --}}
-          {{-- <input type="text" name="" value="{{$b}}" id=""> --}}
 
 
           </div>
@@ -128,6 +110,7 @@ var url="{{url('savehoras')}}/"+id;
            data: data,
             url:url ,
             success:function(result){
+              // alert(result);
               $('#horasTables tbody').append(result);
               $("#horassdd").trigger("click");
               $("#detalle").trigger("click");

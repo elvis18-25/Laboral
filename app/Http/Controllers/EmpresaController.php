@@ -12,7 +12,11 @@ use App\Models\Permisos;
 use App\Models\Pais;
 use App\Models\Ciudad;
 use App\Models\Estado;
+use App\Models\Weekend;
+use App\Models\Weekend_empresa;
 use App\Http\Controllers\Auth\LoginController;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class EmpresaController extends Controller
 {
@@ -25,6 +29,7 @@ class EmpresaController extends Controller
     {
         $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
         $contrato=Contrato::all();
+        // $week=Weekend::all();
         $pais_start=0;
         $state_start=0;
         $city_start=0;
@@ -57,6 +62,44 @@ class EmpresaController extends Controller
     {
         //
     }
+
+    public function datatableHorario()
+    {
+        $hora=Weekend::
+        leftjoin('weekend_empresa','weekend_empresa.id_weekend','=','weekend.id')
+        ->select('weekend.id','weekend.day',DB::raw('count(weekend_empresa.id_weekend) as times'))
+        ->GroupBy('weekend.id','weekend.day');
+       
+            return datatables()->of($hora)
+            // ->editColumn('btn',function($row){
+            //     // $button='<div class="form-check"><label class="form-check-label"><input class="form-check-input" name="dom[]"  type="checkbox" value="'.$row->id.'"><span class="form-check-sign"><span class="check"></span></span></label></div>';
+            //     // return  $button;
+            //     return ;
+                
+            // })
+                
+            ->editColumn('horas',function($row){
+                $week=Weekend_empresa::where('id_weekend','=',$row->id)->get();
+                $sum=0;
+
+                foreach($week as $weeks){
+                    $entrada=new datetime($weeks->start);
+                    $salida=new datetime($weeks->end);
+
+                    $extras = date_diff($entrada, $salida);
+                    $sum=$sum+$extras->h;
+                }
+
+                return  $sum;
+
+            })
+            ->setRowAttr([
+                'data-href'=>function($row){
+                    return $row->id;
+                },
+            ])->toJson();
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -127,16 +170,6 @@ class EmpresaController extends Controller
     public function show($id)
     {
         $contrato=new Contrato();
-  
-        // if($request->hasFile('archivo')){
-        //     $file=$request->archivo;
-        //     $file->move(public_path(). '/modelo', $file->getClientOriginalName());
-        //     $contrato->name=$file->getClientOriginalName();   
-        //     $contrato->id_empresa=Auth::user()->id_empresa;   
-        // }else{
-        //     dd("No Hay Archivo");
-        // }
-    
         $contrato->save();
     
         return view('Emresa.plantilla',compact('contrato'));
@@ -153,6 +186,41 @@ class EmpresaController extends Controller
     public function edit($id)
     {
         //
+    }
+    public function saveUpdate($id)
+    {
+        $week=weekend_empresa::findOrFail($id);
+        $entrada=request('entrada');
+        $salida=request('salida');
+
+        $week->start=$entrada;
+        $week->end=$salida;
+        $week->update();
+
+        return 0;
+
+        
+        
+    }
+    public function UpdateHorasEmpresa($id)
+    {
+        $week=weekend_empresa::findOrFail($id);
+        
+        return view('Empresa.updatehoras',compact('week'));
+    }
+
+    public function DeleteEmpresa($id)
+    {
+        $week=weekend_empresa::findOrFail($id);
+        $week->delete();
+        return 0;
+    }
+
+    public function HorarioEmpresa($id)
+    {
+        $weekend=Weekend::findOrFail($id);
+        $week=Weekend_empresa::where('id_weekend','=',$id)->where('estado','=',0)->get();
+        return view('Empresa.modalHorario',compact('week','weekend'));
     }
 
     public function Empresaphoto(Request $request)
@@ -227,14 +295,38 @@ class EmpresaController extends Controller
         // dd("llego");
         $empresa=Empresa::findOrFail($id);
         $empresa->zipcode=$request->get('zipcode');
-        $empresa->timestart=$request->get('HoraEn');
-        $empresa->timeend=$request->get('HoraSa');
         $empresa->contry=$request->get('pais');
         $empresa->state=$request->get('state');
         $empresa->city=$request->get('ciudad');
         $empresa->update();
-        
         return redirect('Empresa');
+        
+    }
+    public function harariosave()
+    {
+        $entrada=request('entrada');
+        $salida=request('salida');
+        $semana=request('add');
+        $p=0;
+
+        $n=count($semana);
+        
+        for ($i=0; $i < $n; $i++) { 
+            if(!empty($semana[$i])){
+                $input['id_weekend']=$semana[$i];
+                $input['id_empresa']=Auth::user()->id_empresa;
+                $input['start']=$entrada;
+                $input['end']=$salida;
+                $input['laboral']=0;
+                $input['estado']=0;
+                $perfiles=Weekend_empresa::create($input);
+            }
+        }
+
+
+        return $p;
+
+
         
     }
 

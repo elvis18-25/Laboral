@@ -25,6 +25,7 @@ use App\Models\nomina_empleados;
 use App\Models\nomina_horas;
 use App\Models\Empresa;
 use App\Models\Horas;
+use App\Models\Weekend_empresa;
 
 
 class NominaController extends Controller
@@ -145,8 +146,6 @@ class NominaController extends Controller
             if($empleados->id_empleado==$hora->id_empleado){
             $inputs['id_empleado']=$empleados->id_empleado;
             $inputs['id_nomina']=$nominas->id;
-            $inputs['horaentrada']=$hora->horaentrada;
-            $inputs['horasalidad']= $hora->horasalidad;
             $inputs['jornada']=$hora->jornada;
             $inputs['fechainicio']=$hora->fechainicio;
             $inputs['fechafinalizado']=$hora->fechafinalizado;
@@ -516,8 +515,7 @@ class NominaController extends Controller
         $empleado=Empleado::findOrFail($id);
         $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
 
-        $entrada=new DateTime($empresa->timestart);
-        $salida=new DateTime($empresa->timeend);
+
         $jornada=request('jornada');
         
         $fechaenrada=new datetime(request('fechaentrada'));
@@ -530,56 +528,104 @@ class NominaController extends Controller
         $b=0;
         $type="EXTRAS";
 
-
-
         for($i = $fechaenrada; $i <= $fechasalidad; $i->modify('+1 day')){
             $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
             
         switch($nombre_dia)
         {
             case 1:
-                $veri=0;
-
+                $week=Weekend_empresa::where('id_weekend','=',1)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
-                $timeempresa = date_diff($entrada, $salida);
+                $b=0;
+
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+                
+                $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
             break;
             case 2: 
-                $veri=0;
-
+                $week=Weekend_empresa::where('id_weekend','=',2)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
-                $timeempresa = date_diff($entrada, $salida);
+                $b=0;
+
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+                
+                $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
             break;
             case 3: 
-                $veri=0;
-
+                $week=Weekend_empresa::where('id_weekend','=',3)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
-                $timeempresa = date_diff($entrada, $salida);
+                $b=0;
+
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+                
+                $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
             break;
             case 4: 
-                $veri=0;
-
+                $week=Weekend_empresa::where('id_weekend','=',4)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
-                $timeempresa = date_diff($entrada, $salida);
+                $b=0;
+
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+                
+                $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
             break;
             case 5: 
-                $veri=0;
-
+                $week=Weekend_empresa::where('id_weekend','=',5)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
-                $timeempresa = date_diff($entrada, $salida);
+                $b=0;
+
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+                
+                $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
             break;
             case 6: 
+                $week=Weekend_empresa::where('id_weekend','=',6)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
-                $timeempresa = date_diff($entrada, $salida);
+                $b=0;
+
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+                
+                $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
             break;
@@ -624,8 +670,6 @@ class NominaController extends Controller
 
         $horas=new Horas();
         $horas->id_empleado=$id;
-        $horas->horaentrada=$empresa->timestart;
-        $horas->horasalidad=$empresa->timeend;
         $horas->jornada=$jorni;
         $horas->fechainicio= request('fechaentrada');
         $horas->fechafinalizado=request('fechasalidad');
@@ -637,7 +681,8 @@ class NominaController extends Controller
         $horas->save();
 
         return view('Nominas.Plantillas.horas',compact('horas'));
-        // return  round($sum,2);;
+        // return   $salida->format("H:i");
+        // return $b;
 
     }
     public function deleteemple($id)
@@ -726,25 +771,12 @@ class NominaController extends Controller
         ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
         ->get();
         // dd($equipo);
-
-        $start=request('start');
-        $end=request('end');
-        $valor=request('valor');
         $p=0;
         $b=0;
 
-        if(count($equipo)==0){
-            $b=1;
-        }
 
 
-
-        $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
-        if($empresa->timestart==null){
-            return $p=1;
-        }else{
-           return view("Nominas.modalhoras",compact('equipo','id','empresa','start','end','valor','b'));
-        }
+           return view("Nominas.modalhoras",compact('equipo','id','b'));
 
     }
     public function VerificateHours($id)

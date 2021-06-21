@@ -23,6 +23,7 @@
                       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">CONFIGURACIÓN DEL SITIO</a>
                         <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#VLO" role="tab" aria-controls="v-pills-settings" aria-selected="false">VALOR DE EMPRESA</a>
+                        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#HL" role="tab" aria-controls="v-pills-profile" aria-selected="false">HORARIO LABORALES</a>
                         <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">CONTRATO</a>
                         <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">NUEVA EMPRESA</a>
                       </div>
@@ -137,8 +138,7 @@
 
                             </div>
                             
-                
-                                    
+    
                             <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 197px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
                             <input type="text" name="imagen"  id="idphoto" hidden value="">
                         </form>
@@ -155,6 +155,31 @@
                         </div>
                              
                         </div>
+
+  
+                        <div class="tab-pane fade" id="HL" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+
+                          @include('Empresa.newhHoras')
+                          <button type="button" class="btn btn-info btn-sm redondo float-right" data-toggle="modal" data-target="#NewHoras" style="top: -45px; margin-right: 8px;">
+                            <i class="fas fa-plus"></i>
+                          </button>
+                            <table class="table tablesorter  table-hover" id="HL-Table">
+                
+                                    <thead class=" text-primary">
+                                        <tr> 
+                                          <th class="TitleP">HORARIOS</th>
+                                          <th class="TitleP">HORAS DE TRABAJO</th>
+                                          {{-- <th class="TitleP">NO LABORABLE</th> --}}
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                        </div>
+
+
+
+
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                             <div class="card-body" style="height: 300px;">
                                 <button type="button" class="btn btn-info btn-sm float-right redondo" data-toggle="modal" data-target="#contrato"><i class="fa fa-plus"></i></button>
@@ -257,72 +282,8 @@
                                 </div>
                                 <div class="form-row">
 
-                                  <div class="col-sm-3">
-                                    <label for="inputZip"><b>HORA DE INICIO DE EMPRESA</b></label>
-                                  <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <div class="input-group-text">
-                                        <i style="color: black !important;" class="fas fa-clock"></i>
-                                     </div>      
-                                   </div>
-                                  <input type="text" class="form-control" id="HoraEn" value="{{$empresa->timestart}}" name="HoraEn" readonly style="cursor: pointer !important; " >
-                                </div>
-                                </div>
-                                </div>
 
-                                <div class="col-sm-3">
-                                  <label for="inputZip"><b>HORA DE FINALIZACIÓN DE EMPRESA</b></label>
-                                  <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                      <i style="color: black !important;" class="fas fa-clock"></i>
-                                   </div>      
-                                 </div>
-                                <input type="text" class="form-control" id="HoraSa" value="{{$empresa->timeend}}" name="HoraSa" readonly style="cursor: pointer !important; " >
-                              </div>
-                              </div>
-                              </div> 
-{{-- 
-                              <div class="col-sm-3" id="ColWeekendeEn">
-                                <label for="inputZip"><b>HORA DE INICIO DEl FIN DE SEMANA</b></label>
-                              <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text">
-                                    <i style="color: black !important;" class="fas fa-clock"></i>
-                                 </div>      
-                               </div>
-                              <input type="text" class="form-control"   name="HoraEnWeenkded" readonly style="cursor: pointer !important; " >
-                            </div>
-                            </div>
-                            </div> --}}
-{{-- 
-                              <div class="col-sm-3" id="ColWeekendeSa">
-                                <label for="inputZip"><b>HORA DE FINALIZACIÓN DEl FIN DE SEMANA</b></label>
-                              <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text">
-                                    <i style="color: black !important;" class="fas fa-clock"></i>
-                                 </div>      
-                               </div>
-                              <input type="text" class="form-control" id="HoraSaWeenkded"  readonly style="cursor: pointer !important; " >
-                            </div>
-                            </div>
-                            </div> --}}
 
-                              {{-- <div class="col-sm-4">
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  <input class="form-check-input check" value="0"  id="btnCheck"  type="checkbox" >
-                                  <span class="form-check-sign"><span class="check">
-                                    <b style="font-size: 14px; ">HORARIO FIN DE SEMANA</b>
-                                    </span></span>
-                                  </label>
-                                </div>
-                              </div> --}}
                               <br>
                                 </div>
                       
@@ -437,7 +398,12 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="HorasEmple" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<div class="modal fade" id="updatehours" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+
   @include('Empresa.cropper')
+
 <div class="o-page-loader">
     <div class="o-page-loader--content">
       <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner logotipo">
@@ -447,6 +413,7 @@
         </div>
     </div>
   </div>
+
     @include('Contrato.modal')
 @endsection
 
@@ -479,6 +446,62 @@
       $("#btnCheck").attr('value',0);
     }
   });
+
+
+
+  $.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+  });
+  
+ tabla=$('#HL-Table').DataTable({
+        "searching": false,
+        "paging":   false,
+        "ordering": false,
+        "info":     false,
+        processing:true,
+      
+
+    serverSide:true,
+    ajax:
+    {
+      url:"{{ url('datatableHorario') }}",
+      
+    },
+
+    language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      }, 
+
+
+    columns:[
+    {data:'day',name:'day', },
+    {data:'horas', name:'horas', class: "TitleP", searchable:false},
+    // {data:'btn',name:'btn', class: "TitleP",}
+    ],
+
+});
+
 
 $("#formulario").validate({
 
@@ -545,6 +568,30 @@ $("#deleempleado").submit(function(e){
 })
 })
 
+$("#HL-Table tbody").on('click','tr',function(){
+  var valor=$(this).attr('data-href');
+  Horario(valor);
+})
+
+
+function Horario(e){
+    var url = "{{url('HorarioEmpresa')}}/"+e; 
+     var data ='';
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+            $("#HorasEmple").html(result).modal("show");
+            // html(result).modal("show");
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             }); 
+}
 
 // $("input[name='custom_color']").mask('0#');
 $(".rnc").mask('0#');
@@ -713,6 +760,26 @@ function ErroresGeneral(){
       "hideMethod": "fadeOut"
     }
   }
+  function SuccesGen(){
+    Command: toastr["success"]("", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
 function ErroresCampo(){
     Command: toastr["error"]("Estos Campos son obligatorios", "Error!")
     toastr.options = {
@@ -734,6 +801,19 @@ function ErroresCampo(){
     }
   }
 
+  function toggle(source) {
+  checkboxes = document.getElementsByName('dinamico[]');
+
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+
+
+
+
+}
+
+
 $('.clockpicker').clockpicker();
 
 $('#inputCity').mask('0#');
@@ -744,7 +824,14 @@ $('#inputCity').mask('0#');
         background-color: rgb(255 255 255 / 50%);
       }
 
-
-
+      .TitleP{
+        text-align: center;
+      }
+      #HL-Table{
+        width: -webkit-fill-available !important; 
+      }
+      #HL-Table tbody tr{
+        cursor: pointer;
+      }
     </style>
 @endsection

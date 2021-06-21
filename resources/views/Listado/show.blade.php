@@ -778,8 +778,9 @@ var data='';
 }
 
 function horas(e){
+  var id=$("#input").attr('value');
   var url="{{url('horasempleListado')}}/"+e; 
-  var data='';
+  var data={id:id};
   $.ajax({
          method: "GET",
            data: data,

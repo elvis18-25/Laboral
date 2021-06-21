@@ -11,7 +11,7 @@
       <div class="modal-body">
           <div class="form-row">
               <div class="col-sm-6">
-                  <label style="color: black"> <b>{{ __('NOMBRE ') }}</b></label>
+                  <label style="color: black"> <b>{{ __('DESCRIPCIÓN ') }}</b></label>
                   <input type="text" name="name" autofocus id="name" value="{{$otros->descripcion}}"   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
               </div>
   
@@ -73,8 +73,8 @@
           <input type="text" id="empleotros" value="{{$empleados->id_empleado}}" hidden>
           <input type="text" id="perfile" value="{{$otros->id_nomina}}" hidden>
         {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-        <button type="button" class="btn btn-info btn-sm" onclick="updateotros('{{$otros->id}}');"><i class="fas fa-save"></i>&nbsp;Guardar</button>
-        <button type="button" class="btn btn-danger btn-sm" onclick="deleteotros('{{$otros->id}}',{{$empleados->id_empleado}});"><i class="fas fa-trash"></i>&nbsp;Eliminar</button>
+        <button type="button" class="btn btn-danger redondo" onclick="deleteotros('{{$otros->id}}',{{$empleados->id_empleado}});"><i class="fas fa-trash"></i></button>
+        <button type="button" class="btn btn-info redondo" onclick="updateotros('{{$otros->id}}');"><i class="fas fa-save"></i></button>
       </div>
     </div>
   </div>
@@ -132,7 +132,17 @@ if($(this).val()==3){
 });
 
 function deleteotros(e,p){
-  var url="{{url('deleteotrosListado')}}/"+e; 
+  Swal.fire({
+  title: '¿Estás seguro?',
+  text: "¡No podrás revertir esto!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, Eliminar!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    var url="{{url('deleteotrosListado')}}/"+e; 
   var perfil=$("#perfile").val();
 var data={p:p,perfil:perfil};
 $.ajax({
@@ -154,6 +164,9 @@ $.ajax({
                 ErroreGen();
   }
            });
+  }
+})
+  
 }
 
 function ErroreGen(){

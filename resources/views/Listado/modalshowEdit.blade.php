@@ -82,7 +82,7 @@
                       <table class="table table-striped table-hover" id="ot">
                   <thead>
                     <tr>
-                      <th class="TitleP">NOMBRE</th>
+                      <th class="TitleP">DESCRIPCIÓN</th>
                       <th class="TitleP">TIPO</th>
                       <th class="TitleP">FORMA</th>
                       <th class="TitleP">MONTO</th>
@@ -140,7 +140,7 @@
               </div>      
           </div>
           <div class="modal-footer">
-            <button type="button" onclick="eliminaremple();" class="btn btn-danger" style="position: absolute; top: 388px;"><i class="fas fa-trash"></i>&nbsp;Eliminar</button>
+            <button type="button" onclick="eliminaremple();" class="btn btn-danger redondo" style="position: absolute; top: 388px;"><i class="fas fa-trash"></i></button>
           </div>
         </div>
       </div>

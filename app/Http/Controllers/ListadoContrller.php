@@ -157,8 +157,9 @@ class ListadoContrller extends Controller
 
     public function horasempleListado($id)
     {
+        $id_nomina=request('id');
         $empleado=Empleado::findOrFail($id);
-        $hora=nomina_horas::where('id_empleado','=',$id)->get();
+        $hora=nomina_horas::where('id_empleado','=',$id)->where('id_nomina','=',$id_nomina)->get();
         
         return view('Listado.Plantillas.horasemple',compact('empleado','hora'));
     }

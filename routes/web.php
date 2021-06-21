@@ -71,10 +71,17 @@ Route::resource('Seleccion', 'App\Http\Controllers\MultiController');
 Route::post('viewasigna/{id}','App\Http\Controllers\AsignacionesController@viewasigna');
 Route::post('updateasignaciones/{id}','App\Http\Controllers\AsignacionesController@updateasignaciones');
 Route::post('deleteasigna/{id}','App\Http\Controllers\AsignacionesController@deleteasigna');
+
 //Empresa
 Route::post('SearchUser','App\Http\Controllers\EmpresaController@SearchUser');
 Route::post('Empresaphoto','App\Http\Controllers\EmpresaController@Empresaphoto');
 Route::post('Empresaupdate/{id}','App\Http\Controllers\EmpresaController@Empresaupdate');
+Route::post('harariosave','App\Http\Controllers\EmpresaController@harariosave');
+Route::post('DeleteEmpresa/{id}','App\Http\Controllers\EmpresaController@DeleteEmpresa');
+Route::post('UpdateHorasEmpresa/{id}','App\Http\Controllers\EmpresaController@UpdateHorasEmpresa');
+Route::post('saveUpdate/{id}','App\Http\Controllers\EmpresaController@saveUpdate');
+
+
 
 //Multi
 Route::post('MultiEmpresa','App\Http\Controllers\MultiController@MultiEmpresa');
@@ -99,6 +106,7 @@ Route::get('datatablEquipos','App\Http\Controllers\EquiposController@datatablEqu
 Route::get('datatableAsistencia','App\Http\Controllers\AsistenciaController@datatableAsistencia');
 Route::get('datatableHAS','App\Http\Controllers\AsistenciaController@datatableHAS');
 Route::get('datatableListado','App\Http\Controllers\ListadoContrller@datatableListado');
+Route::get('datatableHorario','App\Http\Controllers\EmpresaController@datatableHorario');
 
 
 //Empleados
@@ -164,6 +172,8 @@ Route::post('modaleditFecha/{id}','App\Http\Controllers\AsistenciaController@mod
 Route::post('updatefecha/{id}','App\Http\Controllers\AsistenciaController@updatefecha');
 Route::post('deletefecha/{id}','App\Http\Controllers\AsistenciaController@deletefecha');
 
+//Horario
+Route::post('HorarioEmpresa/{id}','App\Http\Controllers\EmpresaController@HorarioEmpresa');
 
 //Puesto
 Route::post('departshow/{id}','App\Http\Controllers\PuestoController@departshow');
