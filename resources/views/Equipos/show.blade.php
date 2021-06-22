@@ -24,20 +24,57 @@
         </div>
         <div class="card-body">
     <div class="form-row">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <label style="color: black"><b>{{ __('DESCRIPCION ') }}</b></label>
             <input type="text" name="name" autofocus id="descr" value="{{$equipo->descripcion}}" required  class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Descripción') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
         </div>
 
         <div class="col-sm-2">
-            <label style="color: black"><b>{{ __('HORA DE ENTRADA') }}</b></label>
-            <input type="text" name="entrada" class="form-control bs-timepicker" value="{{$equipo->entrada}}" id="entrada">
-        </div>
+          <label style="color: black"><b>{{ __('HORA DE ENTRADA') }}</b></label>
+          <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i style="color: black !important;" class="fas fa-clock"></i>
+           </div>      
+         </div>
+        <input type="text" class="form-control" id="entrada" value="{{$equipo->entrada}}" name="entrada" readonly style="cursor: pointer !important; " >
+      </div>
+      </div>
+      </div> 
 
-        <div class="col-sm-2">
-            <label style="color: black"><b>{{ __('HORA DE SALIDA') }}</b></label>
-            <input type="text" name="salida" class="form-control bs-timepicker" value="{{$equipo->salida}}" id="salida">
-        </div>
+      <div class="col-sm-2">
+        <label style="color: black"><b>{{ __('HORA DE SALIDA') }}</b></label>
+      <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i style="color: black !important;" class="fas fa-clock"></i>
+         </div>      
+       </div>
+      <input type="text" class="form-control" id="salida" value="{{$equipo->salida}}" name="salida" readonly style="cursor: pointer !important; " >
+    </div>
+    </div>
+    </div>
+
+    <div class="form-group col-md-2" id="type">
+      <label for="inputState"><b>TIPO DE GRUPO</b></label>
+      <select id="inputState" class="form-control" name="type">
+        @if ($equipo->type=="ASISTENCIA")
+        <option selected value="0">ASISTENCIA</option>
+        @else
+        <option  value="0">ASISTENCIA</option>
+        @endif
+
+        @if ($equipo->type=="EXTRAS")
+        <option selected value="1">HORA EXTRA</option>
+        
+        @else
+        
+        <option  value="1">HORA EXTRA</option>
+        @endif
+      </select>
+    </div> 
 
         </div>
 
@@ -514,5 +551,8 @@ function exitoall(){
     table tbody tr td{
         padding:  6px 7px !important;
     }
+    .form-control[readonly]{
+        background-color: rgb(255 255 255 / 50%);
+      }
 </style>
 @endsection

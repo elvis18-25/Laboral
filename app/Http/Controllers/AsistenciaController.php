@@ -7,7 +7,9 @@ use App\Models\Asistencia;
 use App\Models\Empleado;
 use App\Models\empleados_equipo;
 use App\Models\Equipos;
+use App\Models\Horas;
 use App\Models\Puesto;
+use App\Models\Weekend_empresa;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,24 +50,357 @@ class AsistenciaController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+
         $notas=$request->get('notas');
-        $entrada=$request->get('birthday');
+        $jornada=$request->get('jornada');
+        $grupo=0;
+
+        if($request->get('grupo')>0){
+            $grupo=$request->get('grupo');
+            // dd("llego");
+        }
+
 
         $size = count(collect($request)->get('Din'));
+        $array=[];
         
         for ($i=0; $i<=$size ; $i++) { 
             if(!empty(collect($request)->get('Din')[$i])){
+                $array[$i]=$request->get('Din')[$i];
            $input['id_empleado']=$request->get('Din')[$i];
            $input['notas']= $notas;
-           $input['entrada']=$request->get('birthday');
-           $input['salidad']=$request->get('birthday2s');
+           $input['entrada']=$request->get('entradaSave');
+           $input['salidad']=$request->get('salidaSave');
+           $input['id_grupo']=$request->get('grupo');
            $input['user']=Auth::user()->name;
            $input['id_empresa']=Auth::user()->id_empresa;
            $input['estado']=0;
            $perfiles=Asistencia::create($input);
-
             }
         }
+
+        $fechaenrada=new datetime($request->get('entradaSave'));
+        $fechasalidad= new datetime($request->get('salidaSave'));
+        $p=0;
+        $b=0;
+        $type="EXTRAS";
+
+
+ for ($a=0; $a<=$size ; $a++) { 
+    if(!empty(collect($request)->get('Din')[$a])){
+        $id=$array[$a];
+
+        for($i = $fechaenrada; $i <= $fechasalidad; $i->modify('+1 day')){
+            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+            
+        switch($nombre_dia)
+        {
+            case 1:
+                if($grupo==0){
+                $week=Weekend_empresa::where('id_weekend','=',1)->get();
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $b=0;
+
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+                
+                $veri=0;
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            }else{
+                $equipo=Equipos::findOrFail($grupo);
+                if($equipo->type=="EXTRAS"){
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $p=$p+$extras->h;
+                }else{
+                    
+                        $week=Weekend_empresa::where('id_weekend','=',1)->get();
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $b=0;
+        
+                        foreach($week as $weeks){
+                            
+                                  $entrada=new DateTime($weeks->start);
+                                  $salida=new DateTime($weeks->end);
+                                  $timeempresa = date_diff($entrada, $salida);
+                        }
+                        
+                        $veri=0;
+                        $veri=$extras->h-$timeempresa->h;
+                        $p=$p+$veri;
+                }
+
+            }
+
+
+            break;
+            case 2: 
+                if($grupo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',2)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($grupo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',2)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 3: 
+                if($grupo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',3)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($grupo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',3)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 4: 
+                if($grupo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',4)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($grupo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',4)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 5: 
+                if($grupo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',5)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($grupo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',5)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 6: 
+                if($grupo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',6)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($grupo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',6)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+        }
+        
+        }
+
+        
+        if($p<0){
+            $type="DESCONTADA";
+            $p=abs($p);
+        }
+        
+        
+
+        $empleado=Empleado::findOrFail($id);
+
+        if($empleado->horas!=0){
+            if($jornada==0){
+                $jorni="DIURNA";
+                $sum=$empleado->horas*1.35;
+                $sum=$sum*$p;
+            }else{
+                $jorni="NOCTURNA";
+                $mensual=$empleado->horas*1.35;
+                $semanal=$empleado->horas*1.15;
+                $sum=$mensual+$semanal;
+                $sum=$sum*$p;
+            }
+        }else{
+            if($jornada==0){
+                $jorni="DIURNA";
+                $sumer=$empleado->salario/23.83/8;
+                $sum=round($sumer,2)*1.35;
+                $sum=$sum*$p;
+            }else{
+                $jorni="NOCTURNA";
+                $sumer=$empleado->salario/23.83/8;
+                $mensual=round($sumer,2)*1.35;
+                $semanal=round($sumer,2)*1.15;
+                $sum=$mensual+$semanal;
+                $sum=$sum*$p;
+            }
+
+        }
+
+        if($p!=0){
+        $horas=new Horas();
+        $horas->id_empleado=$empleado->id_empleado;
+        $horas->jornada=$jorni;
+        $horas->fechainicio= $request->get('entradaSave');
+        $horas->fechafinalizado=$request->get('salidaSave');
+        $horas->monto=round($sum,2);
+        $horas->horas=(int)$p;
+        $horas->id_empresa=Auth::user()->id_empresa;
+        $horas->estado=0;
+        $horas->type=$type;
+        $horas->save();
+        }
+    }
+}
         
         return redirect('Asistencia');
     }
@@ -129,12 +464,337 @@ class AsistenciaController extends Controller
     }
     public function updatefecha($id)
     {
-        $asiste=Asistencia::select('id')->where('id_empleado','=',$id)->first();
+        $equipo=0;
+        $asiste=Asistencia::select('id')->where('id_empleado','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         $asistencias=Asistencia::findOrFail($asiste->id);
+        $hor=Horas::select('id')->where('id_empleado','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        // return $hor->id;
+        $horas=Horas::findOrFail($hor->id);
+
+        if($asistencias->id_grupo>0){
+            $equipo=$asistencias->id_grupo;
+            // $equipo=Equipos::findOrFail($horas->id);
+        }
+
+        // return $equipo;
+
         $asistencias->entrada=request('entrada');
         $asistencias->salidad=request('salidad');
         $asistencias->notas=request('notas');
         $asistencias->update();
+
+        $empleado=Empleado::findOrFail($id);
+        $jornada=request('jornada');
+        
+        $fechaenrada=new datetime(request('entrada'));
+        $fechasalidad= new datetime(request('salidad'));
+
+        $p=0;
+        $b=0;
+        $type="EXTRAS";
+
+        for($i = $fechaenrada; $i <= $fechasalidad; $i->modify('+1 day')){
+            $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
+            
+        switch($nombre_dia)
+        {
+            case 1:
+                if($equipo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',1)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($equipo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',1)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 2: 
+                if($equipo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',2)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($equipo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',2)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 3: 
+                if($equipo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',3)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($equipo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',3)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 4: 
+                if($equipo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',4)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($equipo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',4)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 5: 
+                if($equipo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',5)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($equipo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',5)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+            case 6: 
+                if($equipo==0){
+                    $week=Weekend_empresa::where('id_weekend','=',6)->get();
+                    $extras = date_diff($fechaenrada, $fechasalidad);
+                    $b=0;
+    
+                    foreach($week as $weeks){
+                        
+                              $entrada=new DateTime($weeks->start);
+                              $salida=new DateTime($weeks->end);
+                              $timeempresa = date_diff($entrada, $salida);
+                    }
+                    
+                    $veri=0;
+                    $veri=$extras->h-$timeempresa->h;
+                    $p=$p+$veri;
+                }else{
+                    $equipo=Equipos::findOrFail($equipo);
+                    if($equipo->type=="EXTRAS"){
+                        $extras = date_diff($fechaenrada, $fechasalidad);
+                        $p=$p+$extras->h;
+                    }else{
+                        
+                            $week=Weekend_empresa::where('id_weekend','=',6)->get();
+                            $extras = date_diff($fechaenrada, $fechasalidad);
+                            $b=0;
+            
+                            foreach($week as $weeks){
+                                
+                                      $entrada=new DateTime($weeks->start);
+                                      $salida=new DateTime($weeks->end);
+                                      $timeempresa = date_diff($entrada, $salida);
+                            }
+                            
+                            $veri=0;
+                            $veri=$extras->h-$timeempresa->h;
+                            $p=$p+$veri;
+                    }
+    
+                }
+            break;
+        }
+        
+        }
+
+        
+        if($p<0){
+            $type="DESCONTADA";
+            $p=abs($p);
+        }
+
+        if($empleado->horas!=0){
+            if($jornada==0){
+                $jorni="DIURNA";
+                $sum=$empleado->horas*1.35;
+                $sum=$sum*$p;
+            }else{
+                $jorni="NOCTURNA";
+                $mensual=$empleado->horas*1.35;
+                $semanal=$empleado->horas*1.15;
+                $sum=$mensual+$semanal;
+                $sum=$sum*$p;
+            }
+        }else{
+            if($jornada==0){
+                $jorni="DIURNA";
+                $sumer=$empleado->salario/23.83/8;
+                $sum=round($sumer,2)*1.35;
+                $sum=$sum*$p;
+            }else{
+                $jorni="NOCTURNA";
+                $sumer=$empleado->salario/23.83/8;
+                $mensual=round($sumer,2)*1.35;
+                $semanal=round($sumer,2)*1.15;
+                $sum=$mensual+$semanal;
+                $sum=$sum*$p;
+            }
+
+        }
+
+        if($p!=0){
+        $horas->id_empleado=$id;
+        $horas->jornada=$jorni;
+        $horas->fechainicio= request('entrada');
+        $horas->fechafinalizado=request('salidad');
+        $horas->monto=round($sum,2);
+        $horas->horas=(int)$p;
+        $horas->id_empresa=Auth::user()->id_empresa;
+        $horas->estado=0;
+        $horas->type=$type;
+        $horas->update();
+        }
         return 0;
     }
     public function deletefecha($id)
@@ -143,6 +803,11 @@ class AsistenciaController extends Controller
         $asistencias=Asistencia::findOrFail($asiste->id);
         $asistencias->estado=1;
         $asistencias->update();
+
+        $hor=Horas::select('id')->where('id_empleado','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $horas=Horas::findOrFail($hor->id);
+        $horas->estado=1;
+        $horas->update();
         return 0;
     }
 
@@ -156,8 +821,7 @@ class AsistenciaController extends Controller
 
      
         $empleados=Empleado::leftjoin('equipos_empleados','equipos_empleados.id_empleado','=','empleado.id_empleado')
-        ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','equipos_empleados.id_empleado')
-        ->leftjoin('horas','horas.id_empleado','=','empleado.id_empleado')
+        ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','empleado.id_empleado')
         ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
         ->where('empleado.estado','=',0)
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)

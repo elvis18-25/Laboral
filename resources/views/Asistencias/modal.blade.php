@@ -38,8 +38,9 @@
 <script>
 
     function saveFecha(){
-var entrada=$("#entrada").val();
-var salidad=$("#salidad").val();
+
+var entrada=$('input[name="birthday"]').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm');
+var salidad=$('input[name="birthday2s"]').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm');
 var notas=$("#notas").val();
 var id=$("#inputseEmple").val();
 
@@ -50,6 +51,7 @@ var data={entrada:entrada,salidad:salidad,notas:notas};
            data: data,
             url:url ,
             success:function(result){
+              // console.log(result);
               $("#horassdd").trigger("click");
               tabla.ajax.reload();
 
@@ -102,16 +104,18 @@ var data='';
     )
   }
 
+  var entrada=new Date($("#entrada").val());
+  var salida=new Date($("#salidad").val());
+
     $(function() {
   $('input[name="birthday"]').daterangepicker({
-    singleDatePicker: true,
-    showDropdowns: true,
-    autoclose: true,
-    todayHighlight: true,
-    minYear: 1901,
     timePicker: true,
+    singleDatePicker: true,
+    timePicker24Hour: true,
+
+    startDate: moment(entrada),
     locale: {
-        format: 'YYYY-MM-DD hh:mm '
+      format: 'DD/MM/YYYY H:mm '
     },
     maxYear: parseInt(moment().format('YYYY'),10)
   }, function(start, end, label) {
@@ -120,14 +124,13 @@ var data='';
 });
 $(function() {
   $('input[name="birthday2s"]').daterangepicker({
-    singleDatePicker: true,
-    showDropdowns: true,
-    minYear: 1901,
-    autoclose: true,
-    todayHighlight: true,
     timePicker: true,
+    singleDatePicker: true,
+    timePicker24Hour: true,
+
+    startDate: moment(salida),
     locale: {
-      format: 'YYYY-MM-DD hh:mm '
+      format: 'DD/MM/YYYY H:mm '
     },
     maxYear: parseInt(moment().format('YYYY'),10)
   }, function(start, end, label) {

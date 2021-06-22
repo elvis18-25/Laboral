@@ -27,7 +27,7 @@
         <div class="col-sm-4">
             <div class="form-inline ">
                 <label for="inputState"><b> SELECCIONAR POR GRUPO:</b> &nbsp;</label>
-                    <select id="inputState" class="form-control form-control-sm" name="dinamico">
+                    <select id="inputState" class="form-control form-control-sm" name="grupo">
                       <option  value="-1" >NINGUNO...</option>
                       <option selected value="0">TODOS</option>
                       @foreach ($equipo as $equipos)
@@ -68,9 +68,14 @@
         </div>
     </div>
 </div>
+<input type="text" name="entradaSave"  id="entradaSave" value="" hidden>
+<input type="text" name="salidaSave"  id="salidaSave" value="" hidden>
+
 <input type="text" name="arreglo" value="" id="arreglo" hidden>
 @include('Asistencias.modalFecha')
 <button type="button" id="subir" class="btn btn-fill btn-info float-right"><i class="fas fa-save"></i>&nbsp;{{ __('REGISTRAR') }}</button>
+
+
 </form>
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 
@@ -83,6 +88,8 @@
         </div>
     </div>
   </div>
+
+
 
 @endsection
 
@@ -250,36 +257,46 @@ function checkendesd(){
 
 $(function() {
   $('input[name="birthday"]').daterangepicker({
-    singleDatePicker: true,
-    showDropdowns: true,
-    autoclose: true,
-    todayHighlight: true,
-    minYear: 1901,
     timePicker: true,
+    singleDatePicker: true,
+    timePicker24Hour: true,
+
+    startDate: moment().startOf('hour'),
     locale: {
-        format: 'YYYY-MM-DD hh:mm '
+      format: 'DD/MM/YYYY H:mm '
     },
-    maxYear: parseInt(moment().format('YYYY'),10)
+    
   }, function(start, end, label) {
 
   });
 });
 $(function() {
   $('input[name="birthday2s"]').daterangepicker({
-    singleDatePicker: true,
-    showDropdowns: true,
-    minYear: 1901,
-    autoclose: true,
-    todayHighlight: true,
     timePicker: true,
+    singleDatePicker: true,
+    timePicker24Hour: true,
+
+    startDate: moment().startOf('hour').add(7, 'd').add(7, 'hour'),
     locale: {
-      format: 'YYYY-MM-DD hh:mm '
+      format: 'DD/MM/YYYY H:mm '
     },
     maxYear: parseInt(moment().format('YYYY'),10)
   }, function(start, end, label) {
 
   });
 });
+
+
+$("#formulario").on('submit',function(e){
+  var start=$('input[name="birthday"]').data('daterangepicker').startDate.format('YYYY-MM-DD H:mm');
+    var end=$('input[name="birthday2s"]').data('daterangepicker').endDate.format('YYYY-MM-DD H:mm');
+
+    $("#entradaSave").attr('value',start);
+    $("#salidaSave").attr('value',end);
+    this.submit();
+});
+
+
 </script>
 
 <style>
@@ -297,6 +314,9 @@ $(function() {
   top: -37px !important;
 }
 
+.form-control[readonly]{
+        background-color: rgb(255 255 255 / 50%);
+      }
 
 </style>
 @endsection

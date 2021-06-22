@@ -243,9 +243,15 @@ Route::get('phoneblade','App\Http\Controllers\GastoController@phoneblade');
 Route::post('conceptelimini/{id}','App\Http\Controllers\GastoController@conceptelimini');
 Route::post('modalfijo/{id}','App\Http\Controllers\GastoController@modalfijo');
 Route::post('updategasto/{id}','App\Http\Controllers\GastoController@updategasto');
+Route::post('modalmodificarFijo/{id}','App\Http\Controllers\GastoController@modalmodificarFijo');
 Route::post('modalmodificar/{id}','App\Http\Controllers\GastoController@modalmodificar');
+
 Route::post('deleteconcept/{id}','App\Http\Controllers\GastoController@deleteconcept');
+Route::post('deleteconceptFijo/{id}','App\Http\Controllers\GastoController@deleteconceptFijo');
+
+Route::post('updateconceptFijo/{id}','App\Http\Controllers\GastoController@updateconceptFijo');
 Route::post('updateconcept/{id}','App\Http\Controllers\GastoController@updateconcept');
+
 Route::post('modalshowmodificar/{id}','App\Http\Controllers\GastoController@modalshowmodificar');
 Route::post('updateconceptedit/{id}','App\Http\Controllers\GastoController@updateconceptedit');
 Route::post('saveconconcepto/{id}','App\Http\Controllers\GastoController@saveconconcepto');
@@ -257,3 +263,5 @@ Route::get('donwloadgasto/{id}','App\Http\Controllers\GastoController@donwloadga
 Route::get('modalcreatefijo','App\Http\Controllers\GastoController@modalcreatefijo');
 Route::get('modalcreateedit/{id}','App\Http\Controllers\GastoController@modalcreateedit');
 Route::get('saveGastosfijo/{id}','App\Http\Controllers\GastoController@saveGastosfijo');
+Route::get('totalgastoConcepto/{id}','App\Http\Controllers\GastoController@totalgastoConcepto');
+Route::get('totalgastoFijo/{id}','App\Http\Controllers\GastoController@totalgastoFijo');

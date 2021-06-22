@@ -100,8 +100,8 @@
                   
 
                   <tr id="gasto{{$gastofijo->id}}">
-                      <td onclick="verconcept({{$gastofijo->id}})">{{$gastofijo->concepto}}</td>
-                      <td  onclick="verconcept({{$gastofijo->id}})" style="text-align: right;">${{number_format($gastofijo->monto,2)}}</td>
+                      <td style=" cursor: pointer;" onclick="verconceptFijo({{$gastofijo->id}})">{{$gastofijo->concepto}}</td>
+                      <td  onclick="verconceptFijo({{$gastofijo->id}})" style="text-align: right; cursor: pointer;">${{number_format($gastofijo->monto,2)}}</td>
                   </tr>
                       
                   @endif
@@ -110,7 +110,7 @@
                 </tbody>
 
             </table>
-            <input type="text" name="" value="{{$totalfijo}}" id="totalfijo" hidden>
+            <input type="text" name="" value="" id="totalfijo" hidden>
           </div>
             <div class="card-footer py-4">
               <nav class="d-flex justify-content-end" aria-label="...">
@@ -164,7 +164,7 @@
             </table>
           </div>
         </div>
-        <input type="text" name="" value="{{$totalconcepto}}" id="totalconcepto" hidden >
+        <input type="text" name="" value="" id="totalconcepto" hidden >
         <div class="card-footer py-4">
           <nav class="d-flex justify-content-end" aria-label="...">
             <b class="float-right" style="color: black;
@@ -306,14 +306,10 @@
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
-// $(document).ready(function(){
 
 
-// });
-// window.addEventListener("onbeforeunload",function(e){
-// return "h";
-// });
-
+totalgastoConcepto();
+totalgastoFijo();
 if (window.history && window.history.pushState) {
 
 window.history.pushState('forward', null);
@@ -382,15 +378,15 @@ Swal.fire({
 })
 });
 
-formpago=parseInt($("#totalconcepto").val(),10);
+// formpago=parseInt($("#totalconcepto").val(),10);
 cont=0;
 valordectes=0;
 general=0;
 options2 = { style: 'currency', currency: 'USD' };
 numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
-reses= numberFormat2.format(formpago); 
-$("#totalperiodo").append(reses);
+// reses= numberFormat2.format(formpago); 
+// $("#totalperiodo").append(reses);
 
 resnomina= numberFormat2.format(valordectes); 
 $("#totalnominames").append(resnomina);
@@ -399,7 +395,7 @@ restotal= numberFormat2.format(general);
 $("#totalgeneral").append(restotal);
 
 
-totalgasto();
+// totalgasto();
   // var hoy = new Date();
   // var fecha = moment(hoy);
   // document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
@@ -437,54 +433,121 @@ function MFDC(){
 }
 
 
-function totalgasto(){
-             var restnomina=parseInt($("#nominatotaldf").val(),10);
-              var concepextras=parseInt( $("#conceptosd").val(),10);
-              var totalconcepto=parseInt($("#totalconcepto").val(),10);
+function totalgeneral(){
+
+                var totalconcepto=parseInt($("#totalconcepto").val(),10);
               var totalfijo=parseInt($("#totalfijo").val(),10);
 
-              if(totalconcepto!=0){
-                var sum=restnomina+totalfijo+concepextras+totalconcepto;
-              }else{
-                var sum=restnomina+totalfijo+concepextras;
-                
-              }
 
-
-              var sum1=totalfijo;
-              res= numberFormat2.format(sum1); 
+              var sum=totalfijo+totalconcepto;
               var resgeneral= numberFormat2.format(sum); 
-
-              
-            $("#totalnomina").empty();
-            $("#totalnomina").append(res);
-
-            $("#totalgeneral").empty();
-            $("#totalgeneral").append(resgeneral);
-            
-            $("#formes").attr('value',totalfijo);
-            $("#totl").attr('value',totalfijo);
-            
-            if($("#totl").val()!=0){
               $("#totl").attr('value',sum);
+              $("#totalgeneral").empty();
+            $("#totalgeneral").append(resgeneral);
+}
+
+// function totalgasto(){
+//              var restnomina=parseInt($("#nominatotaldf").val(),10);
+//               var concepextras=parseInt( $("#conceptosd").val(),10);
+//               var totalconcepto=parseInt($("#totalconcepto").val(),10);
+//               var totalfijo=parseInt($("#totalfijo").val(),10);
+
+//               if(totalconcepto!=0){
+//                 var sum=restnomina+totalfijo+concepextras+totalconcepto;
+//               }else{
+//                 var sum=restnomina+totalfijo+concepextras;
+                
+//               }
+
+
+//               var sum1=totalfijo;
+//               res= numberFormat2.format(sum1); 
+//               var resgeneral= numberFormat2.format(sum); 
+
               
-            }
+//             $("#totalnomina").empty();
+//             $("#totalnomina").append(res);
+
+//             $("#totalgeneral").empty();
+//             $("#totalgeneral").append(resgeneral);
+            
+//             $("#formes").attr('value',totalfijo);
+//             $("#totl").attr('value',totalfijo);
+            
+//             if($("#totl").val()!=0){
+//               $("#totl").attr('value',sum);
+              
+//             }
 
             
-            cont=parseInt($("#formes").val());
+//             cont=parseInt($("#formes").val());
 
-            var totalconcepto=$("#totalconcepto").val();
-            var restotal= numberFormat2.format(totalconcepto); 
+//             var totalconcepto=$("#totalconcepto").val();
+//             var restotal= numberFormat2.format(totalconcepto); 
+            
+//             $("#totalperiodo").empty();
+//             $("#totalperiodo").append(restotal);
+//             var idnominas=$("#idnomina").val();
+//             if(idnominas!=0){
+              
+//               VerficateNomina();
+//             }
+
+//           }
+
+function totalgastoConcepto(){
+  var e=$("#input").val();
+  var url = "{{ url('totalgastoConcepto')}}/"+e;
+     var data = '';
+        $.ajax({
+         method: "GET",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              
+            // var totalconcepto=$("#totalconcepto").val();
+            var restotal= numberFormat2.format(result); 
             
             $("#totalperiodo").empty();
             $("#totalperiodo").append(restotal);
-            var idnominas=$("#idnomina").val();
-            if(idnominas!=0){
-              
-              VerficateNomina();
-            }
+            $("#totalconcepto").attr('value',result)
+            totalgastoFijo();
+        
+          
+           
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+               ErroresGeneral();
+    }
+             });  
+}
+function totalgastoFijo(){
+  var e=$("#input").val();
+  var url = "{{ url('totalgastoFijo')}}/"+e;
+     var data = '';
+        $.ajax({
+         method: "GET",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+            var restotal= numberFormat2.format(result); 
+            
+            $("#totalnomina").empty();
+            $("#totalnomina").append(restotal);
+            $("#totalfijo").attr('value',result);
+            totalgeneral();
+        
+          
+           
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+               ErroresGeneral();
+    }
+             });  
+}
 
-          }
 
 
 function VerficateNomina(){
@@ -526,67 +589,6 @@ function VerficateNomina(){
               }
              });  
 }
-// function totalgasto(){
-//     var url = "{{ url('totalgasto') }}";
-//      var data = '';
-//         $.ajax({
-//          method: "GET",
-//            data: data,
-//             url:url ,
-//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-//             success:function(result){
-//               var restnomina=parseInt($("#nominatotaldf").val(),10);
-//               var concepextras=parseInt( $("#conceptosd").val(),10);
-//               var totalconcepto=parseInt($("#totalconcepto").val(),10);
-
-//               if(totalconcepto!=0){
-//                 var sum=restnomina+parseInt(result,10)+concepextras+totalconcepto;
-//               }else{
-//                 var sum=restnomina+parseInt(result,10)+concepextras;
-                
-//               }
-
-
-//               var sum1=parseInt(result,10);
-//               res= numberFormat2.format(sum1); 
-//               var resgeneral= numberFormat2.format(sum); 
-
-              
-//             $("#totalnomina").empty();
-//             $("#totalnomina").append(res);
-
-//             $("#totalgeneral").empty();
-//             $("#totalgeneral").append(resgeneral);
-
-//             $("#formes").attr('value',result);
-//             $("#totl").attr('value',result);
-
-//             if($("#totl").val()!=0){
-//               $("#totl").attr('value',sum);
-
-//             }
-
-            
-//             cont=parseInt($("#formes").val());
-
-//             var totalconcepto=$("#totalconcepto").val();
-//             var restotal= numberFormat2.format(totalconcepto); 
-
-//             $("#totalperiodo").empty();
-//             $("#totalperiodo").append(restotal);
-
-
-
-
-          
-           
-//            },
-//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                ErroresGeneral();
-//     }
-//              });  
-// }
-
 
 
 $("#condiction").change(function(){
@@ -679,13 +681,7 @@ function GanoFoco2(){
   
 }
 
-// window.onbeforeunload = function(e) {
-//  if($("#gastoperido-table tbody tr").length>0){
-//    return "h";
-//  }else{
-//    return null;
-//  }
-// };
+
 
 
 
@@ -763,176 +759,7 @@ var rest=0;
 
 });
 
-// $.ajaxSetup({
-// headers: {
-// 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-// }
-//   });
-  
-//  tabla=$('#gastos-table').DataTable({
-//         dom: 'Bfrtip',
-//         "searching": false,
-//         "paging":   false,
-//         "info":     false,
-//         processing:true,
-//         "scrollY":        "280px",
-//         "scrollCollapse": true,
-      
 
-//     serverSide:true,
-//     ajax:
-//     {
-//       url:"{{ url('datatablegastosshowfijo') }}",
-     
-//     },
-
-//     language: {
-//       searchPlaceholder: "Buscar",
-//         "decimal": "",
-//         "emptyTable": "No hay información",
-//         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-//         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-//         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-//         "infoPostFix": "",
-//         "thousands": ",",
-//         "lengthMenu": "",
-//         "loadingRecords": "Cargando...",
-//         "processing": "Procesando...",
-//         "search": "",
-//         "zeroRecords": "Sin resultados encontrados",
-//         "paginate": {
-//             "first": "Primero",
-//             "last": "Ultimo",
-//             "next": "Siguiente",
-//             "previous": "Anterior"
-//         }
-
-//       }, 
-
-// //       columnDefs: [{
-// // targets: [0,1,2,3,4,5],
-// // className: 'bolded'
-// // }
-// // ],
-//       buttons: [
-//             {
-//                 extend: 'excel',
-//                 messageTop: 'Listado de Empleado.'
-//             },
-//             {
-//                 extend: 'pdf',
-//                 messageBottom: null
-//             },
-//             {
-//                 extend: 'print',
-//                 messageTop: 'Listado de Empleado.',
-//             }
-//         ],
-
-
-
-//     columns:[
-//     {data:'concepto',name:'concepto', class:'left' },
-//     {data:'monto', name:'monto', class:'right'},
-//     ],
-
-// });
-
-// $.ajaxSetup({
-// headers: {
-// 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-// }
-//   });
-  
-//  tabla=$('#gastos-table').DataTable({
-//         dom: 'Bfrtip',
-//         "searching": false,
-//         "paging":   false,
-//         // "ordering": false,
-//         "info":     false,
-//         processing:true,
-//         "scrollY":        "280px",
-//         "scrollCollapse": true,
-      
-
-//     serverSide:true,
-//     ajax:
-//     {
-//       url:"{{ url('datatableconcept') }}",
-//       "data":function(d){
-//         if($("#input").val()!=''){
-//           d.dato1=$("#input").val();
-//           // alert($("#input").val())
-//           id=$("#input").val();
-//             // totalnomi(id);
-//         }
-//       }
-     
-//     },
-
-//     language: {
-//       searchPlaceholder: "Buscar",
-//         "decimal": "",
-//         "emptyTable": "No hay información",
-//         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-//         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-//         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-//         "infoPostFix": "",
-//         "thousands": ",",
-//         "lengthMenu": "",
-//         "loadingRecords": "Cargando...",
-//         "processing": "Procesando...",
-//         "search": "",
-//         "zeroRecords": "Sin resultados encontrados",
-//         "paginate": {
-//             "first": "Primero",
-//             "last": "Ultimo",
-//             "next": "Siguiente",
-//             "previous": "Anterior"
-//         }
-
-//       }, 
-
-// //       columnDefs: [
-// //         {
-// //           className: "dt-head-center",
-// //         },
-// //         {
-// //       "targets": 0, // your case first column
-// //       "className": "text-left",
-// //       // "width": "20%",
-// //         },
-// //         {
-// //       "targets": 1, // your case first column
-// //       "className": "text-left",
-// //       // "width": "20%",
-// //         },
-// // ],
-
-
-//       buttons: [
-//             {
-//                 extend: 'excel',
-//                 messageTop: 'Listado de Empleado.'
-//             },
-//             {
-//                 extend: 'pdf',
-//                 messageBottom: null
-//             },
-//             {
-//                 extend: 'print',
-//                 messageTop: 'Listado de Empleado.',
-//             }
-//         ],
-
-
-
-//     columns:[
-//     {data:'concepto',name:'concepto', class:'left' },
-//     {data:'monto', name:'monto', class:'right'},
-//     ],
-
-// });
 
 $("#gastos-table select[name='porciento[]']").on('change',function(){
    var  e=$(this).val();
@@ -945,97 +772,6 @@ $("#gastos-table select[name='porciento[]']").on('change',function(){
 idconcepto=0;
 verificador=0;
 
-// function capturar(){
-
-//   var conceptoCapturar=document.getElementById("concepto").value;
-//   var montoCapturar=document.getElementById("monto").value;
-//   var conceptid=idconcepto++;
- 
-//   var nomina=$("#nominavalue").val();
-
-// if(conceptoCapturar!=''&&montoCapturar!=''){
-
-//     function  Persona(id,concepto,monto){
-//      this.concepto=concepto;
-//      this.monto=monto;
-//      this.id=id;
-//     }
-
-//     nuevoSujeto= new Persona(conceptid,conceptoCapturar,montoCapturar);
- 
-//  agregar();
-//   }else{
-//     // if(nomina==0){
-//     //  errornomina();
-//     // }
-//     if(conceptoCapturar=='' ||montoCapturar=='' ){
-
-//     error();
-//     }
-
-//   }
-// }
-// var baseDatos=[];
-// var BDconceptos=[];
-// var BDmonto=[];
-// var p=0;
-// function agregar(){
-//   $('.datosInput').val('');
-//   $("#concepto").focus();
-//   $("#conceptomodal").trigger("click");
-//   var valor=parseInt($("#nominatotaldf").val(),10);
-//   var cont2=parseInt($("#totalconcepto").val(),10);
-//   var cont=parseInt($("#totl").val(),10);
-  
-
-//   formpago=formpago+parseInt(nuevoSujeto.monto,10);
-
-//   if(valor==0){
-//     cont=cont+parseInt(nuevoSujeto.monto,10);
-//     // verificador=parseInt($("#formes").val());
-//     // alert()
-//   }else{
-//     cont=cont+parseInt(nuevoSujeto.monto,10);
-
-//   }
-
-  
-//   $("#totl").attr('value',cont);
-
-//   var reses= numberFormat2.format(formpago);
-//   var resgeneral= numberFormat2.format(cont);
-
-//         $("#totalperiodo").empty();
-//         $("#totalperiodo").append(reses);
-
-//         $("#totalgeneral").empty();
-//             $("#totalgeneral").append(resgeneral);
-
-//         $("#conceptosd").attr('value',formpago);
-
-//    re= numberFormat2.format(nuevoSujeto.monto);
-
-
-
-// baseDatos.push(nuevoSujeto);
-// console.log(baseDatos);
-// var button = '<button class="btn btn-danger remf btn-sm" value="'+nuevoSujeto.monto+'" type="button"><i class="fas fa-trash"></i></button>';
-// var button2=' <button class="btn btn-info  btn-sm" data-toggle="modal" data-target="#upload" type="button"><i class="fas fa-upload"></i></button>'
-
-// BDconceptos[p]=nuevoSujeto.concepto;
-// BDmonto[p]=nuevoSujeto.monto;
-// console.log(BDconceptos);
-// console.log(BDmonto);
-// p++;
-
-// $("#conp").attr('value',BDconceptos);
-// $("#montp").attr('value',BDmonto);
-
-
-// $('#gastoperido-table tbody').append('<tr class="showinfo" action="'+nuevoSujeto.concepto+'" value="'+nuevoSujeto.monto+'" ><td><input type="text" value="'+nuevoSujeto.concepto+'"  name="concepto[]" / hidden>'+nuevoSujeto.concepto+'</td><td style="text-align: right;"><input type="text" name="monto[]" value="'+nuevoSujeto.monto+'"/hidden>'+re+'</tr>');
-
-
-// }
 
 function capturar(){
   var concepto=document.getElementById("concepto").value;
@@ -1055,49 +791,14 @@ if(concepto!=''&& monto!=''){
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
               if(result!=0){
-                $("#gastoperido-table tbody").append(result);
-              $("#conceptomodal").trigger("click");
-              // var sum=parseInt($("#totalconcepto").val(),10)+parseInt($(result).attr('action'),10);
-              $('.datosInput').val('');
-  $("#concepto").focus();
-  var valor=parseInt($("#nominatotaldf").val(),10);
-  var cont2=parseInt($("#totalconcepto").val(),10);
-  var cont=parseInt($("#totl").val(),10);
-  
+            $('.datosInput').val('');
+            $("#concepto").focus();
 
-  formpago=formpago+parseInt($(result).attr('action'),10);
+              $("#gastoperido-table tbody").empty();
+            $("#gastoperido-table tbody").append(result);
+            $("#conceptomodal").trigger("click");
+            totalgastoConcepto();
 
-  if(valor==0){
-    cont=cont+parseInt($(result).attr('action'),10);
-    // verificador=parseInt($("#formes").val());
-    // alert()
-  }else{
-    cont=cont+parseInt($(result).attr('action'),10);
-
-  }
-
-  
-  $("#totl").attr('value',cont);
-
-  var reses= numberFormat2.format(formpago);
-  var resgeneral= numberFormat2.format(cont);
-
-        $("#totalperiodo").empty();
-        $("#totalperiodo").append(reses);
-
-        $("#totalgeneral").empty();
-            $("#totalgeneral").append(resgeneral);
-
-        $("#conceptosd").attr('value',formpago);
-
-            //   var resgeneral= numberFormat2.format(sum); 
-
-              
-            // $("#totalnomina").empty();
-            // $("#totalnomina").append(resgeneral);
-
-            // $("#formes").attr('value',sum);
-            // $("#totl").attr('value',sum);
 
               }else{
                 ComparationGastos();
@@ -1315,8 +1016,8 @@ function Mcf(){
              });  
 }
 
-function verconcept(e){
- var url = "{{ url('modalmodificar')}}/"+e;
+function verconceptFijo(e){
+ var url = "{{ url('modalmodificarFijo')}}/"+e;
      var data = '';
         $.ajax({
          method: "POST",
@@ -1329,6 +1030,25 @@ function verconcept(e){
         
           
            
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+               ErroresGeneral();
+    }
+             });  
+ 
+}
+function verconcept(e){
+ var url = "{{ url('modalmodificar')}}/"+e;
+     var data = '';
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              $("#fijomodal").html(result).modal("show");
+
+        
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                ErroresGeneral();

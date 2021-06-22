@@ -520,9 +520,6 @@ class NominaController extends Controller
         
         $fechaenrada=new datetime(request('fechaentrada'));
         $fechasalidad= new datetime(request('fechasalidad'));
-        $start=request('start');
-        $end=request('end');
-        $valor=request('valor');
 
         $p=0;
         $b=0;
@@ -668,6 +665,7 @@ class NominaController extends Controller
 
         }
 
+        if($p!=0){
         $horas=new Horas();
         $horas->id_empleado=$id;
         $horas->jornada=$jorni;
@@ -679,6 +677,7 @@ class NominaController extends Controller
         $horas->estado=0;
         $horas->type=$type;
         $horas->save();
+        }
 
         return view('Nominas.Plantillas.horas',compact('horas'));
         // return   $salida->format("H:i");
@@ -718,7 +717,7 @@ class NominaController extends Controller
     public function horasemple($id)
     {
         $empleado=Empleado::findOrFail($id);
-        $hora=Horas::where('id_empleado','=',$id)->get();
+        $hora=Horas::where('id_empleado','=',$id)->where('estado','=',0)->get();
         
         return view('Nominas.Plantillas.horasEmple',compact('empleado','hora'));
     }

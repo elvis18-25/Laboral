@@ -98,8 +98,6 @@ numberFormat2 = new Intl.NumberFormat('en-US', options2);
      var elegir=$("#selecteModal").val();
      var id=$("#idgastos").val();
 
-
-
      if(name!=0 && monto!=0){
        if(elegir!=0){
         errorMult();
@@ -113,20 +111,10 @@ numberFormat2 = new Intl.NumberFormat('en-US', options2);
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
               if(result!=0){
-                
-              $("#gastofijo-table tbody").append(result);
-              $("#modalSf").trigger("click");
-              var sum=parseInt($("#totalfijo").val(),10)+parseInt($(result).attr('action'),10);
-
-
-              var resgeneral= numberFormat2.format(sum); 
-
-              
-            $("#totalnomina").empty();
-            $("#totalnomina").append(resgeneral);
-
-            $("#formes").attr('value',sum);
-            $("#totl").attr('value',sum);
+                $("#gastofijo-table tbody").empty();
+            $("#gastofijo-table tbody").append(result);
+            $("#modalSf").trigger("click");
+            totalgastoConcepto();
           }else{
             Comparation();
           }
@@ -152,21 +140,10 @@ numberFormat2 = new Intl.NumberFormat('en-US', options2);
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
               if(result!=0){
-// alert(parseInt($("#formes").val(),10));
-              $("#gastofijo-table tbody").append(result);
-              $("#modalSf").trigger("click");
-              var sum=parseInt($("#formes").val(),10)+parseInt($(result).attr('action'),10);
-
-
-              // ressc= numberFormat2.format(sum); 
-              var resgeneral= numberFormat2.format(sum); 
-
-              
-            $("#totalnomina").empty();
-            $("#totalnomina").append(resgeneral);
-
-            $("#formes").attr('value',sum);
-            $("#totl").attr('value',sum);
+                $("#gastofijo-table tbody").empty();
+            $("#gastofijo-table tbody").append(result);
+            $("#modalSf").trigger("click");
+            totalgastoConcepto();
           }else{
             Comparation();
           }

@@ -18,10 +18,8 @@ class Asistencia extends Model
         'user',
         'id_empresa',
         'estado',
+        'id_grupo'
     ];
 
-    protected $cats = [
-        'entrada' => 'date',
-        'salidad' => 'date',
-    ];
+
 }

@@ -51,6 +51,14 @@ class EquiposController extends Controller
         $perfil->descripcion=$request->get('name');
         $perfil->entrada=$request->get('entrada');
         $perfil->salida=$request->get('salida');
+        
+        if($request->get('type')==1){
+        $type="EXTRAS";
+        }else{
+        $type="ASISTENCIA";
+        }
+
+        $perfil->type=$type;
         $perfil->user=Auth::user()->name;
         $perfil->estado=0;
         $perfil->id_empresa=Auth::user()->id_empresa;

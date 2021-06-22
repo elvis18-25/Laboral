@@ -24,22 +24,34 @@
         </div>
         <div class="card-body">
     <div class="form-row">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <label style="color: black"><b>{{ __('DESCRIPCION ') }}</b></label>
             <input type="text" name="name" autofocus id="descr" required  class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Descripción') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
         </div>
 
-        <div class="col-sm-2">
-            <label style="color: black"><b>{{ __('HORA DE ENTRADA') }}</b></label>
-            <input type="text" name="entrada" class="form-control bs-timepicker" value="" id="entrada">
-        </div>
 
-        <div class="col-sm-2">
-            <label style="color: black"><b>{{ __('HORA DE SALIDA') }}</b></label>
-            <input type="text" name="salida" class="form-control bs-timepicker" value="" id="salida">
-        </div>
+      
+            <div class="col-sm-2">
+                <label style="color: black"><b>{{ __('HORA DE SALIDA') }}</b></label>
+              <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i style="color: black !important;" class="fas fa-clock"></i>
+                 </div>      
+               </div>
+              <input type="text" class="form-control" id="salida"  name="salida" readonly style="cursor: pointer !important; " >
+            </div>
+            </div>
+            </div>
 
-        </div>
+            <div class="form-group col-md-2" id="type">
+                <label for="inputState"><b>TIPO DE GRUPO</b></label>
+                <select id="inputState" class="form-control" name="type">
+                  <option selected value="0">ASISTENCIA</option>
+                  <option value="1">HORA EXTRA</option>
+                </select>
+              </div>
 
         </div>
         <div class="card-footer py-4">
@@ -47,6 +59,7 @@
                 
             </nav>
         </div>
+    </div>
     </div>
 
     <div class="card ">
@@ -118,14 +131,20 @@
 @section('js')
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="{{asset('js/timepicker.min.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-clockpicker.min.css')}}">
+<script type="text/javascript" src="{{asset('js/bootstrap-clockpicker.min.js')}}"></script>
 <script>
-     $('.bs-timepicker').timepicker();
+    $('.clockpicker').clockpicker();
+    //  $('.bs-timepicker').timepicker();
 
 
      $("#Empleadotable tbody").on('click','tr',function(){
     $('td', this).css('backgroundColor', '#958fcd ');
             $('td', this).css('color', 'white');
 });
+
+
+
 
 tebl=$('#Empleadotable').DataTable({
         scrollY: 300,
@@ -186,6 +205,8 @@ tebl=$('#Empleadotable').DataTable({
 
     }
 });
+
+
   $('#Empleadotable').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
@@ -367,5 +388,8 @@ function Errore(){
     table tbody tr td{
         padding:  6px 7px !important;
     }
+    .form-control[readonly]{
+        background-color: rgb(255 255 255 / 50%);
+      }
 </style>
 @endsection

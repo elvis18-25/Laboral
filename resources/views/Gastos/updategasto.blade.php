@@ -1,4 +1,14 @@
-<tr id="gasto{{$concepto->id}}" action="{{$p}}" value="{{$concepto->monto}}">
-    <td onclick="verconcept({{$concepto->id}})">{{$concepto->concepto}}</td>
-    <td style="text-align: right;">${{number_format($concepto->monto,2)}}</td>
-  </tr>
+@foreach ( $gastofijos as  $gastofijo)
+@if ($gastofijo->id_empresa==Auth::user()->id_empresa && $gastofijo->estado==0)
+@if ($gastofijo->id_gasto==$gasto->id)
+    
+
+
+<tr id="gasto{{$gastofijo->id}}">
+    <td style=" cursor: pointer;" onclick="verconceptFijo({{$gastofijo->id}})">{{$gastofijo->concepto}}</td>
+    <td  onclick="verconceptFijo({{$gastofijo->id}})" style="text-align: right; cursor: pointer;">${{number_format($gastofijo->monto,2)}}</td>
+</tr>
+    
+@endif
+@endif
+@endforeach
