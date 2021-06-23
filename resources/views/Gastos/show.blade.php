@@ -45,15 +45,7 @@
                   <select id="selecte" class="form-control " value="" name="idnominaser" disabled>
                     <option selected value="0" >ELEGIR NOMINA</option>
                     @foreach ($nominas as $nomina)
-                    @if ($nomina->id_empresa==Auth::user()->id_empresa && $nomina->estado==0 )
-                    @if ($gasto->id_nomina==$nomina->id)
-                    <option value="{{$nomina->id}}" selected>{{$nomina->descripcion}}</option>
-                        
-                    @else
-                    <option value="{{$nomina->id}}">{{$nomina->descripcion}}</option>
-                        
-                    @endif
-                    @endif
+                    <option value="{{$nomina->id}}" >{{$nomina->descripcion}}</option>
                     @endforeach
                   </select>
                 </div>
@@ -197,7 +189,13 @@
                   </tr>
               </thead>
               <tbody>
-                
+                @foreach ($gasto_nomina as $gasto_nominas)
+                <tr onclick="vernomina({{$gasto_nominas->id_nomina}});" id="{{$gasto_nominas->id_nomina}}" value="{{$gasto_nominas->monto}}" action="{{$gasto_nominas->id_nomina}}">
+                  <td style="cursor: pointer;"> {{$gasto_nominas->descripcion}}</td>
+                  <td style="text-align: right; cursor: pointer;">${{number_format($gasto_nominas->monto,2)}}</td>
+                  
+              </tr>
+                @endforeach
               </tbody>
           </table>
           </div>
@@ -211,6 +209,7 @@
             </nav>
           </div>
       </div>
+      <input type="text" id="nomina" value="0" hidden>
       {{---------------------------------------------------------------------------------------------------------------------------------------------}}
      
 
@@ -310,6 +309,7 @@
 
 totalgastoConcepto();
 totalgastoFijo();
+
 if (window.history && window.history.pushState) {
 
 window.history.pushState('forward', null);
@@ -437,9 +437,10 @@ function totalgeneral(){
 
                 var totalconcepto=parseInt($("#totalconcepto").val(),10);
               var totalfijo=parseInt($("#totalfijo").val(),10);
+              var totalnomina=parseInt($("#nomina").val(),10);
 
 
-              var sum=totalfijo+totalconcepto;
+              var sum=totalfijo+totalconcepto+totalnomina;
               var resgeneral= numberFormat2.format(sum); 
               $("#totl").attr('value',sum);
               $("#totalgeneral").empty();
@@ -537,7 +538,8 @@ function totalgastoFijo(){
             $("#totalnomina").empty();
             $("#totalnomina").append(restotal);
             $("#totalfijo").attr('value',result);
-            totalgeneral();
+            VerficateNomina();
+            
         
           
            
@@ -551,8 +553,8 @@ function totalgastoFijo(){
 
 
 function VerficateNomina(){
-  var id=$("#idnomina").val();
-  var url = "{{url('listmonto')}}/"+id;
+  var id=$("#input").val();
+  var url = "{{url('totalnomina')}}/"+id;
      var data = '';
      $.ajax({
          method: "POST",
@@ -560,29 +562,13 @@ function VerficateNomina(){
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
-              
-              $("#gastonomina-table tbody").empty();
-              $("#gastonomina-table tbody").append(result);
-    
-              
-              var monto=parseInt($(result).attr('value'),10);
-              $("#nominatotaldf").attr('value',monto);
-              var restotal= numberFormat2.format(monto); 
-              $("#totalnominames").empty();
-              $("#totalnominames").append(restotal);
+              var restotal= numberFormat2.format(result); 
+            
+            $("#totalnominames").empty();
+            $("#totalnominames").append(restotal);
+              $("#nomina").attr('value',result);
+              totalgeneral();
 
-              var Totalmonto=parseInt($("#totl").val(),10);
-              var sum =Totalmonto+monto;
-
-              var resgeneral= numberFormat2.format(sum); 
-
-            $("#totalgeneral").empty();
-            $("#totalgeneral").append(resgeneral);
-
-            $("#totl").attr('value',sum);
-        
-          
-              
            },
            error: function(XMLHttpRequest, textStatus, errorThrown) { 
                ErroresGeneral();
@@ -682,71 +668,27 @@ function GanoFoco2(){
 }
 
 
-
-
-
-
 $("#selecte").on('change',function(){
 var valor=$("#selecte").val();
-var sum=0;
-var rest=0;
- cont2=0;
-
-  if(valor!=0 && valordectes!=valor){
-    
+var id=$("#input").val();
     var url = "{{url('listmonto')}}/"+valor; 
-    var data = ' ';
+    var data = {id:id};
     $.ajax({
      method: "POST",
        data: data,
         url:url ,
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         success:function(result){
-          $("#"+valordectes).remove();
 
-          valordectes=valor;
+          $("#gastonomina-table tbody").empty();
           $("#gastonomina-table tbody").prepend(result);
-          var rsul=parseInt($("#formes").val(),10);
-          var restnomina=parseInt($("#nominavalue").val(),10);
-          var nomina=parseInt($(result).attr('value'),10);
-          var Vnomina=parseInt($("#totl").val(),10);
-          var id=$(result).attr('action');
 
-          $("#getval").attr('value',id);
+          var monto=$(result).attr('value');
+          $("#nomina").attr('value',monto);
+          totalgastoConcepto();
+          refreshSelect();
+          SuccesGen();
 
-
-
-            if(Vnomina!=''){
-              rest=Vnomina-restnomina;
-              sum=nomina+rest;
-              // cont2=cont2+sum;
-            var results= numberFormat2.format(nomina);
-            var regeneral= numberFormat2.format(sum);
-            $("#totalnominamo").empty();
-            $("#totalnominamo").append(results);
-
-            $("#totalgeneral").empty();
-            $("#totalgeneral").append(regeneral);
-
-
-            $("#totl").attr('value',sum);
-            $("#nominatotaldf").attr('value',nomina);
-            $("#nominavalue").attr('value',nomina);
-            $("#nominavalue").attr('value',nomina);
-
-            }else{
-          cont=rsul+nomina-restnomina;
-          var resultado= numberFormat2.format(cont);
-          $("#totalnominamo").empty();
-          $("#totalnominamo").append(resultado);
-
-          $("#totalgeneral").empty();
-            $("#totalgeneral").append(resultado);
-
-          $("#totl").attr('value',cont);
-          $("#nominavalue").attr('value',nomina);
-          $("#nominatotaldf").attr('value',nomina);
-            }
 
    
        
@@ -755,10 +697,31 @@ var rest=0;
            ErroresGeneral();
 }
          });  
-  }
 
 });
 
+
+function refreshSelect(){
+  var id=$("#input").val();
+    var url = "{{url('refreshSelect')}}/"+id; 
+    var data = '';
+    $.ajax({
+     method: "POST",
+       data: data,
+        url:url ,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        success:function(result){
+        $("#selecte").empty();
+        $("#selecte").append(result);
+          
+
+
+       },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+           ErroresGeneral();
+}
+         });  
+}
 
 
 $("#gastos-table select[name='porciento[]']").on('change',function(){
@@ -798,6 +761,7 @@ if(concepto!=''&& monto!=''){
             $("#gastoperido-table tbody").append(result);
             $("#conceptomodal").trigger("click");
             totalgastoConcepto();
+            SuccesGen();
 
 
               }else{
@@ -881,23 +845,6 @@ $(document).on('click', '.showinfo', function (event) {
        }
         
     }
-});
-$(document).on('click', '.remfes', function (event) {
-
-  $("#"+valordectes).remove();
-  // valordectes=valor;
-  var rsul=parseInt($("#formes").val(),10);
-  var restnomina=parseInt($("#nominavalue").val(),10);
-  var nomina=parseInt($(this).attr('value'),10);
-  var Vnomina=parseInt($("#totl").val(),10);
-  // cont=cont-nomina;
-              rest=Vnomina-nomina;
-            var resultses= numberFormat2.format(rest);
-            $("#totalnomina").empty();
-            $("#totalnomina").append(resultses);
-            $("#totl").attr('value',0);
-            $("#nominavalue").attr('value',1);
-  
 });
 
 
@@ -1123,6 +1070,27 @@ function ErroresGeneral(){
       "hideMethod": "fadeOut"
     }
   }
+
+  function SuccesGen(){
+    Command: toastr["success"]("", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
 </script>
 <style>
   .disabledclass{
@@ -1144,6 +1112,10 @@ function ErroresGeneral(){
 /* table tr td{
   padding: 4px 7px !important;
 } */
+
+table tr td{
+  padding: 4px 7px !important;
+}
 
   </style>
 @endsection

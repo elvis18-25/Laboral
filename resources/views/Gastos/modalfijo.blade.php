@@ -76,7 +76,7 @@ $('.updates').on('click',function(){
     var name=$("#nombre").val();
     var monto=$("#monts").val();
 
-    var url = "{{ url('updategasto')}}/"+id;
+    var url = "{{ url('updategastoFijos')}}/"+id;
      var data = {name:name,monto:monto};
         $.ajax({
          method: "POST",

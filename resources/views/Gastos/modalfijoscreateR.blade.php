@@ -115,6 +115,7 @@ numberFormat2 = new Intl.NumberFormat('en-US', options2);
             $("#gastofijo-table tbody").append(result);
             $("#modalSf").trigger("click");
             totalgastoConcepto();
+            SuccesGen();
           }else{
             Comparation();
           }
@@ -144,6 +145,7 @@ numberFormat2 = new Intl.NumberFormat('en-US', options2);
             $("#gastofijo-table tbody").append(result);
             $("#modalSf").trigger("click");
             totalgastoConcepto();
+            SuccesGen();
           }else{
             Comparation();
           }

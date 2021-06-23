@@ -56,12 +56,12 @@ var id=$(this).val();
             $("#gastoperido-table tbody").append(result);
             $("#fijomodal").trigger("click");
             totalgastoConcepto();
+            SuccesGen();
             
          
-          
           },
                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-               alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
    }
             });
  }
@@ -86,17 +86,11 @@ $('.updatestes').on('click',function(){
             $("#gastoperido-table tbody").append(result);
             $("#fijomodal").trigger("click");
             totalgastoConcepto();
-
-
-   
-
-
-        
-          
+            SuccesGen();
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral(); 
     }
              });  
 });

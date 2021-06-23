@@ -232,17 +232,25 @@ Route::post('deleteotros/{id}','App\Http\Controllers\OtrosController@deleteotros
 
 //Gasto
 Route::post('listmonto/{id}','App\Http\Controllers\GastoController@listmonto');
+Route::post('listmontoCreate/{id}','App\Http\Controllers\GastoController@listmontoCreate');
+
 Route::get('GastosFijo','App\Http\Controllers\GastoController@GastosFijo');
 Route::post('Gastossavefijo/{id}','App\Http\Controllers\GastoController@Gastossavefijo');
 Route::get('totalgasto','App\Http\Controllers\GastoController@totalgasto');
 Route::post('totalgastoshow/{id}','App\Http\Controllers\GastoController@totalgastoshow');
 Route::post('deletegasto/{id}','App\Http\Controllers\GastoController@deletegasto');
+
 Route::post('vernomina/{id}','App\Http\Controllers\GastoController@vernomina');
+Route::post('vernominaCreate/{id}','App\Http\Controllers\GastoController@vernominaCreate');
+
 Route::post('savephone','App\Http\Controllers\GastoController@savephone');
 Route::get('phoneblade','App\Http\Controllers\GastoController@phoneblade');
 Route::post('conceptelimini/{id}','App\Http\Controllers\GastoController@conceptelimini');
 Route::post('modalfijo/{id}','App\Http\Controllers\GastoController@modalfijo');
+
 Route::post('updategasto/{id}','App\Http\Controllers\GastoController@updategasto');
+Route::post('updategastoFijos/{id}','App\Http\Controllers\GastoController@updategastoFijos');
+
 Route::post('modalmodificarFijo/{id}','App\Http\Controllers\GastoController@modalmodificarFijo');
 Route::post('modalmodificar/{id}','App\Http\Controllers\GastoController@modalmodificar');
 
@@ -251,6 +259,10 @@ Route::post('deleteconceptFijo/{id}','App\Http\Controllers\GastoController@delet
 
 Route::post('updateconceptFijo/{id}','App\Http\Controllers\GastoController@updateconceptFijo');
 Route::post('updateconcept/{id}','App\Http\Controllers\GastoController@updateconcept');
+
+Route::post('totalnomina/{id}','App\Http\Controllers\GastoController@totalnomina');
+Route::post('refreshSelect/{id}','App\Http\Controllers\GastoController@refreshSelect');
+Route::post('refreshSelectCreate','App\Http\Controllers\GastoController@refreshSelectCreate');
 
 Route::post('modalshowmodificar/{id}','App\Http\Controllers\GastoController@modalshowmodificar');
 Route::post('updateconceptedit/{id}','App\Http\Controllers\GastoController@updateconceptedit');

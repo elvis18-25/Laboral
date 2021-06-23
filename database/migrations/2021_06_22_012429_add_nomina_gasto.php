@@ -13,7 +13,14 @@ class AddNominaGasto extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('gastos_nominas',function(Blueprint $table){
+            $table->id();
+            $table->integer('id_gasto');
+            $table->integer('id_nomina');
+            $table->integer('estado');
+            $table->integer('id_empresa');
+            $table->timestamps();
+        });
     }
 
     /**

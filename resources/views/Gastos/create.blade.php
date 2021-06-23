@@ -28,7 +28,7 @@
 
                 @csrf   
             <div class="form-row">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <label><b>{{ __('DESCRIPCION') }}</b></label>
                     <input type="text" name="descripn" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
                 </div>
@@ -36,7 +36,7 @@
                     $user=Auth::user()->id_empresa
                 @endphp
 
-              <div class="col-sm-5">
+              <div class="col-sm-4">
                 <label><b>{{ __('ELEGIR NOMINA') }}</b></label>
                 <div class="input-group  mb-3">
                   <div class="input-group-prepend disabledclass" id="prepend" >
@@ -47,10 +47,9 @@
                   <select id="selecte" class="form-control " name="idnomina" disabled>
                       <option selected value="0" >ELEGIR NOMINA</option>
                       @foreach ($nominas as $nomina)
-                      @if ($nomina->id_empresa==$user && $nomina->estado==0 )
                           
                       <option value="{{$nomina->id}}">{{$nomina->descripcion}}</option>
-                      @endif
+                      
                       @endforeach
                   </select>
                 </div>
@@ -247,6 +246,9 @@
     </div>
 </div>
 </div>
+
+<input type="text" name="arreglo" value="" id="arreglo" hidden>
+
 </form>
 
 <div class="o-page-loader">
@@ -281,6 +283,8 @@
 // window.addEventListener("onbeforeunload",function(e){
 // return "h";
 // });
+var arraynomina=[];
+b=0;
 
 if (window.history && window.history.pushState) {
 
@@ -418,11 +422,11 @@ function totalgasto(){
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
-              var restnomina=parseInt($("#nominatotaldf").val(),10);
-              var concepextras=parseInt( $("#conceptosd").val(),10);
+              var restnomina=parseFloat($("#nominatotaldf").val(),10);
+              var concepextras=parseFloat( $("#conceptosd").val(),10);
 
-              var sum=restnomina+parseInt(result,10)+concepextras;
-              var sum1=parseInt(result,10);
+              var sum=restnomina+parseFloat(result,10)+concepextras;
+              var sum1=parseFloat(result,10);
               res= numberFormat2.format(sum1); 
               var resgeneral= numberFormat2.format(sum); 
 
@@ -442,7 +446,7 @@ function totalgasto(){
               $("#totl").attr('value',sum);
 
             }
-            cont=parseInt($("#formes").val());
+            cont=parseFloat($("#formes").val());
 
 
 
@@ -590,16 +594,14 @@ restotal= numberFormat2.format(general);
             $("#totalgeneral").append(restotal);
 
 
-
+var rest=0;
+var ant=0;
 $("#selecte").on('change',function(){
 var valor=$("#selecte").val();
+var cont=parseFloat($("#totl").val(),10);
 var sum=0;
-var rest=0;
- cont2=0;
 
-  if(valor!=0 && valordectes!=valor){
-    
-    var url = "{{url('listmonto')}}/"+valor; 
+    var url = "{{url('listmontoCreate')}}/"+valor; 
     var data = ' ';
     $.ajax({
      method: "POST",
@@ -607,68 +609,65 @@ var rest=0;
         url:url ,
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         success:function(result){
-          $("#"+valordectes).remove();
+          $("#gastonomina-table tbody").append(result);
+          var monto=parseFloat($(result).attr('value'),10);
+          var cont=parseFloat($("#totl").val(),10);
+          
+          if(ant==0){
+          rest=rest+monto;
+          sum=rest+cont;
+        }else{
+          cont=cont-ant;
+          rest=rest+monto;
+          sum=rest+cont;
+        }
+          
+          ant=monto;
+          // alert(sum);
 
-          valordectes=valor;
-          $("#gastonomina-table tbody").prepend(result);
-          var rsul=parseInt($("#formes").val(),10);
-          var restnomina=parseInt($("#nominavalue").val(),10);
-          var nomina=parseInt($(result).attr('value'),10);
-          var Vnomina=parseInt($("#totl").val(),10);
-          var id=$(result).attr('action');
-
-          $("#getval").attr('value',id);
-
-
-
-            if(Vnomina!=''){
-              rest=Vnomina-restnomina;
-              sum=nomina+rest;
-              // cont2=cont2+sum;
-            var results= numberFormat2.format(nomina);
-            var regeneral= numberFormat2.format(sum);
-            $("#totalnominamo").empty();
-            $("#totalnominamo").append(results);
-
-            $("#totalgeneral").empty();
-            $("#totalgeneral").append(regeneral);
-
-
-            $("#totl").attr('value',sum);
-            $("#nominatotaldf").attr('value',nomina);
-            $("#nominavalue").attr('value',nomina);
-            $("#nominavalue").attr('value',nomina);
-
-            $("#totalnominames").empty();
-            $("#totalnominames").append(results);
-
-            }else{
-          cont=rsul+nomina-restnomina;
-          var resultado= numberFormat2.format(cont);
-          $("#totalnominamo").empty();
-          $("#totalnominamo").append(resultado);
-
-          $("#totalgeneral").empty();
-            $("#totalgeneral").append(resultado);
-
-          $("#totl").attr('value',cont);
-          $("#nominavalue").attr('value',nomina);
-          $("#nominatotaldf").attr('value',nomina);
-
+          var resgeneral= numberFormat2.format(rest);     
           $("#totalnominames").empty();
-            $("#totalnominames").append(results);
-            }
+          $("#totalnominames").append(resgeneral);
 
-   
-       
+          var restotal= numberFormat2.format(sum);     
+          $("#totalgeneral").empty();
+          $("#totalgeneral").append(restotal);
+
+          $("#totl").attr('value',sum);
+          var id=$(result).attr('action');
+          arraynomina[b]=id;
+          b++;
+
+          $("#arreglo").attr('value',arraynomina);
+          refreshSelect(arraynomina);
+
        },
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
             ErroresGeneral();
 }
          });  
-  }
+  
 
 });
+
+function refreshSelect(e){
+    var url = "{{url('refreshSelectCreate')}}"; 
+    var data = {e:e};
+    $.ajax({
+     method: "POST",
+       data: data,
+        url:url ,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        success:function(result){
+        $("#selecte").empty();
+        $("#selecte").append(result);
+          
+       },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+           ErroresGeneral();
+}
+         });  
+}
 
 $.ajaxSetup({
 headers: {
@@ -747,7 +746,7 @@ headers: {
 
 $("#gastos-table select[name='porciento[]']").on('change',function(){
    var  e=$(this).val();
-    alert(e);
+    // alert(e);
     $("#formes").attr('value',e);
 });
 
@@ -795,18 +794,18 @@ function agregar(){
   $('.datosInput').val('');
   $("#concepto").focus();
   $("#conceptomodal").trigger("click");
-  var valor=parseInt($("#nominatotaldf").val(),10);
-  var cont=parseInt($("#totl").val(),10);
+  var valor=parseFloat($("#nominatotaldf").val(),10);
+  var cont=parseFloat($("#totl").val(),10);
   
 
-  formpago=formpago+parseInt(nuevoSujeto.monto,10);
+  formpago=formpago+parseFloat(nuevoSujeto.monto,10);
 
   if(valor==0){
-    cont=cont+parseInt(nuevoSujeto.monto,10);
-    // verificador=parseInt($("#formes").val());
+    cont=cont+parseFloat(nuevoSujeto.monto,10);
+    // verificador=parseFloat($("#formes").val());
     // alert()
   }else{
-    cont=cont+parseInt(nuevoSujeto.monto,10);
+    cont=cont+parseFloat(nuevoSujeto.monto,10);
 
   }
 
@@ -867,7 +866,7 @@ var options = {
 
 $(document).on('click', '.showinfo', function (event) {
     var name=$(this).attr('action');
-    var monto=parseInt($(this).attr('value'),10);
+    var monto=parseFloat($(this).attr('value'),10);
 
     Swal.fire({
  title: 'Estas seguro?',
@@ -881,13 +880,20 @@ $(document).on('click', '.showinfo', function (event) {
  if (result.isConfirmed) {
   $(this).closest('tr').remove();
 
-  cont=parseInt($("#totl").val())-monto;
-  alert(cont);
+  cont=parseFloat($("#totl").val())-monto;
+  // alert(cont);
   formpago=formpago-monto
   var reses= numberFormat2.format(formpago);
         $("#totalperiodo").empty();
         $("#totalperiodo").append(reses)
+
+
       $("#totl").attr('value',cont);
+      var resgeneral= numberFormat2.format(cont);
+
+
+    $("#totalgeneral").empty();
+    $("#totalgeneral").append(resgeneral);
 
       Swal.fire(
       'Eliminado!',
@@ -913,33 +919,52 @@ $(document).on('click', '.showinfo', function (event) {
         
     }
 });
-$(document).on('click', '.remfes', function (event) {
+$(document).on('click', '.remfesrrres', function (event) {
+var valor=parseFloat($(this).attr('value'),10);
+var monto=parseFloat($(this).attr('action'),10);
+var cont=parseFloat($("#totl").val(),10);
+var sum=0;
 
-  $("#"+valordectes).remove();
-  // valordectes=valor;
-  var rsul=parseInt($("#formes").val(),10);
-  var restnomina=parseInt($("#nominavalue").val(),10);
-  var nomina=parseInt($(this).attr('value'),10);
-  var Vnomina=parseInt($("#totl").val(),10);
-  // cont=cont-nomina;
-              rest=Vnomina-nomina;
-            var resultses= numberFormat2.format(rest);
-            $("#totalnomina").empty();
-            $("#totalnomina").append(resultses);
-            $("#totl").attr('value',0);
-            $("#nominavalue").attr('value',1);
-  
+Swal.fire({
+title: 'Estas seguro?',
+text: "Ya no se podra revertir los cambios!",
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Si, Eliminar!'
+}).then((result) => {
+if (result.isConfirmed) {
+    $("#"+valor).closest('tr').remove();
+    $("#nominamodal").trigger("click");
+
+    sum=cont-monto;
+    rest=rest-monto;
+
+    var restotal= numberFormat2.format(sum);     
+    $("#totalgeneral").empty();
+    $("#totalgeneral").append(restotal);
+
+    var resgeneral= numberFormat2.format(rest);     
+    $("#totalnominames").empty();
+    $("#totalnominames").append(resgeneral);
+
+    $("#totl").attr('value',sum);
+
+          
+    for (let index = 0; index < arraynomina.length; index++) {
+      if(arraynomina[index]==valor){
+        arraynomina.splice(index,1);
+        console.log(arraynomina);
+      }
+            
+     }
+     $("#arreglo").attr('value',arraynomina);
+     refreshSelect(arraynomina);
+   }
+})
+          
 });
-
-
-// function eliminis(e){
-//   // var modal=$('#nominamodal').hasClass('show');
-//   //     if(modal==false){
-//   //       $("#nominamodal").trigger("click");
-//   //  }
-//   alert(e);
-// }
-
 
 arreglo=[];
 i=0;
@@ -947,7 +972,7 @@ $(document).on('click', '.elimini', function (event) {
     event.preventDefault();
     $(this).closest('tr').remove();
      var re=$(this).val();
-     var elimonoto=parseInt($(this).attr('action'));
+     var elimonoto=parseFloat($(this).attr('action'));
      arreglo[i]=re;
 
 
@@ -1009,7 +1034,7 @@ function errornomina() {
 
 
 function vernomina(e){
-  var url = "{{ url('vernomina')}}/"+e;
+  var url = "{{ url('vernominaCreate')}}/"+e;
      var data = '';
         $.ajax({
          method: "POST",
@@ -1047,27 +1072,11 @@ function Mcf(){
              });  
 }
 
-// function verconcept(e){
-//  var url = "{{ url('modalmodificar')}}/"+e;
-//      var data = '';
-//         $.ajax({
-//          method: "POST",
-//            data: data,
-//             url:url ,
-//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-//             success:function(result){
-//               $("#fijomodal").html(result).modal("show");
 
-        
-          
-           
-//            },
-//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 ErroresGeneral();
-//     }
-//              });  
- 
-// }
+
+
+
+
 
 function ErroresGeneral(){
     Command: toastr["error"]("", "Error!")

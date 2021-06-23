@@ -111,7 +111,7 @@
             <td id="#space" style="background-color: white"></td>
             <td id="#space" style="background-color: white"></td>
             <td id="#space" style="background-color: white"></td>
-            <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total &nbsp;${{number_format($cont,2)}}</b></td>
+            <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total:&nbsp;${{number_format($cont,2)}}</b></td>
           </tr>
         </tbody>
       </table>
@@ -131,6 +131,11 @@
      </tr>
     </thead>
     <tbody>
+
+      @php
+          $sum=0;
+      @endphp
+      @foreach ($nominas as $nomina)
       <tr>
         <td id="#space" style=" text-align: left; background-color: white">{{$nomina->descripcion}}</td>
         <td id="#space" style="background-color: white"></td>
@@ -140,6 +145,12 @@
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="text-align: right; background-color: white">${{number_format($nomina->monto,2)}}</td>
       </tr>
+      @php
+          $sum=$sum+$nomina->monto;
+      @endphp
+      @endforeach
+
+
       <tr>
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="background-color: white"></td>
@@ -147,13 +158,39 @@
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="background-color: white"></td>
-        <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total General:&nbsp;${{number_format($cont+$nomina->monto,2)}}</b></td>
+        <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total:&nbsp;${{number_format($sum,2)}}</b></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <table border="0" cellspacing="1" cellpadding="1"  >
+    <thead style="thd" style="">
+      {{-- <tr>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total General:&nbsp;${{number_format($cont+$sum,2)}}</b></td>
+      </tr> --}}
+    </thead>
+    <tbody>
+      <tr>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style="background-color: white"></td>
+        <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total General:&nbsp;${{number_format($cont+$sum,2)}}</b></td>
       </tr>
     </tbody>
   </table>
   <br>
 
-<table id="obser" style="margin-top: -54%;">
+<table id="obser" style="margin-top: -88%; position: absolute;">
   <div class="obersrvaciones" >
     <span><b>OBSERVACIONES:</b>&nbsp;{{$gasto->observaciones}}</span>
     {{-- <span></span> --}}

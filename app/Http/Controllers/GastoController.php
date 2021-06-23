@@ -14,6 +14,7 @@ use App\Models\Perfiles;
 use App\Models\Perfiles_empleado;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Carbon;
+use App\Models\gasto_nomina;
 
 class GastoController extends Controller
 {
@@ -35,7 +36,7 @@ class GastoController extends Controller
      */
     public function create()
     {
-        $nominas=Listado::all();
+        $nominas=Listado::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $gasto=gasto_fijo::all();
         return view('Gastos.create',compact('nominas','gasto'));
     }
@@ -53,15 +54,22 @@ class GastoController extends Controller
         $strings=implode(",",$request->get('elimiarrelgo'));
         $concp=implode(",", $request->get('concepter'));
         $monter=implode(",", $request->get('monter'));
+        // $nomi=implode(",", $request->get('arreglo'));
 
         $concepArry=explode(",", $concp);
         $monterpArry=explode(",", $monter);
+        $nomipArry=explode(",", $request->get('arreglo'));
         
-        // dd( $monterpArry);
+        // dd( $nomipArry);
         $array = explode(",", $strings);
         // dd("llego");
         $n=count($array);
         $fijo=gasto_fijo::whereNotIn('id',$array)->get();
+
+        $nomina=Listado::whereIn('id',$nomipArry)->get();
+
+
+
 
 
 
@@ -69,12 +77,21 @@ class GastoController extends Controller
         $gasto->descripcion=$request->get('descripn');
         $gasto->fecha=$request->get('fec');
         $gasto->monto=$request->get('total');
-        $gasto->id_nomina=$request->get('idnomina');
         $gasto->observaciones=$request->get('textarea');
         $gasto->id_empresa=Auth::user()->id_empresa;
         $gasto->user=Auth::user()->name;
         $gasto->estado=0;
         $gasto->save();
+
+        foreach($nomina as $nominas){
+            $input['id_gasto']=$gasto->id;
+            $input['id_nomina'] = $nominas->id;
+            $input['descripcion'] = $nominas->descripcion;
+            $input['monto'] = $nominas->monto;
+            $input['id_empresa'] = Auth::user()->id_empresa;
+            $input['estado'] =0;
+            $referencia=gasto_nomina::create($input);
+        }
 
         $i=0;
         if($request->get('concepter')!=''){
@@ -245,7 +262,7 @@ class GastoController extends Controller
             }
         }
 
-        $nominas=Listado::all();
+        
 
         $total=0;
         foreach($concepto as $concep){
@@ -256,9 +273,27 @@ class GastoController extends Controller
         }
         $totalmonto=$gasto->monto-$total;
 
+
+        $arraynomina=[];
+        $b=0;
+        $gasto_nomina=gasto_nomina::where('id_gasto','=',$id)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+
+        foreach($gasto_nomina as $gasto_nominas){
+            $arraynomina[$b]=$gasto_nominas->id_nomina;
+            $b++;
+    }
+
+        $nominas=Listado::whereNotIn('id',$arraynomina)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+
         
 
-        return view('Gastos.show',compact('gasto','totalconcepto','concepto','nominas','totalmonto','gastofijos','totalfijo'));
+        return view('Gastos.show',compact('gasto','totalconcepto','concepto','nominas','totalmonto','gastofijos','totalfijo','gasto_nomina'));
     }
 
     /**
@@ -267,25 +302,124 @@ class GastoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function refreshSelect($id)
+    {
+        $arraynomina=[];
+        $b=0;
+        $gasto_nomina=gasto_nomina::where('id_gasto','=',$id)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+
+        foreach($gasto_nomina as $gasto_nominas){
+            $arraynomina[$b]=$gasto_nominas->id_nomina;
+            $b++;
+    }
+
+    $nominas=Listado::whereNotIn('id',$arraynomina)
+    ->where('estado','=',0)
+    ->where('id_empresa','=',Auth::user()->id_empresa)
+    ->get();
+    
+    return view('Gastos.Plantillas.refresh',compact('nominas'));
+}
+
+    public function refreshSelectCreate()
+    {
+        $arraynomina=request('e');
+        
+    
+        $nominas=Listado::whereNotIn('id',$arraynomina)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+        
+        return view('Gastos.Plantillas.refresh',compact('nominas'));
+        // return $arraynomina;
+    }
     public function edit($id)
     {
         //
     }
     public function listmonto($id)
     {
-        $nomina=Listado::findOrFail($id);
+        $nominaDescr=Listado::findOrFail($id);
+        $gasto=request('id');
 
-         return view("Gastos.lista",compact('nomina'));
+        if(sizeof(gasto_nomina::where('id_gasto','=',$gasto)->where('id_nomina','=',$id)->get())==0){
+            $gasto_nomina= new gasto_nomina();
+            $gasto_nomina->id_gasto=$gasto;
+            $gasto_nomina->id_nomina=$id;
+            $gasto_nomina->monto=$nominaDescr->monto;
+            $gasto_nomina->descripcion=$nominaDescr->descripcion;
+            $gasto_nomina->estado=0;
+            $gasto_nomina->id_empresa=Auth::user()->id_empresa;
+            $gasto_nomina->save();
+        }else{
+            $nominas_Gast=gasto_nomina::where('id_gasto','=',$gasto)
+            ->where('id_nomina','=',$id)
+            ->where('id_empresa','=',Auth::user()->id_empresa)
+            ->first();
+            if($nominas_Gast->estado==1){
+                $nominas_Gast->estado=0;
+            }
+            $nominas_Gast->update();
+        }
+
+        $nominas=gasto_nomina::where('id_gasto','=',$gasto)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+    
+         return view("Gastos.lista",compact('nominas'));
         
     }
+    public function listmontoCreate($id)
+    {
+        $nomina=Listado::findOrFail($id);
+         return view("Gastos.Plantillas.lista",compact('nomina'));
+        
+    }
+    public function totalnomina($id)
+    {
+        $gasto_nomina=gasto_nomina::where('id_gasto','=',$id)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+        $totalnomina=0;
+
+        foreach($gasto_nomina as $gasto_nominas){
+            $totalnomina= $totalnomina+$gasto_nominas->monto;
+        }
+
+        return $totalnomina;
+
+    
+         return view("Gastos.lista",compact('nominas','nominaDescr'));
+        
+    }
+
+
     public function eliminarnomina($id,Request $request)
     {
-        $idgasto=request('idgasto');
-        $gasto=Gasto::findOrFail($idgasto);
-        $gasto->id_nomina=0;
-        $gasto->save();
-        return $id;
-        // $nomina=Listado::findOrFail($id);
+        $idgasto=request('id');
+
+        $gasto_nomina=gasto_nomina::where('id_nomina','=',$id)
+        ->where('id_gasto','=',$idgasto)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->first();
+
+        $gasto_nomina->estado=1;
+        $gasto_nomina->update();
+
+        $nominas=gasto_nomina::where('id_gasto','=',$idgasto)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+       
+        return view("Gastos.lista",compact('nominas'));
+        
     }
     public function vernomina($id)
     {
@@ -293,6 +427,14 @@ class GastoController extends Controller
         $perfiles=Perfiles_empleado::select('id')->where('id','=', $nomina->id_perfiles)->first();
         $perf=$perfiles->id;
         return view('Gastos.listamodal',compact('perf','nomina'));
+        
+    }
+    public function vernominaCreate($id)
+    {
+        $nomina=Listado::findOrFail($id);
+        $perfiles=Perfiles_empleado::select('id')->where('id','=', $nomina->id_perfiles)->first();
+        $perf=$perfiles->id;
+        return view('Gastos.listamodalCreate',compact('perf','nomina'));
         
     }
 
@@ -310,12 +452,6 @@ class GastoController extends Controller
         $gasto=Gasto::findOrFail($id);
         $gasto->descripcion=$request->get('descripn');
         $gasto->fecha=$request->get('fec');
-        if($request->get('idnominaser')==0){
-            $gasto->id_nomina=$request->get('idnomina');
-        }else{
-            $gasto->id_nomina=$request->get('idnominaser');
-        }
-       
         $gasto->monto=$request->get('total');
         $gasto->user=Auth::user()->name;
         $gasto->observaciones=$request->get('textarea');
@@ -843,12 +979,6 @@ class GastoController extends Controller
         $gasto->id_empresa=Auth::user()->id_empresa;
         $gasto->save();
 
-
-
-        // return view('Gastos.Plantillas.Pmodalfijo',compact('concepto'));
-
-
-
          
     }
     // public function Vernomina($id)
@@ -957,6 +1087,18 @@ class GastoController extends Controller
 
          return 0;
     }
+    public function updategastoFijos($id,Request $request)
+    {
+        $concepto=gasto_fijo::findOrFail($id);
+        $nombre=request('name');
+        $monto=request('monto');
+
+         $concepto->concepto=$nombre;
+         $concepto->monto=$monto;
+         $concepto->update();
+
+         return 0;
+    }
 
     // public function observacion($id,Request $request)
     // {
@@ -987,11 +1129,14 @@ class GastoController extends Controller
     $idempresa=Auth::user()->id_empresa;
     $empresa=Empresa::findOrFail($idempresa);
 
-    $nomina=Listado::where('id','=',$gasto->id_nomina)->first();
+    $nominas=gasto_nomina::where('id_gasto','=',$id)
+    ->where('estado','=',0)
+    ->where('id_empresa','=',Auth::user()->id_empresa)
+    ->get();
     // $empresa=Empresa::all();
 
   
-      $pdf =PDF::loadView('Gastos.recibo',compact('fecha','nomina','concepto','gasto','empresa'));
+      $pdf =PDF::loadView('Gastos.recibo',compact('fecha','nominas','concepto','gasto','empresa'));
       $pdf->setPaper("A4", "portrait");
       return $pdf->stream('gastos.pdf');
     }
@@ -1004,9 +1149,13 @@ class GastoController extends Controller
     $idempresa=Auth::user()->id_empresa;
     $empresa=Empresa::findOrFail($idempresa);
     // $empresa=Empresa::all();
+    $nominas=gasto_nomina::where('id','=',$gasto->id_nomina)
+    ->where('estado','=',0)
+    ->where('id_empresa','=',Auth::user()->id_empresa)
+    ->get();
 
   
-      $pdf =PDF::loadView('Gastos.recibo',compact('fecha','concepto','gasto','empresa'));
+      $pdf =PDF::loadView('Gastos.recibo',compact('fecha','nominas','concepto','gasto','empresa'));
       $pdf->setPaper("letter", "portrait");
       return $pdf->download($gasto->descripcion.'.pdf');
     }

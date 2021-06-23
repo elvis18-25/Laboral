@@ -356,10 +356,10 @@ class ListadoContrller extends Controller
         $valor=request('valor');
 
         $nomina=Listado::findOrFail($id);
-        $nominaEmpleado=nomina_empleados::where('id_nomina','=',$id)->get();
-        $NominaOtros=nomina_otros::where('id_nomina','=',$id)->get();
-        $NominaAsigna=nomina_asignaciones::where('id_nomina','=',$id)->get();
-        $NominaHoras=nomina_horas::where('id_nomina','=',$id)->get();
+        $nominaEmpleado=nomina_empleados::where('id_nomina','=',$id)->where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        $NominaOtros=nomina_otros::where('id_nomina','=',$id)->where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        $NominaAsigna=nomina_asignaciones::where('id_nomina','=',$id)->where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        $NominaHoras=nomina_horas::where('id_nomina','=',$id)->where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $sumHoraExtra=0;
         $sumHoraDescontada=0;
 
@@ -444,7 +444,7 @@ class ListadoContrller extends Controller
               
 
                             foreach($NominaAsigna as $NominaAsignas){
-                                if($NominaAsignas->id_empresa==Auth::user()->id_empresa && $NominaAsignas->estado==0){
+                                
                                     if($NominaAsignas->tipo_asigna=="INCREMENTO"){
                                     if($NominaAsignas->estado_asigna==1){
                                         if($NominaAsignas->tipo=="PORCENTAJE"){
@@ -457,17 +457,16 @@ class ListadoContrller extends Controller
                                              $desbonoCont=$desbonoCont+$desbono;
                                             }
                                   }  
-                                  }  
+                                  
                                 }
                                 }
                             foreach($NominaHoras as $NominaHora){
-                                if($NominaHora->id_empresa==Auth::user()->id_empresa && $NominaHora->estado==0){
                                     if($NominaHora->type=="EXTRAS"){
                                         $sumHoraExtra= $sumHoraExtra+$NominaHora->monto;
                                     }else{
                                         $sumHoraDescontada=$sumHoraDescontada+$NominaHora->monto;
                                     }
-                                    }
+                                    
                                   }  
                    
 
@@ -476,7 +475,6 @@ class ListadoContrller extends Controller
 
             
                                 foreach($NominaAsigna as $NominaAsignas){
-                                    if($NominaAsignas->id_empresa==Auth::user()->id_empresa && $NominaAsignas->estado==0){
                                         if($NominaAsignas->tipo_asigna=="DEDUCCIÓN"){
                                             if($NominaAsignas->estado_asigna==1){
                                                 if($NominaAsignas->tipo=="PORCENTAJE"){
@@ -488,16 +486,14 @@ class ListadoContrller extends Controller
                                                      $desdeucionCont=$desdeucionCont+$cont;
                                                     }
                                                 }
-                                            }
+                                            
                                         }
                                     }
 
 
                                     foreach($NominaAsigna as $NominaAsignas){
-                                        if($NominaAsignas->id_empresa==Auth::user()->id_empresa && $NominaAsignas->estado==0){
                                             if($NominaAsignas->tipo_asigna=="DEDUCCIÓN"){
                                                 if($NominaAsignas->tipo=="PORCENTAJE"){
-
                                                 $totals=$NominaAsignas->montos*$NominaAsignas->salarioBruto;
                                                 $totals=$totals/100;
                                                 $contdeducion=$contdeducion+$totals;
@@ -507,14 +503,11 @@ class ListadoContrller extends Controller
                                                  $contdeducion=$contdeducion+$totals;
                                                 }
                                           }  
-                                        }
+                                        
                                         }
 
-                                        foreach($nominaEmpleado as $nominaEmpleados){
+                                       
                                         foreach($NominaOtros as $nominaOtro){
-                                            if($nomina->id==$nominaOtro->id_nomina){
-                                                if($nominaOtro->id_empresa==Auth::user()->id_empresa){
-                                                    if($nominaOtro->id_empleado==$nominaEmpleados->id_empleado){
                                                     if($nominaOtro->tipo_asigna=="DEDUCIÓN"){
                                                     if($nominaOtro->p_monto!=null){
                                                         $otrosD=$otrosD+$nominaOtro->p_monto;
@@ -529,23 +522,22 @@ class ListadoContrller extends Controller
                                                             $otrosI=$otrosI+$nominaOtro->monto;
                                                         }
                                                     }
-                                                }
-                                            }
-                                            }
+                                                
+            
                                         }
-                                    }
+                                    
     
 
 
              $totaldeducion=0;
              $totalincremento=0;
-             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3+$sumHoraDescontada;
+             $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3+$sumHoraDescontada-$desdeucionCont;
              $totalincremento=$otrosI+$contbono-$desbonoCont+$sumHoraExtra;
 
             // return $otrosD;
 
-             return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
-            //  return $totalincremento;
+             return  $salario+$totalincremento-$totaldeducion;
+            //  return $sumHoraExtra;
     }
 
     public function modalhoursListado($id)
@@ -833,7 +825,7 @@ class ListadoContrller extends Controller
              
                 foreach($nominaOtros as $nominaOtro){
                     if($tipo==$nominaOtro->id_nomina){
-                        if($nominaOtro->tipo_asigna=="DEDUCCIÓN"){
+                        if($nominaOtro->tipo_asigna=="DEDUCIÓN"){
                         if($nominaOtro->id_empleado==$row->id_empleado){
                             if($nominaOtro->p_monto!=null){
                                 $otrosContAsigna=$otrosContAsigna+$nominaOtro->p_monto;

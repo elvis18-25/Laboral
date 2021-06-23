@@ -56,12 +56,13 @@ var id=$(this).val();
             $("#gastofijo-table tbody").append(result);
             $("#fijomodal").trigger("click");
             totalgastoConcepto();
+            SuccesGen();
             
          
           
           },
                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-               alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               ErroresGeneral(); 
    }
             });
  }
@@ -85,13 +86,13 @@ $('.updatestesFijo').on('click',function(){
             $("#gastofijo-table tbody").empty();
             $("#gastofijo-table tbody").append(result);
             $("#fijomodal").trigger("click");
-
             totalgastoConcepto();
+            SuccesGen();
 
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGeneral(); 
     }
              });  
 });
