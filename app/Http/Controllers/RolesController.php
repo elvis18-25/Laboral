@@ -7,6 +7,9 @@ use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use App\Models\Permisos;
 use Illuminate\Support\Facades\Auth;
+use App\Models\modulos;
+use App\Models\widget;
+use App\Models\permisos_widget;
 
 class RolesController extends Controller
 {
@@ -27,7 +30,9 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return view('Roles.create');
+        $modulos=modulos::all();
+        $widget=widget::all();
+        return view('Roles.create',compact('modulos','widget'));
     }
 
     /**
@@ -39,7 +44,7 @@ class RolesController extends Controller
     public function store(Request $request)
     {
 
-
+        // dd($request->all());
         $roles=New Role();
         $roles->name=$request->get('descripcion');
         $roles->id_empresa=Auth::user()->id_empresa;
@@ -48,10 +53,56 @@ class RolesController extends Controller
         $roles->save();
 
 
+        $permi_wigdet= new permisos_widget();
+        $widget=$request->get('wingdt');
+        if($request->get('descripcion')!=''){
+            for($i = 0; $i < count($request->get('wingdt')); $i++){
+                $permi_wigdet->role_id=$roles->id;
+                $permi_wigdet->id_empresa=Auth::user()->id_empresa;
+                if($widget[$i]==1){
+                 $permi_wigdet->total_empleado=1;
+                }
+                if($widget[$i]==2){
+                 $permi_wigdet->total_usuarios=1;
+                }
+                if($widget[$i]==3){
+                 $permi_wigdet->total_departamentos=1;
+                }
+                if($widget[$i]==4){
+                 $permi_wigdet->formas_pago=1;
+                }
+                if($widget[$i]==5){
+                 $permi_wigdet->totales_roles=1;
+                }
+                if($widget[$i]==6){
+                 $permi_wigdet->reuniones=1;
+                }
+                if($widget[$i]==7){
+                 $permi_wigdet->w_empleados=1;
+                }
+                if($widget[$i]==8){
+                 $permi_wigdet->w_departamentos=1;
+                }
+
+                if($widget[$i]==9){
+                 $permi_wigdet->w_generos=1;
+                }
+                if($widget[$i]==10){
+                 $permi_wigdet->g_gasto=1;
+                }
+                if($widget[$i]==11){
+                    $permi_wigdet->historial=1;
+                   }
+                if($widget[$i]==12){
+                    $permi_wigdet->calendario=1;
+                   }
+                $permi_wigdet->save();
+            }  
+        } 
+
+
         $permi= new Permisos();
         $permisos=$request->get('dinamico');
-        // $cont= count(collect($request)->get('dinamico'));
-
         if($request->get('descripcion')!=''){
             for($i = 0; $i < count($request->get('dinamico')); $i++){
                 $permi->role_id=$roles->id;
@@ -75,25 +126,25 @@ class RolesController extends Controller
                  $permi->asignaciones=1;
                 }
                 if($permisos[$i]==8){
-                 $permi->listado=1;
-                }
-                if($permisos[$i]==9){
                  $permi->perfiles=1;
                 }
-                if($permisos[$i]==10){
-                 $permi->nomina=1;
-                }
-                if($permisos[$i]==11){
+
+                if($permisos[$i]==9){
                  $permi->formas_pagos=1;
                 }
-                if($permisos[$i]==12){
+                if($permisos[$i]==10){
                  $permi->perfilesuser=1;
                 }
+                if($permisos[$i]==11){
+                    $permi->nomina=1;
+                   }
                 $permi->save();
             }  
         } 
 
-        return redirect('Roles');
+       
+
+        return redirect('Roles')->with('guardado','ya');
 
     }
 
@@ -106,9 +157,11 @@ class RolesController extends Controller
     public function show($id)
     {
         $roles=Role::findOrFail($id);
-        $permisos=Permisos::where('role_id','=',$id)->first();
+        $permisos_widget=permisos_widget::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        
+        $permisos=Permisos::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         // dd($permisos);
-        return view('Roles.show',compact('roles','permisos'));
+        return view('Roles.show',compact('roles','permisos','permisos_widget'));
     }
 
     /**
@@ -131,20 +184,68 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $roles=Role::findOrFail($id);
         $roles->name=$request->get('descripcion');
         $roles->save();
 
-        $permiall=Permisos::all();
+        $permisoss=Permisos::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $permisoss->delete();
 
-        foreach($permiall as $permia){
-            if( $permia->role_id==$roles->id){
-                $permia->delete();
-            }
-        }
-        $permisos=$request->get('dinamico');
+        $permisos_widget=permisos_widget::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $permisos_widget->delete();
+
+
+        $permi_wigdet= new permisos_widget();
+        $widget=$request->get('wingdt');
+        if($request->get('descripcion')!=''){
+            for($i = 0; $i < count($request->get('wingdt')); $i++){
+                $permi_wigdet->role_id=$roles->id;
+                $permi_wigdet->id_empresa=Auth::user()->id_empresa;
+                if($widget[$i]==1){
+                 $permi_wigdet->total_empleado=1;
+                }
+                if($widget[$i]==2){
+                 $permi_wigdet->total_usuarios=1;
+                }
+                if($widget[$i]==3){
+                 $permi_wigdet->total_departamentos=1;
+                }
+                if($widget[$i]==4){
+                 $permi_wigdet->formas_pago=1;
+                }
+                if($widget[$i]==5){
+                 $permi_wigdet->totales_roles=1;
+                }
+                if($widget[$i]==6){
+                 $permi_wigdet->reuniones=1;
+                }
+                if($widget[$i]==7){
+                 $permi_wigdet->w_empleados=1;
+                }
+                if($widget[$i]==8){
+                 $permi_wigdet->w_departamentos=1;
+                }
+
+                if($widget[$i]==9){
+                 $permi_wigdet->w_generos=1;
+                }
+                if($widget[$i]==10){
+                 $permi_wigdet->g_gasto=1;
+                }
+                if($widget[$i]==11){
+                    $permi_wigdet->historial=1;
+                   }
+                if($widget[$i]==12){
+                    $permi_wigdet->calendario=1;
+                   }
+                $permi_wigdet->save();
+            }  
+        } 
+
+
         $permi= new Permisos();
-
+        $permisos=$request->get('dinamico');
         if($request->get('descripcion')!=''){
             for($i = 0; $i < count($request->get('dinamico')); $i++){
                 $permi->role_id=$roles->id;
@@ -165,28 +266,27 @@ class RolesController extends Controller
                  $permi->gastos=1;
                 }
                 if($permisos[$i]==6){
-                $permi->asignaciones=1;
+                 $permi->asignaciones=1;
                 }
                 if($permisos[$i]==8){
-                 $permi->listado=1;
-                }
-                if($permisos[$i]==9){
                  $permi->perfiles=1;
                 }
-                if($permisos[$i]==10){
-                 $permi->nomina=1;
-                }
-                if($permisos[$i]==11){
+
+                if($permisos[$i]==9){
                  $permi->formas_pagos=1;
                 }
-                if($permisos[$i]==12){
-                    $permi->perfilesuser=1;
+                if($permisos[$i]==10){
+                 $permi->perfilesuser=1;
+                }
+                if($permisos[$i]==11){
+                    $permi->nomina=1;
                    }
                 $permi->save();
             }  
         } 
 
-        return redirect('Roles');
+
+        return redirect('Roles')->with('guardado','ya');
 
 
     }
@@ -203,7 +303,7 @@ class RolesController extends Controller
         $roles->estado=1;
         $roles->save();
 
-        return redirect('Roles');
+        return redirect('Roles')->with('eliminiado','ya');
     }
     public function datatableRoles()
     {

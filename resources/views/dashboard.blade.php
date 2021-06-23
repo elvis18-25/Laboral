@@ -43,23 +43,29 @@
 </style>
 <div class="row">
   
-  <div class="col-lg-4">
-    <div class="card card-chart" style="height: 118px;">
-        <div class="card-header">
-          <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL EMPLEADOS</b></h5>
-            <h3 class="card-title">{{$count_empleado}}</h3>
-          </div>
+       
+ @if ($permisos->total_empleado==1)
+ <div class="col-lg-4">
+  <div class="card card-chart" style="height: 118px;">
+      <div class="card-header">
+        <div class="title" style="margin-top: 6px;">
+          <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL EMPLEADOS</b></h5>
+          <h3 class="card-title">{{$count_empleado}}</h3>
         </div>
-        <div class="card-body">
-          <div class="circulo" ><span style="float: right;"><i class="fas fa-users text-light icons"></i></i></span></div>
-        </div>
-    </div>
-</div>
-  <div class="col-lg-4">
-    <div class="card card-chart" style="height: 118px;">
-        <div class="card-header">
-          <div class="title" style="margin-top: 6px;">
+      </div>
+      <div class="card-body">
+        <div class="circulo" ><span style="float: right;"><i class="fas fa-users text-light icons"></i></i></span></div>
+      </div>
+  </div>
+</div>    
+ @endif
+
+
+@if ($permisos->total_usuarios==1)
+<div class="col-lg-4">
+  <div class="card card-chart" style="height: 118px;">
+    <div class="card-header">
+      <div class="title" style="margin-top: 6px;">
             <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL USUARIOS</b></h5>
             <h3 class="card-title">{{$count_users}}</h3>
           </div>
@@ -67,23 +73,29 @@
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-friends text-light icons"></i></i></span></div>
         </div>
+      </div>
     </div>
-</div>
+  @endif
+
+  @if ($permisos->total_departamentos==1)
   <div class="col-lg-4">
     <div class="card card-chart" style="height: 118px;">
-        <div class="card-header">
-          <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL DEPARTAMENTOS</b></h5>
+      <div class="card-header">
+        <div class="title" style="margin-top: 6px;">
+          <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL DEPARTAMENTOS</b></h5>
             <h3 class="card-title">{{$count_puesto}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
         </div>
+      </div>
     </div>
-</div>
-  <div class="col-lg-4">
-    <div class="card card-chart" style="height: 118px;">
+    @endif
+
+    @if ($permisos->formas_pago==1)
+    <div class="col-lg-4">
+      <div class="card card-chart" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
             <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>FORMAS DE PAGOS</b></h5>
@@ -94,12 +106,15 @@
           <div class="circulo" ><span style="float: right;"><i class="fas fa-file-invoice-dollar text-light icons" style="font-size: 25px !important;
             margin-right: 20px !important;"></i></i></span></div>
         </div>
+      </div>
     </div>
-</div>
-  <div class="col-lg-4">
-    <div class="card card-chart" style="height: 118px;">
-        <div class="card-header">
-          <div class="title" style="margin-top: 6px;">
+    @endif
+
+@if ($permisos->totales_roles==1)
+<div class="col-lg-4">
+  <div class="card card-chart" style="height: 118px;">
+    <div class="card-header">
+      <div class="title" style="margin-top: 6px;">
             <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL ROLES</b></h5>
             <h3 class="card-title">{{$count_roles}}</h3>
           </div>
@@ -108,47 +123,58 @@
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-cog text-light icons" style="font-size: 25px !important;
             margin-right: 11px !important;"></i></i></span></div>
         </div>
+      </div>
     </div>
-</div>
-  <div class="col-lg-4">
-    <div class="card card-chart" style="height: 118px;">
-        <div class="card-header">
-          <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>REUNIONES PENDIENTE</b></h5>
-            <h3 class="card-title">0</h3>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="circulo" ><span style="float: right;"><i class="fas fa-user-clock text-light icons" style="font-size: 25px !important;
+    @endif
+
+@if ($permisos->reuniones==1) 
+<div class="col-lg-4">
+  <div class="card card-chart" style="height: 118px;">
+    <div class="card-header">
+      <div class="title" style="margin-top: 6px;">
+        <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>REUNIONES PENDIENTE</b></h5>
+        <h3 class="card-title">0</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="circulo" ><span style="float: right;"><i class="fas fa-user-clock text-light icons" style="font-size: 25px !important;
             margin-right: 11px !important;"></i></i></span></div>
         </div>
+      </div>
     </div>
-</div>
-  <div class="col-lg-4">
-    <div class="card card-chart">
+    @endif
+
+  @if ($permisos->w_empleados==1)
+    <div class="col-lg-4">
+      <div class="card card-chart">
         <div class="card-header">
-            <h5 class="card-category" style="color: black"><b>Empleados</b></h5>
+          <h5 class="card-category" style="color: black"><b>Empleados</b></h5>
         </div>
         <div class="card-body">
             <div class="chart-area">
                 <canvas id="CountryChart"></canvas>
+              </div>
             </div>
-        </div>
-    </div>
-</div>
-    <div class="col-lg-4">
-        <div class="card card-chart">
-            <div class="card-header">
-                <h5 class="card-category" style="color: black"><b>DEPARTAMENTOS</b></h5>
-            </div>
-            <div class="card-body">
-                <div class="chart-area">
-                    <canvas id="chartLinePurple"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+          </div>
+      </div>
+ @endif
 
+@if ($permisos->w_departamentos==1)
+<div class="col-lg-4">
+  <div class="card card-chart">
+    <div class="card-header">
+      <h5 class="card-category" style="color: black"><b>DEPARTAMENTOS</b></h5>
+    </div>
+    <div class="card-body">
+      <div class="chart-area">
+        <canvas id="chartLinePurple"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
+
+@if ($permisos->w_generos==1)
     <div class="col-lg-4">
         <div class="card card-chart">
             <div class="card-header">
@@ -166,7 +192,10 @@
             </div>
         </div>
     </div>
+  @endif
+
 </div>
+@if ($permisos->g_gasto==1)
     <div class="row">
         <div class="col-12">
             <div class="card card-chart">
@@ -191,16 +220,10 @@
             </div>
         </div>
     </div>
-    <div class="o-page-loader">
-      <div class="o-page-loader--content">
-        <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
-          {{-- <div class=""></div> --}}
-          <div class="o-page-loader--message">
-              <span>Cargando...</span>
-          </div>
-      </div>
-  </div>
+  @endif
+
     <div class="row">
+      @if ($permisos->historial==1)
         <div class="col-lg-6 col-md-12">
             <div class="card card-tasks">
                 <div class="card-header ">
@@ -232,6 +255,9 @@
                 </div>
             </div>
         </div>
+        @endif
+
+        @if ($permisos->calendario==1)
         <div class="col-lg-6 col-md-12">
             <div class="card ">
                 <div class="card-header">
@@ -242,8 +268,18 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
-    
+
+    <div class="o-page-loader">
+      <div class="o-page-loader--content">
+        <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+          {{-- <div class=""></div> --}}
+          <div class="o-page-loader--message">
+              <span>Cargando...</span>
+          </div>
+      </div>
+  </div>
 @endsection
 @push('js')
 
@@ -327,7 +363,7 @@
           type:"POST",
           url:"{{url('/Eventos')}}"+Accion,
           data:Evento,
-          success:function(msg){console.log(msg);
+          success:function(msg){
             $("#opnemodal").trigger("click");
             calendar.refetchEvents();
             SerchEventos(start,end);
@@ -404,6 +440,11 @@
       
 
       $(document).ready(function() {
+
+
+
+
+
 
         var data_puesto = <?php echo $puesto_empleado; ?>;
         gradientChartOptionsConfigurationWithTooltipBlue = {
@@ -648,6 +689,38 @@
       }
     };
 
+    var ctxE = document.getElementById("CountryChart").getContext("2d");
+
+var gradientStroke = ctxE.createLinearGradient(0, 230, 0, 50);
+
+gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
+gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+
+
+var myChart = new Chart(ctxE, {
+  type: 'bar',
+  responsive: true,
+  legend: {
+    display: false
+  },
+  data: {
+    labels: ['Activos', 'Vacaciones', 'Licencia'],
+    datasets: [{
+      label: "Countries",
+      fill: true,
+      backgroundColor: gradientStroke,
+      hoverBackgroundColor: gradientStroke,
+      borderColor: '#1f8ef1',
+      borderWidth: 2,
+      borderDash: [],
+      borderDashOffset: 0.0,
+      data: [{{$count_empleado}}, 0, 0],
+    }]
+  },
+  options: gradientBarChartConfiguration
+});
+
     var ctx = document.getElementById("chartLinePurple").getContext("2d");
 
     var gradientStrokew = ctx.createLinearGradient(0, 230, 0, 50);
@@ -719,7 +792,7 @@
     var cData = <?php echo $data; ?>;
     var cMoth = <?php echo $moth; ?>;
 
-    console.log(cMoth);
+    // console.log(cMoth);
 
     var cDatanom = <?php echo $datanom; ?>;
     var cMothnom = <?php echo $mothnom; ?>;
@@ -806,7 +879,7 @@
     // var meses_chart = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
     // var chart_data = [400000, 70, 900000, 700000, 85, 60000, 75, 60, 90, 80, 110, 100];
 
-console.log(meses);
+// console.log(meses);
     var ctx = document.getElementById("chartBig1d").getContext('2d');
 
     var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
@@ -919,39 +992,13 @@ console.log(meses);
     });
 
 
+    useEffect(() => {
+    
 
 
-    var ctx = document.getElementById("CountryChart").getContext("2d");
-
-    var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
-    gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
-    gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
 
 
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      responsive: true,
-      legend: {
-        display: false
-      },
-      data: {
-        labels: ['Activos', 'Vacaciones', 'Licencia'],
-        datasets: [{
-          label: "Countries",
-          fill: true,
-          backgroundColor: gradientStroke,
-          hoverBackgroundColor: gradientStroke,
-          borderColor: '#1f8ef1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          data: [{{$count_empleado}}, 0, 0],
-        }]
-      },
-      options: gradientBarChartConfiguration
-    });
+  }, []);
 
         });
 

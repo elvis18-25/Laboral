@@ -11,7 +11,7 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>ROLES</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{route('Roles.create')}}" class="btn btn-sm btn-info redondo"><button type="button" id="createdroles" style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
+                    <a href="{{route('Roles.create')}}" title="Agregar Nuevo Rol" class="btn btn-sm btn-info redondo"><button type="button" id="createdroles"  style="display: none;"></button><i class="fas fa-plus" style="top: 5px; position: relative;"></i></a>
                 </div>
             </div>
         </div>
@@ -59,6 +59,15 @@
     Swal.fire(
       'Eliminado!',
       'El Rol ha sido eliminado.',
+      'success'
+    )
+  </script>    
+@endif
+@if (session('guardado')=='ya')
+<script>
+    Swal.fire(
+      'Eliminado!',
+      'El Rol ha sido guardado.',
       'success'
     )
   </script>    

@@ -74,7 +74,7 @@
             </li>
             @endif --}}
 
-            @if ($permisos->listado==1)
+            @if ($permisos->nomina==1)
             <li >
                 <a href="{{ url('Listado')  }}" >
                     <i class="fas fa-file-invoice-dollar"></i>

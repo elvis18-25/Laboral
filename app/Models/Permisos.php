@@ -12,16 +12,14 @@ class Permisos extends Model
 
     protected $fillable = [
         'role_id' ,
-        'empleado'      ,
-        'usuario'       ,
+        'empleado',
+        'usuario',
         'departamento'  ,
         'roles'         ,
         'gastos'        ,
-        'listado'       ,
         'perfiles'      ,
         'asignaciones'  ,
         'nomina'        ,
-    'nomina_empleador'  ,
         'formas_pagos'  ,
         'contrato'      , 
         'id_empresa'    ,

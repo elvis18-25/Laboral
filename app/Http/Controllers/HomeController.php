@@ -16,6 +16,8 @@ use App\Models\eventos;
 use App\Models\User;
 use App\Models\Pagos;
 use App\Models\Role;
+use App\Models\Role_users;
+use App\Models\permisos_widget;
 
 
 class HomeController extends Controller
@@ -126,16 +128,13 @@ class HomeController extends Controller
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)
         ->count();
 
-        // $strings=implode(",",$puesto);
+        $role_user=Role_users::where('user_id','=',Auth::user()->id)->first();
+        // dd($role_user->role_id);
+        $permisos=permisos_widget::where('role_id','=',$role_user->role_id)->first();
 
-        // $usersChart = Charts::create('pie', 'highcharts')
-        // ->title('My nice chart')
-        // ->labels(['First', 'Second', 'Third'])
-        // ->values([5,10,20])
-        // ->dimensions(1000,500)
-        // ->responsive(false);
+        
 
-        return view('dashboard',compact('count_empleado','count_mujeres','count_hombres','count_indefinido','count_roles','count_puesto','count_users','count_pagos'))
+        return view('dashboard',compact('count_empleado','count_mujeres','count_hombres','count_indefinido','permisos','count_roles','count_puesto','count_users','count_pagos'))
         ->with('puesto',json_encode($puesto,JSON_NUMERIC_CHECK))
         ->with('data',json_encode($data,JSON_NUMERIC_CHECK))
         ->with('moth',json_encode($moth,JSON_NUMERIC_CHECK))

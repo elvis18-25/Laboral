@@ -1,6 +1,15 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
+<style>
+    .TitleP{
+        text-align: center;
+    }
+    </style>
+    <link rel="stylesheet" href="{{asset('css/roles.css')}}">
+    <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+
 @section('content')
+<form action="{{Route('Roles.store')}}" method="POST">
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -12,159 +21,148 @@
                 </div>
             </div>
         </div>
-        <form action="{{Route('Roles.store')}}" method="POST">
         @csrf
         <div class="card-body">
-    <div class="col-sm-6">
-        <input type="text" name="descripcion" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
+            <div class="form-row">
+                <div class="col-sm-5">
+                    <input type="text" name="descripcion" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
+                </div>
+
+                <div class="col-sm-4">
+
+                </div>
+            </div>
+            <br>
+            <br>
+
+            {{-- <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; "> --}}
+    <table class="table table-striped" id="roles">
+        <thead>
+          <tr>
+            <th class="TitleP" style="font-size: 14px;"><b>MODULO</b></th>
+            <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
+            <th class="TitleP"  style="font-size: 14px;"><b>
+                <div class="form-check" style="margin-left: 20px;">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggle(this)' >
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                        {{-- <h5><b>TODOS</b></h5> --}}
+                    </label>
+                </div>    
+            </b></th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach ($modulos as $modulo)
+            <tr>
+                <td >{{$modulo->nombre}}</td>
+                <td class="TitleP">{{$modulo->descripcion}}</td>
+                <td class="TitleP">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input cheinput" type="checkbox" name="dinamico[]" value="{{$modulo->id}}" >
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                    </label>
+                </div>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+{{-- </div> --}}
+
+</div>
+        </div>
     </div>
-<br>
-    <div class="form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggle(this)' >
-            <span class="form-check-sign">
-                <span class="check"></span>
-            </span>
-            <h5><b>TODOS</b></h5>
-        </label>
-    </div>
-    <br>
-            <div class="">
-<div class="card-body" style="top: -35px; position: relative;">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="1" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER EMPLEADOS</b></h5>
-                    </label>
+<div class="col-md-12">
+    <div class="card ">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-8">
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>INICIO WIDGET</b></h4>
                 </div>
-
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox"  name="dinamico[]" value="2" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER USUARIOS</b></h5>
-                    </label>
+                <div class="col-4 text-right">
                 </div>
-
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="3" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER DEPARTAMENTOS</b></h5>
-                    </label>
-                </div>
-
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="4" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER ROLES</b></h5>
-                    </label>
-                </div>
-            </div>
-
-            <div class="card-body" style="top: 153px; position: absolute; margin-left: 184px;">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="5" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER GASTOS</b></h5>
-                    </label>
-                </div>
-            
-
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="6" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER ASIGNACIONES</b></h5>
-                    </label>
-                </div>
-
-
-
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="8" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER LISTADO DE NOMINA</b></h5>
-                    </label>
-                </div>
-            </div>
-
-            <div class="card-body" style="position: absolute; top: 151px; margin-left: 397px;">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="9" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER PERFILES DE NOMINAS</b></h5>
-                    </label>
-                </div>
-
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="10" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER NOMINAS</b></h5>
-                    </label>
-                </div>
-
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="11" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER FORMA DE PAGO</b></h5>
-                    </label>
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="dinamico[]" value="12" >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        <h5><b>VER PERFILES DE USUARIOS</b></h5>
-                    </label>
-                </div>
-            </div>
-
-
-                
             </div>
         </div>
-        <button type="submit"  id="subir" class="btn btn-fill btn-info float-right" style="top: 47px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
-    </form>
-        <div class="card-footer py-4">
-            <nav class="d-flex justify-content-end" aria-label="...">
-                
-            </nav>
+
+        @csrf
+        <div class="card-body">
+            <div class="form-row">
+
+
+                <div class="col-sm-4">
+
+                </div>
+            </div>
+            <br>
+            <br>
+
+            {{-- <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; "> --}}
+    <table class="table table-striped" id="Widget">
+        <thead>
+          <tr>
+            <th class="TitleP" style="font-size: 14px;"><b>MODULO</b></th>
+            <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
+            <th class="TitleP"  style="font-size: 14px;"><b>
+                <div class="form-check" style="margin-left: 20px;">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="todos" id="todoWidget" onclick='toggleWidg(this)' >
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                        {{-- <h5><b>TODOS</b></h5> --}}
+                    </label>
+                </div>    
+            </b></th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach ($widget as $widgets)
+            <tr>
+                <td >{{$widgets->nombre}}</td>
+                <td class="TitleP">{{$widgets->descripcion}}</td>
+                <td class="TitleP">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input cheinput" type="checkbox" name="wingdt[]" value="{{$widgets->id}}" >
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                    </label>
+                </div>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+{{-- </div> --}}
+
+</div>
+        </div>
+
+    </div>
+</div>
+<button type="submit"  id="subir" class="btn btn-fill btn-info float-right" style="top: 47px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+</form>
+
+<div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
 function toggle(source) {
@@ -175,16 +173,100 @@ function toggle(source) {
   }
 
 }
+function toggleWidg(source) {
+  checkboxes = document.getElementsByName('wingdt[]');
 
-    var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+}
+
+
+
+table=$('#roles').DataTable({
+    "info": false,
+    "paging":   false,
+    scrollY: 500,
+        language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      },    
+   
+});
+table=$('#Widget').DataTable({
+    "info": false,
+    "paging":   false,
+    scrollY: 300,
+        language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      },    
+   
+});
+
+// arreglo=[];
+// b=0;
+// $('.cheinput').on("click",function(){
+// var valor=$(this).val();
+// if($(this).prop('checked')){
+//     arreglo[b]=valor;
+//     b++;
+// }else{
+//     for (let index = 0; index < arreglo.length; index++) {
+//             if(arreglo[index]==valor){
+//               arreglo.splice(index,1);
+//             //   console.log(arreglo);
+//             }else{
+              
+
+//             }
+            
+//      }
+    
+// }
+// $("#arreglo").attr('value',arreglo);
+//      console.log(arreglo);
+
+// });
 
 </script>
     
+
 @endsection
