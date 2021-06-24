@@ -24,6 +24,8 @@ use Illuminate\Support\Carbon;
 use PhpOffice\PhpWord\TemplateProcessor;
 use App\Models\Equipos;
 use App\Models\equipos_users;
+use App\Models\Permisos;
+use App\Models\Role_users;
 
 
 
@@ -41,7 +43,10 @@ class UserController extends Controller
         $empresa=Empresa::select('id')->where('id','=',Auth::user()->id_empresa)->first();
         // dd($empresa);
         $empre=$empresa->id;
-        return view('users.index',compact('users','puesto','empre'));
+
+        $role=Role_users::where('user_id','=',Auth::user()->id)->first();
+        $permisos=Permisos::where('role_id','=',$role->role_id)->first();
+        return view('users.index',compact('users','puesto','empre','permisos'));
     }
 
     /**

@@ -90,18 +90,19 @@
                 </a>
             </li> --}}
 
+            @if ($permisos->asistencia==1)
             <li>
                 <a href="{{url('Asistencia')}}">
                     <i class="fas fa-users"></i>
                     <p>{{ __('Asistencia') }}</p>
                 </a>
             </li>
-
+            @endif
 
 
 
         
-            @if ($permisos->departamento==1||$permisos->formas_pagos==1||$permisos->listado==1 || $permisos->usuario==1)
+            @if ($permisos->departamento==1||$permisos->formas_pagos==1||$permisos->empresa==1 || $permisos->usuario==1)
             <li>
                 <a data-toggle="collapse" href="#Confi" aria-expanded="true">
                     <i class="fa fa-cog fa-2x"> </i>
@@ -112,7 +113,7 @@
                 
                 <div class="collapse show" id="Confi">
                     <ul class="nav pl-4">
-                        @if ($permisos->listado==1)
+                        @if ($permisos->empresa==1)
                         <li >
                             <a href="{{ url('Empresa')  }}" >
                                 <i class="tim-icons icon-single-copy-04"></i>

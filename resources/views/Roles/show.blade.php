@@ -60,7 +60,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>INICIO WIDGET</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>DASHBOARD</b></h4>
                 </div>
                 <div class="col-4 text-right">
                 </div>

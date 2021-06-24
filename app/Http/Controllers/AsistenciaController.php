@@ -13,6 +13,8 @@ use App\Models\Weekend_empresa;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Permisos;
+use App\Models\Role_users;
 
 class AsistenciaController extends Controller
 {
@@ -23,9 +25,11 @@ class AsistenciaController extends Controller
      */
     public function index()
     {
+        $role=Role_users::where('user_id','=',Auth::user()->id)->first();
+        $permisos=Permisos::where('role_id','=',$role->role_id)->first();
         $asistencia=Asistencia::all();
         $empleado=Empleado::all();
-        return view('Asistencias.index',compact('asistencia','empleado'));
+        return view('Asistencias.index',compact('asistencia','empleado','permisos'));
     }
 
     /**

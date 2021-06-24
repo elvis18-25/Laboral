@@ -25,7 +25,10 @@
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo"><i class="fas fa-print"></i></button> --}}
                     {{-- <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button></a> --}}
                     <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf" style= " position: relative; font-size: 17px;" ></i></button>
+                   @if ($permisos->roles==1)
                    <a href="{{url('Roles')}}"><button id="btnpdf" type="button" title="Roles" class="btn btn-warning btn-sm redondo"><i class="fas fa-user-plus" style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button></a>
+                   @endif
+               
                 </div>
             </div>
         </div>

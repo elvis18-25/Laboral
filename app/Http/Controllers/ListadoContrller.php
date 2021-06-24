@@ -20,6 +20,8 @@ use App\Models\nomina_empleados;
 use App\Models\nomina_horas;
 use App\Models\otros;
 use DateTime;
+use App\Models\Permisos;
+use App\Models\Role_users;
 
 class ListadoContrller extends Controller
 {
@@ -31,7 +33,9 @@ class ListadoContrller extends Controller
     public function index()
     {
         $listado=Listado::all();
-        return view('Listado.index',compact('listado'));
+        $role=Role_users::where('user_id','=',Auth::user()->id)->first();
+        $permisos=Permisos::where('role_id','=',$role->role_id)->first();
+        return view('Listado.index',compact('listado','permisos'));
     }
 
     /**

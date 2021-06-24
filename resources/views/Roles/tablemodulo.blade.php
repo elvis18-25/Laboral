@@ -271,3 +271,87 @@
         </td>
         @endif
 </tr>
+<tr>
+    <td >ASISTENCIAS</td>
+    <td class="TitleP">	
+        VER REGISTRO DE ASISTENCIA</td>
+        @if ($permisos->asistencia==1) 
+        <td class="TitleP">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="12" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @else 
+        <td class="TitleP">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="12" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @endif
+</tr>
+<tr>
+    <td >EMPRESA</td>
+    <td class="TitleP">	
+        CONFIGURACION DE LA EMPRESA</td>
+        @if ($permisos->empresa==1) 
+        <td class="TitleP">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="13" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @else 
+        <td class="TitleP">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="13" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @endif
+</tr>
+<tr>
+    <td >GRUPOS</td>
+    <td class="TitleP">	
+        REGISTRO Y MODIFICACIONES DE GRUPOS</td>
+        @if ($permisos->empresa==1) 
+        <td class="TitleP">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="13" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @else 
+        <td class="TitleP">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="13" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @endif
+</tr>

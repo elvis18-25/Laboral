@@ -138,6 +138,15 @@ class RolesController extends Controller
                 if($permisos[$i]==11){
                     $permi->nomina=1;
                    }
+                if($permisos[$i]==12){
+                    $permi->asistencia=1;
+                   }
+                if($permisos[$i]==13){
+                    $permi->empresa=1;
+                   }
+                if($permisos[$i]==14){
+                    $permi->grupo=1;
+                   }
                 $permi->save();
             }  
         } 
@@ -280,6 +289,15 @@ class RolesController extends Controller
                 }
                 if($permisos[$i]==11){
                     $permi->nomina=1;
+                   }
+                   if($permisos[$i]==12){
+                    $permi->asistencia=1;
+                   }
+                if($permisos[$i]==13){
+                    $permi->empresa=1;
+                   }
+                   if($permisos[$i]==14){
+                    $permi->grupo=1;
                    }
                 $permi->save();
             }  

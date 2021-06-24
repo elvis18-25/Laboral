@@ -42,9 +42,14 @@
 }
 </style>
 <div class="row">
-  
+  @php
+      $a=0;
+  @endphp
        
  @if ($permisos->total_empleado==1)
+ @php
+     $a=1;
+ @endphp
  <div class="col-lg-4">
   <div class="card card-chart" style="height: 118px;">
       <div class="card-header">
@@ -60,9 +65,30 @@
 </div>    
  @endif
 
+@php
+    $b=0;
+@endphp
 
 @if ($permisos->total_usuarios==1)
+@php
+    $b=1;
+@endphp
+  @if ($a==1)
 <div class="col-lg-4">
+  <div class="card card-chart" style="height: 118px;">
+    <div class="card-header">
+      <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL USUARIOS</b></h5>
+            <h3 class="card-title">{{$count_users}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-user-friends text-light icons"></i></i></span></div>
+        </div>
+      </div>
+    </div>  
+  @else
+<div class="col-lg-6">
   <div class="card card-chart" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
@@ -76,8 +102,16 @@
       </div>
     </div>
   @endif
+@endif
 
+@php
+    $c=0
+@endphp
   @if ($permisos->total_departamentos==1)
+  @php
+      $c=1;
+  @endphp
+  @if ($b==1)
   <div class="col-lg-4">
     <div class="card card-chart" style="height: 118px;">
       <div class="card-header">
@@ -90,10 +124,33 @@
           <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
         </div>
       </div>
-    </div>
+    </div>  
+  @else
+  <div class="col-lg-4">
+    <div class="card card-chart" style="height: 118px;">
+      <div class="card-header">
+        <div class="title" style="margin-top: 6px;">
+          <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL DEPARTAMENTOS</b></h5>
+            <h3 class="card-title">{{$count_puesto}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
+        </div>
+      </div>
+    </div>  
+  @endif
+
     @endif
 
+    @php
+        $d=0;
+    @endphp
     @if ($permisos->formas_pago==1)
+    @php
+        $d=1;
+    @endphp
+    @if ($c==1)
     <div class="col-lg-4">
       <div class="card card-chart" style="height: 118px;">
         <div class="card-header">
@@ -107,10 +164,49 @@
             margin-right: 20px !important;"></i></i></span></div>
         </div>
       </div>
-    </div>
+    </div>  
+    @else
+    <div class="col-lg-4">
+      <div class="card card-chart" style="height: 118px;">
+        <div class="card-header">
+          <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>FORMAS DE PAGOS</b></h5>
+            <h3 class="card-title">{{$count_pagos}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-file-invoice-dollar text-light icons" style="font-size: 25px !important;
+            margin-right: 20px !important;"></i></i></span></div>
+        </div>
+      </div>
+    </div> 
     @endif
 
+    @endif
+
+    @php
+        $e=0;
+    @endphp
 @if ($permisos->totales_roles==1)
+@php
+    $e=1;
+@endphp
+@if ($d==1)
+<div class="col-lg-4">
+  <div class="card card-chart" style="height: 118px;">
+    <div class="card-header">
+      <div class="title" style="margin-top: 6px;">
+            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL ROLES</b></h5>
+            <h3 class="card-title">{{$count_roles}}</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="circulo" ><span style="float: right;"><i class="fas fa-user-cog text-light icons" style="font-size: 25px !important;
+            margin-right: 11px !important;"></i></i></span></div>
+        </div>
+      </div>
+    </div>  
+@else
 <div class="col-lg-4">
   <div class="card card-chart" style="height: 118px;">
     <div class="card-header">
@@ -125,9 +221,12 @@
         </div>
       </div>
     </div>
+@endif
+
     @endif
 
 @if ($permisos->reuniones==1) 
+@if ($e==1)
 <div class="col-lg-4">
   <div class="card card-chart" style="height: 118px;">
     <div class="card-header">
@@ -141,14 +240,31 @@
             margin-right: 11px !important;"></i></i></span></div>
         </div>
       </div>
+    </div>  
+@else
+<div class="col-lg-4">
+  <div class="card card-chart" style="height: 118px;">
+    <div class="card-header">
+      <div class="title" style="margin-top: 6px;">
+        <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>REUNIONES PENDIENTE</b></h5>
+        <h3 class="card-title">0</h3>
+      </div>
     </div>
+    <div class="card-body">
+      <div class="circulo" ><span style="float: right;"><i class="fas fa-user-clock text-light icons" style="font-size: 25px !important;
+            margin-right: 11px !important;"></i></i></span></div>
+        </div>
+      </div>
+    </div> 
+@endif
+
     @endif
 
   @if ($permisos->w_empleados==1)
     <div class="col-lg-4">
       <div class="card card-chart">
         <div class="card-header">
-          <h5 class="card-category" style="color: black"><b>Empleados</b></h5>
+          <h5 class="card-category" style="color: black"><b>EMPLEADOS</b></h5>
         </div>
         <div class="card-body">
             <div class="chart-area">
@@ -178,7 +294,7 @@
     <div class="col-lg-4">
         <div class="card card-chart">
             <div class="card-header">
-                <h5 class="card-category" style="color: black"><b> Generos</b></h5>
+                <h5 class="card-category" style="color: black"><b> GENEROS</b></h5>
                 <div class="form-inline">
                 {{-- <h3 class="card-title"><i class="fas fa-female text-primary" title="Mujeres" style="font-size: 20px "></i>{{$count_mujeres}}</h3>&nbsp;&nbsp;&nbsp;&nbsp;
                 <h3 class="card-title"> <i class="fas fa-male text-info" title="Hombres" style="font-size: 20px "></i>{{$count_hombres}}</h3>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -731,7 +847,7 @@ var myChart = new Chart(ctxE, {
 
     
     var myChart = new Chart(ctx, {
-      type: 'polarArea',
+      type: 'radar',
       responsive: true,
       legend: {
         display: false
@@ -794,13 +910,13 @@ var myChart = new Chart(ctxE, {
 
     // console.log(cMoth);
 
-    var cDatanom = <?php echo $datanom; ?>;
-    var cMothnom = <?php echo $mothnom; ?>;
     
 
     var meses=[];
     var monto=[];
-    var a=0,b=0,c=0,d=0,e=0,f=0,g=0;
+    
+
+
     var list=0;
     for (var mes = 1; mes <=12; mes++) {
     list++;
@@ -864,6 +980,75 @@ var myChart = new Chart(ctxE, {
 
   }
 
+
+  
+  var cDatanom = <?php echo $datanom; ?>;
+    var cMothnom = <?php echo $mothnom; ?>;
+
+    var mesesNomi=[];
+    var montoNomi=[];
+    for (var mes = 1; mes <=12; mes++) {
+    list++;
+    for (pos=0; pos <12; pos++) {
+
+        if(cMothnom[pos]==mes && mes==1){
+          mesesNomi[pos]="ENERO";
+          montoNomi[pos]=cDatanom[pos];
+        }
+
+        if(mes==2 && cMothnom[pos]==mes){
+          mesesNomi[pos]="FEBRERO";
+          montoNomi[pos]=cDatanom[pos];
+        }
+
+        if(cMothnom[pos]==mes && mes==3){
+          mesesNomi[pos]="MARZO";
+          montoNomi[pos]=cDatanom[pos];
+        }
+
+        if(mes==4 && cMothnom[pos]==mes){
+          mesesNomi[pos]="ABRIL";
+          montoNomi[pos]=cDatanom[pos];
+        }
+
+        if(mes==5 && cMothnom[pos]==mes){
+          mesesNomi[pos]="MAYO";
+          montoNomi[pos]=cDatanom[pos];
+        }
+
+        if(mes==6 && cMothnom[pos]==mes){
+          mesesNomi[pos]="JUNIO";
+          montoNomi[pos]=cDatanom[pos];
+        }
+        if(mes==7 && cMothnom[pos]==mes){
+          mesesNomi[pos]="JULIO";
+          montoNomi[pos]=cDatanom[pos];
+        }
+        if(mes==8 && cMothnom[pos]==mes){
+          mesesNomi[pos]="AGOSTO";
+          montoNomi[pos]=cDatanom[pos];
+        }
+        if(mes==9 && cMothnom[pos]==mes){
+          mesesNomi[pos]="SEPTIEMBRE";
+          montoNomi[pos]=cDatanom[pos];
+        }
+        if(mes==10 && cMothnom[pos]==mes){
+          mesesNomi[pos]="OCTUBRE";
+          montoNomi[pos]=cDatanom[pos];
+        }
+        if(mes==11 && cMothnom[pos]==mes){
+          mesesNomi[pos]="NOVIEMBRE";
+          montoNomi[pos]=cDatanom[pos];
+        }
+        if(mes==12 && cMothnom[pos]==mes){
+          mesesNomi[pos]="DICIEMBRE";
+          montoNomi[pos]=cDatanom[pos];
+        }
+      
+    }
+
+  }
+
   // console.log(meses);
 
   // for (let index = 0; index < meses.length; index++) { 
@@ -897,7 +1082,6 @@ var myChart = new Chart(ctxE, {
       type: 'line',
       data: {
         datasets: [{
-
           label: "Gasto",
           fill: true,
           backgroundColor: gradientStroke,
@@ -913,26 +1097,15 @@ var myChart = new Chart(ctxE, {
           pointHoverBorderWidth: 15,
           pointRadius: 4,
           data: monto,
-        },
-        // {
-          
-        //   label: "Nomina",
-        //   fill: true,
-        //   backgroundColor: gradientStrokes,
-        //   borderColor: '#1f8ef1',
-        //   borderWidth: 2,
-        //   borderDash: [],
-        //   borderDashOffset: 0.0,
-        //   pointBackgroundColor: '#1f8ef1',
-        //   pointBorderColor: 'rgba(255,255,255,0)',
-        //   pointHoverBackgroundColor: '#1f8ef1',
-        //   pointBorderWidth: 20,
-        //   pointHoverRadius: 4,
-        //   pointHoverBorderWidth: 15,
-        //   pointRadius: 4,
-        //   data: chart_data,
-        // }
-        ],
+        },{
+          label: 'NOMINA',
+          data: cDatanom,
+           type: 'line',
+           order: 1,
+           borderColor: 'rgb(54, 162, 235)'
+           
+        }],
+
         labels: meses,
         
       },

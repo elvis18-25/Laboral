@@ -18,7 +18,10 @@
                 </div>
                 <div class="col-4 text-right">
                 <a href="{{url('Nominas')}}" title="Crear Nueva Nomina " class="btn btn-sm btn-info redondo "><button  type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                @if ($permisos->perfiles==1)
                 <a href="{{url('Perfiles')}}" title="Perfiles " class="btn btn-sm btn-warning redondo "><button  type="button"  style="display: none;"></button><i class="fas fa-users" style="margin-left: -5px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                    
+                @endif
                 </div>
             </div>
         </div>
