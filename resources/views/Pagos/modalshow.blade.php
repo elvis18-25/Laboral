@@ -71,11 +71,7 @@ Swal.fire({
             success:function(result){
                 $("#pagosshow").modal("toggle");
             table.ajax.reload();  
-             Swal.fire(
-            'Eliminado!',
-            'Se ha eliminado exitosamente.',
-            'success'
-          )
+            sucessf();
 
               
 

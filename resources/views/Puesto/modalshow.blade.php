@@ -44,7 +44,7 @@ var name=$("#editpuesto").val();
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGen();
     }
              });
 }
@@ -82,17 +82,13 @@ Swal.fire({
             success:function(result){
             $("#departshow").modal("toggle");
             table.ajax.reload();  
-             Swal.fire(
-            'Eliminado!',
-            'Se ha eliminado exitosamente.',
-            'success'
-          )
+            sucessf();
 
               
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGen();
     }
              });
   }

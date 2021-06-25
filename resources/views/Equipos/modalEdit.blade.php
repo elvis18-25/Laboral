@@ -31,9 +31,9 @@
                     @if ($empleados->id_empresa==$empresa)
                       <tr onclick="AddGroup('{{url('agregarGruopEdit',[$empleados->id_empleado])}}',{{$empleados->id_empleado}});" action="{{url('agregarGruopEdit',[$empleados->id_empleado])}}" value="{{$empleados->id_empleado}}" >
                         <td class="left">{{$empleados->nombre." ".$empleados->apellido}}</td>
-                        <td class="left">{{$empleados->cedula}}</td>
-                        <td class="left">{{$empleados->cargo}}</td>
-                        <td class="left">
+                        <td class="center">{{$empleados->cedula}}</td>
+                        <td class="center">{{$empleados->cargo}}</td>
+                        <td class="center">
                           @foreach ($empleados->puesto as $puesto)
                               {{$puesto->name}}
                           @endforeach
@@ -89,5 +89,8 @@
     .left{
       text-align: left;
       font-size: 14px;
+    }
+    .center{
+      text-align: center;
     }
   </style>

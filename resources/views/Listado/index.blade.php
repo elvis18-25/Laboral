@@ -42,7 +42,7 @@
                     <tbody>
                         
                         @foreach ($listado as $listados)
-                        @if ($listados->estado!=1)
+                        @if ($listados->estado==0)
                         @if ($listados->id_empresa==$user)
                         <tr action="{{Route('Listado.show',$listados->id)}}">
                             <td>{{$listados->descripcion}}</td>
@@ -66,6 +66,7 @@
 </div>
 
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
+
 <div class="o-page-loader">
     <div class="o-page-loader--content">
       <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
@@ -81,20 +82,68 @@
 @section('js2')
 @if (session('guardar')=='ya')
 <script>
-    Swal.fire(
-      'Guardado!',
-      'se ha sido guardado los cambios exitosamente.',
-      'success'
-    )
+    Command: toastr["success"]("se ha guardo la nomina", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  </script>    
+@endif
+@if (session('actualizar')=='ya')
+<script>
+    Command: toastr["success"]("se ha actualizado la nomina", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
   </script>    
 @endif
 @if (session('Eliminado')=='ya')
 <script>
-    Swal.fire(
-      'Guardado!',
-      'se ha sido Eliminado exitosamente.',
-      'success'
-    )
+    Command: toastr["success"]("se ha eliminado la nomina", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
   </script>    
 @endif
 <script src="{{asset('js/pageLoader.js')}}"></script>

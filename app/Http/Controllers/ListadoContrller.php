@@ -598,7 +598,7 @@ class ListadoContrller extends Controller
         }
 
         $nominas->save();
-        return redirect('Listado')->with('guardar','ya');
+        return redirect('Listado')->with('actualizar','ya');
     }
 
     /**

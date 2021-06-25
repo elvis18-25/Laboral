@@ -2,6 +2,7 @@
 
 @section('content')
 <link rel="stylesheet" href="{{asset('css/perfiles.css')}}">
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -40,6 +41,16 @@
     </div>
 </div>
 
+<div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
+</div>
+
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 @endsection
@@ -48,14 +59,71 @@
 
 @if (session('eliminado')=='ya')
 <script>
-    Swal.fire(
-      'Eliminado!',
-      'El Perfil ha sido eliminado.',
-      'success'
-    )
+    Command: toastr["success"]("se ha eliminado el perfil", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
   </script>    
 @endif
-    
+@if (session('actualizar')=='ya')
+<script>
+    Command: toastr["success"]("se ha actualizado el perfil", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  </script>    
+@endif
+@if (session('guardar')=='ya')
+<script>
+    Command: toastr["success"]("se ha actualizado el perfil", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  </script>    
+@endif
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
 document.addEventListener ("keydown", function (e) {

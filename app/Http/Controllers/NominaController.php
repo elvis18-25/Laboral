@@ -213,7 +213,7 @@ class NominaController extends Controller
 
 
 
-        return redirect('Listado');
+        return redirect('Listado')->with('guardar','ya');
 
     }
     public function totalnominas($id,Request $request)

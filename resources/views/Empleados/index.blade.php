@@ -91,21 +91,69 @@
 
 @if (session('eliminiado')=='ya')
 <script>
-    Swal.fire(
-      'Eliminado!',
-      'El Empleado ha sido eliminado.',
-      'success'
-    )
+    Command: toastr["success"]("se ha eliminado el empleado", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
   </script>    
 @endif
 
 @if (session('guardar')=='ya')
 <script>
-    Swal.fire(
-      'Guardado!',
-      'El Empleado ha sido guardado exitosamente.',
-      'success'
-    )
+    Command: toastr["success"]("se ha guardado el empleado", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  </script>    
+@endif
+@if (session('actualizar')=='ya')
+<script>
+    Command: toastr["success"]("se ha actualizado el empleado", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
   </script>    
 @endif
 <script src="{{asset('js/pageLoader.js')}}"></script>

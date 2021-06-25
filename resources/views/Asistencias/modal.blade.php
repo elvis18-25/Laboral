@@ -30,7 +30,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" onclick="saveFecha()" class="btn btn-info redondo" title="Guardar Asistencia"><i class="fas fa-save"></i></button>
-          <button type="button" onclick="eliminar()" class="btn btn-danger redondo" title="Eliminar Asistencia"><i class="fas fa-trash"></i></button>
+          {{-- <button type="button" onclick="eliminar()" class="btn btn-danger redondo" title="Eliminar Asistencia"><i class="fas fa-trash"></i></button> --}}
         </div>
       </div>
     </div>
@@ -54,6 +54,7 @@ var data={entrada:entrada,salidad:salidad,notas:notas};
               // console.log(result);
               $("#horassdd").trigger("click");
               tabla.ajax.reload();
+              SuccessGen();
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -83,7 +84,7 @@ var data='';
             success:function(result){
               $("#horassdd").trigger("click");
               tabla.ajax.reload();
-              Extio();
+              SuccessGen()
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -96,13 +97,6 @@ var data='';
 
     }
 
-    function Extio(){
-      Swal.fire(
-      'Eliminado!',
-      'La asistencia se ha eliminado exitosamente.',
-      'success'
-    )
-  }
 
   var entrada=new Date($("#entrada").val());
   var salida=new Date($("#salidad").val());

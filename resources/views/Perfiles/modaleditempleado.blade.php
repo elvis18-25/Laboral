@@ -20,27 +20,20 @@
                     <th class="TitlePer">SALARIO</th>
                   </tr>
                 </thead>
-                @php
-                    $empresa=Auth::user()->id_empresa;
-                @endphp
                 <tbody>
-                  @foreach ($empleado as $empleados)
+                  @foreach ($emple as $emples)
                   
-                    @if ($empleados->estado==0)
-                    @if ($empleados->id_empresa==$empresa)
-                      <tr onclick="Addedit('{{url('agregar',[$empleados->id_empleado])}}',{{$empleados->id_empleado}});" action="{{url('agregar',[$empleados->id_empleado])}}" value="{{$empleados->id_empleado}}" >
-                        <td class="left">{{$empleados->nombre." ".$empleados->apellido}}</td>
-                        <td class="left">{{$empleados->cedula}}</td>
-                        <td class="left">{{$empleados->cargo}}</td>
+                      <tr onclick="Addedit('{{url('agregar',[$emples->id_empleado])}}',{{$emples->id_empleado}});" action="{{url('agregar',[$emples->id_empleado])}}" value="{{$emples->id_empleado}}" >
+                        <td class="left">{{$emples->nombre." ".$emples->apellido}}</td>
+                        <td class="left">{{$emples->cedula}}</td>
+                        <td class="left">{{$emples->cargo}}</td>
                         <td class="left">
-                          @foreach ($empleados->puesto as $puesto)
+                          @foreach ($emples->puesto as $puesto)
                               {{$puesto->name}}
                           @endforeach
                         </td>
-                        <td>${{number_format($empleados->salario,2)}}</td>
+                        <td>${{number_format($emples->salario,2)}}</td>
                       </tr>
-                      @endif
-                      @endif
             
                   @endforeach
                 </tbody>

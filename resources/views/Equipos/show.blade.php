@@ -14,12 +14,9 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO GRUPO</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EDITAR GRUPO</b></h4>
                 </div>
-                {{-- <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles" title="Agregar Empleado a la cooperativa"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
-               @include('Equipos.modalempleado')
-                </div> --}}
+
             </div>
         </div>
         <div class="card-body">
@@ -103,13 +100,12 @@
         <div class="card-body">
     <div class="form-row">
         </div>
-        <br>
         @php
         $empresa=Auth::user()->id_empresa;
     @endphp
             <div class="">
                 <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; ">
-                <table class="table tablesorter table-hover" id="grupo-table">
+                <table class="table tablesorter" id="grupo-table">
                     <thead class=" text-primary">
                         <tr> 
                         <th class="TitlePer">NOMBRE</th>
@@ -121,6 +117,7 @@
                     </thead>
                     <tbody>
                         @foreach ($empleado as $empleados)
+                        @if ($empleados->estado==0)
                         @foreach ($perf as $perfe)
                         @if ($perfe->id_empleado==$empleados->id_empleado)
                         @if ($perfe->id_empresa=$empresa)
@@ -141,6 +138,7 @@
                         @endif
                         @endif
                         @endforeach
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -183,7 +181,7 @@
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="{{asset('js/timepicker.min.js')}}"></script>
 <script>
-     $('.bs-timepicker').timepicker();
+    //  $('.bs-timepicker').timepicker();
 
      $("#Empleadotableedit tbody").on('click','tr',function(){
     $('td', this).css('backgroundColor', '#958fcd ');

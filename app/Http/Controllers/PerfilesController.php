@@ -75,7 +75,7 @@ class PerfilesController extends Controller
             }
         }
 
-        return redirect('Perfiles');
+        return redirect('Perfiles')->with('guardar','ya');
     }
 
     /**
@@ -87,10 +87,23 @@ class PerfilesController extends Controller
     public function show($id)
     {
         $perfiles=Perfiles_empleado::findOrFail($id);
-        $perf=Perfiles::select('id_empleado')->where('id_perfiles','=',$id)->get();
-        $empleado=Empleado::all();
+        // $perf=Perfiles::select('id_empleado')->where('id_perfiles','=',$id)->get();
         $puesto=Puesto::all();
-        return view('Perfiles.show',compact('perfiles','perf','empleado','puesto'));
+
+        $empleado=Empleado::leftjoin('perfiles','perfiles.id_empleado','=','empleado.id_empleado')
+        ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','empleado.id_empleado')
+        ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
+        ->where('perfiles.estados','=',0)
+        ->where('empleado.estado','=',0)
+        ->where('perfiles.id_perfiles',$id)
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.cedula','puesto.name as puesto','empleado.salario',)
+        ->GroupBy('empleado.id_empleado','empleado.cedula','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario')
+        ->get();
+       
+        $emple=Empleado::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+
+        
+        return view('Perfiles.show',compact('perfiles','empleado','puesto','emple'));
     }
 
     /**
@@ -165,7 +178,7 @@ class PerfilesController extends Controller
 
 
 
-        return redirect('Perfiles');
+        return redirect('Perfiles')->with('actualizar','ya');
     }
 
     /**
@@ -192,7 +205,8 @@ class PerfilesController extends Controller
         leftjoin('perfiles','perfiles.id_perfiles','=','perfiles_empleado.id')
         ->leftjoin('empleado','empleado.id_empleado','=','perfiles.id_empleado')
         ->where('perfiles_empleado.id_empresa',Auth::user()->id_empresa)
-        ->where('perfiles_empleado.estado','!=','1')
+        ->where('perfiles_empleado.estado','=',0)
+        ->where('perfiles.estados','=',0)
         ->select('perfiles_empleado.id','perfiles_empleado.descripcion','perfiles_empleado.user','perfiles_empleado.created_at',DB::raw('count(perfiles.id_empleado) as emple'))
         ->GroupBy('perfiles_empleado.id','perfiles_empleado.descripcion','perfiles_empleado.user','perfiles_empleado.created_at');
        

@@ -50,26 +50,21 @@
                     </thead>
                     <tbody>
                         @foreach ($empleado as $empleados)
-                        @foreach ($perf as $perfe)
-                        @if ($perfe->id_empleado==$empleados->id_empleado)
-                        @if ($perfe->id_empresa=$empresa)
+
                         <tr>
                             <td >{{$empleados->nombre." ".$empleados->apellido}}</td>
                             <td style="text-align: center;">{{$empleados->cedula}}</td>
                             <td style="text-align: center;">{{$empleados->cargo}}</td>
                             <td style="text-align: center;">
-                            @foreach ($empleados->puesto as $puesto)
-                                {{$puesto->name}}
-                            @endforeach
+                            {{-- @foreach ($empleados->puesto as $puesto) --}}
+                                {{$empleados->puesto}}
+                            {{-- @endforeach --}}
                             </td>
                             <td style="text-align: right;">${{number_format($empleados->salario,2)}}</td>
                             <td style="text-align: right;">
                                 <button class="btn btn-danger btn-sm remfe" type="button" value="{{$empleados->id_empleado}}"><i class="fas fa-minus"></i></button>
                             </td>
                         </tr>
-                        @endif
-                        @endif
-                        @endforeach
                         @endforeach
                     </tbody>
                 </table>

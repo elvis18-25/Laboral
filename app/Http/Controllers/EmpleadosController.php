@@ -26,14 +26,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\state_empleado;
 use App\Models\ciudades_empleado;
 use App\Models\paises_empleado;
-use App\Models\isr_empleado;
 use Barryvdh\DomPDF\Facade as PDF;
-use App\Models\estado_asignaciones;
-use App\Models\estados_isr;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Equipos;
 use App\Models\empleados_equipo;
+use App\Models\Perfiles;
+
 
 
 class EmpleadosController extends Controller
@@ -510,7 +509,7 @@ class EmpleadosController extends Controller
         
     
 
-        return redirect('Empleados')->with('guardar','ya');
+        return redirect('Empleados')->with('actualizar','ya');
 
 
         
@@ -529,6 +528,17 @@ class EmpleadosController extends Controller
         $empleado=Empleado::findOrFail($id);
         $empleado->estado=1;
         $empleado->save();
+
+        $perfiles=Perfiles::where('id_empleado','=',$id)->get();
+        foreach($perfiles as $perfil){
+            $perfil->estados=1;
+            $perfil->update();
+        }
+        $equipo=empleados_equipo::where('id_empleado','=',$id)->get();
+        foreach($equipo as $equipos){
+            $equipos->estado=1;
+            $equipos->update();
+        }
 
         return redirect('Empleados')->with('eliminiado','ya');
         

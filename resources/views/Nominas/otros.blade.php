@@ -12,7 +12,7 @@
         <div class="modal-body">
             <div class="form-row">
                 <div class="col-sm-6">
-                    <label style="color: black"><b>{{ __('NOMBRE ') }}</b></label>
+                    <label style="color: black"><b>{{ __('DESCRIPCIÓN ') }}</b></label>
                     <input type="text" name="name" autofocus id="nameC"   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                 </div>
     

@@ -41,7 +41,7 @@
                   <label for=""><b>FECHA DE CREACION</b></label>
                     <input type="date" id="fech" name="fecha" class="form-control"  >
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" id="fechaHora">
                   <label for=""><b>FECHA DE HORAS</b></label>
                   <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; position: relative; top: 3px;">
                     <i class="fa fa-calendar"></i>&nbsp;
@@ -117,7 +117,7 @@
     </div>
     <input type="date" id="start" name="start" class="form-control" value="" hidden >
     <input type="date" id="end" name="end" class="form-control" value="" hidden >
-    <input type="text" id="inputCheckBox" name="inputCheckBox" value="" hidden>
+    <input type="text" id="inputCheckBox" name="inputCheckBox" value="0" hidden>
 
     
     <input type="text" id="arregloID" name="arregloID" class="form-control" value="" hidden>
@@ -298,8 +298,10 @@ var valor =$("#inputCheckBox").val();
 
   if(valor==0){
     $("#inputCheckBox").attr('value',1)
+    $("#fechaHora").hide();
   }else{
     $("#inputCheckBox").attr('value',0)
+    $("#fechaHora").show();
   }
   tabla.ajax.reload();
   totalnomi(idnomina);

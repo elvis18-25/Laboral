@@ -115,11 +115,12 @@ function updateasignaciones(e){
             success:function(result){
             table.ajax.reload();
             $("#showmodal").trigger("click");
+            SuccesGenUpdate();
             
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGenerales(); 
     }
              }); 
    } 
@@ -167,13 +168,13 @@ function Errores(){
             success:function(result){
               table.ajax.reload();
             $("#showmodal").trigger("click");
-            excele()
+            SuccesGenDele();
         
           
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                ErroresGenerales(); 
     }
              });
   }
@@ -182,12 +183,6 @@ function Errores(){
 
 
 
-  function excele(){
-    Swal.fire(
-      'Eliminado!',
-      'La Asignacion ha sido Eliminado.',
-      'success'
-    )  
-}
+
     </script>
   

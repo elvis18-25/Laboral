@@ -189,21 +189,14 @@ headers: {
         
     });
 
-    $('#role-table').DataTable().on("draw", function(){
-    var rowIdx = table.cell(':eq(0)').index().row;
-      
-      table.row(rowIdx).select();
-
-      table.cell( ':eq(0)' ).focus();
-});
-
-// function started(){
-//       var rowIdx = table.cell(':eq(0)').index().row;
+//     $('#role-table').DataTable().on("draw", function(){
+//     var rowIdx = table.cell(':eq(0)').index().row;
       
 //       table.row(rowIdx).select();
 
 //       table.cell( ':eq(0)' ).focus();
-// }
+// });
+
 
 
   document.addEventListener ("keydown", function (e) {
@@ -212,14 +205,14 @@ headers: {
     } 
 });
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+// window.onbeforeunload = function(e) {
+//     HoldOn.open(options);
+// };
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {

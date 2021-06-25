@@ -457,28 +457,9 @@ class GastoController extends Controller
         $gasto->observaciones=$request->get('textarea');
         $gasto->update();
 
-        // $concep=Concepto_gasto::all();
 
-        // foreach($concep as $concept){
-        //     if($concept->id_gasto==$id){
-        //         $concept->delete();
-        //     }
-        // }
 
-        // if($request->get('concepto')!=''){
-        //     for($i = 0; $i < count($request->get('concepto')); $i++){
-        //         if(!empty(collect($request)->get('concepto')[$i])){
-        //         $input['id_gasto']=$gasto->id;
-        //         $input['concepto'] = $request->get('concepto')[$i];
-        //         $input['monto'] = $request->get('monto')[$i];
-        //         $input['id_empresa'] = Auth::user()->id_empresa;
-        //         $input['estado'] =0;
-        //         $referencia=concepto_gasto::create($input);
-        //     }  
-        //     }   
-        // }
-
-        return redirect('Gasto')->with('guardar','ya');
+        return redirect('Gasto')->with('actualizar','ya');
 
     }
 
@@ -494,7 +475,7 @@ class GastoController extends Controller
        $gasto->estado=1;
        $gasto->save();
 
-       return redirect('Gasto');
+       return redirect('Gasto')->with('eliminado','ya');
 
     }
     public function GastosFijo()

@@ -77,7 +77,7 @@ class EquiposController extends Controller
         }
     }
 
-        return redirect('Equipos');
+        return redirect('Equipos')->with('guardar','ya');
     }
 
     /**
@@ -90,8 +90,8 @@ class EquiposController extends Controller
     {
         $equipo=Equipos::findOrFail($id);
         $perf=empleados_equipo::select('id_empleado')->where('equipos','=',$id)->get();
-        $empleado=Empleado::all();
         $puesto=Puesto::all();
+        $empleado=Empleado::all();
         return view('Equipos.show',compact('equipo','perf','empleado','puesto'));
         
     }
@@ -122,7 +122,7 @@ class EquiposController extends Controller
 
     public function AllGroup(){
 
-        $empleados=Empleado::all();
+        $empleados=Empleado::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $puesto=Puesto::all();
 
         return view('Equipos.AllPlantilla',compact('empleados','puesto'));
@@ -209,7 +209,7 @@ class EquiposController extends Controller
 
 
 
-        return redirect('Equipos');
+        return redirect('Equipos')->with('actualizar','ya');
     }
 
     /**
@@ -233,7 +233,8 @@ class EquiposController extends Controller
         leftjoin('equipos_empleados','equipos_empleados.equipos','=','equipos.id')
         ->leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
         ->where('equipos.id_empresa',Auth::user()->id_empresa)
-        ->where('equipos.estado','!=','1')
+        ->where('equipos.estado','=',0)
+        ->where('equipos_empleados.estado','=',0)
         ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at',DB::raw('count(equipos_empleados.id_empleado) as emple'))
         ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at');
        

@@ -406,7 +406,7 @@ class AsistenciaController extends Controller
     }
 }
         
-        return redirect('Asistencia');
+        return redirect('Asistencia')->with('guardar','ya');
     }
 
     /**

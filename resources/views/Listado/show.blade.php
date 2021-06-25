@@ -58,13 +58,17 @@
                     <input type="date" id="fech" value="{{$nominas->fecha}}" name="fecha" class="form-control"  >
                 </div>
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
-                <div class="col-sm-2">
+
+             
+                <div class="col-sm-2" id="fechaHora">
                   <label for=""><b>FECHA DE HORAS</b></label>
                   <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; position: relative; top: 3px;">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span> <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
+      
+
                 <div class="form-check" style="top: 25px;
                 margin-left: 10px;">
                   <label class="form-check-label">
@@ -74,7 +78,7 @@
                     <input class="form-check-input check"   id="btnCheck"    type="checkbox" >
                     @endif
                     <span class="form-check-sign"><span class="check">
-                      <b style="font-size: 14px; ">Calcular Horas</b>
+                      <b style="font-size: 14px; ">CALCULAR HORAS</b>
                       </span></span>
                     </label>
                   </div>
@@ -176,9 +180,7 @@
 {{-- <script src="{{asset('js/pageLoader.js')}}"></script> --}}
 <script src="{{asset('js/timepicker.min.js')}}"></script>
 <script>
-//       var hoy = new Date();
-//   var fecha = moment(hoy);
-//   document.getElementById("fech").defaultValue = fecha.format("YYYY-MM-DD");
+
 const options2 = { style: 'currency', currency: 'USD' };
 const numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
@@ -193,6 +195,7 @@ startComes = new Date($("#started").attr('value'));
   var end = moment().endOf('month');
 
 }
+
 
 
 
@@ -213,6 +216,7 @@ $("#formardC").on('change',function(){
  }   
 
 });
+
 
 
 if (window.history && window.history.pushState) {
@@ -243,9 +247,11 @@ $("#btnCheck").on('click',function(){
 var valor =$("#inputCheckBox").val();
 
   if(valor==0){
-    $("#inputCheckBox").attr('value',1)
+    $("#inputCheckBox").attr('value',1);
+    $("#fechaHora").hide();
   }else{
-    $("#inputCheckBox").attr('value',0)
+    $("#inputCheckBox").attr('value',0);
+    $("#fechaHora").show();
   }
   tabla.ajax.reload();
   totalnomi($("#input").attr('value'));
@@ -554,14 +560,15 @@ $('#Nominas').on('key-focus.dt', function(e, datatable, cell){
         
     });
 
-//     $('#Nominas').DataTable().on("draw", function(){
-//     var rowIdx = tabla.cell(':eq(0)').index().row;
-      
-//     tabla.row(rowIdx).select();
 
-//     tabla.cell( ':eq(0)' ).focus();
-// });
 
+          var horas=$("#inputCheckBox").val();
+    // alert(horas);
+    if(horas==0){
+      $("#fechaHora").show();
+    }else{
+      $("#fechaHora").hide();
+    }
 
 $("#deletelistado").submit(function(e){
     e.preventDefault();
@@ -758,6 +765,11 @@ $("#otrosbutton").attr('hidden',false);
              });
  
 }
+
+
+
+
+
 
 function showHoras(e){
   var url="{{url('showHorasListado')}}/"+e; 
