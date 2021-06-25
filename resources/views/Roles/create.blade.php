@@ -25,7 +25,7 @@
         <div class="card-body">
             <div class="form-row">
                 <div class="col-sm-5">
-                    <input type="text" name="descripcion" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
+                    <input type="text" name="descripcion" id="descr" class="form-control" required  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
                 </div>
 
                 <div class="col-sm-4">
@@ -39,7 +39,7 @@
     <table class="table table-striped" id="roles">
         <thead>
           <tr>
-            <th class="TitleP" style="font-size: 14px;"><b>MODULO</b></th>
+            <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>
                 <div class="form-check" style="margin-left: 20px;">
@@ -59,10 +59,10 @@
             <tr>
                 <td >{{$modulo->nombre}}</td>
                 <td class="TitleP">{{$modulo->descripcion}}</td>
-                <td class="TitleP">
+                <td class="TitleP" value={{$modulo->id}}>
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input cheinput" type="checkbox" name="dinamico[]" value="{{$modulo->id}}" >
+                            <input class="form-check-input cheinput" id="modulo{{$modulo->id}}" type="checkbox" name="dinamico[]" value="{{$modulo->id}}" >
                         <span class="form-check-sign">
                             <span class="check"></span>
                         </span>
@@ -126,10 +126,10 @@
             <tr>
                 <td >{{$widgets->nombre}}</td>
                 <td class="TitleP">{{$widgets->descripcion}}</td>
-                <td class="TitleP">
-                    <div class="form-check">
+                <td class="TitleP" value={{$widgets->id}}>
+                    <div class="form-check" >
                         <label class="form-check-label">
-                            <input class="form-check-input cheinput" type="checkbox" name="wingdt[]" value="{{$widgets->id}}" >
+                            <input class="form-check-input cheinput" type="checkbox" id="widgdt{{$widgets->id}}" name="wingdt[]" value="{{$widgets->id}}" >
                         <span class="form-check-sign">
                             <span class="check"></span>
                         </span>
@@ -161,7 +161,7 @@
 </div>
 @endsection
 
-@section('js')
+@section('js2')
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
@@ -182,12 +182,29 @@ function toggleWidg(source) {
 
 }
 
-
+$(document).ready(function(){
 
 table=$('#roles').DataTable({
     "info": false,
     "paging":   false,
     scrollY: 500,
+
+    select: {
+            style: 'single',
+        },
+        keys: {
+           keys:true,
+          keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+        },
+
+      rowGroup: {
+        dataSrc: 'group',
+    },
+
+    "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ],
+
         language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
@@ -212,10 +229,105 @@ table=$('#roles').DataTable({
       },    
    
 });
-table=$('#Widget').DataTable({
+
+$('div.dataTables_filter input', table.table().container()).focus();
+
+var rowIdx = table.cell(':eq(0)').index().row;
+      
+table.row(rowIdx).select();
+
+table.cell( ':eq(0)' ).focus();
+
+
+document.addEventListener ("keydown", function (e) {
+    if (e.keyCode==16){
+       
+        var rowIdx = table.cell(':eq(0)').index().row;
+      
+      table.row(rowIdx).select();
+
+      table.cell( ':eq(0)' ).focus();   
+        
+        
+    } 
+});
+
+document.addEventListener ("keydown", function (e) {
+    if (e.altKey  &&  e.which === 84) {
+        $('#todos').trigger("click");
+        $('#todoWidget').trigger("click");
+    }
+});
+
+$('#roles').on('key-focus.dt', function(e, datatable, cell){
+        // Select highlighted row
+      
+        table.row(cell.index().row).select();
+     });
+
+    // Handle click on table cell
+    $('#roles').on('click', 'tbody td', function(e){
+        e.stopPropagation();
+        
+        // Get index of the clicked row
+        var rowIdx = table.cell(this).index().row;
+
+        
+        // Select row
+        table.row(rowIdx).select();
+    });
+    // Handle key event that hasn't been handled by KeyTable
+    $('#roles').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+
+        // If ENTER key is pressed
+        if(key === 13){
+            // Get highlighted row data
+            event.preventDefault();
+            var data = table.row(cell.index().row).data();
+            
+            var row_s=$(this).DataTable().row({selected:true}).node(); 
+            var colum=$('td', row_s).eq(2);
+
+            var siz=$(colum).attr('value');
+            $("#modulo"+siz).trigger("click");
+
+            console.log(siz);
+
+        }
+        
+    });
+
+
+   $('div.dataTables_filter input', table.table().container()).on('click',function(){
+    var rowIdx = table.cell(':eq(0)').index().row;
+      
+      table.row(rowIdx).select();
+      
+      table.cell( ':eq(0)' ).focus();
+
+   });
+});
+
+tab=$('#Widget').DataTable({
     "info": false,
     "paging":   false,
     scrollY: 300,
+
+    select: {
+            style: 'single',
+        },
+        keys: {
+           keys:true,
+          keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+        },
+
+      rowGroup: {
+        dataSrc: 'group',
+    },
+
+    "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ],
         language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
@@ -239,32 +351,57 @@ table=$('#Widget').DataTable({
 
       },    
    
-});
+    });
 
-// arreglo=[];
-// b=0;
-// $('.cheinput').on("click",function(){
-// var valor=$(this).val();
-// if($(this).prop('checked')){
-//     arreglo[b]=valor;
-//     b++;
-// }else{
-//     for (let index = 0; index < arreglo.length; index++) {
-//             if(arreglo[index]==valor){
-//               arreglo.splice(index,1);
-//             //   console.log(arreglo);
-//             }else{
-              
 
-//             }
+$('#Widget').on('key-focus.dt', function(e, datatable, cell){
+        // Select highlighted row
+      
+        tab.row(cell.index().row).select();
+     });
+
+    // Handle click on table cell
+    $('#Widget').on('click', 'tbody td', function(e){
+        e.stopPropagation();
+        
+        // Get index of the clicked row
+        var rowIdx = tab.cell(this).index().row;
+
+        
+        // Select row
+        tab.row(rowIdx).select();
+    });
+    // Handle key event that hasn't been handled by KeyTable
+    $('#Widget').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+
+        // If ENTER key is pressed
+        if(key === 13){
+            // Get highlighted row data
+            event.preventDefault();
+            var data = tab.row(cell.index().row).data();
             
-//      }
-    
-// }
-// $("#arreglo").attr('value',arreglo);
-//      console.log(arreglo);
+            var row_s=$(this).DataTable().row({selected:true}).node(); 
+            var colum=$('td', row_s).eq(2);
 
-// });
+            var siz=$(colum).attr('value');
+            $("#widgdt"+siz).trigger("click");
+
+            console.log(siz);
+
+        }
+        
+    });
+
+
+
+$('div.dataTables_filter input', tab.table().container()).on('click',function(){
+    var rowIdx = tab.cell(':eq(0)').index().row;
+      
+      tab.row(rowIdx).select();
+      
+      tab.cell( ':eq(0)' ).focus();
+
+   });
 
 </script>
     

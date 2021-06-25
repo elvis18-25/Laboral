@@ -24,13 +24,13 @@
         </div>
         <div class="card-body">
     <div class="col-sm-6">
-        <input type="text" name="descripcion" value="{{$roles->name}}" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
+        <input type="text" name="descripcion" value="{{$roles->name}}" id="descr" class="form-control" required   oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
     </div>
     <br><br>
     <table class="table table-striped" id="roles">
         <thead>
           <tr>
-            <th class="TitleP" style="font-size: 14px;"><b>MODULO</b></th>
+            <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>
                 <div class="form-check" style="margin-left: 20px;">
@@ -47,7 +47,6 @@
     </thead>
     <tbody>
             @include('Roles.tablemodulo')
-
     </tbody>
 </table>
 
@@ -83,7 +82,7 @@
     <table class="table table-striped" id="Widget">
         <thead>
           <tr>
-            <th class="TitleP" style="font-size: 14px;"><b>MODULO</b></th>
+            <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>
                 <div class="form-check" style="margin-left: 20px;">
@@ -174,10 +173,29 @@ $("#deleteroles").submit(function(e){
 })
 })
 
+$(document).ready(function(){
+
 table=$('#roles').DataTable({
     "info": false,
     "paging":   false,
     scrollY: 500,
+
+    select: {
+            style: 'single',
+        },
+        keys: {
+           keys:true,
+          keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+        },
+
+      rowGroup: {
+        dataSrc: 'group',
+    },
+
+    "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ],
+
         language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
@@ -202,11 +220,109 @@ table=$('#roles').DataTable({
       },    
    
 });
+$('div.dataTables_filter input', table.table().container()).focus();
 
-table=$('#Widget').DataTable({
+var rowIdx = table.cell(':eq(0)').index().row;
+      
+table.row(rowIdx).select();
+
+table.cell( ':eq(0)' ).focus();
+
+
+document.addEventListener ("keydown", function (e) {
+    if (e.keyCode==16){
+       
+        var rowIdx = table.cell(':eq(0)').index().row;
+      
+      table.row(rowIdx).select();
+
+      table.cell( ':eq(0)' ).focus();   
+        
+        
+    } 
+});
+
+document.addEventListener ("keydown", function (e) {
+    if (e.altKey  &&  e.which === 84) {
+        $('#todos').trigger("click");
+        $('#todoWidget').trigger("click");
+    }
+});
+
+$('#roles').on('key-focus.dt', function(e, datatable, cell){
+        // Select highlighted row
+      
+        var selected=table.row(cell.index().row).select();
+
+        // var last_row = table.row(":last").data();
+
+
+     });
+
+    // Handle click on table cell
+    $('#roles').on('click', 'tbody td', function(e){
+        e.stopPropagation();
+        
+        // Get index of the clicked row
+        var rowIdx = table.cell(this).index().row;
+
+        
+        // Select row
+        table.row(rowIdx).select();
+    });
+    // Handle key event that hasn't been handled by KeyTable
+    $('#roles').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+
+        // If ENTER key is pressed
+
+        if(key === 13){
+            // Get highlighted row data
+            event.preventDefault();
+            var data = table.row(cell.index().row).data();
+            
+            var row_s=$(this).DataTable().row({selected:true}).node(); 
+            var colum=$('td', row_s).eq(2);
+
+            var siz=$(colum).attr('value');
+            $("#modulo"+siz).trigger("click");
+
+            console.log(siz);
+
+        }
+        
+    });
+
+
+   $('div.dataTables_filter input', table.table().container()).on('click',function(){
+    var rowIdx = table.cell(':eq(0)').index().row;
+      
+      table.row(rowIdx).select();
+      
+      table.cell( ':eq(0)' ).focus();
+
+   });
+});
+
+tab=$('#Widget').DataTable({
     "info": false,
     "paging":   false,
     scrollY: 300,
+
+    select: {
+            style: 'single',
+        },
+        keys: {
+           keys:true,
+          keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+        },
+
+      rowGroup: {
+        dataSrc: 'group',
+    },
+
+    "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ],
         language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
@@ -230,7 +346,57 @@ table=$('#Widget').DataTable({
 
       },    
    
-});
+    });
+
+
+$('#Widget').on('key-focus.dt', function(e, datatable, cell){
+        // Select highlighted row
+      
+        tab.row(cell.index().row).select();
+     });
+
+    // Handle click on table cell
+    $('#Widget').on('click', 'tbody td', function(e){
+        e.stopPropagation();
+        
+        // Get index of the clicked row
+        var rowIdx = tab.cell(this).index().row;
+
+        
+        // Select row
+        tab.row(rowIdx).select();
+    });
+    // Handle key event that hasn't been handled by KeyTable
+    $('#Widget').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+
+        // If ENTER key is pressed
+        if(key === 13){
+            // Get highlighted row data
+            event.preventDefault();
+            var data = tab.row(cell.index().row).data();
+            
+            var row_s=$(this).DataTable().row({selected:true}).node(); 
+            var colum=$('td', row_s).eq(2);
+
+            var siz=$(colum).attr('value');
+            $("#widgdt"+siz).trigger("click");
+
+            console.log(siz);
+
+        }
+        
+    });
+
+
+
+$('div.dataTables_filter input', tab.table().container()).on('click',function(){
+    var rowIdx = tab.cell(':eq(0)').index().row;
+      
+      tab.row(rowIdx).select();
+      
+      tab.cell( ':eq(0)' ).focus();
+
+   });
 </script>
     
 @endsection

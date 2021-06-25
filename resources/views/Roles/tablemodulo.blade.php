@@ -1,12 +1,13 @@
 <tr>
+
     <td>EMPLEADOS</td>
     <td class="TitleP">VER REGISTRO DE EMPLEADOS Y MODIFICACIONES</td>
 
         @if ($permisos->empleado==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{1}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="1" >
+                    <input class="form-check-input cheinput" id="modulo{{1}}" checked type="checkbox" name="dinamico[]" value="1" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -14,10 +15,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{1}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="1" >
+                    <input class="form-check-input cheinput" id="modulo{{1}}" type="checkbox" name="dinamico[]" value="1" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -31,10 +32,10 @@
     <td class="TitleP">VER REGISTRO DE USUARIOS Y MODIFICACIONES</td>
 
         @if ($permisos->usuario==1) 
-        <td class="TitleP">
+        <td class="TitleP"  value={{2}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="2" >
+                    <input class="form-check-input cheinput" id="modulo{{2}}" checked type="checkbox" name="dinamico[]" value="2" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -42,10 +43,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{2}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="2" >
+                    <input class="form-check-input cheinput" id="modulo{{2}}"  type="checkbox" name="dinamico[]" value="2" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -58,10 +59,10 @@
     <td >DEPARTAMENTOS</td>
     <td class="TitleP">VER REGISTRO DE USUARIOS Y MODIFICACIONES</td>
         @if ($permisos->departamento==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{3}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="3" >
+                    <input class="form-check-input cheinput" id="modulo{{3}}" checked type="checkbox" name="dinamico[]" value="3" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -69,10 +70,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{3}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="3" >
+                    <input class="form-check-input cheinput" id="modulo{{3}}"  type="checkbox" name="dinamico[]" value="3" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -85,10 +86,10 @@
     <td >ROLES</td>
     <td class="TitleP">VER REGISTRO DE ROLES Y MODIFICACIONES</td>
         @if ($permisos->roles==1) 
-        <td class="TitleP">
+        <td class="TitleP"  value={{4}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="4" >
+                    <input class="form-check-input cheinput" id="modulo{{4}}" checked type="checkbox" name="dinamico[]" value="4" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -96,10 +97,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP"  value={{4}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="4" >
+                    <input class="form-check-input cheinput" id="modulo{{4}}"  type="checkbox" name="dinamico[]" value="4" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -112,10 +113,10 @@
     <td >GASTOS</td>
     <td class="TitleP">VER REGISTRO DE GASTOS Y MODIFICACIONES</td>
         @if ($permisos->gastos==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{5}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="5" >
+                    <input class="form-check-input cheinput" id="modulo{{5}}" checked type="checkbox" name="dinamico[]" value="5" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -123,10 +124,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{5}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="5" >
+                    <input class="form-check-input cheinput" id="modulo{{5}}"  type="checkbox" name="dinamico[]" value="5" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -139,10 +140,10 @@
     <td >ASIGNACIONES</td>
     <td class="TitleP">VER REGISTRO DE GASTOS Y MODIFICACIONES</td>
         @if ($permisos->asignaciones==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{6}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="6" >
+                    <input class="form-check-input cheinput" id="modulo{{6}}" checked type="checkbox" name="dinamico[]" value="6" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -150,10 +151,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{6}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="6" >
+                    <input class="form-check-input cheinput" id="modulo{{6}}"  type="checkbox" name="dinamico[]" value="6" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -166,10 +167,10 @@
     <td >PERFILES DE NOMINAS</td>
     <td class="TitleP">VER REGISTRO DE PERFILES DE NOMINAS Y MODIFICACIONES</td>
         @if ($permisos->perfiles==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{8}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="8" >
+                    <input class="form-check-input cheinput"  id="modulo{{8}}" checked type="checkbox" name="dinamico[]" value="8" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -177,10 +178,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{8}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="8" >
+                    <input class="form-check-input cheinput"  id="modulo{{8}}" type="checkbox" name="dinamico[]" value="8" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -193,10 +194,10 @@
     <td >FORMA DE PAGO</td>
     <td class="TitleP">VER REGISTRO DE FORMA DE PAGO Y MODIFICACIONES</td>
         @if ($permisos->formas_pagos==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{9}} >
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="9" >
+                    <input class="form-check-input cheinput" id="modulo{{9}}" checked type="checkbox" name="dinamico[]" value="9" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -204,10 +205,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{9}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="9" >
+                    <input class="form-check-input cheinput" id="modulo{{9}}"  type="checkbox" name="dinamico[]" value="9" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -220,10 +221,10 @@
     <td >PERFILES DE USUARIOS</td>
     <td class="TitleP">VER REGISTRO DE PERFILES DE USUARIOS Y MODIFICACIONES</td>
         @if ($permisos->perfilesuser==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{10}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="10" >
+                    <input class="form-check-input cheinput" id="modulo{{10}}" checked type="checkbox" name="dinamico[]" value="10" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -231,10 +232,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{10}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="10" >
+                    <input class="form-check-input cheinput" id="modulo{{10}}"  type="checkbox" name="dinamico[]" value="10" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -248,10 +249,10 @@
     <td class="TitleP">	
         VER REGISTRO DE NOMINAS Y MODIFICACIONES</td>
         @if ($permisos->nomina==1) 
-        <td class="TitleP">
+        <td class="TitleP"  value={{11}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="11" >
+                    <input class="form-check-input cheinput" id="modulo{{11}}" checked type="checkbox" name="dinamico[]" value="11" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -259,10 +260,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{11}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="11" >
+                    <input class="form-check-input cheinput" id="modulo{{11}}" type="checkbox" name="dinamico[]" value="11" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -276,10 +277,10 @@
     <td class="TitleP">	
         VER REGISTRO DE ASISTENCIA</td>
         @if ($permisos->asistencia==1) 
-        <td class="TitleP">
+        <td class="TitleP"  value={{12}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="12" >
+                    <input class="form-check-input cheinput" id="modulo{{12}}" checked type="checkbox" name="dinamico[]" value="12" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -287,10 +288,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP"  value={{12}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="12" >
+                    <input class="form-check-input cheinput" id="modulo{{12}}" type="checkbox" name="dinamico[]" value="12" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -304,10 +305,10 @@
     <td class="TitleP">	
         CONFIGURACION DE LA EMPRESA</td>
         @if ($permisos->empresa==1) 
-        <td class="TitleP">
+        <td class="TitleP" value={{13}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="13" >
+                    <input class="form-check-input cheinput" id="modulo{{13}}" checked type="checkbox" name="dinamico[]" value="13" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -315,10 +316,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{13}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="13" >
+                    <input class="form-check-input cheinput" id="modulo{{13}}" type="checkbox" name="dinamico[]" value="13" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -332,10 +333,10 @@
     <td class="TitleP">	
         REGISTRO Y MODIFICACIONES DE GRUPOS</td>
         @if ($permisos->empresa==1) 
-        <td class="TitleP">
+        <td class="TitleP"  value={{14}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" checked type="checkbox" name="dinamico[]" value="13" >
+                    <input class="form-check-input cheinput" id="modulo{{14}}" checked type="checkbox" name="dinamico[]" value="13" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -343,10 +344,10 @@
             </div>
         </td>
         @else 
-        <td class="TitleP">
+        <td class="TitleP" value={{14}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput"  type="checkbox" name="dinamico[]" value="13" >
+                    <input class="form-check-input cheinput" id="modulo{{14}}" type="checkbox" name="dinamico[]" value="13" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>

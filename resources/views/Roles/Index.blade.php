@@ -56,20 +56,46 @@
 <script src="{{asset('js/pageLoader.js')}}"></script>
 @if (session('eliminiado')=='ya')
 <script>
-    Swal.fire(
-      'Eliminado!',
-      'El Rol ha sido eliminado.',
-      'success'
-    )
+  Command: toastr["success"]("Se ha eliminado el rol ", "")
+toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": true,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
   </script>    
 @endif
 @if (session('guardado')=='ya')
 <script>
-    Swal.fire(
-      'Eliminado!',
-      'El Rol ha sido guardado.',
-      'success'
-    )
+  Command: toastr["success"]("Se ha guardado el rol", "")
+toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": true,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
   </script>    
 @endif
 <script>
