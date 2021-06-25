@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="card-body">
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <input type="text" name="descripcion" value="{{$roles->name}}" id="descr" class="form-control" required   oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
     </div>
     <br><br>
