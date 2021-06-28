@@ -5,7 +5,16 @@
 
   .error{
     border-color: red !important;
+    
   }
+  .form-control[readonly]{
+        background-color: rgb(255 255 255 / 50%);
+        cursor: pointer !important;
+      }
+
+      #salarioTable{
+        cursor: pointer;
+      }
 </style>
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
@@ -113,6 +122,8 @@
                 {{-- <div class="card-footer">
                     <button type="submit" class="btn btn-fill btn-primary">{{ __('Save') }}</button>
                 </div> --}}
+               
+               <input type="text" name="" value="{{$empleados->id_empleado}}" id="inputs" hidden> 
             
         </div>
         <div class="card" style="top: -12px;">
@@ -152,11 +163,16 @@
                             <input type="date" name="fecha_salida" value="{{$empleados->fecha_salida}}" class="form-control{{ $errors->has('fecha_salida') ? ' is-invalid' : '' }}">
                            
                         </div>
-
-                        <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
-                            <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text" onkeyup="calcular();"  value="{{number_format($empleados->salario,2)}}" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }} money" id="salario" placeholder="{{ __('Salario') }}" required>
-                            <input type="text" name="salario" value="{{$empleados->salario}}" id="salarioOP" hidden>
+                        @include('Empleados.modalsalario')
+                        @include('Empleados.modal.salarioSave')
+                        <div class="col-sm-3" style="height: 64px !important;">
+                          <label>{{ __('SALARIO BRUTO') }}</label>
+                          <div class="ford">
+                            <input type="text" readonly id="salarioAcum"  value="{{number_format($sueldoMonto->amount+$empleados->salario,2)}}" class="form-control{{ $errors->has('salario') ? ' is-invalid' : '' }} money"  placeholder="{{ __('Salario') }}" >
+                            <button type="button" data-toggle="modal" data-target="#salariosbase" class="btn btn-info btn-sm redondo float-right" style="width: 20px !important; height: 30px !important; position: relative; top: -37px; margin-right: 4px;"><i class="fas fa-plus" style="margin-left: -5px"></i></button>
+                          </div>
+                            <input type="text" id="salarioOP" value="" hidden> 
+                            <input type="text" name="salario"  value="{{$empleados->salario}}" hidden>
                        
                         </div>
                       {{-- </div> --}}
@@ -183,7 +199,7 @@
                                     @endforeach
                                   </select>                               
                                   <div class="input-group-append">
-                                  <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                  <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                                 </div>
                               </div>
                             @include('Empleados.modalpago')
@@ -211,7 +227,7 @@
                                 @endforeach
                               </select>
                               <div class="input-group-append">
-                                <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
+                                <button class="btn btn-info btn-sm " data-toggle="modal" data-target="#departament" type="button" id="button-addon2"><i class="fas fa-plus"></i></button>
                               </div>
                             </div>
                         </div>
@@ -245,7 +261,7 @@
                               @endforeach
                             </select>
                             <div class="input-group-append">
-                              <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
+                              <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#group" type="button"><i class="fas fa-plus"></i></button>
                             </div>
                           </div>
                         </div>
@@ -417,7 +433,7 @@
 
     <div class="col-md-4 ">
       <div class="position-fixed col-md-4" style="margin-left: -25px">
-        <div class="card card-user" style="height: 274px;">
+        <div class="card card-user" style="height: 274px; width: 89% !important;">
             <div class="card-body">
                 <p class="card-text">
                     <div class="author">
@@ -475,7 +491,7 @@
                     </div>
                   </div>
         </div>
-        <div class="card" style="top: -4px;">
+        <div class="card" style="top: -4px; width: 89% !important;">
             <div class="card-header">
                 <h5 class="title">{{ __('DATOS ACCESO') }}</h5>
             </div>
@@ -550,13 +566,16 @@
       </div>
   </div>
 </div>
+<div class="modal fade" id="showsalarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
 @include('Empleados.cropper')
 @endsection
 
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 @include('Contrato.modal')
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 {{-- <script src="{{asset('js/holdOn.js')}}"></script>
@@ -849,17 +868,16 @@ document.getElementById("transTable").innerHTML += '<tr class="reducir"><td><inp
 function calcular(){
    var salario=$("#salario").val();
    
-   var sum=0;
+  //  var sum=0;
 
    var montoFormat = toInt(salario);
  
 
 
-   sum=montoFormat/23.83/8;
+  //  sum=montoFormat/23.83/8;
 
    $("#salarioOP").attr('value',montoFormat);
-   $("#salDias").attr('value',financial(sum));
-
+  //  $("#salDias").attr('value',financial(sum));
 
  }
  
@@ -973,6 +991,41 @@ $('#exampleModal').keyup(function(e){
     }
 });
 
+table=$('#salarioTable').DataTable({
+    "info": false,
+    "paging":   false,
+    "ordering": false,
+    responsive: true,
+    // "order": [[ 1, 'desc' ]],
+    scrollY: 200,
+
+
+        language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      },    
+   
+});
+
+
 $(document).on('click', '.borrar', function (event) {
     event.preventDefault();
     $(this).closest('tr').remove();
@@ -991,6 +1044,7 @@ function savedepart(){
             success:function(result){
               $("#departament").modal("toggle");
               $("#depar").append(result);
+              successGen();
             
 
            },
@@ -1011,11 +1065,69 @@ function savepago(){
             success:function(result){
               $("#exampleModal").modal("toggle");
               $("#forma").append(result);
+              successGen();
             
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                ErroresGeneral();
+    }
+             }); 
+}
+
+
+const options2 = { style: 'currency', currency: 'USD' };
+const numberFormat2 = new Intl.NumberFormat('en-US', options2);
+
+function savesalario(){
+  var name=$("#SalarioName").val();
+  var monto=$("#salarioOP").val();
+  var id=$("#inputs").val();
+    var url = "{{url('salarioSave')}}"; 
+     var data ={name:name,monto:monto,id:id};
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              // alert(result);
+              $("#salarioTable tbody").append(result);
+              $("#modalsalario").trigger("click");
+              var monto=$(result).attr('action');
+
+              var bonores= numberFormat2.format(monto); 
+              // $("#salarioAcum").empty();
+              // $("#salarioAcum").append(bonores);
+              $("#salarioAcum").attr('value',bonores);
+              $("#totalsalario").empty();
+              $("#totalsalario").append(bonores);
+              successGen();
+              $("#SalarioName").val("");
+              $("#salario").val("");
+
+            
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+               ErroresGeneral();
+    }
+             }); 
+}
+
+function ModalSalarioshow(e){
+    var url = "{{url('showsalario')}}/"+e; 
+     var data ='';
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              $("#showsalarios").html(result).modal("show");
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
     }
              }); 
 }
@@ -1038,6 +1150,7 @@ function savedgruop(){
               $("#grupo").append(result);
               $("#grupo option[value="+ $(result).val() +"]").attr("selected",true);
               document.getElementById('subir').disabled=false;
+              successGen();
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -1069,11 +1182,7 @@ function elimini(e,p){
             success:function(result){
              $("#transTable").empty();
              $("#transTable").append(result);
-             Swal.fire(
-            'Eliminado!',
-            'Se ha eliminado exitosamente.',
-            'success'
-          )
+             successGen();
 
               
 
@@ -1104,6 +1213,27 @@ function openadjunto(){
                ErroresGeneral();
     }
              }); 
+
+            }
+function successGen(){
+  Command: toastr["success"]("se ha creado exitosamente", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
 }
 
 $("#deleempleado").submit(function(e){
@@ -1122,21 +1252,7 @@ $("#deleempleado").submit(function(e){
   }
 })
 })
-// $("#formcontroato").submit(function(e){
-//     e.preventDefault();
-//     HoldOn.close();
-//     startte();
-// });
 
-// function startte(){
-//   this.submit();
-// }
-
-
-
-// $("#btncontrato").on('click',function(){
-//   HoldOn.close();
-// });
 
 document.addEventListener ("keydown", function (e) {
     if (e.altKey  &&  e.which === 65) {

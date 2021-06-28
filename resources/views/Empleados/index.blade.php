@@ -54,7 +54,17 @@
                                 @endforeach
                             </td>
 
-                            <td>${{number_format($empleado->salario,2)}}</td>
+                            <td>
+                                @foreach ($sueldo as $sueldos)
+                                @if ($sueldos->id_empleado==$empleado->id_empleado)
+                                    
+                                ${{number_format($empleado->salario+$sueldos->sueldo_increment,2)}}    
+                                @else
+                                
+                                ${{number_format($empleado->salario,2)}}    
+                                @endif
+                                @endforeach
+                            </td>
                         </tr>
                         @endif
                       @endif

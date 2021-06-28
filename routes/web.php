@@ -87,6 +87,12 @@ Route::post('saveUpdate/{id}','App\Http\Controllers\EmpresaController@saveUpdate
 Route::post('MultiEmpresa','App\Http\Controllers\MultiController@MultiEmpresa');
 Route::post('SeleccionEmpresa','App\Http\Controllers\MultiController@SeleccionEmpresa');
 
+//Salario
+Route::post('salarioSave','App\Http\Controllers\SueldoAumentoController@salarioSave');
+Route::post('showsalario/{id}','App\Http\Controllers\SueldoAumentoController@showsalario');
+Route::post('updatesalario/{id}','App\Http\Controllers\SueldoAumentoController@updatesalario');
+Route::post('deletesalario/{id}','App\Http\Controllers\SueldoAumentoController@deletesalario');
+
 
 
 //datatables

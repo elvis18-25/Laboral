@@ -32,8 +32,8 @@ use App\Models\Role;
 use App\Models\Equipos;
 use App\Models\empleados_equipo;
 use App\Models\Perfiles;
-
-
+use App\Models\sueldo_aumento;
+use Illuminate\Support\Facades\DB;
 
 class EmpleadosController extends Controller
 {
@@ -51,9 +51,11 @@ class EmpleadosController extends Controller
         $empleados=Empleado::all();
         $puesto=Puesto::all();
         
-        
-       
-        return view('Empleados.index',compact('empleados','puesto'));
+        $sueldo=sueldo_aumento::where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+
+        return view('Empleados.index',compact('empleados','puesto','sueldo'));
     }
 
     /**
@@ -94,7 +96,6 @@ class EmpleadosController extends Controller
         $namw=request('name');
 
         $puesto=new Puesto();
-
         $puesto->name=$namw;
         $puesto->estado=0;
         $puesto->id_empresa=Auth::user()->id_empresa;
@@ -197,23 +198,6 @@ class EmpleadosController extends Controller
             }  
         }
 
-        // if($request->get('isres')!=''){
-        //     $isr= new isr_empleado();
-        //     $isr->porcentaje=$request->get('porcentaje');
-        //     $isr->id_empleado=$empleados->id_empleado;
-        //     $isr->id_empresa=Auth::user()->id_empresa;
-        //     $isr->moto=$request->get('ISR');
-        //     $isr->save();
-        // }
-
-        // if($request->get('isres')!=''){
-        //     $estado= new estados_isr();
-        //     $estado->estado=2;
-        //     $estado->id_isr=$isr->id;
-        //     $estado->id_empleado=$empleados->id_empleado;
-        //     $estado->id_empresa=Auth::user()->id_empresa;
-        //     $estado->save();
-        // }
 
                   //Pais
                   if(!empty($request->get('pais'))){
@@ -260,16 +244,6 @@ class EmpleadosController extends Controller
         }
 
 
-        // if($request->hasFile('image')){
-
-        //     $file=$request->image;
-        //     $file->move(public_path().'/img', $file->getClientOriginalName());
-        //     $empleados->imagen=$file->getClientOriginalName();
-        //     $empleados->save();
-
-        // }
-
-
 
         if(!empty($request->get('exampleRadios'))){   
         if($request->get('exampleRadios')=="fijo"){
@@ -278,10 +252,6 @@ class EmpleadosController extends Controller
             $empleados->tipcontratoAsignar(2);
         }
     }
-
-
-
-
 
 
         $empleados->asignarPuesto($request->get('departa'));
@@ -346,9 +316,19 @@ class EmpleadosController extends Controller
             $ciudades=0;
         }
 
-        
+        $sueldoMonto=sueldo_aumento::where("id_empleado",'=',$id)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->select(DB::raw('sum(sueldo_increment) as amount'))
+        ->first();
 
-        return view('Empleados.edit',compact('empleados','sexo','pago','puesto','asignaciones','contrato','tipo','referencias','Adjunto','pais','pais_emple','state','ciudades','emple_equipo','equipo','role'));
+        
+        $sueldo=sueldo_aumento::where("id_empleado",'=',$id)
+        ->where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+
+        return view('Empleados.edit',compact('empleados','sexo','sueldo','sueldoMonto','pago','puesto','asignaciones','contrato','tipo','referencias','Adjunto','pais','pais_emple','state','ciudades','emple_equipo','equipo','role'));
     }
 
     /**
