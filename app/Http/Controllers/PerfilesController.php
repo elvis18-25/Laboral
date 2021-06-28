@@ -10,6 +10,7 @@ use App\Models\Empleado;
 use App\Models\Puesto;
 use App\Models\estado_empleado;
 use Illuminate\Support\Facades\Auth;
+use App\Models\sueldo_aumento;
 
 
 
@@ -35,7 +36,10 @@ class PerfilesController extends Controller
     {
         $empleados=Empleado::all();
         $puesto=Puesto::all();
-        return view('Perfiles.create',compact('empleados','puesto'));
+        $sueldo=sueldo_aumento::where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+        return view('Perfiles.create',compact('empleados','puesto','sueldo'));
     }
 
     /**
@@ -93,11 +97,10 @@ class PerfilesController extends Controller
         $empleado=Empleado::leftjoin('perfiles','perfiles.id_empleado','=','empleado.id_empleado')
         ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','empleado.id_empleado')
         ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
-        ->where('perfiles.estados','=',0)
         ->where('empleado.estado','=',0)
         ->where('perfiles.id_perfiles',$id)
-        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.cedula','puesto.name as puesto','empleado.salario',)
-        ->GroupBy('empleado.id_empleado','empleado.cedula','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario')
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.cedula','puesto.name as puesto','empleado.salario','empleado.telefono')
+        ->GroupBy('empleado.id_empleado','empleado.cedula','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario','empleado.telefono')
         ->get();
        
         $emple=Empleado::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
@@ -121,8 +124,12 @@ class PerfilesController extends Controller
 
         $empleado=Empleado::findOrFail($ide);
         $puesto=Puesto::all();
+        $sueldo=sueldo_aumento::where('estado','=',0)
+        ->where('id_empleado','=',$ide)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
 
-        return view('Perfiles.plantilla',compact('empleado','puesto'));
+        return view('Perfiles.plantilla',compact('empleado','puesto','sueldo'));
         // return "hola";
     } 
 

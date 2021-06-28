@@ -1,7 +1,7 @@
 
   <div class="modal fade" id="Empleado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content" style=" width: 964px; margin-top: -76px; height: 615px;" >
+      <div class="modal-content" style=" width: 964px; margin-top: -171px; height: 615px;" >
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" style="color: black font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -19,7 +19,7 @@
                     <th class="TitlePer">CEDULA</th>
                     <th class="TitlePer">CARGO</th>
                     <th class="TitlePer">DEPARTAMENTO</th>
-                    <th class="TitlePer">SALARIO</th>
+                    <th class="TitlePer">TELEFONO</th>
                   </tr>
                 </thead>
                 @php
@@ -38,7 +38,7 @@
                               {{$puesto->name}}
                           @endforeach
                         </td>
-                        <td>${{number_format($empleado->salario,2)}}</td>
+                        <td>{{$empleado->telefono}}</td>
                       </tr>
                       @endif
                       @endif

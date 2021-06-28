@@ -26,6 +26,7 @@ use App\Models\nomina_horas;
 use App\Models\Empresa;
 use App\Models\Horas;
 use App\Models\Weekend_empresa;
+use App\Models\sueldo_aumento;
 
 
 class NominaController extends Controller
@@ -1416,7 +1417,12 @@ foreach($perf as $perfe){
                 // return $begin;
 
             })->editColumn('salario',function($row){
-                return '$'.number_format($row->salario,2);
+                $sueldoMonto=sueldo_aumento::where("id_empleado",'=',$row->id_empleado)
+                ->where('estado','=',0)
+                ->where('id_empresa','=',Auth::user()->id_empresa)
+                ->select(DB::raw('sum(sueldo_increment) as amount'))
+                ->first();
+                return '$'.number_format($row->salario+ $sueldoMonto->amount,2);
             })->setRowAttr([
                 'data-href'=>function($row){
                     return $row->id_empleado;    

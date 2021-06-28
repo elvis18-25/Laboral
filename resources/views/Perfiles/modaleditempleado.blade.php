@@ -17,7 +17,7 @@
                     <th class="TitlePer">CEDULA</th>
                     <th class="TitlePer">CARGO</th>
                     <th class="TitlePer">DEPARTAMENTO</th>
-                    <th class="TitlePer">SALARIO</th>
+                    <th class="TitlePer">TELEFONO</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -32,7 +32,7 @@
                               {{$puesto->name}}
                           @endforeach
                         </td>
-                        <td>${{number_format($emples->salario,2)}}</td>
+                        <td>{{$emples->telefono}}</td>
                       </tr>
             
                   @endforeach

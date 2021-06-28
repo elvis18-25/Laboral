@@ -36,7 +36,7 @@
             $empresa=Auth::user()->id_empresa;
         @endphp
             <div class="">
-                <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; ">
+                <div style="max-height: 750px; overflow:auto; font-size:small; top:-12px; ">
                 <table class="table tablesorter table-striped table-hover" id="perfiles-tableedit">
                     <thead class=" text-primary">
                         <tr> 
@@ -44,7 +44,7 @@
                         <th class="TitlePer">CEDULA</th>
                         <th class="TitlePer">CARGO</th>
                         <th class="TitlePer">DEPARTAMENTO</th>
-                        <th class="TitlePer">SALARIO</th>
+                        <th class="TitlePer">TELEFONO</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -60,7 +60,7 @@
                                 {{$empleados->puesto}}
                             {{-- @endforeach --}}
                             </td>
-                            <td style="text-align: right;">${{number_format($empleados->salario,2)}}</td>
+                            <td style="text-align: right;">{{$empleados->telefono}}</td>
                             <td style="text-align: right;">
                                 <button class="btn btn-danger btn-sm remfe" type="button" value="{{$empleados->id_empleado}}"><i class="fas fa-minus"></i></button>
                             </td>

@@ -11,7 +11,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <table class="table table-striped " id="salarioTable" style="width: 100% !important;">
+            <table class="table" id="salarioTable" style="width: 100% !important;">
                 <thead>
                   <tr>
                     <th>DESCRIPCION</th>
@@ -28,7 +28,7 @@
                       <td>SUELDO BASE</td>
                       <td>{{$empleados->created_at->format('d/m/Y')}}</td>
                       <td>{{$user}}</td>
-                      <td style="float: right;">${{number_format($empleados->salario,2)}}</td>
+                      <td style="text-align: right;">${{number_format($empleados->salario,2)}}</td>
                     </tr>
                     @foreach ($sueldo as $sueldos)
                     @php
@@ -38,7 +38,7 @@
                         <td>{{$sueldos->description}}</td>
                         <td>{{$sueldos->created_at->format('d/m/Y')}}</td>
                         <td>{{$sueldos->user}}</td>
-                        <td style="float: right;">${{number_format($sueldos->sueldo_increment,2)}}</td>
+                        <td style="text-align: right;">${{number_format($sueldos->sueldo_increment,2)}}</td>
                     </tr>
                     @endforeach
 
@@ -60,18 +60,23 @@
     .TitlePs{
       text-align: center !important;
     }
-     /* .table.dataTable.no-footer {
-      width: 91% !important;
-    } */
+     .table.dataTable.no-footer {
+      width: 100% !important;
+    }
 
     /* .dataTables_scrollBody{
       width: 101% !important;
     }  */
-    /* .dataTables_scrollHeadInner{
-      width: 97% !important;
-    }
-    .dataTables_scrollHead{
+
+    /* .dataTables_scrollHead{
       width: 100% !important;
-    } */
+    }  */
+
+     .dataTables_scrollHeadInner{
+      width: 100% !important;
+    }
+    .dataTables_scrollBody{
+      width: 102% !important;
+    }
 
   </style>

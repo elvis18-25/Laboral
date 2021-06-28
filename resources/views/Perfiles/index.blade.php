@@ -103,7 +103,7 @@
 @endif
 @if (session('guardar')=='ya')
 <script>
-    Command: toastr["success"]("se ha actualizado el perfil", "")
+    Command: toastr["success"]("se ha guardado el perfil", "")
     toastr.options = {
       "closeButton": false,
       "debug": false,

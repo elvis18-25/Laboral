@@ -1082,6 +1082,7 @@ const numberFormat2 = new Intl.NumberFormat('en-US', options2);
 function savesalario(){
   var name=$("#SalarioName").val();
   var monto=$("#salarioOP").val();
+
   var id=$("#inputs").val();
     var url = "{{url('salarioSave')}}"; 
      var data ={name:name,monto:monto,id:id};

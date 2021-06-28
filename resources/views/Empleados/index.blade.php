@@ -53,17 +53,27 @@
                                     {{$puesto->name}}
                                 @endforeach
                             </td>
-
+                                @php
+                                    $b=0;
+                                    $sum=0;
+                                @endphp
                             <td>
                                 @foreach ($sueldo as $sueldos)
                                 @if ($sueldos->id_empleado==$empleado->id_empleado)
-                                    
-                                ${{number_format($empleado->salario+$sueldos->sueldo_increment,2)}}    
-                                @else
-                                
-                                ${{number_format($empleado->salario,2)}}    
+                                  @php
+                                      $b=1;
+                                      $sum=$sum+$sueldos->sueldo_increment;
+                                  @endphp                                  
                                 @endif
                                 @endforeach
+
+                                @if ($b==1)
+                                ${{number_format($empleado->salario+$sum,2)}} 
+                                @endif
+
+                                @if ($b==0)
+                                ${{number_format($empleado->salario,2)}}  
+                                @endif
                             </td>
                         </tr>
                         @endif

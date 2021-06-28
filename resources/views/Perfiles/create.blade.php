@@ -31,7 +31,7 @@
         </div>
         <br>
             <div class="">
-                <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; ">
+                <div style="max-height: 750px; overflow:auto; font-size:small; top:-12px; ">
                 <table class="table tablesorter table-hover" id="perfiles-table">
                     <thead class=" text-primary">
                         <tr> 
@@ -39,7 +39,7 @@
                         <th class="TitlePer">CEDULA</th>
                         <th class="TitlePer">CARGO</th>
                         <th class="TitlePer">DEPARTAMENTO</th>
-                        <th class="TitlePer">SALARIO</th>
+                        <th class="TitlePer">TELEFONO</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -58,7 +58,7 @@
 </div>
 <input type="text" name="arreglo" value="" id="arreglo" hidden>
 
-<button type="submit" id="subir" title="Guardar Perfil" class="btn btn-fill btn-info float-right">{{ __('Guardar') }}</button>
+<button type="submit" id="subir" title="Guardar Perfil" class="btn btn-fill btn-info float-right"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
 </form>
 
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
@@ -78,36 +78,53 @@
 <script>
     $(document).ready(function(){
  
-if (window.history && window.history.pushState) {
+ if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null, './#forward');
+window.history.pushState('forward', null);
 
 $(window).on('popstate', function() {
   backsave();
+
 });
 
 }
+
+function backhome(){
+  if (window.history && window.history.pushState) {
+
+window.history.pushState('forward', null);
+
+$(window).on('popstate', function() {
+  backsave();
+
+});
+
+}
+}
+
 
 function backsave(){
   Swal.fire({
   title: 'Seguro que deseas salir?',
   text: "No se podra revertir,¿Deseas guardarlo? !",
   icon: 'warning',
+  showDenyButton: true,
   showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, guardar!',
-  cancelButtonText: 'No, salir!',
+  confirmButtonText: `Si, Guardar`,
+  denyButtonText: `No, Salir`,
 }).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
   if (result.isConfirmed) {
     $("#seave").trigger("click");
-  }else{
+  } else if (result.isDenied) {
     history.back();
+  }else{
+    backhome();
   }
-
-});
+})
 
 }
+
 
     document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
@@ -142,9 +159,9 @@ $("#createdperfiles").on('click',function(){
 
 
 tebl=$('#Empleadotable').DataTable({
-        scrollY: 300,
+        scrollY: 200,
         "paging":   false,
-        // "ordering": false,
+        "order": [[ 1, 'desc' ]],
         "info":     false,
 
     select: {
@@ -300,7 +317,7 @@ function Add(e,m){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                    ErroreGeneral();
     }
              });
      }else{
@@ -360,17 +377,31 @@ document.addEventListener ("keydown", function (e) {
     }
 });
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 function Errore(){
     Command: toastr["error"]("Este Empleado ha sido Selecionado", "Error")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
+
+function ErroreGeneral(){
+    Command: toastr["error"]("", "Error!")
     toastr.options = {
       "closeButton": false,
       "debug": false,
