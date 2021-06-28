@@ -231,6 +231,8 @@ class NominaController extends Controller
         $otro=Otros::all();
         $tss=Asignaciones::all();
         $estado=estado_asignaciones::all();
+        $sueldoMonto=sueldo_aumento::all();
+       
         $hora=Horas::all();
         $sumHoraDescontada=0;
         $sumHoraExtra=0;
@@ -251,7 +253,32 @@ class NominaController extends Controller
         $salarioDias=0;
 
         $p=0;
-             
+
+        $salarioSum=0;
+        // $sueldoMonto=sueldo_aumento::where("id_empleado",'=',$row->id_empleado)
+        // ->where('estado','=',0)
+        // ->where('id_empresa','=',Auth::user()->id_empresa)
+        // ->select(DB::raw('sum(sueldo_increment) as amount'))
+        // ->first();
+
+        foreach($perf as $perfe){
+            if($perfiles->id==$perfe->id_perfiles){
+               foreach($empleados as $emple){
+                   if($emple->id_empleado==$perfe->id_empleado){
+                       foreach($sueldoMonto as $sueldoMontos){
+                      
+                        if($sueldoMontos->id_empleado==$emple->id_empleado && $sueldoMontos->estado==0){
+                            $salarioSum= $salarioSum+$sueldoMontos->sueldo_increment;
+
+                        }
+
+                    
+                    }
+                    }
+                   }
+               }
+            }
+
         if($valor==0){
         for($i = $start; $i <= $end; $i->modify('+1 day')){
             $nombre_dia=date('w', strtotime($i->format("Y-m-d")));
@@ -273,10 +300,13 @@ class NominaController extends Controller
         }
         
         }
+
+
         foreach($perf as $perfe){
             if($perfiles->id==$perfe->id_perfiles){
                foreach($empleados as $emple){
                    if($emple->id_empleado==$perfe->id_empleado){
+                        
 
                     if($emple->horas!=null){
                         $salarioDias=$emple->horas*$p;
@@ -485,8 +515,8 @@ class NominaController extends Controller
              $totaldeducion=$otrosD+$contdeducion+$cont2+$cont3+$sumHoraDescontada;
              $totalincremento=$otrosI+$contbono-$desbonoCont+$sumHoraExtra;
              
-             return  $salario+$totalincremento-$totaldeducion+$desdeucionCont;
-            //  return  $salario;
+             return  $salario+$totalincremento-$totaldeducion+$desdeucionCont+$salarioSum;
+            //  return  $salarioSum;
             //  return $p;
     }
 
@@ -1232,6 +1262,13 @@ class NominaController extends Controller
                 $begin = new DateTime($start);
                 $end   = new DateTime($end);
                 $p=0;
+
+                $sueldoMonto=sueldo_aumento::where("id_empleado",'=',$row->id_empleado)
+                ->where('estado','=',0)
+                ->where('id_empresa','=',Auth::user()->id_empresa)
+                ->select(DB::raw('sum(sueldo_increment) as amount'))
+                ->first();
+
                 
                 if($valor==0){
                 for($i = $begin; $i <= $end; $i->modify('+1 day')){
@@ -1256,13 +1293,13 @@ class NominaController extends Controller
                 }
            
                 if($row->horas!=null){
-                    $salarioDias=$row->horas*$p;
+                    $salarioDias=$row->horas*$p+$sueldoMonto->amount;
                 }else{
                     $sumer=$row->salario/23.83/8;
-                    $salarioDias=$sumer*$p;
+                    $salarioDias=$sumer*$p+$sueldoMonto->amount;
                 }
             }else{
-                $salarioDias=$row->salario;
+                $salarioDias=$row->salario+$sueldoMonto->amount;
             }
 
                 foreach($perf as $perfe){
@@ -1431,7 +1468,12 @@ foreach($perf as $perfe){
                     return $row->nombre." ".$row->apellido;    
                 },
                 'salario'=>function($row){
-                    return $row->salario;    
+                    $sueldoMonto=sueldo_aumento::where("id_empleado",'=',$row->id_empleado)
+                    ->where('estado','=',0)
+                    ->where('id_empresa','=',Auth::user()->id_empresa)
+                    ->select(DB::raw('sum(sueldo_increment) as amount'))
+                    ->first();
+                    return $row->salario+ $sueldoMonto->amount;   
                 },
                 'horas'=>function($row){
                     return $row->horas;

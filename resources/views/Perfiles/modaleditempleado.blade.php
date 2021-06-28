@@ -1,7 +1,7 @@
 
   <div class="modal fade" id="Empleadoedit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content" style=" width: 964px; margin-top: -76px; height: 615px;">
+      <div class="modal-content" style=" width: 964px; margin-top: -171px; height: 615px;">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel" style="color: black font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -22,18 +22,20 @@
                 </thead>
                 <tbody>
                   @foreach ($emple as $emples)
-                  
-                      <tr onclick="Addedit('{{url('agregar',[$emples->id_empleado])}}',{{$emples->id_empleado}});" action="{{url('agregar',[$emples->id_empleado])}}" value="{{$emples->id_empleado}}" >
-                        <td class="left">{{$emples->nombre." ".$emples->apellido}}</td>
-                        <td class="left">{{$emples->cedula}}</td>
-                        <td class="left">{{$emples->cargo}}</td>
-                        <td class="left">
-                          @foreach ($emples->puesto as $puesto)
-                              {{$puesto->name}}
-                          @endforeach
-                        </td>
-                        <td>{{$emples->telefono}}</td>
-                      </tr>
+        
+                      
+                  <tr onclick="Addedit('{{url('agregar',[$emples->id_empleado])}}',{{$emples->id_empleado}});" action="{{url('agregar',[$emples->id_empleado])}}" value="{{$emples->id_empleado}}" >
+                    <td class="left">{{$emples->nombre." ".$emples->apellido}}</td>
+                    <td class="left">{{$emples->cedula}}</td>
+                    <td class="left">{{$emples->cargo}}</td>
+                    <td class="left">
+                      @foreach ($emples->puesto as $puesto)
+                      {{$puesto->name}}
+                      @endforeach
+                    </td>
+                    <td>{{$emples->telefono}}</td>
+                  </tr>
+
             
                   @endforeach
                 </tbody>

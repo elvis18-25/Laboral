@@ -51,7 +51,7 @@
                     <tbody>
                         @foreach ($empleado as $empleados)
 
-                        <tr>
+                        <tr action="{{$empleados->id_empleado}}">
                             <td >{{$empleados->nombre." ".$empleados->apellido}}</td>
                             <td style="text-align: center;">{{$empleados->cedula}}</td>
                             <td style="text-align: center;">{{$empleados->cargo}}</td>
@@ -263,10 +263,26 @@ $("#descr").keypress(function(tecla)
 
 });
 
+
 arreglo=[];
- i=0;
+ b=0;
 
 function Addedit(e,m){
+arreglo=[];
+ i=0;
+ p=0;
+    $("#perfiles-tableedit tbody tr").each(function(){
+    arreglo[i]=$(this).attr('action');
+      i++;
+    });
+    console.log(arreglo);
+
+    for (let index = 0; index < arreglo.length; index++) {
+            if(arreglo[index]==m){
+                p=1;
+            }
+     }
+     if(p==0){
     var url = e
      var data = '';
         $.ajax({
@@ -276,9 +292,9 @@ function Addedit(e,m){
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
             $('#perfiles-tableedit tbody').append(result);
-            arreglo[i]=m
+            arreglo[b]=m
             $("#arreglo").attr('value',arreglo);
-            i++;
+            b++;
           
            
            },
@@ -286,6 +302,9 @@ function Addedit(e,m){
                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
     }
              });
+            }else{
+                Errore();
+            }
 }
 
 arreRemov=[];
@@ -332,14 +351,51 @@ document.addEventListener ("keydown", function (e) {
     }
 });
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+function ErroreGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
+
+
+function Errore(){
+    Command: toastr["error"]("Este Empleado ha sido Selecionado", "Error")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
+
+
 </script>
     
 <style>

@@ -97,6 +97,7 @@ class PerfilesController extends Controller
         $empleado=Empleado::leftjoin('perfiles','perfiles.id_empleado','=','empleado.id_empleado')
         ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','empleado.id_empleado')
         ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
+        ->where('perfiles.estados','=',0)
         ->where('empleado.estado','=',0)
         ->where('perfiles.id_perfiles',$id)
         ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.cedula','puesto.name as puesto','empleado.salario','empleado.telefono')
@@ -145,6 +146,7 @@ class PerfilesController extends Controller
     {
         $perfil=Perfiles_empleado::findOrFail($id);
         $perfiles=Perfiles::all();
+
     
         $perfil->descripcion=$request->get('descripcion');
         $perfil->user=Auth::user()->name;
