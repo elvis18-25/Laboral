@@ -48,15 +48,30 @@
                     <span></span> <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
+                @if ($acciones->estado==1)
                 <div class="form-check" style="top: 25px;
                 margin-left: 10px;">
                   <label class="form-check-label">
                     <input class="form-check-input check"   id="btnCheck" checked   type="checkbox" >
                     <span class="form-check-sign"><span class="check">
-                      <b style="font-size: 14px; ">Calcular Horas</b>
+                      <b style="font-size: 14px; ">CALCULAR HORAS</b>
                       </span></span>
                     </label>
-                  </div>
+                  </div> 
+                @else
+                <div class="form-check" style="top: 25px;
+                margin-left: 10px;">
+                  <label class="form-check-label">
+                    <input class="form-check-input check"   id="btnCheck"    type="checkbox" >
+                    <span class="form-check-sign"><span class="check">
+                      <b style="font-size: 14px; ">CALCULAR HORAS</b>
+                      </span></span>
+                    </label>
+                  </div> 
+                @endif
+
+                <input type="text" name="" value="{{$acciones->estado}}" id="accionesf" hidden>
+
                 
 
 
@@ -155,6 +170,7 @@
   </div>
   
 
+  <input type="text" name="" value="{{$horario}}" id="horarios" hidden>
 
 @endsection
 
@@ -292,6 +308,17 @@ $(window).on('popstate', function() {
 });
 
 }
+
+var estado=$("#accionesf").val();
+
+if(estado==0){
+    $("#inputCheckBox").attr('value',1)
+    $("#fechaHora").hide();
+  }else{
+    $("#inputCheckBox").attr('value',0)
+    $("#fechaHora").show();
+  }
+
 
 $("#btnCheck").on('click',function(){
 var valor =$("#inputCheckBox").val();

@@ -110,13 +110,17 @@ var url="{{url('savehoras')}}/"+id;
            data: data,
             url:url ,
             success:function(result){
-              // alert(result);
+              
+              if(result!=0){
               $('#horasTables tbody').append(result);
               $("#horassdd").trigger("click");
               $("#detalle").trigger("click");
               tabla.ajax.reload();
               succesGneral();
               totalnomi(idnomina);
+              }else{
+                Errorweek();
+              }
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -125,6 +129,26 @@ var url="{{url('savehoras')}}/"+id;
              });
 }
 
+function Errorweek(){
+    Command: toastr["error"]("no tiene horario establecido en este dia", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
 function ErroreGrupo(){
     Command: toastr["error"]("Solo puede elegir una opcion a la vez", "Error!")
     toastr.options = {

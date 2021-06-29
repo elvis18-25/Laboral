@@ -27,6 +27,7 @@ use App\Models\Empresa;
 use App\Models\Horas;
 use App\Models\Weekend_empresa;
 use App\Models\sueldo_aumento;
+use App\Models\Acciones;
 
 
 class NominaController extends Controller
@@ -40,7 +41,16 @@ class NominaController extends Controller
     {
         $empleados=Empleado::all();
         $equipos=Equipos::all();
-        return view('Nominas.index',compact('empleados','equipos'));
+        $acciones=Acciones::where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $horario=0;
+
+        if(sizeof(Weekend_empresa::where('id_empresa','=',Auth::user()->id_empresa)->get())!=0){
+            $horario=1;
+            
+        }else{
+            $horario=0;
+        }
+        return view('Nominas.index',compact('empleados','equipos','acciones','horario'));
     }
 
     /**
@@ -565,7 +575,7 @@ class NominaController extends Controller
                 $week=Weekend_empresa::where('id_weekend','=',1)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
                 $b=0;
-
+                if(sizeof(Weekend_empresa::select('id_weekend')->where('id_weekend','=',1)->get())!=0){
                 foreach($week as $weeks){
                     
                           $entrada=new DateTime($weeks->start);
@@ -576,12 +586,14 @@ class NominaController extends Controller
                 $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
+            }
             break;
             case 2: 
                 $week=Weekend_empresa::where('id_weekend','=',2)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
                 $b=0;
 
+                if(sizeof(Weekend_empresa::select('id_weekend')->where('id_weekend','=',2)->get())!=0){
                 foreach($week as $weeks){
                     
                           $entrada=new DateTime($weeks->start);
@@ -592,12 +604,14 @@ class NominaController extends Controller
                 $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
+            }
             break;
             case 3: 
                 $week=Weekend_empresa::where('id_weekend','=',3)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
                 $b=0;
 
+                if(sizeof(Weekend_empresa::select('id_weekend')->where('id_weekend','=',3)->get())!=0){
                 foreach($week as $weeks){
                     
                           $entrada=new DateTime($weeks->start);
@@ -608,12 +622,14 @@ class NominaController extends Controller
                 $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
+            }
             break;
             case 4: 
                 $week=Weekend_empresa::where('id_weekend','=',4)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
                 $b=0;
 
+                if(sizeof(Weekend_empresa::select('id_weekend')->where('id_weekend','=',4)->get())!=0){
                 foreach($week as $weeks){
                     
                           $entrada=new DateTime($weeks->start);
@@ -624,12 +640,14 @@ class NominaController extends Controller
                 $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
+            }
             break;
             case 5: 
                 $week=Weekend_empresa::where('id_weekend','=',5)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
                 $b=0;
 
+                if(sizeof(Weekend_empresa::select('id_weekend')->where('id_weekend','=',5)->get())!=0){
                 foreach($week as $weeks){
                     
                           $entrada=new DateTime($weeks->start);
@@ -640,22 +658,43 @@ class NominaController extends Controller
                 $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
+            }
             break;
             case 6: 
                 $week=Weekend_empresa::where('id_weekend','=',6)->get();
                 $extras = date_diff($fechaenrada, $fechasalidad);
                 $b=0;
 
+                if(sizeof(Weekend_empresa::select('id_weekend')->where('id_weekend','=',6)->get())!=0){
                 foreach($week as $weeks){
                     
                           $entrada=new DateTime($weeks->start);
                           $salida=new DateTime($weeks->end);
                           $timeempresa = date_diff($entrada, $salida);
                 }
-                
+            
                 $veri=0;
                 $veri=$extras->h-$timeempresa->h;
                 $p=$p+$veri;
+            }
+            break;
+            case 7: 
+                $week=Weekend_empresa::where('id_weekend','=',7)->get();
+                $extras = date_diff($fechaenrada, $fechasalidad);
+                $b=0;
+
+                if(sizeof(Weekend_empresa::select('id_weekend')->where('id_weekend','=',7)->get())!=0){
+                foreach($week as $weeks){
+                    
+                          $entrada=new DateTime($weeks->start);
+                          $salida=new DateTime($weeks->end);
+                          $timeempresa = date_diff($entrada, $salida);
+                }
+            
+                $veri=0;
+                $veri=$extras->h-$timeempresa->h;
+                $p=$p+$veri;
+            }
             break;
         }
         
@@ -708,9 +747,11 @@ class NominaController extends Controller
         $horas->estado=0;
         $horas->type=$type;
         $horas->save();
+        return view('Nominas.Plantillas.horas',compact('horas'));
+        }else{
+            return $p;
         }
 
-        return view('Nominas.Plantillas.horas',compact('horas'));
         // return   $salida->format("H:i");
         // return $b;
 
@@ -791,22 +832,21 @@ class NominaController extends Controller
     }
     public function modalhours($id)
     {
-        $equipo=Equipos::
-        leftjoin('equipos_empleados','equipos_empleados.equipos','=','equipos.id')
-        ->leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
-        ->where('equipos.id_empresa',Auth::user()->id_empresa)
-        ->where('equipos.estado','!=','1')
-        ->where('equipos_empleados.id_empleado','=',$id)
-        ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
-        ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
-        ->get();
-        // dd($equipo);
+
         $p=0;
         $b=0;
+        $horario=0;
+
+        if(sizeof(Weekend_empresa::where('id_empresa','=',Auth::user()->id_empresa)->get())!=0){
+            return view("Nominas.modalhoras",compact('id','b'));
+            
+        }else{
+            $horario=1;
+            return $horario;
+        }
 
 
 
-           return view("Nominas.modalhoras",compact('equipo','id','b'));
 
     }
     public function VerificateHours($id)

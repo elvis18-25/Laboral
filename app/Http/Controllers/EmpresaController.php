@@ -17,6 +17,12 @@ use App\Models\Weekend_empresa;
 use App\Http\Controllers\Auth\LoginController;
 use DateTime;
 use Illuminate\Support\Facades\DB;
+use App\Models\modulos;
+use App\Models\widget;
+use App\Models\permisos_widget;
+use App\Models\Role_users;
+use App\Models\Acciones;
+
 
 class EmpresaController extends Controller
 {
@@ -29,6 +35,9 @@ class EmpresaController extends Controller
     {
         $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
         $contrato=Contrato::all();
+
+        $modulos=modulos::all();
+        $widget=widget::all();
         // $week=Weekend::all();
         $pais_start=0;
         $state_start=0;
@@ -49,8 +58,16 @@ class EmpresaController extends Controller
             $city_start=$empresa->city;
             $city=Ciudad::select('id','name')->where('state_id','=',$state_start)->orderBy('name')->get();
         }
+        $user=Auth::user()->id;
+        $rol=Role_users::where('user_id','=',$user)->first();
+
+        $roles=Role::findOrFail($rol->role_id);
+        $permisos_widget=permisos_widget::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         
-        return view('Empresa.index',compact('empresa','contrato','pais','pais_start','state_start','city_start','state','city'));
+        $permisos=Permisos::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        // dd($permisos);
+        $acciones=Acciones::where('id_empresa','=',Auth::user()->id_empresa)->get();
+        return view('Empresa.index',compact('empresa','contrato','roles','acciones','permisos_widget','permisos','pais','pais_start','state_start','city_start','state','city','modulos','widget'));
     }
 
     /**
@@ -67,17 +84,10 @@ class EmpresaController extends Controller
     {
         $hora=Weekend::
         leftjoin('weekend_empresa','weekend_empresa.id_weekend','=','weekend.id')
-        ->select('weekend.id','weekend.day',DB::raw('count(weekend_empresa.id_weekend) as times'))
-        ->GroupBy('weekend.id','weekend.day');
+        ->select('weekend.id','weekend.day','weekend_empresa.start','weekend_empresa.end',DB::raw('count(weekend_empresa.id_weekend) as times'))
+        ->GroupBy('weekend.id','weekend.day','weekend_empresa.start','weekend_empresa.end');
        
             return datatables()->of($hora)
-            // ->editColumn('btn',function($row){
-            //     // $button='<div class="form-check"><label class="form-check-label"><input class="form-check-input" name="dom[]"  type="checkbox" value="'.$row->id.'"><span class="form-check-sign"><span class="check"></span></span></label></div>';
-            //     // return  $button;
-            //     return ;
-                
-            // })
-                
             ->editColumn('horas',function($row){
                 $week=Weekend_empresa::where('id_weekend','=',$row->id)->get();
                 $sum=0;
@@ -138,9 +148,15 @@ class EmpresaController extends Controller
         $user->estado=0;
         $user->save();
 
-        $user->asignarRol(1);
-        $roles=Role::findOrFail(1);
+        $roles= Role::create([
+            'name' => "ADMINISTRADOR",
+            'id_empresa'  =>$empresa->id,
+            'estado'   =>0,
+            'usuario'=>$user->name,
+        ]);
 
+        $user->asignarRol($roles->id);
+        
         Permisos::create([
             'role_id' =>$roles->id,
             'empleado'      => 1,
@@ -148,17 +164,36 @@ class EmpresaController extends Controller
             'departamento'  => 1,
             'roles'         => 1,
             'gastos'        => 1,
-            'asignaciones'  => 1,
-            'listado'       => 1,
             'perfiles'      => 1,
             'nomina'        => 1,
-        'nomina_empleador'  => 1,
             'formas_pagos'  => 1,
-            'contrato'      => 1,      
+            'contrato'      => 1, 
+            'asignaciones'  => 1,
+            'perfilesuser'  => 1,
+            'asistencia'    => 1,
+            'empresa'       => 1,
+            'grupo'          => 1,
             'id_empresa'     => $empresa->id,      
         ]);
+        permisos_widget::create([
+            'role_id'             =>$roles->id,
+            'total_empleado'      => 1,
+            'total_usuarios'      => 1,
+            'total_departamentos' => 1,
+            'formas_pago'         => 1,
+            'totales_roles'       => 1,
+            'reuniones'           => 1,
+            'w_empleados'         => 1,
+            'w_departamentos'     => 1,
+            'w_generos'           => 1,
+            'g_gasto'             => 1,
+            'historial'           => 1,
+            'calendario'          => 1, 
+            'estado'              => 0,
+            'id_empresa'          => $empresa->id,      
+        ]);
 
-        return redirect('Empresa');
+        return redirect('Empresa')->with('guardado','ya');;
     }
 
     /**
@@ -199,7 +234,6 @@ class EmpresaController extends Controller
 
         return 0;
 
-        
         
     }
     public function UpdateHorasEmpresa($id)
@@ -259,9 +293,132 @@ class EmpresaController extends Controller
 
     }
 
-    public function guardar()
+    public function Savepermis(Request $request)
     {
-        //
+        $n=count($request->get('wingdt'));
+        $p=count($request->get('donm'));
+        // dd($p);
+        $id=intval($request->get('rol'));
+        // dd($id);
+        // dd(Auth::user()->id_empresa);
+
+        $permisos_widget=permisos_widget::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $permisos_widget->delete();
+        // dd($permisos_widget);
+        $permisoss=Permisos::where('role_id','=',$id)->where('id_empresa','=',intval(Auth::user()->id_empresa))->first();
+        $permisoss->delete();
+
+ 
+
+        $acciones=Acciones::whereIn('id',$request->get('accion'))->get();
+
+        foreach($acciones as  $accione ){
+            if($accione->estado==0){
+                $accione->estado=1;
+                $accione->update();
+            }else{
+                $accione->estado=0;
+                $accione->update(); 
+            }
+        }
+
+        $permi_wigdet= new permisos_widget();
+        $widget=$request->get('wingdt');
+            for($i = 0; $i < $n; $i++){
+                $permi_wigdet->role_id=$id;
+                $permi_wigdet->id_empresa=Auth::user()->id_empresa;
+                if($widget[$i]==1){
+                 $permi_wigdet->total_empleado=1;
+                }
+                if($widget[$i]==2){
+                 $permi_wigdet->total_usuarios=1;
+                }
+                if($widget[$i]==3){
+                 $permi_wigdet->total_departamentos=1;
+                }
+                if($widget[$i]==4){
+                 $permi_wigdet->formas_pago=1;
+                }
+                if($widget[$i]==5){
+                 $permi_wigdet->totales_roles=1;
+                }
+                if($widget[$i]==6){
+                 $permi_wigdet->reuniones=1;
+                }
+                if($widget[$i]==7){
+                 $permi_wigdet->w_empleados=1;
+                }
+                if($widget[$i]==8){
+                 $permi_wigdet->w_departamentos=1;
+                }
+
+                if($widget[$i]==9){
+                 $permi_wigdet->w_generos=1;
+                }
+                if($widget[$i]==10){
+                 $permi_wigdet->g_gasto=1;
+                }
+                if($widget[$i]==11){
+                    $permi_wigdet->historial=1;
+                   }
+                if($widget[$i]==12){
+                    $permi_wigdet->calendario=1;
+                   }
+                $permi_wigdet->save();
+              
+        } 
+
+
+        $permi= new Permisos();
+        $permisos=$request->get('donm');
+            for($i = 0; $i < $p; $i++){
+                $permi->role_id=$id;
+                $permi->id_empresa=Auth::user()->id_empresa;
+                if($permisos[$i]==1){
+                 $permi->empleado=1;
+                }
+                if($permisos[$i]==2){
+                 $permi->usuario=1;
+                }
+                if($permisos[$i]==3){
+                 $permi->departamento=1;
+                }
+                if($permisos[$i]==4){
+                 $permi->roles=1;
+                }
+                if($permisos[$i]==5){
+                 $permi->gastos=1;
+                }
+                if($permisos[$i]==6){
+                 $permi->asignaciones=1;
+                }
+                if($permisos[$i]==8){
+                 $permi->perfiles=1;
+                }
+
+                if($permisos[$i]==9){
+                 $permi->formas_pagos=1;
+                }
+                if($permisos[$i]==10){
+                 $permi->perfilesuser=1;
+                }
+                if($permisos[$i]==11){
+                    $permi->nomina=1;
+                   }
+                   if($permisos[$i]==12){
+                    $permi->asistencia=1;
+                   }
+                if($permisos[$i]==13){
+                    $permi->empresa=1;
+                   }
+                   if($permisos[$i]==14){
+                    $permi->grupo=1;
+                   }
+                $permi->save();
+        } 
+
+
+        return redirect('Empresa')->with('guardado','ya');
     }
 
     /**
@@ -281,27 +438,28 @@ class EmpresaController extends Controller
         $empresa->rnc=$request->get('rncUP');
         $empresa->email=$request->get('emailUP');
         $empresa->color=$request->get('custom_color');
+        $empresa->zipcode=$request->get('zipcode');
+        $empresa->contry=$request->get('pais');
+        $empresa->state=$request->get('state');
+        $empresa->city=$request->get('ciudad');
         if($request->get('imagen')!=null){
             $empresa->imagen=$request->get('imagen');
         }
         
         $empresa->update();
-        return redirect('Empresa');
+        return redirect('Empresa')->with('guardado','ya');;
         
     }
-    public function Empresaupdate(Request $request, $id)
-    {
-        // dd($request->all());
-        // dd("llego");
-        $empresa=Empresa::findOrFail($id);
-        $empresa->zipcode=$request->get('zipcode');
-        $empresa->contry=$request->get('pais');
-        $empresa->state=$request->get('state');
-        $empresa->city=$request->get('ciudad');
-        $empresa->update();
-        return redirect('Empresa');
+    // public function Empresaupdate(Request $request, $id)
+    // {
+    //     // dd($request->all());
+    //     // dd("llego");
+    //     $empresa=Empresa::findOrFail($id);
+
+    //     $empresa->update();
+    //     return redirect('Empresa');
         
-    }
+    // }
     public function harariosave()
     {
         $entrada=request('entrada');
@@ -324,7 +482,7 @@ class EmpresaController extends Controller
         }
 
 
-        return $p;
+        return $n;
 
 
         

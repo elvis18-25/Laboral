@@ -80,6 +80,7 @@ Route::post('harariosave','App\Http\Controllers\EmpresaController@harariosave');
 Route::post('DeleteEmpresa/{id}','App\Http\Controllers\EmpresaController@DeleteEmpresa');
 Route::post('UpdateHorasEmpresa/{id}','App\Http\Controllers\EmpresaController@UpdateHorasEmpresa');
 Route::post('saveUpdate/{id}','App\Http\Controllers\EmpresaController@saveUpdate');
+Route::post('Savepermis','App\Http\Controllers\EmpresaController@Savepermis');
 
 
 

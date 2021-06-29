@@ -154,6 +154,7 @@
         }
   }
 
+  console.log(add);
   if(b!=0){
   var entrada=$("#HoraEn").val();
   var salida=$("#HoraSa").val();
@@ -165,6 +166,7 @@
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
+              // alert(result)
               $("#NewHoras").trigger("click");
               tabla.ajax.reload();
               

@@ -5,8 +5,10 @@
             {{-- <a href="{{ route('home') }}" class="simple-text logo-normal" style="text-align: center">{{ __('LABORAL') }}</a> --}}
         </div>
         @php
-            $permiso=App\Models\Permisos::all();
             $user=Auth::user()->id;
+            $empresa=Auth::user()->id_empresa;
+            $permiso=App\Models\Permisos::where('id_empresa','=', $empresa)->get();
+            // dd($permiso);
             $role=App\Models\Role_users::select('role_id')->where('user_id','=',$user)->first();
             $b=0;
             // dd($role->role_id);

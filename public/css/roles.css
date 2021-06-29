@@ -82,16 +82,7 @@ margin-left: -26px;
   cursor: pointer;
 }
 
-#image{
-  margin-left: 122px;
-  cursor: pointer;
-  background-image: url('../black/img/default-user-image.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  /* background-size: cover; */
 
-
-} 
 /* table.dataTable tbody tr.selected {
   background-color: #b62897 !important;
 } */
