@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info redondo"><i class="fas fa-save" onclick="savesalario();" style="margin-left: -1px;"></i></button>
+          <button type="button" class="btn btn-info redondo" id="btnsavesSalario" onclick="savesalario();" ><i class="fas fa-save" style="margin-left: -1px;"></i></button>
         </div>
       </div>
     </div>
@@ -34,3 +34,41 @@
           width: 40px !important;
       }
   </style>
+
+  <script>
+    function savesalario(){
+  var name=$("#SalarioName").val();
+  var monto=$("#salarioOP").val();
+
+  var id=$("#inputs").val();
+    var url = "{{url('salarioSave')}}"; 
+     var data ={name:name,monto:monto,id:id};
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              // alert(result);
+              $("#salarioTable tbody").append(result);
+              $("#modalsalario").trigger("click");
+              var monto=$(result).attr('action');
+
+              var bonores= numberFormat2.format(monto); 
+              // $("#salarioAcum").empty();
+              // $("#salarioAcum").append(bonores);
+              $("#salarioAcum").attr('value',bonores);
+              $("#totalsalario").empty();
+              $("#totalsalario").append(bonores);
+              successGen();
+              $("#SalarioName").val("");
+              $("#salario").val("");
+
+            
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+               ErroresGeneral();
+    }
+             }); 
+}
+  </script>

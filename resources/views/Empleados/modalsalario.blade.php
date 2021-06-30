@@ -1,5 +1,3 @@
-
-  
   <!-- Modal -->
   <div class="modal fade" id="salariosbase" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -26,31 +24,37 @@
                   @endphp
                     <tr>
                       <td>SUELDO BASE</td>
-                      <td>{{$empleados->created_at->format('d/m/Y')}}</td>
-                      <td>{{$user}}</td>
+                      <td  style="text-align: center;">{{$empleados->created_at->format('d/m/Y')}}</td>
+                      <td  style="text-align: center;">{{$user}}</td>
                       <td style="text-align: right;">${{number_format($empleados->salario,2)}}</td>
                     </tr>
-                    @foreach ($sueldo as $sueldos)
+                    
                     @php
-                        $sum=$sueldoMonto->amount+$empleados->salario
+                        $sum=0;
                     @endphp
+                    @foreach ($sueldo as $sueldos)
+                    
+                    @php
+              
+                        $sum=$sueldoMonto->amount;
+                        @endphp
                     <tr action="{{$sum}}" onclick="ModalSalarioshow({{$sueldos->id}})">
-                        <td>{{$sueldos->description}}</td>
-                        <td>{{$sueldos->created_at->format('d/m/Y')}}</td>
-                        <td>{{$sueldos->user}}</td>
-                        <td style="text-align: right;">${{number_format($sueldos->sueldo_increment,2)}}</td>
+                      <td>{{$sueldos->description}}</td>
+                      <td style="text-align: center;">{{$sueldos->created_at->format('d/m/Y')}}</td>
+                      <td style="text-align: center;">{{$sueldos->user}}</td>
+                      <td style="text-align: right;">${{number_format($sueldos->sueldo_increment,2)}}</td>
                     </tr>
                     @endforeach
-
+                   
                 </tbody>
               </table>
         </div>
         <div class="modal-footer">
-          <button type="button" data-toggle="modal" data-target="#modalsalario" class="btn btn-info redondo"><i class="fas fa-plus" style="margin-left: -1px;"></i></button>
+          <button type="button" data-toggle="modal" data-target="#modalsalario" id="btnwssswa" class="btn btn-info redondo"><i class="fas fa-plus" style="margin-left: -1px;"></i></button>
           <b style="    font-size: 16px;
           float: right;
           margin-top: 2px;
-          margin-right: -773px;">TOTAL:</b><b><span id="totalsalario" >&nbsp;${{number_format($sum,2)}}</b></span>
+          margin-right: -773px;">TOTAL:</b><b><span id="totalsalario" >&nbsp;${{number_format($sum+$empleados->salario,2)}}</b></span>
         </div>
       </div>
     </div>
@@ -80,3 +84,7 @@
     }
 
   </style>
+
+  <script>
+
+  </script>

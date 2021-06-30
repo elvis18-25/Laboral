@@ -959,6 +959,7 @@ function GanoFoco2(){
 
 $("#newdepart").on('keypress', function(e) { return e.keyCode != 13; }); 
 $("#newpago").on('keypress', function(e) { return e.keyCode != 13; }); 
+$("#salario").on('keypress', function(e) { return e.keyCode != 13; }); 
 
 
 $('#exampleModal').keyup(function(e){
@@ -988,6 +989,22 @@ $('#exampleModal').keyup(function(e){
        
         $("#newdepart").focus();
         
+    }
+});
+
+$('#salariosbase').keyup(function(e){
+    if(e.keycode==107)
+    {
+        alert("s");
+        $("#btnwssswa").trigger("click");
+        
+    }
+});
+
+  $('#modalsalario').keyup(function(e){
+    if(e.keyCode==13)
+    {
+      $('#btnsavesSalario').trigger("click"); 
     }
 });
 
@@ -1079,41 +1096,7 @@ function savepago(){
 const options2 = { style: 'currency', currency: 'USD' };
 const numberFormat2 = new Intl.NumberFormat('en-US', options2);
 
-function savesalario(){
-  var name=$("#SalarioName").val();
-  var monto=$("#salarioOP").val();
 
-  var id=$("#inputs").val();
-    var url = "{{url('salarioSave')}}"; 
-     var data ={name:name,monto:monto,id:id};
-        $.ajax({
-         method: "POST",
-           data: data,
-            url:url ,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(result){
-              // alert(result);
-              $("#salarioTable tbody").append(result);
-              $("#modalsalario").trigger("click");
-              var monto=$(result).attr('action');
-
-              var bonores= numberFormat2.format(monto); 
-              // $("#salarioAcum").empty();
-              // $("#salarioAcum").append(bonores);
-              $("#salarioAcum").attr('value',bonores);
-              $("#totalsalario").empty();
-              $("#totalsalario").append(bonores);
-              successGen();
-              $("#SalarioName").val("");
-              $("#salario").val("");
-
-            
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-               ErroresGeneral();
-    }
-             }); 
-}
 
 function ModalSalarioshow(e){
     var url = "{{url('showsalario')}}/"+e; 

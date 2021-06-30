@@ -300,17 +300,17 @@ class EmpresaController extends Controller
         // dd($p);
         $id=intval($request->get('rol'));
         // dd($id);
-        // dd(Auth::user()->id_empresa);
-
+        $acciones=Acciones::whereIn('id',$request->get('accion'))->get();
+        
         $permisos_widget=permisos_widget::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         $permisos_widget->delete();
         // dd($permisos_widget);
         $permisoss=Permisos::where('role_id','=',$id)->where('id_empresa','=',intval(Auth::user()->id_empresa))->first();
         $permisoss->delete();
-
+        
+        // dd($acciones);
  
 
-        $acciones=Acciones::whereIn('id',$request->get('accion'))->get();
 
         foreach($acciones as  $accione ){
             if($accione->estado==0){

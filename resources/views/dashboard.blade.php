@@ -268,7 +268,12 @@
         </div>
         <div class="card-body">
             <div class="chart-area">
-                <canvas id="CountryChart"></canvas>
+                {{-- <canvas id="CountryChart"></canvas> --}}
+                {{-- <div id="chartbar"></div> --}}
+                <div id="chartbar" style="height: 135%;
+                top: -13px;
+                position: relative;"></div>
+                {{-- {!! $salesChart->container() !!} --}}
               </div>
             </div>
           </div>
@@ -303,7 +308,10 @@
             </div>
             <div class="card-body">
                 <div class="chart-area">
-                    <canvas id="chartLineGreen"></canvas>
+                    {{-- <canvas id="chartLineGreen"></canvas> --}}
+                <div id="chartbarsex" style="height: 135%;
+                top: -13px;
+                position: relative;"></div>
                 </div>
             </div>
         </div>
@@ -330,8 +338,10 @@
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas id="chartBig1d"></canvas>
-                    </div>
+                        {{-- <canvas id="chartBig1d"></canvas> --}}
+                        <div id="chart" style="height: 153%; width: 121%; top: -56px; position: relative; margin-left: -153px;"></div>
+                        {{-- {!! $bar!!} --}}
+                      </div>
                 </div>
             </div>
         </div>
@@ -399,15 +409,47 @@
 @endsection
 @push('js')
 
-<script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script>
+{{-- <script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script> --}}
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="{{asset('js/mdtimepicker.js')}}"></script>
 <script src="{{asset('js/jscolor.js')}}"></script>
 <script src="{{asset('js/timepicker.min.js')}}"></script>
-
+{{-- <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
+<!-- Chartisan -->
+<script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script> --}}
 
 
     <script>
+    //   const chart = new Chartisan({
+    //     el: '#chart',
+    //     url: "@chart('sample_chart')",
+    //     hooks: new ChartisanHooks()
+    // .legend()
+    // .colors()
+    // .datasets([{ type: 'line', fill: false }, 'bar'])
+    // .tooltip(),
+    
+    //   });
+    //   const chartew = new Chartisan({
+    //     el: '#chartbar',
+    //     url: "@chart('empleados_charts')",
+    //     hooks: new ChartisanHooks()
+    //     .legend()
+    //     .colors()
+    //     .datasets(['bar'])
+    //     .tooltip(),
+    
+    //   });
+    //   const SexoChart = new Chartisan({
+    //     el: '#chartbarsex',
+    //     url: "@chart('sexo_chart')",
+    //     hooks: new ChartisanHooks()
+    //     .legend()
+    //     .colors()
+    //     .tooltip(),
+    
+    //   });
+
       var calendar;
       
        $('.bs-timepicker').timepicker();
@@ -555,576 +597,536 @@
     }
       
 
-      $(document).ready(function() {
+//       $(document).ready(function() {
 
 
 
 
 
 
-        var data_puesto = <?php echo $puesto_empleado; ?>;
-        gradientChartOptionsConfigurationWithTooltipBlue = {
-          maintainAspectRatio: false,
-          legend: {
-            display: false
-          },
+//         var data_puesto = <?php echo $puesto_empleado; ?>;
+//         gradientChartOptionsConfigurationWithTooltipBlue = {
+//           maintainAspectRatio: false,
+//           legend: {
+//             display: false
+//           },
           
-          tooltips: {
-            backgroundColor: '#f5f5f5',
-            titleFontColor: '#333',
-            bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.0)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 60,
-            suggestedMax: 125,
-            padding: 20,
-            fontColor: "#2380f7"
-          }
-        }],
+//           tooltips: {
+//             backgroundColor: '#f5f5f5',
+//             titleFontColor: '#333',
+//             bodyFontColor: '#666',
+//         bodySpacing: 4,
+//         xPadding: 12,
+//         mode: "nearest",
+//         intersect: 0,
+//         position: "nearest"
+//       },
+//       responsive: true,
+//       scales: {
+//         yAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(29,140,248,0.0)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             suggestedMin: 60,
+//             suggestedMax: 125,
+//             padding: 20,
+//             fontColor: "#2380f7"
+//           }
+//         }],
 
-        xAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#2380f7"
-          }
-        }]
-      }
-    };
+//         xAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(29,140,248,0.1)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             padding: 20,
+//             fontColor: "#2380f7"
+//           }
+//         }]
+//       }
+//     };
     
-    var data_click = <?php echo $puesto; ?>;
-    gradientChartOptionsConfigurationWithTooltipPurple = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
+//     var data_click = <?php echo $puesto; ?>;
+//     gradientChartOptionsConfigurationWithTooltipPurple = {
+//       maintainAspectRatio: false,
+//       legend: {
+//         display: false
+//       },
 
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.0)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 60,
-            suggestedMax: 125,
-            padding: 20,
-            fontColor: "#9a9a9a"
-          }
-        }],
+//       tooltips: {
+//         backgroundColor: '#f5f5f5',
+//         titleFontColor: '#333',
+//         bodyFontColor: '#666',
+//         bodySpacing: 4,
+//         xPadding: 12,
+//         mode: "nearest",
+//         intersect: 0,
+//         position: "nearest"
+//       },
+//       responsive: true,
+//       scales: {
+//         yAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(29,140,248,0.0)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             suggestedMin: 60,
+//             suggestedMax: 125,
+//             padding: 20,
+//             fontColor: "#9a9a9a"
+//           }
+//         }],
 
-        xAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(225,78,202,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#9a9a9a"
-          }
-        }]
-      }
-    };
+//         xAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(225,78,202,0.1)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             padding: 20,
+//             fontColor: "#9a9a9a"
+//           }
+//         }]
+//       }
+//     };
 
-    gradientChartOptionsConfigurationWithTooltipOrange = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
+//     gradientChartOptionsConfigurationWithTooltipOrange = {
+//       maintainAspectRatio: false,
+//       legend: {
+//         display: false
+//       },
 
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.0)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 50,
-            suggestedMax: 110,
-            padding: 20,
-            fontColor: "#ff8a76"
-          }
-        }],
+//       tooltips: {
+//         backgroundColor: '#f5f5f5',
+//         titleFontColor: '#333',
+//         bodyFontColor: '#666',
+//         bodySpacing: 4,
+//         xPadding: 12,
+//         mode: "nearest",
+//         intersect: 0,
+//         position: "nearest"
+//       },
+//       responsive: true,
+//       scales: {
+//         yAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(29,140,248,0.0)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             suggestedMin: 50,
+//             suggestedMax: 110,
+//             padding: 20,
+//             fontColor: "#ff8a76"
+//           }
+//         }],
 
-        xAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(220,53,69,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#ff8a76"
-          }
-        }]
-      }
-    };
+//         xAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(220,53,69,0.1)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             padding: 20,
+//             fontColor: "#ff8a76"
+//           }
+//         }]
+//       }
+//     };
 
-    gradientChartOptionsConfigurationWithTooltipGreen = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
+//     gradientChartOptionsConfigurationWithTooltipGreen = {
+//       maintainAspectRatio: false,
+//       legend: {
+//         display: false
+//       },
 
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.0)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 50,
-            suggestedMax: 125,
-            padding: 20,
-            fontColor: "#9e9e9e"
-          }
-        }],
+//       tooltips: {
+//         backgroundColor: '#f5f5f5',
+//         titleFontColor: '#333',
+//         bodyFontColor: '#666',
+//         bodySpacing: 4,
+//         xPadding: 12,
+//         mode: "nearest",
+//         intersect: 0,
+//         position: "nearest"
+//       },
+//       responsive: true,
+//       scales: {
+//         yAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(29,140,248,0.0)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             suggestedMin: 50,
+//             suggestedMax: 125,
+//             padding: 20,
+//             fontColor: "#9e9e9e"
+//           }
+//         }],
 
-        xAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(0,242,195,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#9e9e9e"
-          }
-        }]
-      }
-    };
-
-
-    gradientBarChartConfiguration = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 60,
-            suggestedMax: 120,
-            padding: 20,
-            fontColor: "#9e9e9e"
-          }
-        }],
-
-        xAxes: [{
-
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#9e9e9e"
-          }
-        }]
-      }
-    };
-
-    var ctxE = document.getElementById("CountryChart").getContext("2d");
-
-var gradientStroke = ctxE.createLinearGradient(0, 230, 0, 50);
-
-gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
-gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
-gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+//         xAxes: [{
+//           barPercentage: 1.6,
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(0,242,195,0.1)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             padding: 20,
+//             fontColor: "#9e9e9e"
+//           }
+//         }]
+//       }
+//     };
 
 
-var myChart = new Chart(ctxE, {
-  type: 'bar',
-  responsive: true,
-  legend: {
-    display: false
-  },
-  data: {
-    labels: ['Activos', 'Vacaciones', 'Licencia'],
-    datasets: [{
-      label: "Countries",
-      fill: true,
-      backgroundColor: gradientStroke,
-      hoverBackgroundColor: gradientStroke,
-      borderColor: '#1f8ef1',
-      borderWidth: 2,
-      borderDash: [],
-      borderDashOffset: 0.0,
-      data: [{{$count_empleado}}, 0, 0],
-    }]
-  },
-  options: gradientBarChartConfiguration
-});
+//     gradientBarChartConfiguration = {
+//       maintainAspectRatio: false,
+//       legend: {
+//         display: false
+//       },
 
-    var ctx = document.getElementById("chartLinePurple").getContext("2d");
+//       tooltips: {
+//         backgroundColor: '#f5f5f5',
+//         titleFontColor: '#333',
+//         bodyFontColor: '#666',
+//         bodySpacing: 4,
+//         xPadding: 12,
+//         mode: "nearest",
+//         intersect: 0,
+//         position: "nearest"
+//       },
+//       responsive: true,
+//       scales: {
+//         yAxes: [{
 
-    var gradientStrokew = ctx.createLinearGradient(0, 230, 0, 50);
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(29,140,248,0.1)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             suggestedMin: 60,
+//             suggestedMax: 120,
+//             padding: 20,
+//             fontColor: "#9e9e9e"
+//           }
+//         }],
 
-    gradientStrokew.addColorStop(1, 'rgba(72,72,176,0.2)');
-    gradientStrokew.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-    gradientStrokew.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
+//         xAxes: [{
 
-    
-    var myChart = new Chart(ctx, {
-      type: 'radar',
-      responsive: true,
-      legend: {
-        display: false
-      },
-      data: {
-        labels: data_click,
-        datasets: [{
-          label: "Empleado",
-          fill: true,
-          backgroundColor: gradientStrokew,
-          hoverBackgroundColor: gradientStrokew,
-          borderColor: '#d346b1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          data: data_puesto,
-        }]
-      },
-      options: gradientBarChartConfiguration
-    });
+//           gridLines: {
+//             drawBorder: false,
+//             color: 'rgba(29,140,248,0.1)',
+//             zeroLineColor: "transparent",
+//           },
+//           ticks: {
+//             padding: 20,
+//             fontColor: "#9e9e9e"
+//           }
+//         }]
+//       }
+//     };
 
+//     var ctxE = document.getElementById("CountryChart").getContext("2d");
 
-    var ctxgreesn = document.getElementById("chartLineGreen").getContext("2d");
+// var gradientStroke = ctxE.createLinearGradient(0, 230, 0, 50);
 
-      var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+// gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
+// gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+// gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
 
 
-    gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
-    gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
-    gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
+// var myChart = new Chart(ctxE, {
+//   type: 'bar',
+//   responsive: true,
+//   legend: {
+//     display: false
+//   },
+//   data: {
+//     labels: ['Activos', 'Vacaciones', 'Licencia'],
+//     datasets: [{
+//       label: "Countries",
+//       fill: true,
+//       backgroundColor: gradientStroke,
+//       hoverBackgroundColor: gradientStroke,
+//       borderColor: '#1f8ef1',
+//       borderWidth: 2,
+//       borderDash: [],
+//       borderDashOffset: 0.0,
+//       data: [{{$count_empleado}}, 0, 0],
+//     }]
+//   },
+//   options: gradientBarChartConfiguration
+// });
 
+//     var ctx = document.getElementById("chartLinePurple").getContext("2d");
 
-    var myChart = new Chart(ctxgreesn, {
-      type: 'bar',
-      responsive: true,
-      legend: {
-        display: false
-      },
-      data: {
-        labels: ['Hombre', 'Mujer', 'Indefinido'],
-        datasets: [{
-          label: "Empleado",
-          fill: true,
-          backgroundColor: gradientStroke,
-          hoverBackgroundColor: gradientStroke,
-          borderColor: '#00d6b4',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          data: [{{$count_hombres}}, {{$count_mujeres}}, {{$count_indefinido}}],
-        }]
-      },
-      options: gradientBarChartConfiguration
-    });
+//     var gradientStrokew = ctx.createLinearGradient(0, 230, 0, 50);
 
-
-
-    var cData = <?php echo $data; ?>;
-    var cMoth = <?php echo $moth; ?>;
-
-    // console.log(cMoth);
+//     gradientStrokew.addColorStop(1, 'rgba(72,72,176,0.2)');
+//     gradientStrokew.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+//     gradientStrokew.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
 
     
+//     var myChart = new Chart(ctx, {
+//       type: 'radar',
+//       responsive: true,
+//       legend: {
+//         display: false
+//       },
+//       data: {
+//         labels: data_click,
+//         datasets: [{
+//           label: "Empleado",
+//           fill: true,
+//           backgroundColor: gradientStrokew,
+//           hoverBackgroundColor: gradientStrokew,
+//           borderColor: '#d346b1',
+//           borderWidth: 2,
+//           borderDash: [],
+//           borderDashOffset: 0.0,
+//           data: data_puesto,
+//         }]
+//       },
+//       options: gradientBarChartConfiguration
+//     });
 
-    var meses=[];
-    var monto=[];
+
+//     var ctxgreesn = document.getElementById("chartLineGreen").getContext("2d");
+
+//       var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+
+//     gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
+//     gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
+//     gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
+
+
+//     var myChart = new Chart(ctxgreesn, {
+//       type: 'bar',
+//       responsive: true,
+//       legend: {
+//         display: false
+//       },
+//       data: {
+//         labels: ['Hombre', 'Mujer', 'Indefinido'],
+//         datasets: [{
+//           label: "Empleado",
+//           fill: true,
+//           backgroundColor: gradientStroke,
+//           hoverBackgroundColor: gradientStroke,
+//           borderColor: '#00d6b4',
+//           borderWidth: 2,
+//           borderDash: [],
+//           borderDashOffset: 0.0,
+//           data: [{{$count_hombres}}, {{$count_mujeres}}, {{$count_indefinido}}],
+//         }]
+//       },
+//       options: gradientBarChartConfiguration
+//     });
+
+
+
+//     var cData = <?php echo $data; ?>;
+//     var cMoth = <?php echo $moth; ?>;
+
+//     // console.log(cMoth);
+
+    
+
+//     var meses=[];
+//     var monto=[];
     
 
 
-    var list=0;
-    for (var mes = 1; mes <=12; mes++) {
-    list++;
-    for (pos=0; pos <12; pos++) {
+//     var list=0;
+//     for (var mes = 1; mes <=12; mes++) {
+//     list++;
+//     for (pos=0; pos <12; pos++) {
 
-        if(cMoth[pos]==mes && mes==1){
-          meses[pos]="ENERO";
-          monto[pos]=cData[pos];
-        }
+//         if(cMoth[pos]==mes && mes==1){
+//           meses[pos]="ENERO";
+//           monto[pos]=cData[pos];
+//         }
 
-        if(mes==2 && cMoth[pos]==mes){
-          meses[pos]="FEBRERO";
-          monto[pos]=cData[pos];
-        }
+//         if(mes==2 && cMoth[pos]==mes){
+//           meses[pos]="FEBRERO";
+//           monto[pos]=cData[pos];
+//         }
 
-        if(cMoth[pos]==mes && mes==3){
-          meses[pos]="MARZO";
-          monto[pos]=cData[pos];
-        }
+//         if(cMoth[pos]==mes && mes==3){
+//           meses[pos]="MARZO";
+//           monto[pos]=cData[pos];
+//         }
 
-        if(mes==4 && cMoth[pos]==mes){
-          meses[pos]="ABRIL";
-          monto[pos]=cData[pos];
-        }
+//         if(mes==4 && cMoth[pos]==mes){
+//           meses[pos]="ABRIL";
+//           monto[pos]=cData[pos];
+//         }
 
-        if(mes==5 && cMoth[pos]==mes){
-          meses[pos]="MAYO";
-          monto[pos]=cData[pos];
-        }
+//         if(mes==5 && cMoth[pos]==mes){
+//           meses[pos]="MAYO";
+//           monto[pos]=cData[pos];
+//         }
 
-        if(mes==6 && cMoth[pos]==mes){
-          meses[pos]="JUNIO";
-          monto[pos]=cData[pos];
-        }
-        if(mes==7 && cMoth[pos]==mes){
-          meses[pos]="JULIO";
-          monto[pos]=cData[pos];
-        }
-        if(mes==8 && cMoth[pos]==mes){
-          meses[pos]="AGOSTO";
-          monto[pos]=cData[pos];
-        }
-        if(mes==9 && cMoth[pos]==mes){
-          meses[pos]="SEPTIEMBRE";
-          monto[pos]=cData[pos];
-        }
-        if(mes==10 && cMoth[pos]==mes){
-          meses[pos]="OCTUBRE";
-          monto[pos]=cData[pos];
-        }
-        if(mes==11 && cMoth[pos]==mes){
-          meses[pos]="NOVIEMBRE";
-          monto[pos]=cData[pos];
-        }
-        if(mes==12 && cMoth[pos]==mes){
-          meses[pos]="DICIEMBRE";
-          monto[pos]=cData[pos];
-        }
+//         if(mes==6 && cMoth[pos]==mes){
+//           meses[pos]="JUNIO";
+//           monto[pos]=cData[pos];
+//         }
+//         if(mes==7 && cMoth[pos]==mes){
+//           meses[pos]="JULIO";
+//           monto[pos]=cData[pos];
+//         }
+//         if(mes==8 && cMoth[pos]==mes){
+//           meses[pos]="AGOSTO";
+//           monto[pos]=cData[pos];
+//         }
+//         if(mes==9 && cMoth[pos]==mes){
+//           meses[pos]="SEPTIEMBRE";
+//           monto[pos]=cData[pos];
+//         }
+//         if(mes==10 && cMoth[pos]==mes){
+//           meses[pos]="OCTUBRE";
+//           monto[pos]=cData[pos];
+//         }
+//         if(mes==11 && cMoth[pos]==mes){
+//           meses[pos]="NOVIEMBRE";
+//           monto[pos]=cData[pos];
+//         }
+//         if(mes==12 && cMoth[pos]==mes){
+//           meses[pos]="DICIEMBRE";
+//           monto[pos]=cData[pos];
+//         }
       
-    }
+//     }
 
-  }
+//   }
 
 
   
-  var cDatanom = <?php echo $datanom; ?>;
-    var cMothnom = <?php echo $mothnom; ?>;
+//   var cDatanom = <?php echo $datanom; ?>;
+//     var cMothnom = <?php echo $mothnom; ?>;
 
-    var mesesNomi=[];
-    var montoNomi=[];
-    for (var mes = 1; mes <=12; mes++) {
-    list++;
-    for (pos=0; pos <12; pos++) {
+//     var mesesNomi=[];
+//     var montoNomi=[];
+//     for (var mes = 1; mes <=12; mes++) {
+//     list++;
+//     for (pos=0; pos <12; pos++) {
 
-        if(cMothnom[pos]==mes && mes==1){
-          mesesNomi[pos]="ENERO";
-          montoNomi[pos]=cDatanom[pos];
-        }
+//         if(cMothnom[pos]==mes && mes==1){
+//           mesesNomi[pos]="ENERO";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
 
-        if(mes==2 && cMothnom[pos]==mes){
-          mesesNomi[pos]="FEBRERO";
-          montoNomi[pos]=cDatanom[pos];
-        }
+//         if(mes==2 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="FEBRERO";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
 
-        if(cMothnom[pos]==mes && mes==3){
-          mesesNomi[pos]="MARZO";
-          montoNomi[pos]=cDatanom[pos];
-        }
+//         if(cMothnom[pos]==mes && mes==3){
+//           mesesNomi[pos]="MARZO";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
 
-        if(mes==4 && cMothnom[pos]==mes){
-          mesesNomi[pos]="ABRIL";
-          montoNomi[pos]=cDatanom[pos];
-        }
+//         if(mes==4 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="ABRIL";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
 
-        if(mes==5 && cMothnom[pos]==mes){
-          mesesNomi[pos]="MAYO";
-          montoNomi[pos]=cDatanom[pos];
-        }
+//         if(mes==5 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="MAYO";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
 
-        if(mes==6 && cMothnom[pos]==mes){
-          mesesNomi[pos]="JUNIO";
-          montoNomi[pos]=cDatanom[pos];
-        }
-        if(mes==7 && cMothnom[pos]==mes){
-          mesesNomi[pos]="JULIO";
-          montoNomi[pos]=cDatanom[pos];
-        }
-        if(mes==8 && cMothnom[pos]==mes){
-          mesesNomi[pos]="AGOSTO";
-          montoNomi[pos]=cDatanom[pos];
-        }
-        if(mes==9 && cMothnom[pos]==mes){
-          mesesNomi[pos]="SEPTIEMBRE";
-          montoNomi[pos]=cDatanom[pos];
-        }
-        if(mes==10 && cMothnom[pos]==mes){
-          mesesNomi[pos]="OCTUBRE";
-          montoNomi[pos]=cDatanom[pos];
-        }
-        if(mes==11 && cMothnom[pos]==mes){
-          mesesNomi[pos]="NOVIEMBRE";
-          montoNomi[pos]=cDatanom[pos];
-        }
-        if(mes==12 && cMothnom[pos]==mes){
-          mesesNomi[pos]="DICIEMBRE";
-          montoNomi[pos]=cDatanom[pos];
-        }
+//         if(mes==6 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="JUNIO";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
+//         if(mes==7 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="JULIO";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
+//         if(mes==8 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="AGOSTO";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
+//         if(mes==9 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="SEPTIEMBRE";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
+//         if(mes==10 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="OCTUBRE";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
+//         if(mes==11 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="NOVIEMBRE";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
+//         if(mes==12 && cMothnom[pos]==mes){
+//           mesesNomi[pos]="DICIEMBRE";
+//           montoNomi[pos]=cDatanom[pos];
+//         }
       
-    }
+//     }
 
-  }
+//   }
 
-  // console.log(meses);
+//   // console.log(meses);
 
-  // for (let index = 0; index < meses.length; index++) { 
-  //     if(index==1){
-  //       if(meses[index]==" "){
-  //       meses[index]="ENERO"
-  //       monto[index]=0;
-  //       }
-  //     } 
-  // }
+//   // for (let index = 0; index < meses.length; index++) { 
+//   //     if(index==1){
+//   //       if(meses[index]==" "){
+//   //       meses[index]="ENERO"
+//   //       monto[index]=0;
+//   //       }
+//   //     } 
+//   // }
 
 
-    // var meses_chart = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
-    // var chart_data = [400000, 70, 900000, 700000, 85, 60000, 75, 60, 90, 80, 110, 100];
+//     // var meses_chart = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
+//     // var chart_data = [400000, 70, 900000, 700000, 85, 60000, 75, 60, 90, 80, 110, 100];
 
-// console.log(meses);
-    var ctx = document.getElementById("chartBig1d").getContext('2d');
+// // console.log(meses);
+//     var ctx = document.getElementById("chartBig1d").getContext('2d');
 
-    var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+//     var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
 
-    gradientStroke.addColorStop(1, 'rgba(72,72,176,0.1)');
-    gradientStroke.addColorStop(0.4, 'rgba(72,72,176,0.0)');
-    gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
+//     gradientStroke.addColorStop(1, 'rgba(72,72,176,0.1)');
+//     gradientStroke.addColorStop(0.4, 'rgba(72,72,176,0.0)');
+//     gradientStroke.addColorStop(0, 'rgba(119,52,169,0)'); //purple colors
 
-    var gradientStrokes = ctx.createLinearGradient(0, 230, 0, 50);
+//     var gradientStrokes = ctx.createLinearGradient(0, 230, 0, 50);
 
-    gradientStrokes.addColorStop(1, 'rgba(29,140,248,0.2)');
-    gradientStrokes.addColorStop(0.4, 'rgba(29,140,248,0.0)');
-    gradientStrokes.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
-    var config = {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: "Gasto",
-          fill: true,
-          backgroundColor: gradientStroke,
-          borderColor: '#d346b1',
-          borderWidth: 2,
-          borderDash: [],
-          borderDashOffset: 0.0,
-          pointBackgroundColor: '#d346b1',
-          pointBorderColor: 'rgba(255,255,255,0)',
-          pointHoverBackgroundColor: '#d346b1',
-          pointBorderWidth: 20,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 15,
-          pointRadius: 4,
-          data: monto,
-        },{
-          label: 'NOMINA',
-          data: cDatanom,
-           type: 'line',
-           order: 1,
-           borderColor: 'rgb(54, 162, 235)'
-           
-        }],
-
-        labels: meses,
-        
-      },
-      options: gradientChartOptionsConfigurationWithTooltipPurple
-    };
-
-//     var gradientStrokes = ctx.createLinearGradient(0,230,01,50);
-
-// gradientStrokes.addColorStop(1, 'rgba(72,72,176,0.2)');
-// gradientStrokes.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-// gradientStrokes.addColorStop(0, 'rgba(119,52,50,0)'); //purple colors
+//     gradientStrokes.addColorStop(1, 'rgba(29,140,248,0.2)');
+//     gradientStrokes.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+//     gradientStrokes.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
 //     var config = {
 //       type: 'line',
 //       data: {
-//         labels: meses_chart,
 //         datasets: [{
-//           label: "Monto",
+//           label: "Gasto",
 //           fill: true,
-//           backgroundColor: gradientStrokes,
+//           backgroundColor: gradientStroke,
 //           borderColor: '#d346b1',
 //           borderWidth: 2,
 //           borderDash: [],
@@ -1136,44 +1138,84 @@ var myChart = new Chart(ctxE, {
 //           pointHoverRadius: 4,
 //           pointHoverBorderWidth: 15,
 //           pointRadius: 4,
-//           data: chart_data,
-//         }]
+//           data: monto,
+//         },{
+//           label: 'NOMINA',
+//           data: cDatanom,
+//            type: 'line',
+//            order: 1,
+//            borderColor: 'rgb(54, 162, 235)'
+           
+//         }],
+
+//         labels: meses,
+        
 //       },
 //       options: gradientChartOptionsConfigurationWithTooltipPurple
 //     };
-    var myChartData = new Chart(ctx, config);
-    $("#0").click(function() {
-      var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
-      myChartData.update();
-    });
-    $("#1").click(function() {
-      var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
-      var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
-      myChartData.update();
-    });
 
-    $("#2").click(function() {
-      var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
-      var data = myChartData.config.data;
-      data.datasets[0].data = chart_data;
-      data.labels = chart_labels;
-      myChartData.update();
-    });
+// //     var gradientStrokes = ctx.createLinearGradient(0,230,01,50);
+
+// // gradientStrokes.addColorStop(1, 'rgba(72,72,176,0.2)');
+// // gradientStrokes.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+// // gradientStrokes.addColorStop(0, 'rgba(119,52,50,0)'); //purple colors
+// //     var config = {
+// //       type: 'line',
+// //       data: {
+// //         labels: meses_chart,
+// //         datasets: [{
+// //           label: "Monto",
+// //           fill: true,
+// //           backgroundColor: gradientStrokes,
+// //           borderColor: '#d346b1',
+// //           borderWidth: 2,
+// //           borderDash: [],
+// //           borderDashOffset: 0.0,
+// //           pointBackgroundColor: '#d346b1',
+// //           pointBorderColor: 'rgba(255,255,255,0)',
+// //           pointHoverBackgroundColor: '#d346b1',
+// //           pointBorderWidth: 20,
+// //           pointHoverRadius: 4,
+// //           pointHoverBorderWidth: 15,
+// //           pointRadius: 4,
+// //           data: chart_data,
+// //         }]
+// //       },
+// //       options: gradientChartOptionsConfigurationWithTooltipPurple
+// //     };
+//     var myChartData = new Chart(ctx, config);
+//     $("#0").click(function() {
+//       var data = myChartData.config.data;
+//       data.datasets[0].data = chart_data;
+//       data.labels = chart_labels;
+//       myChartData.update();
+//     });
+//     $("#1").click(function() {
+//       var chart_data = [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120];
+//       var data = myChartData.config.data;
+//       data.datasets[0].data = chart_data;
+//       data.labels = chart_labels;
+//       myChartData.update();
+//     });
+
+//     $("#2").click(function() {
+//       var chart_data = [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130];
+//       var data = myChartData.config.data;
+//       data.datasets[0].data = chart_data;
+//       data.labels = chart_labels;
+//       myChartData.update();
+//     });
 
 
-    useEffect(() => {
+//     useEffect(() => {
     
 
 
 
 
-  }, []);
+//   }, []);
 
-        });
+//         });
 
 
     </script>

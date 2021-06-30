@@ -18,7 +18,9 @@ use App\Models\Pagos;
 use App\Models\Role;
 use App\Models\Role_users;
 use App\Models\permisos_widget;
-
+use Chartisan\PHP\Chartisan;
+use Illuminate\Http\Request;
+use App\Charts\UserChart;
 
 class HomeController extends Controller
 {
@@ -132,7 +134,11 @@ class HomeController extends Controller
         // dd($role_user->role_id);
         $permisos=permisos_widget::where('role_id','=',$role_user->role_id)->first();
 
-        
+
+        // $usersChart = new UserChart;
+        // $usersChart->labels(['Jan', 'Feb', 'Mar']);
+        // $usersChart->dataset('Users by trimester', 'bar', [10, 25, 13]);
+        // return view('users', [ 'usersChart' => $usersChart ] );
 
         return view('dashboard',compact('count_empleado','count_mujeres','count_hombres','count_indefinido','permisos','count_roles','count_puesto','count_users','count_pagos'))
         ->with('puesto',json_encode($puesto,JSON_NUMERIC_CHECK))
@@ -143,9 +149,9 @@ class HomeController extends Controller
         ->with('puesto_empleado',json_encode($puesto_empleado,JSON_NUMERIC_CHECK));
     }
 
-    public function chartjs(){
-        // return view('charts', [ 'usersChart' => $usersChart ] );
 
-        // return response()->json($gastos);
-    }
+
+
+    
+
 }
