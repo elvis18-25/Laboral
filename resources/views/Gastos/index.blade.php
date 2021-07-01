@@ -48,11 +48,6 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer py-4">
-            <nav class="d-flex justify-content-end" aria-label="...">
-                
-            </nav>
-        </div>
     </div>
 </div>
 

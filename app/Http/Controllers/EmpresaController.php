@@ -22,6 +22,7 @@ use App\Models\widget;
 use App\Models\permisos_widget;
 use App\Models\Role_users;
 use App\Models\Acciones;
+use App\Models\permisos_acciones;
 
 
 class EmpresaController extends Controller
@@ -66,8 +67,8 @@ class EmpresaController extends Controller
         
         $permisos=Permisos::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         // dd($permisos);
-        $acciones=Acciones::where('id_empresa','=',Auth::user()->id_empresa)->get();
-        return view('Empresa.index',compact('empresa','contrato','roles','acciones','permisos_widget','permisos','pais','pais_start','state_start','city_start','state','city','modulos','widget'));
+        $permisos_acciones=permisos_acciones::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        return view('Empresa.index',compact('empresa','contrato','roles','permisos_acciones','permisos_widget','permisos','pais','pais_start','state_start','city_start','state','city','modulos','widget'));
     }
 
     /**
@@ -295,32 +296,98 @@ class EmpresaController extends Controller
 
     public function Savepermis(Request $request)
     {
+        // dd($request->all());
         $n=count($request->get('wingdt'));
         $p=count($request->get('donm'));
         // dd($p);
         $id=intval($request->get('rol'));
-        // dd($id);
-        $acciones=Acciones::whereIn('id',$request->get('accion'))->get();
+        // dd($b);
+        
+        if(!empty($request->get('accion'))){
+            $b=count($request->get('accion'));
+            $arra=$request->get('accion');
+            $i=0;
+            
+            for($i = 0; $i<$b; $i++){
+                $arra[$i]=$request->get('accion')[$i];
+            } 
+            if(sizeof(permisos_acciones::select('role_id')->get())==0){
+                $permisos_acciones=new permisos_acciones();
+                $acciones=$request->get('accion');
+                for($i = 0; $i < $b; $i++){
+                $permisos_acciones->role_id=$id;
+                $permisos_acciones->id_empresa=Auth::user()->id_empresa;
+                if($acciones[$i]==1){
+                $permisos_acciones->calcular_horas=1;
+                }
+                 if($acciones[$i]==2){
+                 $permisos_acciones->imprimir_gastos=1;
+                 }
+                 $permisos_acciones->save();
+                }
+      
+            }else{
+            $permisos_acciones=permisos_acciones::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+            $permisos_acciones->delete();
+            $permisos_acciones=new permisos_acciones();
+            $acciones=$request->get('accion');
+            for($i = 0; $i < $b; $i++){
+            $permisos_acciones->role_id=$id;
+            $permisos_acciones->id_empresa=Auth::user()->id_empresa;
+            if($acciones[$i]==1){
+            $permisos_acciones->calcular_horas=1;
+            }
+             if($acciones[$i]==2){
+             $permisos_acciones->imprimir_gastos=1;
+             }
+             $permisos_acciones->save();
+            }  
+            }
+    }else{
+        if(sizeof(permisos_acciones::select('role_id')->get())==0){
+            $permisos_acciones=new permisos_acciones();
+            $acciones=$request->get('accion');
+            for($i = 0; $i < 2; $i++){
+            $permisos_acciones->role_id=$id;
+            $permisos_acciones->id_empresa=Auth::user()->id_empresa;
+            if($i==0){
+            $permisos_acciones->calcular_horas=0;
+            }
+             if($i==1){
+             $permisos_acciones->imprimir_gastos=0;
+             }
+             $permisos_acciones->save();
+            }
+  
+        }else{
+        $permisos_acciones=permisos_acciones::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $permisos_acciones->delete();
+        $permisos_acciones=new permisos_acciones();
+        $acciones=$request->get('accion');
+        for($i = 0; $i < 2; $i++){
+        $permisos_acciones->role_id=$id;
+        $permisos_acciones->id_empresa=Auth::user()->id_empresa;
+        if($i==0){
+        $permisos_acciones->calcular_horas=0;
+        }
+         if($i==1){
+         $permisos_acciones->imprimir_gastos=0;
+         }
+         $permisos_acciones->save();
+        }  
+        }
+    }
+        
+    // dd("se paso");
         
         $permisos_widget=permisos_widget::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         $permisos_widget->delete();
         // dd($permisos_widget);
         $permisoss=Permisos::where('role_id','=',$id)->where('id_empresa','=',intval(Auth::user()->id_empresa))->first();
         $permisoss->delete();
-        
-        // dd($acciones);
- 
 
 
-        foreach($acciones as  $accione ){
-            if($accione->estado==0){
-                $accione->estado=1;
-                $accione->update();
-            }else{
-                $accione->estado=0;
-                $accione->update(); 
-            }
-        }
+    
 
         $permi_wigdet= new permisos_widget();
         $widget=$request->get('wingdt');

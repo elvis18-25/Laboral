@@ -179,26 +179,12 @@
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
-
-// var options = {
-//      theme:"sk-cube-grid",
-//      message:'Cargando.... ',
-// };
-
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
         $("#created").trigger("click");
          
     } 
 });
-
-
-// window.onbeforeunload = function(e) {
-//     HoldOn.open(options);
-// };
-
-
-
 
 
   table=$('#empleado-table').DataTable({
@@ -302,18 +288,6 @@ $('#empleado-table').on('key-focus.dt', function(e, datatable, cell){
         }
         
     });
-
-//     document.addEventListener ("keydown", function (e) {
-//     if (e.keyCode==16) {
-
-//       var rowIdx = table.cell(':eq(0)').index().row;
-      
-//       table.row(rowIdx).select();
-
-//       table.cell( ':eq(0)' ).focus();
-
-//     document.addEventListener ("keydown", function (e) {
-//     if (e.keyCode==16) {
 
 
       var rowIdx = table.cell(':eq(0)').index().row;

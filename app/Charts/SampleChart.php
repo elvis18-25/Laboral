@@ -1,38 +1,52 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Charts;
+
+use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Illuminate\Http\Request;
-use Chartisan\PHP\Chartisan;
 use App\Models\Gasto;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-use App\Models\Listado;
-use ConsoleTVs\Charts\Classes\Chartjs\Chart;
-
+use Illuminate\Support\Facades\Auth;
 class SampleChart extends BaseChart
 {
-    // public ?string $routeName = 'chart_route_name';
     /**
-     * Initializes the chart.
-     *
-     * @return void
+     * Handles the HTTP request for the given chart.
+     * It must always return an instance of Chartisan
+     * and never a string or an array.
      */
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    // }
-    // public ?array $middlewares = ['auth'];
-
     public function handler(Request $request): Chartisan
     {
+        $gasto = Gasto::select(DB::raw("SUM(monto) as count"))
+        ->whereYear('fecha',date('Y'))
+        ->where('id_empresa',Auth::user()->id_empresa)
+        ->where('estado',0)
+        ->orderBy("fecha")
+        ->groupBy(DB::raw("Month(fecha)"))
+        ->pluck('count');
 
+        $moths=Gasto::select(DB::raw("Month(fecha) as month"))
+        ->whereYear('fecha',date('Y'))
+        ->where('id_empresa',Auth::user()->id_empresa)
+        ->where('estado',0)
+        ->orderBy("fecha")
+        ->groupBy(DB::raw("Month(fecha)"))
+        ->pluck('month');
 
+        $data=array(0,0,0,0,0,0,0,0,0,0,0,0);
+
+        foreach($moths as $index =>$moth)
+        {
+            $data=[$month]=$gasto[$index];
+        }
+        $datao=['1','2'];
+        $data1=['12','13'];
         return Chartisan::build()
             ->labels(['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'])
-            ->dataset('GASTOS', [5,6,10])
-            ->dataset('NOMINAS', [3, 2, 1]);
+            ->dataset('1', $data1)
+            ->dataset('2', $data1);;
+            // ->dataset('Sample 2', [3, 2, 1]);
     }
-
 }

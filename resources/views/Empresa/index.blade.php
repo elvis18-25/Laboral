@@ -1317,7 +1317,7 @@ $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
             var colum=$('td', row_s).eq(2);
 
             var siz=$(colum).attr('value');
-            $("#widgdt"+siz).trigger("click");
+            $("#acciones"+siz).trigger("click");
 
             console.log(siz);
 

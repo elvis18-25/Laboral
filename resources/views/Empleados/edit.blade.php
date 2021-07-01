@@ -178,7 +178,7 @@
                       {{-- </div> --}}
                       <div class="col-sm-3{{ $errors->has('dias') ? ' has-danger' : '' }}">
                           <label>{{ __('SALARIO POR DIAS') }}</label>
-                          <input type="text" name="horas" value="{{$empleados->horas}}"  class="form-control  " id="salDias" placeholder="{{ __('$0.00') }} money" required>
+                          <input type="text" name="horas" value="{{$empleados->horas}}"  class="form-control money" id="salDias" placeholder="{{ __('$0.00') }} " required>
                      
                       </div>
                         <div class="col-sm-3{{ $errors->has('pagos') ? ' has-danger' : '' }}">
@@ -555,9 +555,10 @@
 
 
 <div class="modal fade" id="adjunnew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<a href="{{url('Empleados')}}" title="Crear Nuevo Empleado" class="btn btn-sm btn-info redondo" hidden><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"  style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
 
-
-<div class="o-page-loader">
+<div id="adcls" >
+<div class="o-page-loader" >
   <div class="o-page-loader--content">
     <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
       {{-- <div class=""></div> --}}
@@ -566,6 +567,8 @@
       </div>
   </div>
 </div>
+</div>
+
 <div class="modal fade" id="showsalarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 </div>
 
@@ -587,50 +590,69 @@
 
   $(document).ready(function(){
    
-    if (window.history && window.history.pushState) {
+// if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null);
+// window.history.pushState('forward', null);
 
-$(window).on('popstate', function() {
-  backsave();
+// $(window).on('popstate', function() {
+//   backsave();
 
+// });
+
+// }
+
+
+// function backhome(){
+//   if (window.history && window.history.pushState) {
+
+// window.history.pushState('forward', null);
+
+// $(window).on('popstate', function() {
+//   backsave();
+// });
+
+// }
+// }
+
+
+t=0;
+$("#seave").on('click',function(){
+t=1
 });
 
-}
+window.onbeforeunload = function() {
+  if(t==0){
+      $('.o-page-loader').remove();
+      return "¿Estás seguro que deseas salir de la actual página?"
+    }else{
+      $('.o-page-loader').add();
+    
+    }
+  }  
 
-function backhome(){
-  if (window.history && window.history.pushState) {
+// function backsave(){
+//   Swal.fire({
+//   title: 'Seguro que deseas salir?',
+//   text: "No se podra revertir,¿Deseas guardarlo? !",
+//   icon: 'warning',
+//   showDenyButton: true,
+//   showCancelButton: true,
+//   confirmButtonText: `Si, Guardar`,
+//   denyButtonText: `No, Salir`,
+// }).then((result) => {
+//   /* Read more about isConfirmed, isDenied below */
+//   if (result.isConfirmed) {
+//     $("#seave").trigger("click");
+//   } else if (result.isDenied) {
+//     $("#created").trigger("click");
+//   }else{
+//     backhome();
+//   }
+// })
 
-window.history.pushState('forward', null);
+// }
 
-$(window).on('popstate', function() {
-  backsave();
-});
 
-}
-}
-
-function backsave(){
-  Swal.fire({
-  title: 'Seguro que deseas salir?',
-  text: "No se podra revertir,¿Deseas guardarlo? !",
-  icon: 'warning',
-  showDenyButton: true,
-  showCancelButton: true,
-  confirmButtonText: `Si, Guardar`,
-  denyButtonText: `No, Salir`,
-}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
-    $("#seave").trigger("click");
-  } else if (result.isDenied) {
-    history.back();
-  }else{
-    backhome();
-  }
-})
-
-}
 
 $("#SearcFormulario").on('submit',function(e){
 e.preventDefault();

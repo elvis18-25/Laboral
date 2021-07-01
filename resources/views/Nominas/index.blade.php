@@ -48,7 +48,7 @@
                     <span></span> <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
-                @if ($acciones->estado==1)
+                @if ($permisos_acciones->calcular_horas==1)
                 <div class="form-check" style="top: 25px;
                 margin-left: 10px;">
                   <label class="form-check-label">
@@ -70,13 +70,13 @@
                   </div> 
                 @endif
 
-                <input type="text" name="" value="{{$acciones->estado}}" id="accionesf" hidden>
+                <input type="text" name="" value="{{$permisos_acciones->calcular_horas}}" id="accionesf" hidden>
 
                 
 
 
 
-               
+          
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
             </div>
             <br>

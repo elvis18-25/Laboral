@@ -20,7 +20,7 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('Empleadologin','App\Http\Controllers\EmpleadologinController@showLoginForm');
+// Route::get('Empleadologin','App\Http\Controllers\EmpleadologinController@showLoginForm');
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
 // Route::get('chartjs','App\Http\Controllers\HomeController@chartjs');

@@ -28,6 +28,8 @@ use App\Models\Horas;
 use App\Models\Weekend_empresa;
 use App\Models\sueldo_aumento;
 use App\Models\Acciones;
+use App\Models\permisos_acciones;
+use App\Models\Role_users;
 
 
 class NominaController extends Controller
@@ -41,7 +43,9 @@ class NominaController extends Controller
     {
         $empleados=Empleado::all();
         $equipos=Equipos::all();
-        $acciones=Acciones::where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $user=Auth::user()->id;
+        $rol=Role_users::where('user_id','=',$user)->first();
+        $permisos_acciones=permisos_acciones::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         $horario=0;
 
         if(sizeof(Weekend_empresa::where('id_empresa','=',Auth::user()->id_empresa)->get())!=0){
@@ -50,7 +54,7 @@ class NominaController extends Controller
         }else{
             $horario=0;
         }
-        return view('Nominas.index',compact('empleados','equipos','acciones','horario'));
+        return view('Nominas.index',compact('empleados','equipos','permisos_acciones','horario'));
     }
 
     /**

@@ -341,6 +341,7 @@
                         {{-- <canvas id="chartBig1d"></canvas> --}}
                         <div id="chart" style="height: 153%; width: 121%; top: -56px; position: relative; margin-left: -153px;"></div>
                         {{-- {!! $bar!!} --}}
+                        {{-- <div id="chart-container"></div> --}}
                       </div>
                 </div>
             </div>
@@ -414,41 +415,43 @@
 <script src="{{asset('js/mdtimepicker.js')}}"></script>
 <script src="{{asset('js/jscolor.js')}}"></script>
 <script src="{{asset('js/timepicker.min.js')}}"></script>
-{{-- <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
+<script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
 <!-- Chartisan -->
-<script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script> --}}
+<script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
 
 
     <script>
-    //   const chart = new Chartisan({
-    //     el: '#chart',
-    //     url: "@chart('sample_chart')",
-    //     hooks: new ChartisanHooks()
-    // .legend()
-    // .colors()
-    // .datasets([{ type: 'line', fill: false }, 'bar'])
-    // .tooltip(),
+
+      const chart = new Chartisan({
+        el: '#chart',
+        url: "@chart('sample_chart')",
+        hooks: new ChartisanHooks()
+    .legend()
+    .colors()
+    .datasets([{ type: 'line', fill: false }, 'bar'])
+    .tooltip(),
     
-    //   });
-    //   const chartew = new Chartisan({
-    //     el: '#chartbar',
-    //     url: "@chart('empleados_charts')",
-    //     hooks: new ChartisanHooks()
-    //     .legend()
-    //     .colors()
-    //     .datasets(['bar'])
-    //     .tooltip(),
+      });
+      const chartew = new Chartisan({
+        el: '#chartbar',
+        url: "@chart('empleados_charts')",
+        hooks: new ChartisanHooks()
+        .legend()
+        .colors()
+        .datasets(['bar'])
+        .tooltip(),
     
-    //   });
-    //   const SexoChart = new Chartisan({
-    //     el: '#chartbarsex',
-    //     url: "@chart('sexo_chart')",
-    //     hooks: new ChartisanHooks()
-    //     .legend()
-    //     .colors()
-    //     .tooltip(),
+      });
+      const SexoChart = new Chartisan({
+        el: '#chartbarsex',
+        url: "@chart('sexo_chart')",
+        hooks: new ChartisanHooks()
+        .legend()
+        .colors()
+        .tooltip(),
     
-    //   });
+      });
 
       var calendar;
       
@@ -595,10 +598,61 @@
              });
  
     }
+
+
+    
+    // var datas= <?php echo json_encode($data) ?>
+
+    // Highcharts.chart('chart-container',{
+    //   title:{
+    //     text:'New gasto'
+    //   },
+    //   subtitle:{
+    //     text:'Gastos'
+    //   },
+    //   xAxis:{
+    //     categories:['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
+    //   },
+    //   yAxis:{
+    //     title:{
+    //       text:'Gastos'
+    //     }
+    //   },
+    //   legend:{
+    //     layout:'vertical',
+    //     align:'right',
+    //     verticalAlign:'middle'
+
+    //   },
+    //   plotOptions:{
+    //     series:{
+    //       allowPointSelect:true
+    //     }
+    //   },
+    //   series:[{
+    //     name:'Gastos',
+    //     data:datas
+    //   }],
+    //   responsive:{
+    //     rules:[
+    //       {
+    //         condition:{
+    //           maxWidth:500
+    //         },
+    //         chartOptions:{
+    //           legend:{
+    //             layout:'horizontal',
+    //             align:'center',
+    //             verticalAlign:'bottom'
+    //           }
+    //         }
+    //       }
+    //     ]
+    //   }
+    // })
+    
+    //       $(document).ready(function() {
       
-
-//       $(document).ready(function() {
-
 
 
 
@@ -1024,73 +1078,7 @@
 
 
   
-//   var cDatanom = <?php echo $datanom; ?>;
-//     var cMothnom = <?php echo $mothnom; ?>;
-
-//     var mesesNomi=[];
-//     var montoNomi=[];
-//     for (var mes = 1; mes <=12; mes++) {
-//     list++;
-//     for (pos=0; pos <12; pos++) {
-
-//         if(cMothnom[pos]==mes && mes==1){
-//           mesesNomi[pos]="ENERO";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-
-//         if(mes==2 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="FEBRERO";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-
-//         if(cMothnom[pos]==mes && mes==3){
-//           mesesNomi[pos]="MARZO";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-
-//         if(mes==4 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="ABRIL";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-
-//         if(mes==5 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="MAYO";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-
-//         if(mes==6 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="JUNIO";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-//         if(mes==7 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="JULIO";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-//         if(mes==8 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="AGOSTO";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-//         if(mes==9 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="SEPTIEMBRE";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-//         if(mes==10 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="OCTUBRE";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-//         if(mes==11 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="NOVIEMBRE";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-//         if(mes==12 && cMothnom[pos]==mes){
-//           mesesNomi[pos]="DICIEMBRE";
-//           montoNomi[pos]=cDatanom[pos];
-//         }
-      
-//     }
-
-//   }
-
+//   
 //   // console.log(meses);
 
 //   // for (let index = 0; index < meses.length; index++) { 
@@ -1141,7 +1129,7 @@
 //           data: monto,
 //         },{
 //           label: 'NOMINA',
-//           data: cDatanom,
+//   
 //            type: 'line',
 //            order: 1,
 //            borderColor: 'rgb(54, 162, 235)'
