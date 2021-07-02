@@ -82,11 +82,11 @@
   margin-left: -271px;
 }
 
-#gastos-table_wrapper{
+/* #gastos-table_wrapper{
   height: 288px;
   top: -28px;
   position: relative;
-}
+} */
 
     @media (min-width: 768px){
     div.col-md-6 {

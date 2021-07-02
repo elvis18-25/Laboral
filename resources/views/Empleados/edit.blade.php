@@ -558,15 +558,15 @@
 <a href="{{url('Empleados')}}" title="Crear Nuevo Empleado" class="btn btn-sm btn-info redondo" hidden><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"  style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
 
 <div id="adcls" >
-<div class="o-page-loader" >
-  <div class="o-page-loader--content">
-    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
-      {{-- <div class=""></div> --}}
-      <div class="o-page-loader--message">
-          <span>Cargando...</span>
-      </div>
+  <div class="o-page-loader" >
+    <div class="o-page-loader--content">
+      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
   </div>
-</div>
 </div>
 
 <div class="modal fade" id="showsalarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -616,18 +616,25 @@
 
 
 t=0;
+img="{{asset('black') }}/img/logotipo.png";
 $("#seave").on('click',function(){
-t=1
+t=1;
+
+if(t==1){
+$("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
+      '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
+      '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
+}
 });
 
+// alert(img);
 window.onbeforeunload = function() {
+  // 
   if(t==0){
       $('.o-page-loader').remove();
       return "¿Estás seguro que deseas salir de la actual página?"
-    }else{
-      $('.o-page-loader').add();
-    
     }
+    
   }  
 
 // function backsave(){

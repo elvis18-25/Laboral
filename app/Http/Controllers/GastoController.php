@@ -1114,10 +1114,15 @@ class GastoController extends Controller
     ->where('estado','=',0)
     ->where('id_empresa','=',Auth::user()->id_empresa)
     ->get();
+    $t=0;
     // $empresa=Empresa::all();
 
+    if(sizeof(gasto_nomina::where('id_gasto','=',$id)->where('estado','=',0)->get())==0){
+        $t=1;
+    }
+
   
-      $pdf =PDF::loadView('Gastos.recibo',compact('fecha','nominas','concepto','gasto','empresa'));
+      $pdf =PDF::loadView('Gastos.recibo',compact('fecha','t','nominas','concepto','gasto','empresa'));
       $pdf->setPaper("A4", "portrait");
       return $pdf->stream('gastos.pdf');
     }

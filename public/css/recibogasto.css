@@ -17,9 +17,17 @@
   .Userlogin{
     font-size: 10px;
     margin-top: -50px;
-    float: left;
-    margin-left: -5%;
+    float: right;
+    margin-right: -20%;
     color: gray;
+  }
+  .Userfooter{
+    font-size: 10px;
+    top: 100%;
+    float: left;
+    margin-right: -20%;
+    color: gray;
+    position: absolute;
   }
 
   .encabezado{
@@ -81,9 +89,10 @@
   }
   
   #logo {
-    float: center;
-    margin-top: -60px;
-    margin-left: 40%;
+    float: left;
+    margin-top: -30px;
+    margin-right: 40%;
+    position: relative;
   }
 
   #logoWS {
@@ -92,7 +101,7 @@
     font-size: 40px; 
     color: gray;
     margin-right: -1%;
-    margin-top: -20px;
+    margin-top: 10px;
     position: relative;
   }
   
@@ -121,7 +130,8 @@
   
   #logow{
   position: relative;
-  margin-left: 100px !important;
+  margin-left: 180px !important;
+  top: -80px;
   }
   
   
@@ -176,9 +186,9 @@
   }
   
   h3.apellido {
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: normal;
-    margin: 0;
+    margin: 2px;
   }
   
   h3.address {

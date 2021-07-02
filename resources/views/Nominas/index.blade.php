@@ -158,7 +158,7 @@
 
   <a href="{{url('Empresa')}}" class="btn btn-sm btn-success redondo"style="top: -14px; position: relative;"  ><button type="button" id="empresas" hidden style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;" ></i></a>
 
-
+  <div id="adcls">
     <div class="o-page-loader">
       <div class="o-page-loader--content">
         <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
@@ -167,6 +167,7 @@
               <span>Cargando...</span>
           </div>
       </div>
+    </div>
   </div>
   
 
@@ -188,14 +189,12 @@
 
 @if (session('eliminado')=='ya')
 <script>
-    Swal.fire(
-      'Eliminado!',
-      'El Empleado ha sido eliminado.',
-      'success'
-    )
+
   </script>    
 @endif
 <script>
+
+
 
       var hoy = new Date();
   var fecha = moment(hoy);
@@ -298,16 +297,16 @@ $('.bs-timepicker').timepicker();
 
   $(document).ready(function(){
     
-    if (window.history && window.history.pushState) {
+//     if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null);
+// window.history.pushState('forward', null);
 
-$(window).on('popstate', function() {
-  backsave();
+// $(window).on('popstate', function() {
+//   backsave();
 
-});
+// });
 
-}
+// }
 
 var estado=$("#accionesf").val();
 
@@ -336,43 +335,64 @@ var valor =$("#inputCheckBox").val();
 
 });
 
-function backhome(){
-  if (window.history && window.history.pushState) {
+// function backhome(){
+//   if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null);
+// window.history.pushState('forward', null);
 
-$(window).on('popstate', function() {
-  backsave();
+// $(window).on('popstate', function() {
+//   backsave();
 
+// });
+
+// }
+// }
+
+
+// function backsave(){
+//   Swal.fire({
+//   title: 'Seguro que deseas salir?',
+//   text: "No se podra revertir,¿Deseas guardarlo? !",
+//   icon: 'warning',
+//   showDenyButton: true,
+//   showCancelButton: true,
+//   confirmButtonText: `Si, Guardar`,
+//   denyButtonText: `No, Salir`,
+// }).then((result) => {
+//   /* Read more about isConfirmed, isDenied below */
+//   if (result.isConfirmed) {
+//     $("#seave").trigger("click");
+//   } else if (result.isDenied) {
+//     history.back();
+//   }else{
+//     backhome();
+//   }
+// })
+
+// }
+
+
+t=0;
+img="{{asset('black') }}/img/logotipo.png";
+$("#seave").on('click',function(){
+t=1;
+
+if(t==1){
+$("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
+      '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
+      '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
+}
 });
 
-}
-}
-
-
-function backsave(){
-  Swal.fire({
-  title: 'Seguro que deseas salir?',
-  text: "No se podra revertir,¿Deseas guardarlo? !",
-  icon: 'warning',
-  showDenyButton: true,
-  showCancelButton: true,
-  confirmButtonText: `Si, Guardar`,
-  denyButtonText: `No, Salir`,
-}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
-    $("#seave").trigger("click");
-  } else if (result.isDenied) {
-    history.back();
-  }else{
-    backhome();
-  }
-})
-
-}
-
-
+// alert(img);
+window.onbeforeunload = function() {
+  // 
+  if(t==0){
+      $('.o-page-loader').remove();
+      return "¿Estás seguro que deseas salir de la actual página?"
+    }
+    
+  }  
 
 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
@@ -944,6 +964,8 @@ var data={idperfi:idperfi};
               tabla.ajax.reload();
               $("#detalle").trigger("click")
               totalnomi(idnomina);
+              SuccesEmpleadoDelete();
+              
               
 
            },
@@ -1405,6 +1427,26 @@ function Errore(){
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
   }
+}
+  function SuccesEmpleadoDelete() {
+    Command: toastr["success"]("se ha eliminado el empleado", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
 }
 
   $("#btnexcel").on('click',function(){

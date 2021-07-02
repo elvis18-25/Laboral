@@ -37,37 +37,36 @@
         <div id="company">
   
           {{-- <h2 class="name">{{$empresa->nombre}}</h2> --}}
-          <span>{{$empresa->direcion}}</span>,&nbsp;TEL:&nbsp;<span>{{$empresa->telefono}}</span>&nbsp;
-          <span>Email:&nbsp;info@Dualsoft.com.do,&nbsp;RNC: <span>{{$empresa->rnc}}</span>
+          <span><b style="font-size: 14px;">NOMBRE:</b>&nbsp;{{$empresa->nombre}}</span><br>
+          <span><b style="font-size: 14px;">RNC:</b>&nbsp;{{$empresa->rnc}}</span><br>
+          <span><b style="font-size: 14px;">DIRECCIÓN:</b>{{$empresa->direcion}}<br>
+          </span><b style="font-size: 14px;">TEL:</b>{{$empresa->telefono}}</span><br>
+          <span><b style="font-size: 14px;">EMAIL:</b>{{$empresa->email}}</span>
          
-          <span></span>
-          
         </div>
       </div> 
     </header>
     <main>
       <div id="details" class="clearfix">
         <div id="client">
-          <div class="apellido">Descripcción:<b>&nbsp;{{$gasto->descripcion}}</b></div>
-          <h3 class="apellido">No. :&nbsp;{{$gasto->id}} </h3>
-          <h3 class="apellido">Fecha:&nbsp;{{date("d/m/Y", strtotime($gasto->fecha))}}</h3>
-          <h3 class="apellido">Usuario:&nbsp;{{$gasto->user}} </h3>
+          <h3 class="apellido"><b>ID:</b>&nbsp;&nbsp;#00000{{$gasto->id}} </h3>
+          <div class="apellido"><b>DESCRIPCCIÓN:<b>&nbsp;&nbsp;{{$gasto->descripcion}}</div>
         </div>
+        <h3 class="apellido" style="float: right; margin-right: 100px;"><b>FECHA:</b>&nbsp;&nbsp;{{date("d/m/Y", strtotime($gasto->fecha))}}</h3><br>
+        <h3 class="apellido" style="float: right; margin-right: -19%;"><b>USUARIO:</b>&nbsp;&nbsp;{{$gasto->user}} </h3>
+  
       </div>
 
+<br><br>
       <span class="encabezado" style="margin-top: -60px;" ><b>LISTADO DE GASTOS</b></span><br><br>
 
-      <table  border="0" cellspacing="1" cellpadding="1" style="margin-top: -1px;"   id="princpial" >
+      <table  border="0" cellspacing="1" cellpadding="1" style="margin-top: -6%;"   id="princpial" >
      <thead style="thd" style="">
       <tr>
-        <th style="text-align: center; max- "  ><b> CONCEPTO</b></th>
+        <th  style="text-align: left; width: 113px;">ID</th>
         <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th style="text-align: center; height: 10px;"><b>MONTO</b></th>
-
+        <th style="text-align: center;"><b> CONCEPTO</b></th>
+        <th style="text-align: right; height: 10px;"><b>MONTO</b></th>
      </tr>
     </thead>
     <tbody>
@@ -83,31 +82,18 @@
             @php
                  $cont=$cont+$conceptos->monto;
             @endphp
-            <td style="text-align: left; background-color: white" >{{$conceptos->concepto}}</td>
-            <td style="background-color: white "></td>
+            <td style="background-color: white; text-align: left;">#000{{$conceptos->id}}</td>
             <td style="background-color: white"></td>
-            <td style="background-color: white"></td>
-            <td style="background-color: white"></td>
-            <td style="background-color: white"></td>
-            <th style="text-align: right; background-color: white" class="last">${{number_format($conceptos->monto,2)}}</th>
+            <td style="text-align: center; background-color: white" >{{$conceptos->concepto}}</td>
+            <th style="text-align: right; background-color: white" class="last">{{number_format($conceptos->monto,2)}}</th>
         </tr>
         @endif
       @endif
        
         @endforeach
-        {{-- <tr>
-          <td id="#space" style=" text-align: left; background-color: white">{{$nomina->descripcion}}</td>
-          <td id="#space" style="background-color: white"></td>
-          <td id="#space" style="background-color: white"></td>
-          <td id="#space" style="background-color: white"></td>
-          <td id="#space" style="background-color: white"></td>
-          <td id="#space" style="background-color: white"></td>
-          <td id="#space" style="text-align: right; background-color: white">${{number_format($nomina->monto,2)}}</td>
-        </tr> --}}
+
         <tr>
-            <td id="#space" style="background-color: white"></td>
-            <td id="#space" style="background-color: white"></td>
-            <td id="#space" style="background-color: white"></td>
+
             <td id="#space" style="background-color: white"></td>
             <td id="#space" style="background-color: white"></td>
             <td id="#space" style="background-color: white"></td>
@@ -117,17 +103,14 @@
       </table>
       
   {{-- <div  class="col-md-3 egreso"><b>Egreso por Nomina:&nbsp;(+)&nbsp;${{number_format(,2)}}</b></div> --}}
-  <span class="encabezado"  ><b>EGRESO DE NOMINA</b></span><br><br>
+  <span class="encabezado"  ><b>LISTADO DE NOMINAS</b></span><br><br>
   <table border="0" cellspacing="1" cellpadding="1"  >
     <thead style="thd" style="">
       <tr>
-        <th style="text-align: center; max- "  ><b> CONCEPTO</b></th>
+        <th  style="text-align: left; width: 113px;">ID</th>
         <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th style="text-align: center; height: 10px;"><b>MONTO</b></th>
+        <th style="text-align: center; "><b> CONCEPTO</b></th>
+        <th style="text-align: right; height: 10px;"><b>MONTO</b></th>
      </tr>
     </thead>
     <tbody>
@@ -137,24 +120,25 @@
       @endphp
       @foreach ($nominas as $nomina)
       <tr>
-        <td id="#space" style=" text-align: left; background-color: white">{{$nomina->descripcion}}</td>
+        <td style="background-color: white; text-align: left;">#000{{$nomina->id}}</td>
         <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="text-align: right; background-color: white">${{number_format($nomina->monto,2)}}</td>
+        <td id="#space" style=" text-align: center; background-color: white">{{$nomina->descripcion}}</td>
+        <td id="#space" style="text-align: right;  background-color: white">{{number_format($nomina->monto,2)}}</td>
       </tr>
       @php
           $sum=$sum+$nomina->monto;
       @endphp
       @endforeach
 
-
+      @if ($t==1)
       <tr>
+        <td style="background-color: white; text-align: left;">--</td>
         <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
+        <td id="#space" style=" text-align: center; background-color: white">--</td>
+        <td id="#space" style="text-align: right; background-color: white">--</td>
+      </tr> 
+      @endif
+      <tr>
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="background-color: white"></td>
@@ -166,53 +150,35 @@
 
   <table border="0" cellspacing="1" cellpadding="1"  >
     <thead style="thd" style="">
-      {{-- <tr>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total General:&nbsp;${{number_format($cont+$sum,2)}}</b></td>
-      </tr> --}}
     </thead>
     <tbody>
       <tr>
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="background-color: white"></td>
         <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td id="#space" style="background-color: white"></td>
-        <td  class="totalgasto" style="text-align: right; background-color: white "><b>Total General:&nbsp;${{number_format($cont+$sum,2)}}</b></td>
+        <td  class="totalgasto" style="text-align: right; background-color: white "><b>Nominas + Gastos:&nbsp;${{number_format($cont+$sum,2)}}</b></td>
       </tr>
     </tbody>
   </table>
-  <br>
 
 <table id="obser" style="margin-top: -88%; position: absolute;">
-  <div class="obersrvaciones" >
+  <div class="obersrvaciones" style="border: 1px solid;  width: 50%; height: 10%;" >
     <span><b>OBSERVACIONES:</b>&nbsp;{{$gasto->observaciones}}</span>
-    {{-- <span></span> --}}
   </div>
 </table>
 
-<div class="row">
+<br>
+<br>
+<div class="row" style="top: 82%; position: absolute;">
 <div class="col-md-3" style="width:40%; border-top: 1px solid #000; margin-top: 70px; "><p style="text-align:center;">ELABORADO POR: <b>&nbsp;{{$gasto->user}}</b></p></div>
 <div class="col-md-3" style="width:40%;border-top: 1px solid #000; margin-top: -50px; float: right;"><p style="text-align:center;">RECIBIDO POR</p></div>
 </div>
-{{-- <div class="linea" style="margin-left: 2%;"></div>
-<div class="linea2" style="margin-left: 70%; margin-top: 85px; position: relative;"  ></div>
 
-<span class="elaborado">ELABORADO POR</span>
-
-<span class="recibido">RECIBIDO POR</span> --}}
-{{-- <span id="totsd" class="float-right"></span> --}}
 
     </main>
-    <footer>
-      DualSoft Tecnologia a la medida de tu Empresa
-    </footer>
+    <div class="Userfooter">
+      <span>ELABORADO POR:Laboral.com.do</span>
+    </div>
   </body>
 </html>
 

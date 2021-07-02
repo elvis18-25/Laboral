@@ -251,13 +251,15 @@
 
 </form>
 
-<div class="o-page-loader">
-  <div class="o-page-loader--content">
-    <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner">
-      {{-- <div class=""></div> --}}
-      <div class="o-page-loader--message">
-          <span>Cargando...</span>
-      </div>
+<div id="adcls" >
+  <div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
   </div>
 </div>
 
@@ -286,50 +288,72 @@
 var arraynomina=[];
 b=0;
 
-if (window.history && window.history.pushState) {
+// if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null);
+// window.history.pushState('forward', null);
 
-$(window).on('popstate', function() {
-  backsave();
+// $(window).on('popstate', function() {
+//   backsave();
 
+// });
+
+// }
+
+// function backhome(){
+//   if (window.history && window.history.pushState) {
+
+// window.history.pushState('forward', null);
+
+// $(window).on('popstate', function() {
+//   backsave();
+// });
+
+// }
+// }
+
+// function backsave(){
+//   Swal.fire({
+//   title: 'Seguro que deseas salir?',
+//   text: "No se podra revertir,¿Deseas guardarlo? !",
+//   icon: 'warning',
+//   showDenyButton: true,
+//   showCancelButton: true,
+//   confirmButtonText: `Si, Guardar`,
+//   denyButtonText: `No, Salir`,
+// }).then((result) => {
+//   /* Read more about isConfirmed, isDenied below */
+//   if (result.isConfirmed) {
+//     $("#seave").trigger("click");
+//   } else if (result.isDenied) {
+//     history.back();
+//   }else{
+//     backhome();
+//   }
+// })
+
+// }
+
+t=0;
+img="{{asset('black') }}/img/logotipo.png";
+$("#seave").on('click',function(){
+t=1;
+
+if(t==1){
+$("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
+      '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
+      '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
+}
 });
 
-}
-
-function backhome(){
-  if (window.history && window.history.pushState) {
-
-window.history.pushState('forward', null);
-
-$(window).on('popstate', function() {
-  backsave();
-});
-
-}
-}
-
-function backsave(){
-  Swal.fire({
-  title: 'Seguro que deseas salir?',
-  text: "No se podra revertir,¿Deseas guardarlo? !",
-  icon: 'warning',
-  showDenyButton: true,
-  showCancelButton: true,
-  confirmButtonText: `Si, Guardar`,
-  denyButtonText: `No, Salir`,
-}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
-    $("#seave").trigger("click");
-  } else if (result.isDenied) {
-    history.back();
-  }else{
-    backhome();
-  }
-})
-
-}
+// alert(img);
+window.onbeforeunload = function() {
+  // 
+  if(t==0){
+      $('.o-page-loader').remove();
+      return "¿Estás seguro que deseas salir de la actual página?"
+    }
+    
+  }  
 
 
 $("#SearcFormulario").on('submit',function(e){

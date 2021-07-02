@@ -76,12 +76,81 @@ class HomeController extends Controller
         // $gastos=Gasto::where(DB::raw("(DATE_FORMAT(fecha,'%Y'))"),date('Y'))
     	// 			->get();
 
+                    $gasto = Gasto::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
+                    ->where('id_empresa',Auth::user()->id_empresa)
+                    ->where('estado',0)
+                    ->orderBy("fecha")
+                    ->groupBy(DB::raw("month(fecha)"))
+                    ->get();
                     // $gasto = Gasto::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
                     // ->where('id_empresa',Auth::user()->id_empresa)
                     // ->where('estado',0)
                     // ->orderBy("fecha")
                     // ->groupBy(DB::raw("month(fecha)"))
                     // ->get();
+                    // $mothes=['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+                    // $dsta=[0,0,0,0,0,0,0,0,0,0,0,0];
+                    // $moth =[];  
+                    // $data=[];
+                    // // $m=[];
+                    // $i=0;
+                    // $p=0;
+                    // foreach($gasto as $gastos){
+                    //     $moth[$i]=(int)$gastos->moth;
+                    //     $data[$i]=$gastos->count;
+                    //     $i++;
+                    // }
+                    
+                    // $count=count($moth);
+                    
+                    // for ($i=0; $i <$count; $i++) { 
+                    //     // dd($d);
+                    //     switch ($moth[$i]) {
+                    //         case 1:
+                    //             $dsta[0]=$data[$i];
+                    //             break;
+                    //         case 2:
+                    //            $dsta[1]=$data[$i];
+                    //             break;
+                    //         case 3:
+                    //            $dsta[2]=$data[$i];
+                    //             break;
+                    //         case 4:
+                    //            $dsta[3]=$data[$i];
+                    //             break;
+                    //         case 5:
+                                
+                    //            $dsta[4]=$data[$i];
+                    //             break;
+                    //         case 6:
+                    //            $dsta[5]=$data[$i];
+                    //             break;
+                    //         case 7:
+                    //            $dsta[6]=$data[$i];
+                    //             break;
+                    //         case 8:
+                    //            $dsta[7]=$data[$i];
+                    //             break;
+                    //         case 9:
+                    //            $dsta[8]=$data[$i];
+                    //             break;
+                    //         case 10:
+                    //            $dsta[9]=$data[$i];
+                    //             break;
+                    //         case 11:
+                    //            $dsta[10]=$data[$i];
+                    //             break;
+                    //         case 12:
+                    //            $dsta[11]=$data[$i];
+                    //             break;
+                            
+                    //         default:
+                    //             # code...
+                    //             break;
+                    //     }
+                    // }
+
+                    // dd($d);
 
                     $nomina = Listado::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
                     ->where('id_empresa',Auth::user()->id_empresa)
@@ -94,48 +163,48 @@ class HomeController extends Controller
                 
 
 
-                     $gasto = Gasto::select(DB::raw("SUM(monto) as count"))
-                     ->whereYear('fecha',date('Y'))
-                     ->where('id_empresa',Auth::user()->id_empresa)
-                     ->where('estado',0)
-                     ->orderBy("fecha")
-                     ->groupBy(DB::raw("Month(fecha)"))
-                     ->pluck('count');
+                    //  $gasto = Gasto::select(DB::raw("SUM(monto) as count"))
+                    //  ->whereYear('fecha',date('Y'))
+                    //  ->where('id_empresa',Auth::user()->id_empresa)
+                    //  ->where('estado',0)
+                    //  ->orderBy("fecha")
+                    //  ->groupBy(DB::raw("Month(fecha)"))
+                    //  ->pluck('count');
              
-                     $moths=Gasto::select(DB::raw("Month(fecha) as month"))
-                     ->whereYear('fecha',date('Y'))
-                     ->where('id_empresa',Auth::user()->id_empresa)
-                     ->where('estado',0)
-                     ->orderBy("fecha")
-                     ->groupBy(DB::raw("Month(fecha)"))
-                     ->pluck('month');
+                    //  $moths=Gasto::select(DB::raw("Month(fecha) as month"))
+                    //  ->whereYear('fecha',date('Y'))
+                    //  ->where('id_empresa',Auth::user()->id_empresa)
+                    //  ->where('estado',0)
+                    //  ->orderBy("fecha")
+                    //  ->groupBy(DB::raw("Month(fecha)"))
+                    //  ->pluck('month');
              
-                     $data=array(0,0,0,0,0,0,0,0,0,0,0,0);
+                    //  $data=array(0,0,0,0,0,0,0,0,0,0,0,0);
              
-                     foreach($moths as $index =>$moth)
-                     {
-                         $data=[$month]=$gasto[$index];
+                    //  foreach($moths as $index =>$moth)
+                    //  {
+                    //      $data=[$month]=$gasto[$index];
+                    //  }
+
+                     $moth =[];  
+                     $data=[];
+                     $i=0;
+                     foreach($gasto as $gastos){
+                        $moth[$i]=(int)$gastos->moth;
+                        $data[$i]=$gastos->count;
+                        $i++;
                      }
 
-                    //  $moth =[];  
-                    //  $data=[];
-                    //  $i=0;
-                    //  foreach($gasto as $gastos){
-                    //     $moth[$i]=(int)$gastos->moth;
-                    //     $data[$i]=$gastos->count;
-                    //     $i++;
-                    //  }
-
-                    //  $mothnom=[];
-                    //  $datanom=[];
-                    //  $p=0;
+                     $mothnom=[];
+                     $datanom=[];
+                     $p=0;
                      
-                    //  foreach($nomina as $nominas){
-                    //     $mothnom[$p]=(int)$nominas->moth;
-                    //     $datanom[$p]=$nominas->count;
-                    //     $p++;
+                     foreach($nomina as $nominas){
+                        $mothnom[$p]=(int)$nominas->moth;
+                        $datanom[$p]=$nominas->count;
+                        $p++;
 
-                    //  }
+                     }
 
 
         
@@ -168,8 +237,8 @@ class HomeController extends Controller
         ->with('puesto',json_encode($puesto,JSON_NUMERIC_CHECK))
         ->with('data',json_encode($data,JSON_NUMERIC_CHECK))
         ->with('moth',json_encode($moth,JSON_NUMERIC_CHECK))
-        // ->with('datanom',json_encode($datanom,JSON_NUMERIC_CHECK))
-        // ->with('mothnom',json_encode($mothnom,JSON_NUMERIC_CHECK))
+        // ->with('mothes',json_encode($mothes,JSON_NUMERIC_CHECK))
+        // ->with('d',json_encode($dsta,JSON_NUMERIC_CHECK))
         ->with('puesto_empleado',json_encode($puesto_empleado,JSON_NUMERIC_CHECK));
     }
 

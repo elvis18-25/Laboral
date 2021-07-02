@@ -418,7 +418,7 @@
 <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
 <!-- Chartisan -->
 <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
+{{-- <script src="https://code.highcharts.com/highcharts.js"></script> --}}
 
 
     <script>
@@ -601,55 +601,7 @@
 
 
     
-    // var datas= <?php echo json_encode($data) ?>
 
-    // Highcharts.chart('chart-container',{
-    //   title:{
-    //     text:'New gasto'
-    //   },
-    //   subtitle:{
-    //     text:'Gastos'
-    //   },
-    //   xAxis:{
-    //     categories:['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
-    //   },
-    //   yAxis:{
-    //     title:{
-    //       text:'Gastos'
-    //     }
-    //   },
-    //   legend:{
-    //     layout:'vertical',
-    //     align:'right',
-    //     verticalAlign:'middle'
-
-    //   },
-    //   plotOptions:{
-    //     series:{
-    //       allowPointSelect:true
-    //     }
-    //   },
-    //   series:[{
-    //     name:'Gastos',
-    //     data:datas
-    //   }],
-    //   responsive:{
-    //     rules:[
-    //       {
-    //         condition:{
-    //           maxWidth:500
-    //         },
-    //         chartOptions:{
-    //           legend:{
-    //             layout:'horizontal',
-    //             align:'center',
-    //             verticalAlign:'bottom'
-    //           }
-    //         }
-    //       }
-    //     ]
-    //   }
-    // })
     
     //       $(document).ready(function() {
       
@@ -658,248 +610,248 @@
 
 
 
-//         var data_puesto = <?php echo $puesto_empleado; ?>;
-//         gradientChartOptionsConfigurationWithTooltipBlue = {
-//           maintainAspectRatio: false,
-//           legend: {
-//             display: false
-//           },
+    //     var data_puesto = <?php echo $puesto_empleado; ?>;
+    //     gradientChartOptionsConfigurationWithTooltipBlue = {
+    //       maintainAspectRatio: false,
+    //       legend: {
+    //         display: false
+    //       },
           
-//           tooltips: {
-//             backgroundColor: '#f5f5f5',
-//             titleFontColor: '#333',
-//             bodyFontColor: '#666',
-//         bodySpacing: 4,
-//         xPadding: 12,
-//         mode: "nearest",
-//         intersect: 0,
-//         position: "nearest"
-//       },
-//       responsive: true,
-//       scales: {
-//         yAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(29,140,248,0.0)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             suggestedMin: 60,
-//             suggestedMax: 125,
-//             padding: 20,
-//             fontColor: "#2380f7"
-//           }
-//         }],
+    //       tooltips: {
+    //         backgroundColor: '#f5f5f5',
+    //         titleFontColor: '#333',
+    //         bodyFontColor: '#666',
+    //     bodySpacing: 4,
+    //     xPadding: 12,
+    //     mode: "nearest",
+    //     intersect: 0,
+    //     position: "nearest"
+    //   },
+    //   responsive: true,
+    //   scales: {
+    //     yAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(29,140,248,0.0)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         suggestedMin: 60,
+    //         suggestedMax: 125,
+    //         padding: 20,
+    //         fontColor: "#2380f7"
+    //       }
+    //     }],
 
-//         xAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(29,140,248,0.1)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             padding: 20,
-//             fontColor: "#2380f7"
-//           }
-//         }]
-//       }
-//     };
+    //     xAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(29,140,248,0.1)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         padding: 20,
+    //         fontColor: "#2380f7"
+    //       }
+    //     }]
+    //   }
+    // };
     
-//     var data_click = <?php echo $puesto; ?>;
-//     gradientChartOptionsConfigurationWithTooltipPurple = {
-//       maintainAspectRatio: false,
-//       legend: {
-//         display: false
-//       },
+    // var data_click = <?php echo $puesto; ?>;
+    // gradientChartOptionsConfigurationWithTooltipPurple = {
+    //   maintainAspectRatio: false,
+    //   legend: {
+    //     display: false
+    //   },
 
-//       tooltips: {
-//         backgroundColor: '#f5f5f5',
-//         titleFontColor: '#333',
-//         bodyFontColor: '#666',
-//         bodySpacing: 4,
-//         xPadding: 12,
-//         mode: "nearest",
-//         intersect: 0,
-//         position: "nearest"
-//       },
-//       responsive: true,
-//       scales: {
-//         yAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(29,140,248,0.0)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             suggestedMin: 60,
-//             suggestedMax: 125,
-//             padding: 20,
-//             fontColor: "#9a9a9a"
-//           }
-//         }],
+    //   tooltips: {
+    //     backgroundColor: '#f5f5f5',
+    //     titleFontColor: '#333',
+    //     bodyFontColor: '#666',
+    //     bodySpacing: 4,
+    //     xPadding: 12,
+    //     mode: "nearest",
+    //     intersect: 0,
+    //     position: "nearest"
+    //   },
+    //   responsive: true,
+    //   scales: {
+    //     yAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(29,140,248,0.0)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         suggestedMin: 60,
+    //         suggestedMax: 125,
+    //         padding: 20,
+    //         fontColor: "#9a9a9a"
+    //       }
+    //     }],
 
-//         xAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(225,78,202,0.1)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             padding: 20,
-//             fontColor: "#9a9a9a"
-//           }
-//         }]
-//       }
-//     };
+    //     xAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(225,78,202,0.1)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         padding: 20,
+    //         fontColor: "#9a9a9a"
+    //       }
+    //     }]
+    //   }
+    // };
 
-//     gradientChartOptionsConfigurationWithTooltipOrange = {
-//       maintainAspectRatio: false,
-//       legend: {
-//         display: false
-//       },
+    // gradientChartOptionsConfigurationWithTooltipOrange = {
+    //   maintainAspectRatio: false,
+    //   legend: {
+    //     display: false
+    //   },
 
-//       tooltips: {
-//         backgroundColor: '#f5f5f5',
-//         titleFontColor: '#333',
-//         bodyFontColor: '#666',
-//         bodySpacing: 4,
-//         xPadding: 12,
-//         mode: "nearest",
-//         intersect: 0,
-//         position: "nearest"
-//       },
-//       responsive: true,
-//       scales: {
-//         yAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(29,140,248,0.0)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             suggestedMin: 50,
-//             suggestedMax: 110,
-//             padding: 20,
-//             fontColor: "#ff8a76"
-//           }
-//         }],
+    //   tooltips: {
+    //     backgroundColor: '#f5f5f5',
+    //     titleFontColor: '#333',
+    //     bodyFontColor: '#666',
+    //     bodySpacing: 4,
+    //     xPadding: 12,
+    //     mode: "nearest",
+    //     intersect: 0,
+    //     position: "nearest"
+    //   },
+    //   responsive: true,
+    //   scales: {
+    //     yAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(29,140,248,0.0)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         suggestedMin: 50,
+    //         suggestedMax: 110,
+    //         padding: 20,
+    //         fontColor: "#ff8a76"
+    //       }
+    //     }],
 
-//         xAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(220,53,69,0.1)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             padding: 20,
-//             fontColor: "#ff8a76"
-//           }
-//         }]
-//       }
-//     };
+    //     xAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(220,53,69,0.1)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         padding: 20,
+    //         fontColor: "#ff8a76"
+    //       }
+    //     }]
+    //   }
+    // };
 
-//     gradientChartOptionsConfigurationWithTooltipGreen = {
-//       maintainAspectRatio: false,
-//       legend: {
-//         display: false
-//       },
+    // gradientChartOptionsConfigurationWithTooltipGreen = {
+    //   maintainAspectRatio: false,
+    //   legend: {
+    //     display: false
+    //   },
 
-//       tooltips: {
-//         backgroundColor: '#f5f5f5',
-//         titleFontColor: '#333',
-//         bodyFontColor: '#666',
-//         bodySpacing: 4,
-//         xPadding: 12,
-//         mode: "nearest",
-//         intersect: 0,
-//         position: "nearest"
-//       },
-//       responsive: true,
-//       scales: {
-//         yAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(29,140,248,0.0)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             suggestedMin: 50,
-//             suggestedMax: 125,
-//             padding: 20,
-//             fontColor: "#9e9e9e"
-//           }
-//         }],
+    //   tooltips: {
+    //     backgroundColor: '#f5f5f5',
+    //     titleFontColor: '#333',
+    //     bodyFontColor: '#666',
+    //     bodySpacing: 4,
+    //     xPadding: 12,
+    //     mode: "nearest",
+    //     intersect: 0,
+    //     position: "nearest"
+    //   },
+    //   responsive: true,
+    //   scales: {
+    //     yAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(29,140,248,0.0)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         suggestedMin: 50,
+    //         suggestedMax: 125,
+    //         padding: 20,
+    //         fontColor: "#9e9e9e"
+    //       }
+    //     }],
 
-//         xAxes: [{
-//           barPercentage: 1.6,
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(0,242,195,0.1)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             padding: 20,
-//             fontColor: "#9e9e9e"
-//           }
-//         }]
-//       }
-//     };
+    //     xAxes: [{
+    //       barPercentage: 1.6,
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(0,242,195,0.1)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         padding: 20,
+    //         fontColor: "#9e9e9e"
+    //       }
+    //     }]
+    //   }
+    // };
 
 
-//     gradientBarChartConfiguration = {
-//       maintainAspectRatio: false,
-//       legend: {
-//         display: false
-//       },
+    // gradientBarChartConfiguration = {
+    //   maintainAspectRatio: false,
+    //   legend: {
+    //     display: false
+    //   },
 
-//       tooltips: {
-//         backgroundColor: '#f5f5f5',
-//         titleFontColor: '#333',
-//         bodyFontColor: '#666',
-//         bodySpacing: 4,
-//         xPadding: 12,
-//         mode: "nearest",
-//         intersect: 0,
-//         position: "nearest"
-//       },
-//       responsive: true,
-//       scales: {
-//         yAxes: [{
+    //   tooltips: {
+    //     backgroundColor: '#f5f5f5',
+    //     titleFontColor: '#333',
+    //     bodyFontColor: '#666',
+    //     bodySpacing: 4,
+    //     xPadding: 12,
+    //     mode: "nearest",
+    //     intersect: 0,
+    //     position: "nearest"
+    //   },
+    //   responsive: true,
+    //   scales: {
+    //     yAxes: [{
 
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(29,140,248,0.1)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             suggestedMin: 60,
-//             suggestedMax: 120,
-//             padding: 20,
-//             fontColor: "#9e9e9e"
-//           }
-//         }],
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(29,140,248,0.1)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         suggestedMin: 60,
+    //         suggestedMax: 120,
+    //         padding: 20,
+    //         fontColor: "#9e9e9e"
+    //       }
+    //     }],
 
-//         xAxes: [{
+    //     xAxes: [{
 
-//           gridLines: {
-//             drawBorder: false,
-//             color: 'rgba(29,140,248,0.1)',
-//             zeroLineColor: "transparent",
-//           },
-//           ticks: {
-//             padding: 20,
-//             fontColor: "#9e9e9e"
-//           }
-//         }]
-//       }
-//     };
+    //       gridLines: {
+    //         drawBorder: false,
+    //         color: 'rgba(29,140,248,0.1)',
+    //         zeroLineColor: "transparent",
+    //       },
+    //       ticks: {
+    //         padding: 20,
+    //         fontColor: "#9e9e9e"
+    //       }
+    //     }]
+    //   }
+    // };
 
 //     var ctxE = document.getElementById("CountryChart").getContext("2d");
 
@@ -1001,8 +953,7 @@
 
 
 
-//     var cData = <?php echo $data; ?>;
-//     var cMoth = <?php echo $moth; ?>;
+
 
 //     // console.log(cMoth);
 
@@ -1013,88 +964,8 @@
     
 
 
-//     var list=0;
-//     for (var mes = 1; mes <=12; mes++) {
-//     list++;
-//     for (pos=0; pos <12; pos++) {
 
-//         if(cMoth[pos]==mes && mes==1){
-//           meses[pos]="ENERO";
-//           monto[pos]=cData[pos];
-//         }
-
-//         if(mes==2 && cMoth[pos]==mes){
-//           meses[pos]="FEBRERO";
-//           monto[pos]=cData[pos];
-//         }
-
-//         if(cMoth[pos]==mes && mes==3){
-//           meses[pos]="MARZO";
-//           monto[pos]=cData[pos];
-//         }
-
-//         if(mes==4 && cMoth[pos]==mes){
-//           meses[pos]="ABRIL";
-//           monto[pos]=cData[pos];
-//         }
-
-//         if(mes==5 && cMoth[pos]==mes){
-//           meses[pos]="MAYO";
-//           monto[pos]=cData[pos];
-//         }
-
-//         if(mes==6 && cMoth[pos]==mes){
-//           meses[pos]="JUNIO";
-//           monto[pos]=cData[pos];
-//         }
-//         if(mes==7 && cMoth[pos]==mes){
-//           meses[pos]="JULIO";
-//           monto[pos]=cData[pos];
-//         }
-//         if(mes==8 && cMoth[pos]==mes){
-//           meses[pos]="AGOSTO";
-//           monto[pos]=cData[pos];
-//         }
-//         if(mes==9 && cMoth[pos]==mes){
-//           meses[pos]="SEPTIEMBRE";
-//           monto[pos]=cData[pos];
-//         }
-//         if(mes==10 && cMoth[pos]==mes){
-//           meses[pos]="OCTUBRE";
-//           monto[pos]=cData[pos];
-//         }
-//         if(mes==11 && cMoth[pos]==mes){
-//           meses[pos]="NOVIEMBRE";
-//           monto[pos]=cData[pos];
-//         }
-//         if(mes==12 && cMoth[pos]==mes){
-//           meses[pos]="DICIEMBRE";
-//           monto[pos]=cData[pos];
-//         }
-      
-//     }
-
-//   }
-
-
-  
-//   
-//   // console.log(meses);
-
-//   // for (let index = 0; index < meses.length; index++) { 
-//   //     if(index==1){
-//   //       if(meses[index]==" "){
-//   //       meses[index]="ENERO"
-//   //       monto[index]=0;
-//   //       }
-//   //     } 
-//   // }
-
-
-//     // var meses_chart = (['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE']);
-//     // var chart_data = [400000, 70, 900000, 700000, 85, 60000, 75, 60, 90, 80, 110, 100];
-
-// // console.log(meses);
+// console.log(cData);
 //     var ctx = document.getElementById("chartBig1d").getContext('2d');
 
 //     var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
@@ -1126,17 +997,17 @@
 //           pointHoverRadius: 4,
 //           pointHoverBorderWidth: 15,
 //           pointRadius: 4,
-//           data: monto,
+//           data: cData,
 //         },{
 //           label: 'NOMINA',
-//   
+  
 //            type: 'line',
 //            order: 1,
 //            borderColor: 'rgb(54, 162, 235)'
            
 //         }],
 
-//         labels: meses,
+//         labels: cMoth,
         
 //       },
 //       options: gradientChartOptionsConfigurationWithTooltipPurple
@@ -1195,13 +1066,6 @@
 //     });
 
 
-//     useEffect(() => {
-    
-
-
-
-
-//   }, []);
 
 //         });
 
