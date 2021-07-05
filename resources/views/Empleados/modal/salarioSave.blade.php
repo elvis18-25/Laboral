@@ -13,12 +13,12 @@
         <div class="modal-body">
             <div class="form-row">
                 <div class="col-sm-8">
-                    <label>{{ __('DESCRIPCIÓN') }}</label>
+                    <label><b>{{ __('DESCRIPCIÓN') }}</b></label>
                     <input type="text" name="" id="SalarioName" value="" class="form-control" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="{{ __('Nombre') }}">
                 </div>
                 <div class="col-sm-4">
-                    <label>{{ __('MONTO') }}</label>
-                    <input type="text" name="" onkeyup="calcular();" id="salario" value="" class="form-control money">
+                    <label><b>{{ __('MONTO') }}</b></label>
+                    <input type="text" name="" onkeyup="calcular();" id="salario" style="text-align: right;" value="" class="form-control money">
                 </div>
             </div>
         </div>

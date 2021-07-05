@@ -24,14 +24,18 @@ class EmpleadosCharts extends BaseChart
         $count_empleado=Empleado::where('id_empresa',Auth::user()->id_empresa)->where('estado',0)->count();
         $count=[];
         $count2=[];
+        $count3=[];
         $p=0;
-        $count[$p]=50;
-        $count2[$p]=45;
+        $count[$p]=$count_empleado;
+        $p++;
+        $count[$p]=0;
+        $p++;
+        $count[$p]=0;
+
+        
 
         return Chartisan::build()
-            ->labels(['Activos'], ['Vacaciones'],['Licencia'])
-            ->dataset('Activos',  [$count_empleado])
-            ->dataset('Vacaciones', [$count])
-            ->dataset('Licencia', [$count2]);
+            ->labels(['Activos','Vacaciones','Licencia'])
+            ->dataset('EMPLEADOS',  $count);
     }
 }

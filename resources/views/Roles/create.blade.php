@@ -4,18 +4,45 @@
     .TitleP{
         text-align: center;
     }
+    .table>tbody>tr>td{
+            padding: 7px 7px !important;
+        }  
     </style>
     <link rel="stylesheet" href="{{asset('css/roles.css')}}">
     <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
-
 @section('content')
 <form action="{{Route('Roles.store')}}" method="POST">
+    @csrf
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-8">
+                        <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO ROL</b></h4>
+                    </div>
+                    <div class="col-4 text-right">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="col-sm-4">
+                        <input type="text" name="descripcion" id="descr" class="form-control" required  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
+                    </div>
+
+                </div>
+   
+                </div>
+            </div>
+    
+        </div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO ROL</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>MODULOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
                 </div>
@@ -24,17 +51,12 @@
         @csrf
         <div class="card-body">
             <div class="form-row">
-                <div class="col-sm-5">
-                    <input type="text" name="descripcion" id="descr" class="form-control" required  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
-                </div>
+
 
                 <div class="col-sm-4">
 
                 </div>
             </div>
-            <br>
-            <br>
-
             {{-- <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; "> --}}
     <table class="table table-striped" id="roles">
         <thead>
@@ -58,7 +80,7 @@
             @foreach ($modulos as $modulo)
             <tr>
                 <td >{{$modulo->nombre}}</td>
-                <td class="TitleP">{{$modulo->descripcion}}</td>
+                <td style="text-align: left;">{{$modulo->descripcion}}</td>
                 <td class="TitleP" value={{$modulo->id}}>
                     <div class="form-check">
                         <label class="form-check-label">
@@ -99,14 +121,11 @@
 
                 </div>
             </div>
-            <br>
-            <br>
-
             {{-- <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; "> --}}
     <table class="table table-striped" id="Widget">
         <thead>
           <tr>
-            <th class="TitleP" style="font-size: 14px;"><b>MODULO</b></th>
+            <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>
                 <div class="form-check" style="margin-left: 20px;">
@@ -125,7 +144,7 @@
             @foreach ($widget as $widgets)
             <tr>
                 <td >{{$widgets->nombre}}</td>
-                <td class="TitleP">{{$widgets->descripcion}}</td>
+                <td style="text-align: left;">{{$widgets->descripcion}}</td>
                 <td class="TitleP" value={{$widgets->id}}>
                     <div class="form-check" >
                         <label class="form-check-label">
@@ -404,6 +423,8 @@ $('div.dataTables_filter input', tab.table().container()).on('click',function(){
    });
 
 </script>
-    
+
+
+
 
 @endsection

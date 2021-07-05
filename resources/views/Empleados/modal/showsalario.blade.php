@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-sm-4">
                     <label>{{ __('MONTO') }}</label>
-                    <input type="text" name=""value="{{number_format($sueldo->sueldo_increment,2)}}"  onkeyup="calcular();" id="salarioShow" value="" class="form-control money">
+                    <input type="text" name="" value="{{number_format($sueldo->sueldo_increment,2)}}" style="text-align: right;"  onkeyup="calcular();" id="salarioShow" value="" class="form-control money">
                 </div>
             </div>
         </div>

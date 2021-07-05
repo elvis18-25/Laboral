@@ -73,8 +73,7 @@ class HomeController extends Controller
         $count_users=User::where('id_empresa',Auth::user()->id_empresa)->where('estado',0)->count();
         $count_roles=Role::where('id_empresa',Auth::user()->id_empresa)->where('estado',0)->count();
 
-        // $gastos=Gasto::where(DB::raw("(DATE_FORMAT(fecha,'%Y'))"),date('Y'))
-    	// 			->get();
+
 
                     $gasto = Gasto::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
                     ->where('id_empresa',Auth::user()->id_empresa)
@@ -82,75 +81,7 @@ class HomeController extends Controller
                     ->orderBy("fecha")
                     ->groupBy(DB::raw("month(fecha)"))
                     ->get();
-                    // $gasto = Gasto::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
-                    // ->where('id_empresa',Auth::user()->id_empresa)
-                    // ->where('estado',0)
-                    // ->orderBy("fecha")
-                    // ->groupBy(DB::raw("month(fecha)"))
-                    // ->get();
-                    // $mothes=['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
-                    // $dsta=[0,0,0,0,0,0,0,0,0,0,0,0];
-                    // $moth =[];  
-                    // $data=[];
-                    // // $m=[];
-                    // $i=0;
-                    // $p=0;
-                    // foreach($gasto as $gastos){
-                    //     $moth[$i]=(int)$gastos->moth;
-                    //     $data[$i]=$gastos->count;
-                    //     $i++;
-                    // }
-                    
-                    // $count=count($moth);
-                    
-                    // for ($i=0; $i <$count; $i++) { 
-                    //     // dd($d);
-                    //     switch ($moth[$i]) {
-                    //         case 1:
-                    //             $dsta[0]=$data[$i];
-                    //             break;
-                    //         case 2:
-                    //            $dsta[1]=$data[$i];
-                    //             break;
-                    //         case 3:
-                    //            $dsta[2]=$data[$i];
-                    //             break;
-                    //         case 4:
-                    //            $dsta[3]=$data[$i];
-                    //             break;
-                    //         case 5:
-                                
-                    //            $dsta[4]=$data[$i];
-                    //             break;
-                    //         case 6:
-                    //            $dsta[5]=$data[$i];
-                    //             break;
-                    //         case 7:
-                    //            $dsta[6]=$data[$i];
-                    //             break;
-                    //         case 8:
-                    //            $dsta[7]=$data[$i];
-                    //             break;
-                    //         case 9:
-                    //            $dsta[8]=$data[$i];
-                    //             break;
-                    //         case 10:
-                    //            $dsta[9]=$data[$i];
-                    //             break;
-                    //         case 11:
-                    //            $dsta[10]=$data[$i];
-                    //             break;
-                    //         case 12:
-                    //            $dsta[11]=$data[$i];
-                    //             break;
-                            
-                    //         default:
-                    //             # code...
-                    //             break;
-                    //     }
-                    // }
 
-                    // dd($d);
 
                     $nomina = Listado::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
                     ->where('id_empresa',Auth::user()->id_empresa)
@@ -207,7 +138,7 @@ class HomeController extends Controller
                      }
 
 
-        
+        // dd(date('Y'));
         $count_mujeres=sexo_empleado::leftjoin('empleado','empleado.id_empleado','=','empleado_sexo.empleado_id_empleado')
         ->where('empleado_sexo.sexo_id','=',2)
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)

@@ -18,12 +18,14 @@
             <div class="card-body">
 
                 <form action="{{route('Gasto.update',$gasto->id)}}" method="POST">
+                  @if ($permisos_acciones->imprimir_gastos)
                   <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-excel" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button>
                   {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacion" class="btn btn-info  btn-sm float-right whiter redondo"  style="top: -104px;"><i class="fas fa-edit"></i></i></button> --}}
                   {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm float-right"  style="top: -59px;"><i class="fas fa-print"></i></button> --}}
                   <a href="{{url('listadopdfgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button  type="button"  style="top: -92px;" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo float-right"><i class="fas fa-print" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button></a>
                   {{-- <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm float-right"  style="top: -59px;"><i class="fas fa-file-pdf"></i></button> --}}
-                 <a href="{{url('donwloadgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-pdf" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button></a>
+                  <a href="{{url('donwloadgasto').'/'.$gasto->id}}" target="_blank" rel="noopener noreferrer"><button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-pdf" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button></a>
+                  @endif
                   @csrf   
                   @method('PUT') 
             <div class="form-row">

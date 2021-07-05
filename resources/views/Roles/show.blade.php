@@ -3,6 +3,12 @@
     .TitleP{
         text-align: center;
     }
+    .TitleL{
+        text-align: left;
+    }
+    .table>tbody>tr>td{
+            padding: 7px 7px !important;
+        } 
     </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/roles.css')}}">
@@ -11,22 +17,43 @@
 <form action="{{Route('Roles.update',$roles->id)}}" method="POST">
     @csrf
     @method('PUT')
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-8">
+                        <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO ROL</b></h4>
+                    </div>
+                    <div class="col-4 text-right">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="col-sm-4">
+                        <input type="text" name="descripcion" id="descr"  value="{{$roles->name}}"  class="form-control" required  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
+                    </div>
+
+                </div>
+   
+                </div>
+            </div>
+    
+        </div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EDITAR ROL</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>MODULOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
                 </div>
             </div>
         </div>
         <div class="card-body">
-    <div class="col-sm-4">
-        <input type="text" name="descripcion" value="{{$roles->name}}" id="descr" class="form-control" required   oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Nombre">
-    </div>
-    <br><br>
+
     <table class="table table-striped" id="roles">
         <thead>
           <tr>
@@ -75,9 +102,6 @@
 
                 </div>
             </div>
-            <br>
-            <br>
-
             {{-- <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; "> --}}
     <table class="table table-striped" id="Widget">
         <thead>

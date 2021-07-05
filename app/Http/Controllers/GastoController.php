@@ -15,6 +15,8 @@ use App\Models\Perfiles_empleado;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Carbon;
 use App\Models\gasto_nomina;
+use App\Models\permisos_acciones;
+use App\Models\Role_users;
 
 class GastoController extends Controller
 {
@@ -218,6 +220,9 @@ class GastoController extends Controller
     {
         $gasto=Gasto::findOrFail($id);
         $gastofijos=gasto_fijo::all();
+        $user=Auth::user()->id;
+        $rol=Role_users::where('user_id','=',$user)->first();
+        $permisos_acciones=permisos_acciones::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         $array=[];
         $array2=[];
         
@@ -293,7 +298,7 @@ class GastoController extends Controller
 
         
 
-        return view('Gastos.show',compact('gasto','totalconcepto','concepto','nominas','totalmonto','gastofijos','totalfijo','gasto_nomina'));
+        return view('Gastos.show',compact('gasto','totalconcepto','permisos_acciones','concepto','nominas','totalmonto','gastofijos','totalfijo','gasto_nomina'));
     }
 
     /**

@@ -418,7 +418,7 @@
 </div>
 </div>
 
-
+<!-----------------------------------------------------------------------AJUSTE DEL SISTEMA----------------------------------------------------------------------->
 <div class="tab-pane fade" id="VLO" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 <form action="{{url('Savepermis')}}" method="post">
   <input type="text" value="{{$roles->id}}" name="rol" hidden>
@@ -448,7 +448,7 @@
             <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>
-                <div class="form-check" style="margin-left: 20px;">
+                <div class="form-check" style="margin-left: 14px;">
                     <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleDonm(this)' >
                         <span class="form-check-sign">
@@ -536,7 +536,7 @@
                   <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
                   <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                   <th class="TitleP"  style="font-size: 14px;"><b>
-                      <div class="form-check" style="margin-left: 20px;">
+                      <div class="form-check" style="margin-left: 9px;">
                           <label class="form-check-label">
                               <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleAccion(this)' >
                               <span class="form-check-sign">
@@ -564,6 +564,7 @@
 </div>
 </div>
 </div>
+<!-----------------------------------------------------------------------AJUSTE DEL SISTEMA----------------------------------------------------------------------->
 
 
     </div>
@@ -1340,6 +1341,9 @@ $('#inputCity').mask('0#');
       .TitleP{
         text-align: center;
       }
+      .TitleL{
+        text-align: left;
+    }
       #HL-Table{
         width: -webkit-fill-available !important; 
       }
@@ -1355,6 +1359,15 @@ $('#inputCity').mask('0#');
       }
       .widfgets{
         width: 100% !important;
+      }
+      #roles>tbody>tr>td{
+        padding: 7px 7px !important;
+      }
+      #Widget>tbody>tr>td{
+        padding: 7px 7px !important;
+      }
+      #accionsf>tbody>tr>td{
+        padding: 7px 7px !important;
       }
     </style>
 @endsection

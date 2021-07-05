@@ -262,7 +262,7 @@
 
   @if ($permisos->w_empleados==1)
     <div class="col-lg-4">
-      <div class="card card-chart">
+      <div class="card card-chart" >
         <div class="card-header">
           <h5 class="card-category" style="color: black"><b>EMPLEADOS</b></h5>
         </div>
@@ -270,8 +270,8 @@
             <div class="chart-area">
                 {{-- <canvas id="CountryChart"></canvas> --}}
                 {{-- <div id="chartbar"></div> --}}
-                <div id="chartbar" style="height: 135%;
-                top: -13px;
+                <div id="chartbar" style="height: 149%;
+                top: -43px;
                 position: relative;"></div>
                 {{-- {!! $salesChart->container() !!} --}}
               </div>
@@ -288,7 +288,10 @@
     </div>
     <div class="card-body">
       <div class="chart-area">
-        <canvas id="chartLinePurple"></canvas>
+        {{-- <canvas id="chartLinePurple"></canvas> --}}
+        <div id="chartbardepartamen" style="height: 149%;
+        top: -43px;
+        position: relative;"></div>
       </div>
     </div>
   </div>
@@ -297,7 +300,7 @@
 
 @if ($permisos->w_generos==1)
     <div class="col-lg-4">
-        <div class="card card-chart">
+        <div class="card card-chart" >
             <div class="card-header">
                 <h5 class="card-category" style="color: black"><b> GENEROS</b></h5>
                 <div class="form-inline">
@@ -309,8 +312,8 @@
             <div class="card-body">
                 <div class="chart-area">
                     {{-- <canvas id="chartLineGreen"></canvas> --}}
-                <div id="chartbarsex" style="height: 135%;
-                top: -13px;
+                <div id="chartbarsex" style="height: 149%;
+                top: -43px;
                 position: relative;"></div>
                 </div>
             </div>
@@ -322,24 +325,33 @@
 @if ($permisos->g_gasto==1)
     <div class="row">
         <div class="col-12">
-            <div class="card card-chart">
+            <div class="card card-chart" style="height: 99%; top: -15px;">
                 <div class="card-header ">
                     <div class="row">
+                      
                         <div class="col-sm-6 text-left">
+
                             <h5 class="card-category"></h5>
-                            <h2 class="card-title"><b> Gastos de la Empresa</b></h2>
+
+                            <h2 class="card-title"><b> GASTOS DE LA EMPRESA</b></h2>
                         </div>
                         <div class="col-sm-6">
-
-
-
+                          {{-- <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: right; color: black; float: right;">
+                            <i class="fa fa-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div> --}}
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
                         {{-- <canvas id="chartBig1d"></canvas> --}}
-                        <div id="chart" style="height: 153%; width: 121%; top: -56px; position: relative; margin-left: -153px;"></div>
+                        <div id="chart" style="height: 147%;
+                        width: 120%;
+                        top: -32px;
+                        position: relative;
+                        margin-left: -131px;
+                        max-height: 305px;"></div>
                         {{-- {!! $bar!!} --}}
                         {{-- <div id="chart-container"></div> --}}
                       </div>
@@ -410,7 +422,7 @@
 @endsection
 @push('js')
 
-{{-- <script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script> --}}
+<script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="{{asset('js/mdtimepicker.js')}}"></script>
 <script src="{{asset('js/jscolor.js')}}"></script>
@@ -418,6 +430,8 @@
 <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
 <!-- Chartisan -->
 <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
 {{-- <script src="https://code.highcharts.com/highcharts.js"></script> --}}
 
 
@@ -429,7 +443,7 @@
         hooks: new ChartisanHooks()
     .legend()
     .colors()
-    .datasets([{ type: 'line', fill: false }, 'bar'])
+    .datasets([{ type: 'line', fill: false }])
     .tooltip(),
     
       });
@@ -438,7 +452,7 @@
         url: "@chart('empleados_charts')",
         hooks: new ChartisanHooks()
         .legend()
-        .colors()
+        .colors(['#3396FF','#4054b2'])
         .datasets(['bar'])
         .tooltip(),
     
@@ -448,10 +462,70 @@
         url: "@chart('sexo_chart')",
         hooks: new ChartisanHooks()
         .legend()
-        .colors()
+        .colors(['#7133FF','#4054b2'])
         .tooltip(),
     
       });
+      const DepartamentoChart = new Chartisan({
+        el: '#chartbardepartamen',
+        url: "@chart('depatamento_chart')",
+        hooks: new ChartisanHooks()
+        .legend()
+        .colors(['#4054b2'])
+        .tooltip(),
+      });
+
+//       var chartDom = document.getElementById('chartbardepartamen');
+// var myChart = echarts.init(chartDom);
+// var option;
+
+// option = {
+//     tooltip: {
+//         trigger: 'item'
+//     },
+//     legend: {
+//         top: '5%',
+//         left: 'center'
+//     },
+//     series: [
+//         {
+//             name: '访问来源',
+//             type: 'pie',
+//             radius: ['40%', '70%'],
+//             avoidLabelOverlap: false,
+//             itemStyle: {
+//                 borderRadius: 10,
+//                 borderColor: '#fff',
+//                 borderWidth: 2
+//             },
+//             label: {
+//                 show: false,
+//                 position: 'center'
+//             },
+//             emphasis: {
+//                 label: {
+//                     show: true,
+//                     fontSize: '40',
+//                     fontWeight: 'bold'
+//                 }
+//             },
+//             labelLine: {
+//                 show: false
+//             },
+//             data: [
+//                 {value: 1048, name: '搜索引擎'},
+//                 {value: 735, name: '直接访问'},
+//                 {value: 580, name: '邮件营销'},
+//                 {value: 484, name: '联盟广告'},
+//                 {value: 300, name: '视频广告'},
+//                 {value: 300, name: '视频广告'},
+//                 {value: 300, name: 'hola'}
+//             ]
+//         }
+//     ]
+// };
+
+// option && myChart.setOption(option);
 
       var calendar;
       
@@ -546,12 +620,30 @@
 
     SerchEventos(start,end);
     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    // $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
 
 
     // function cb(start, end) {
     //     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     // }
+
+    // $('#Reportegastos').daterangepicker({
+    //     startDate: start,
+    //     endDate: end,
+    //     ranges: {
+    //        'Hoy': [moment(), moment()],
+    //        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    //        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+    //        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+    //        'Este mes': [moment().startOf('month'), moment().endOf('month')],
+    //        'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    //     }
+    //   }, function (start, end) {
+          
+    //       $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    //       chart.update({ data:start });
+    //     });
 
     $('#reportrange').daterangepicker({
         startDate: start,

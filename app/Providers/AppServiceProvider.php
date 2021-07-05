@@ -32,7 +32,8 @@ class AppServiceProvider extends ServiceProvider
         $charts->register([
             \App\Charts\SampleChart::class,
             \App\Charts\EmpleadosCharts::class,
-            \App\Charts\SexoChart::class
+            \App\Charts\SexoChart::class,
+            \App\Charts\DepatamentoChart::class
         ]);
     }
 }

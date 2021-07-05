@@ -1,6 +1,6 @@
 <tr>
     <td>CALCULAR HORAS</td>
-    <td class="TitleP">OPCION PARA CALCULAR LAS HORAS POR DEFECTO</td>
+    <td class="TitleL">OPCION PARA CALCULAR LAS HORAS POR DEFECTO</td>
 
         @if ($permisos_acciones->calcular_horas==1) 
         <td class="TitleP" value={{1}}>
@@ -28,7 +28,7 @@
 </tr>
 <tr>
     <td >IMPRIMIR GASTOS</td>
-    <td class="TitleP">SE PODRA IMPRIMIR LOS GASTOS DE LA EMPRESA</td>
+    <td class="TitleL">SE PODRA IMPRIMIR LOS GASTOS DE LA EMPRESA</td>
 
         @if ($permisos_acciones->imprimir_gastos==1) 
         <td class="TitleP"  value={{2}}>

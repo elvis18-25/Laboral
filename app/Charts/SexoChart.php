@@ -35,10 +35,16 @@ class SexoChart extends BaseChart
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)
         ->count();
 
+        $sex=[];
+        $p=0;
+        $sex[$p]=$count_hombres;
+        $p++;
+        $sex[$p]=$count_mujeres;
+        $p++;
+        $sex[$p]=$count_indefinido;
+
         return Chartisan::build()
             ->labels(['Hombres', 'Mujeres', 'Indefinido'])
-            ->dataset('Hombres', [$count_hombres,0,0])
-            ->dataset('Mujeres', [$count_mujeres,0,0])
-            ->dataset('Indefinido',[$count_indefinido,0,0]);
+            ->dataset('GENEROS', $sex);
     }
 }

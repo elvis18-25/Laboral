@@ -1,7 +1,7 @@
 <tr>
 
     <td>EMPLEADOS</td>
-    <td class="TitleP">VER REGISTRO DE EMPLEADOS Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE EMPLEADOS Y MODIFICACIONES</td>
 
         @if ($permisos->empleado==1) 
         <td class="TitleP" value={{1}}>
@@ -29,7 +29,7 @@
 </tr>
 <tr>
     <td >USUARIOS</td>
-    <td class="TitleP">VER REGISTRO DE USUARIOS Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE USUARIOS Y MODIFICACIONES</td>
 
         @if ($permisos->usuario==1) 
         <td class="TitleP"  value={{2}}>
@@ -57,7 +57,7 @@
 </tr>
 <tr>
     <td >DEPARTAMENTOS</td>
-    <td class="TitleP">VER REGISTRO DE USUARIOS Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE USUARIOS Y MODIFICACIONES</td>
         @if ($permisos->departamento==1) 
         <td class="TitleP" value={{3}}>
             <div class="form-check">
@@ -84,7 +84,7 @@
 </tr>
 <tr>
     <td >ROLES</td>
-    <td class="TitleP">VER REGISTRO DE ROLES Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE ROLES Y MODIFICACIONES</td>
         @if ($permisos->roles==1) 
         <td class="TitleP"  value={{4}}>
             <div class="form-check">
@@ -111,7 +111,7 @@
 </tr>
 <tr>
     <td >GASTOS</td>
-    <td class="TitleP">VER REGISTRO DE GASTOS Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE GASTOS Y MODIFICACIONES</td>
         @if ($permisos->gastos==1) 
         <td class="TitleP" value={{5}}>
             <div class="form-check">
@@ -138,7 +138,7 @@
 </tr>
 <tr>
     <td >ASIGNACIONES</td>
-    <td class="TitleP">VER REGISTRO DE GASTOS Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE GASTOS Y MODIFICACIONES</td>
         @if ($permisos->asignaciones==1) 
         <td class="TitleP" value={{6}}>
             <div class="form-check">
@@ -165,7 +165,7 @@
 </tr>
 <tr>
     <td >PERFILES DE NOMINAS</td>
-    <td class="TitleP">VER REGISTRO DE PERFILES DE NOMINAS Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE PERFILES DE NOMINAS Y MODIFICACIONES</td>
         @if ($permisos->perfiles==1) 
         <td class="TitleP" value={{8}}>
             <div class="form-check">
@@ -192,7 +192,7 @@
 </tr>
 <tr>
     <td >FORMA DE PAGO</td>
-    <td class="TitleP">VER REGISTRO DE FORMA DE PAGO Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE FORMA DE PAGO Y MODIFICACIONES</td>
         @if ($permisos->formas_pagos==1) 
         <td class="TitleP" value={{9}} >
             <div class="form-check">
@@ -219,7 +219,7 @@
 </tr>
 <tr>
     <td >PERFILES DE USUARIOS</td>
-    <td class="TitleP">VER REGISTRO DE PERFILES DE USUARIOS Y MODIFICACIONES</td>
+    <td class="TitleL">VER REGISTRO DE PERFILES DE USUARIOS Y MODIFICACIONES</td>
         @if ($permisos->perfilesuser==1) 
         <td class="TitleP" value={{10}}>
             <div class="form-check">
@@ -246,7 +246,7 @@
 </tr>
 <tr>
     <td >NOMINAS</td>
-    <td class="TitleP">	
+    <td class="TitleL">	
         VER REGISTRO DE NOMINAS Y MODIFICACIONES</td>
         @if ($permisos->nomina==1) 
         <td class="TitleP"  value={{11}}>
@@ -274,7 +274,7 @@
 </tr>
 <tr>
     <td >ASISTENCIAS</td>
-    <td class="TitleP">	
+    <td class="TitleL">	
         VER REGISTRO DE ASISTENCIA</td>
         @if ($permisos->asistencia==1) 
         <td class="TitleP"  value={{12}}>
@@ -302,7 +302,7 @@
 </tr>
 <tr>
     <td >EMPRESA</td>
-    <td class="TitleP">	
+    <td class="TitleL">	
         CONFIGURACION DE LA EMPRESA</td>
         @if ($permisos->empresa==1) 
         <td class="TitleP" value={{13}}>
@@ -330,7 +330,7 @@
 </tr>
 <tr>
     <td >GRUPOS</td>
-    <td class="TitleP">	
+    <td class="TitleL">	
         REGISTRO Y MODIFICACIONES DE GRUPOS</td>
         @if ($permisos->empresa==1) 
         <td class="TitleP"  value={{14}}>
