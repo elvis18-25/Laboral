@@ -72,6 +72,7 @@ Route::post('viewasigna/{id}','App\Http\Controllers\AsignacionesController@viewa
 Route::post('updateasignaciones/{id}','App\Http\Controllers\AsignacionesController@updateasignaciones');
 Route::post('deleteasigna/{id}','App\Http\Controllers\AsignacionesController@deleteasigna');
 Route::put('agregarEmpleado/{id}','App\Http\Controllers\AsignacionesController@agregarEmpleado');
+Route::post('allempleadoasignaciones','App\Http\Controllers\AsignacionesController@allempleadoasignaciones');
 
 //Empresa
 Route::post('SearchUser','App\Http\Controllers\EmpresaController@SearchUser');

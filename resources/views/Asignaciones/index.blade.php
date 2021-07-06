@@ -710,6 +710,11 @@ tebl=$('#Empleadotable').DataTable({
         
     });
 
+    $("#Empleadotable tbody").on('click','tr',function(){
+    $('td', this).css('backgroundColor', '#958fcd ');
+            $('td', this).css('color', 'white');
+});
+
     function AddGroup(e,m){
     var arreglo=[];
     var p=0;

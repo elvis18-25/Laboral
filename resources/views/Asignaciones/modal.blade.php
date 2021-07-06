@@ -44,7 +44,7 @@
                 <div class="input-group-prepend" style="top: 0px; position: relative; height: 38px;">
                     <div class="input-group-text" style="color: black"><span id="figura"></span></div>
                   </div>
-                <input type="text" name="monto"  onkeyup="calcular();" style="text-align: left;" id="monto" required  class="form-control money" placeholder=""  >
+                <input type="text" name="monto"  onkeyup="calcular();" style="text-align: right;" id="monto" required  class="form-control money" placeholder=""  >
                 <input type="text"   id="montoOP" value="" hidden>
             </div>
         </div>

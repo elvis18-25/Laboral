@@ -48,8 +48,7 @@
               @else
               <option value="4" >PORCENATJE</option>
               <script>
-                $("#figure").empty();
-                $("#figure").append("$"); 
+
                 </script>
               @endif
 
@@ -69,6 +68,7 @@
 
             </select>
         </div>
+        <input type="text" id="inputfigures" value="{{$asigna->tipo}}" hidden>
       
         <div class="col-sm-2">
             <label style="color: black"></label>
@@ -76,34 +76,18 @@
 
             <div class="input-group" >
             <div class="input-group-prepend" style="top: 0px; position: relative; height: 38px;">
-                <div class="input-group-text" style="color: black"><span id="figura"></span></div>
-              </div>
-            <input type="text" name="monto"  onkeyup="calcular();" style="text-align: left;" id="montoedit"  value="{{$asigna->Monto}}" required  class="form-control money" placeholder=""  >
+              <div class="input-group-text"style="color: black"><span id="figure"></span></div>
+            </div>
+            <input type="text" name="monto"  onkeyup="calcular();" style="text-align: right;" id="montoedit"  value="{{$asigna->Monto}}" required  class="form-control money" placeholder=""  >
             <input type="text"   id="montoOP" value="" hidden>
         </div>
     </div>
 
 </div> 
 <br>
-{{-- <div class="form-inline ">
-  <label for="inputState"><b> SELECCIONAR POR GRUPO:</b> &nbsp;</label>
-      <select id="inputStateGrupo" class="form-control form-control-sm" name="grupo">
-        <option  value="-1" >NINGUNO...</option>
-        <option selected value="0">TODOS</option>
-        @foreach ($equipo as $equipos)
-        @if ($equipos->id_empresa==Auth::user()->id_empresa && $equipos->estados==0)
-        @if ($asigna->grupo==$equipos->id)
-        <option value="{{$equipos->id}}" selected>{{$equipos->descripcion}}</option>
-            
-        @else
-        <option value="{{$equipos->id}}">{{$equipos->descripcion}}</option>
-            
-        @endif
-        @endif
-        @endforeach
-      </select>
-  </div> --}}
-  <button type="button" class="btn btn-info redondo btn-sm float-left"  data-toggle="modal" data-target="#Empleadomodal"><i class="fas fa-plus"></i></button>
+
+  <button type="button" class="btn btn-info redondo btn-sm float-left" title="Agregar Empleado a la asignacion" id="btnsingle"  data-toggle="modal" data-target="#Empleadomodal"><i class="fas fa-user-plus" style="margin-left: -3px; font-size: 17px;"></i></button>
+  <button type="button" class="btn btn-warning redondo btn-sm float-left" title="Agregar Todos los empleado" onclick="allEmple();"><i class="fas fa-users" style="margin-left: -6px; font-size: 19px;"></i></button>
   <br>
   <input type="text" name="" id="inputEdit" value="{{$asigna->grupo}}" hidden>
   <table class="table tablesorter list" id="listadoEdit-table" style="width: 100% !important;">
@@ -145,6 +129,15 @@
 </div>
 
 <script>
+var figure=$("#inputfigures").val();
+
+if(figure=="PORCENATJE"){
+  $("#figure").empty();
+  $("#figure").append("$"); 
+}else{
+  $("#figure").empty();
+  $("#figure").append("$"); 
+}
   function updateasignaciones(e){
      var name=$("#nameedit").val();
      var tipo=$("#inputStateed").val();
@@ -284,99 +277,56 @@
    
 });
 
-//     $.ajaxSetup({
-// headers: {
-// 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-// }
-//   });
+function allEmple(){
+  arreglo=[];
+  i=0;
+  $("#listadoEdit-table tbody tr").each(function(){
+    arreglo[i]=$(this).attr('value');
+      i++;
+    });
+  var url = "{{url('allempleadoasignaciones')}}"; 
+       var data ={arreglo:arreglo};
+          $.ajax({
+           method: "POST",
+             data: data,
+              url:url ,
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              success:function(result){
+              $('#listadoEdit-table tbody').append(result);
+              SuccesAdd(); 
+              
   
-//  tabla=$('#listadoEdit-table').DataTable({
-//       "info":    false,
-//       "paging":  false,
-//       "ordering":  false,
-//     responsive: true,
-//     // "order": [[ 1, 'desc' ]],
-//     scrollY: 400,
-//         processing:true,
-      
-
-//     serverSide:true,
-//     ajax:
-//     {
-//       url:"{{ url('datatableAsistencia') }}",
-//       "data":function(d){
-//         if($("#inputEdit").val()!=''){
-//           d.dato1=$("#inputEdit").val();
-
-//         }
-//       }
-//     },
-
-//     language: {
-//       searchPlaceholder: "Buscar",
-//         "decimal": "",
-//         "emptyTable": "No hay información",
-//         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-//         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-//         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-//         "infoPostFix": "",
-//         "thousands": ",",
-//         "lengthMenu": "",
-//         "loadingRecords": "Cargando...",
-//         "processing": "Procesando...",
-//         "search": "",
-//         "zeroRecords": "Sin resultados encontrados",
-//         "paginate": {
-//             "first": "Primero",
-//             "last": "Ultimo",
-//             "next": "Siguiente",
-//             "previous": "Anterior"
-//         }
-
-//       }, 
-
-
-//     columns:[
-//     {data:'btn',name:'btn', },
-//     {data:'nombre',name:'nombre',},
-//     {data:'cargo', name:'cargo', class: "boldend"},
-//     {data:'puesto', name:'puesto', class: "boldend",searchable:false},
-//     ],
-
-// });
-
-// $("#inputStateGrupo").on('change',function(){
-//         var id=$(this).val();
-//         if(id!=-1){
-//           $("#input").val(id);
-//           tabla.ajax.reload();
-//         }else{
-//           checkendesd();
-//         }
-
-// });
-
-
-// function AllEmplen(){
-//     var url="{{url('AllGroupAsistencia')}}"; 
-//   var data='';
-//   $.ajax({
-//          method: "GET",
-//            data: data,
-//             url:url ,
-//             success:function(result){
-//             $('#listadoEdit-table tbody').empty();
-//             $('#listadoEdit-table tbody').append(result);
-//            },
-//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-//     }
-//              });
-// }
+             },
+                  error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                  ErroresGenerales(); 
+      }
+               }); 
+}
 
 function checkendesd(){
       $('#listadoEdit-table tbody input[type="checkbox"]').prop('checked',false);
 }
+
+$('div.dataTables_filter input', tebl.table().container()).on('click',function(){
+
+  var rowIdx = tebl.cell(':eq(0)').index().row;
+      
+  tebl.row(rowIdx).select();
+
+  tebl.cell( ':eq(0)' ).focus();
+});
+
+
+
+
+$('#showmodal').keyup(function(e){
+    if(e.keycode!=13)
+    {
+       
+      $('div.dataTables_filter input', tebl.table().container()).focus();
+        
+    }
+});
       </script>
 
 <style>

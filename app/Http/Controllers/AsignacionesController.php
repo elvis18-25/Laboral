@@ -205,6 +205,20 @@ class AsignacionesController extends Controller
     {
         //
     }
+    public function allempleadoasignaciones(Request $request)
+    {
+        $emple=request('arreglo');
+        $puesto=Puesto::all();
+
+        if(!empty($emple)){
+            $empleados=Empleado::whereNotIn('id_empleado',$emple)->where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        }else{
+            $empleados=Empleado::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        }
+
+        return view('Asignaciones.PlantillasAll',compact('empleados','puesto'));
+
+    }
     public function deleteasigna($id)
     {
         $asigna=Asignaciones::findOrFail($id);
