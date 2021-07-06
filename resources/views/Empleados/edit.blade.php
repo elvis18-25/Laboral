@@ -920,7 +920,7 @@ String.prototype.toInt = function (){
     return parseInt(this.split(' ').join('').split(',').join('') || 0);
 }
 
-// Incluso pensándolo como algo más genérico:
+
 
 toInt = function(val){
   var result;
@@ -933,26 +933,7 @@ toInt = function(val){
   return result;
 }
 
-// var options = {
-//      theme:"sk-cube-grid",
-//      message:'Cargando.... ',
-// };
 
-// p=0;
-// $(document).on('click', '.btncontrato', function (event) {
-//   p=1;
-//   HoldOn.close();
-// });
-// $(document).on('click', '.btnholdon', function (event) {
-  
-//   p=0;
-// });
-
-// window.onbeforeunload = function(e) {
-//   if(p==0){
-//     HoldOn.open(options);
-//   }
-// };
 
 
 HayFoco=false;

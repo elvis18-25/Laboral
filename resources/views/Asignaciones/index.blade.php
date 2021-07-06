@@ -29,9 +29,9 @@
                         <tr> 
                         <th style="font-size: 14px; text-align: center">NOMBRE</th>
                         <th style="font-size: 14px; text-align: center">TIPO</th>
-                        <th style="font-size: 14px; text-align: center">MONTO</th>
                         <th style="font-size: 14px; text-align: center">EMPLEADOS</th>
                         <th style="font-size: 14px; text-align: center">USUARIO</th>
+                        <th style="font-size: 14px; text-align: center">MONTO</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -47,17 +47,19 @@
     </div>
 </div>
 
+<input type="text" name="" id="input" value="" hidden>
 <div class="o-page-loader">
-    <div class="o-page-loader--content">
-      <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
-        {{-- <div class=""></div> --}}
-        <div class="o-page-loader--message">
-            <span>Cargando...</span>
-        </div>
+  <div class="o-page-loader--content">
+    <img src="{{ asset('black') }}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+    {{-- <div class=""></div> --}}
+    <div class="o-page-loader--message">
+      <span>Cargando...</span>
     </div>
+  </div>
 </div>
 {{-- <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a> --}}
 <div class="modal fade" id="showmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+@include('Asignaciones.modalemple')
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
 
@@ -66,8 +68,51 @@
 @section('js')
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
+$('.money').mask("#,##0.00", {reverse: true});
 
-    $("#monto").mask('0.#');
+
+function calcular(){
+   var salario=$("#monto").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#montoOP").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
+
+
+
+    
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
         $("#created").trigger("click");
@@ -147,10 +192,10 @@ headers: {
 
     columns:[
     {data:'Nombre',name:'Nombre'},
-    {data:'tipo_asigna',name:'tipo_asigna'},
-    {data:'Monto',name:'Monto',class: "right"},
+    {data:'tipo_asigna',name:'tipo_asigna',class: "center"},
     {data:'emple',name:'emple',class: "center",searchable:false},
     {data:'user',name:'user',class: "center"},
+    {data:'Monto',name:'Monto',class: "right"},
     ],
  
     language: {
@@ -238,6 +283,7 @@ $('div.dataTables_filter input', table.table().container()).keypress(function(te
 
 
 $("#figura").append("$");
+$(".monto").mask('0.#');
 
 $("#btnexcel").on('click',function(){
 $(".buttons-excel").click();
@@ -256,25 +302,44 @@ $("#forma").on('change',function(){
  if($(this).val()==3){
      $("#figura").empty();
      $("#figura").append("$");
+     $("#monto").removeClass("monto");
+    $("#monto").addClass("money");
+    $('.money').mask("#,##0.00", {reverse: true});
+     
  }else{
     $("#figura").empty();
     $("#figura").append("%");
+    $("#monto").removeClass("money");
+    $("#monto").addClass("monto");
+    $(".monto").mask('0#');
+    
 
  }   
 
 });
 
+i=0;
 function saveasignaciones(){
    var name=$("#name").val();
    var tipo=$("#inputState").val();
    var forma=$("#forma").val();
    var monto=$("#monto").val();
+   var grupo=$("#inputStateGrupo").val();
+   var arreglo=[];
+   i=0;
+
+   $("#listado-table tbody tr").each(function(){
+    arreglo[i]=$(this).attr('data-href');
+      i++;
+    });
+
+    console.log(arreglo);
 
    if(name==""|| tipo==""||forma==""||monto==""){
     Errores();
    }else{
     var url = "{{route('Asignaciones.store')}}"; 
-     var data ={name:name,tipo:tipo,forma:forma,monto:monto};
+     var data ={name:name,tipo:tipo,forma:forma,monto:monto,arreglo:arreglo,grupo:grupo};
         $.ajax({
          method: "POST",
            data: data,
@@ -296,6 +361,26 @@ function saveasignaciones(){
    } 
 }
 
+function Errore(){
+    Command: toastr["error"]("Este empleado ya esta selecionado", "Error")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
 
 function Errores(){
     Command: toastr["error"]("Debes llenar los campos", "Error")
@@ -426,14 +511,265 @@ function edit(e){
              }); 
    } 
 
+   $.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+  });
+  
+ tabla=$('#listado-table').DataTable({
+      "info":    false,
+      "paging":  false,
+      "ordering":  false,
+    responsive: true,
+    // "order": [[ 1, 'desc' ]],
+    scrollY: 400,
+        processing:true,
+      
+        // select: {
+        //     style: 'single',
+        // },
+
+    //     keys: {
+    //       keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+    //     },
+    //     rowGroup: {
+    //     dataSrc: 'group'
+    // },
+
+    serverSide:true,
+    ajax:
+    {
+      url:"{{ url('datatableAsistencia') }}",
+      "data":function(d){
+        if($("#input").val()!=''){
+          d.dato1=$("#input").val();
+
+        }
+      }
+    },
+
+    language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      }, 
+
+
+    columns:[
+    {data:'btn',name:'btn', },
+    {data:'nombre',name:'nombre',},
+    {data:'cargo', name:'cargo', class: "boldend"},
+    {data:'puesto', name:'puesto', class: "boldend",searchable:false},
+    ],
+
+});
+
+$("#inputStateGrupo").on('change',function(){
+        var id=$(this).val();
+        if(id!=-1){
+          $("#input").val(id);
+          tabla.ajax.reload();
+        }else{
+          checkendesd();
+        }
+
+});
+
+
+function AllEmplen(){
+    var url="{{url('AllGroupAsistencia')}}"; 
+  var data='';
+  $.ajax({
+         method: "GET",
+           data: data,
+            url:url ,
+            success:function(result){
+            $('#listado-table tbody').empty();
+            $('#listado-table tbody').append(result);
+
+
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             });
+}
+
+function checkendesd(){
+      $('#listado-table tbody input[type="checkbox"]').prop('checked',false);
+}
+
+
+tebl=$('#Empleadotable').DataTable({
+      "info":    false,
+      "paging":  false,
+      // "ordering":  false,
+    // responsive: true,
+    // "order": [[ 1, 'desc' ]],
+    scrollY: 400,
+        processing:true,
+
+    select: {
+            style: 'single',
+        },
+        keys: {
+           keys:true,
+          keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+        },
+
+      rowGroup: {
+        dataSrc: 'group'
+    },
+
+    "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ],
+
+    language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      },   
+
+
+  });
+
+
+
+  $('#Empleadotable').on('key-focus.dt', function(e, datatable, cell){
+        // Select highlighted row
+      
+        tebl.row(cell.index().row).select();
+     });
+
+    // Handle click on table cell
+    $('#Empleadotable').on('click', 'tbody td', function(e){
+        e.stopPropagation();
+        
+        // Get index of the clicked row
+        var rowIdx = tebl.cell(this).index().row;
+
+        
+        // Select row
+        tebl.row(rowIdx).select();
+    });
+    // Handle key event that hasn't been handled by KeyTable
+    $('#Empleadotable').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+
+        // If ENTER key is pressed
+        if(key === 13){
+            // Get highlighted row data
+            event.preventDefault();
+            var data = tebl.row(cell.index().row).data();
+            
+            var row_s=$(this).DataTable().row({selected:true}).node(); 
+
+            $('td', row_s).css('backgroundColor', '#958fcd ');
+            $('td', row_s).css('color', 'white');
+
+           button=$(row_s).attr('action');
+           id=$(row_s).attr('value');
+           AddGroup(button,id);
+            
+        }
+        
+    });
+
+    function AddGroup(e,m){
+    var arreglo=[];
+    var p=0;
+    i=0;
+    $("#listadoEdit-table tbody tr").each(function(){
+    arreglo[i]=$(this).attr('value');
+      i++;
+    });
+    console.log(arreglo);
+    for (let index = 0; index < arreglo.length; index++) {
+            if(arreglo[index]==m){
+                p=1;
+            }
+     }
+     if(p!=1){
+    var url = e
+    var id=$("#inputEdit").val();
+     var data = {id:id,arreglo:arreglo};
+        $.ajax({
+         method: "PUT",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+            $('#listadoEdit-table tbody').append(result);
+            SuccesAdd();
+            // $("#arreglo").attr('value',arreglo);
+           
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             });
+     }else{
+        Errore();
+     }
+}
+
+function SuccesAdd(){
+    Command: toastr["success"]("Exito!", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
+    
 </script>
 
-<style>
-    .right{
-        text-align: right;
-    }
-    .center{
-        text-align: center;
-    }
-</style>
+
 @endsection

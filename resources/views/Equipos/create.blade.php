@@ -32,6 +32,20 @@
 
       
             <div class="col-sm-2">
+                <label style="color: black"><b>{{ __('HORA DE ENTRADA') }}</b></label>
+              <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i style="color: black !important;" class="fas fa-clock"></i>
+                 </div>      
+               </div>
+              <input type="text" class="form-control" id="entrada"  name="entrada" readonly style="cursor: pointer !important; " >
+            </div>
+            </div>
+            </div>
+      
+            <div class="col-sm-2">
                 <label style="color: black"><b>{{ __('HORA DE SALIDA') }}</b></label>
               <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
               <div class="input-group">

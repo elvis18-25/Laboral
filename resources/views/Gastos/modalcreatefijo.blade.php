@@ -15,7 +15,7 @@
                   </div>
                   <div class="form-group col-md-4">
                       <label for="inputEmail4"><b>MONTO</b></label>
-                      <input type="text"  class="form-control" placeholder="Monto" id="montsC">
+                      <input type="text" style="text-align: right;"  class="form-control" placeholder="Monto" id="montsC">
                     </div>
               </div>
           </div>

@@ -10,18 +10,14 @@ class Asignaciones_empleado extends Model
     use HasFactory;
 
     protected $table='asignaciones_empleado';
-    protected $column='empleado_id_empleado,asignaciones_id,create_at,update_at,id_empresa"';
+    // protected $column='empleado_id_empleado,asignaciones_id,create_at,update_at,id_empresa"';
 
     protected $fillable = [
-        'asignaciones_id',
         'empleado_id_empleado',
+        'asignaciones_id',
         'id_empresa',
-        'monto',
+        'estado',
     ];
 
-    protected $cats = [
-        'onoffswitch' => 'array',
-     
 
-    ];
 }

@@ -26,7 +26,8 @@ class AsistenciaController extends Controller
     public function index()
     {
         $role=Role_users::where('user_id','=',Auth::user()->id)->first();
-        $permisos=Permisos::where('role_id','=',$role->role_id)->first();
+        $permisos=Permisos::where('role_id','=',$role->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        // dd($permisos);
         $asistencia=Asistencia::all();
         $empleado=Empleado::all();
         return view('Asistencias.index',compact('asistencia','empleado','permisos'));

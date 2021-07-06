@@ -103,7 +103,7 @@
             
             <div class="card-footer py-4">
               <nav class="d-flex justify-content-end" aria-label="...">
-                <b class="float-right" style="color: black; margin-right: -8px; font-size: 16px; top: -26px; position: relative;">TOTAL: <span id="totalnomina"></span></b>
+                <b class="float-right" style="color: black; margin-right: -86px; font-size: 16px; top: 263px; position: relative;">TOTAL: <span id="totalnomina"></span></b>
               </nav>
             </div>
           </div>

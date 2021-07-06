@@ -71,6 +71,7 @@ Route::resource('Seleccion', 'App\Http\Controllers\MultiController');
 Route::post('viewasigna/{id}','App\Http\Controllers\AsignacionesController@viewasigna');
 Route::post('updateasignaciones/{id}','App\Http\Controllers\AsignacionesController@updateasignaciones');
 Route::post('deleteasigna/{id}','App\Http\Controllers\AsignacionesController@deleteasigna');
+Route::put('agregarEmpleado/{id}','App\Http\Controllers\AsignacionesController@agregarEmpleado');
 
 //Empresa
 Route::post('SearchUser','App\Http\Controllers\EmpresaController@SearchUser');

@@ -246,6 +246,7 @@ class NominaController extends Controller
         $tss=Asignaciones::all();
         $estado=estado_asignaciones::all();
         $sueldoMonto=sueldo_aumento::all();
+        $asignaciones=Asignaciones_empleado::all();
        
         $hora=Horas::all();
         $sumHoraDescontada=0;
@@ -376,6 +377,9 @@ class NominaController extends Controller
                         foreach($empleados as $emple){
                         if($emple->id_empleado==$perfe->id_empleado){
                         foreach( $tss as $tsse){
+                            foreach($asignaciones as $asigna){
+                                if($asigna->empleado_id_empleado==$emple->id_empleado){
+                                if($asigna->asignaciones_id==$tsse->id){
                             if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                 if($tsse->tipo_asigna=="INCREMENTO"){
                                     if($tsse->tipo=="PORCENTAJE"){
@@ -392,6 +396,9 @@ class NominaController extends Controller
                             }
                             }
                             }
+                            }
+                            }
+                            }
                            }
                        }
 
@@ -402,6 +409,9 @@ class NominaController extends Controller
                                 foreach($empleados as $emple){
                                 if($emple->id_empleado==$perfe->id_empleado){
                                 foreach( $tss as $tsse){
+                                    foreach($asignaciones as $asigna){
+                                        if($asigna->empleado_id_empleado==$emple->id_empleado){
+                                        if($asigna->asignaciones_id==$tsse->id){
                                     if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                     if($tsse->tipo_asigna=="INCREMENTO"){
                                       foreach( $estado as $esta){
@@ -425,6 +435,9 @@ class NominaController extends Controller
                                         }
                                         }
                                         }
+                                        }
+                                        }
+                                        }
                                       }  
                                     }
                                     }
@@ -439,6 +452,9 @@ class NominaController extends Controller
                             foreach($empleados as $emple){
                             if($emple->id_empleado==$perfe->id_empleado){
                             foreach( $tss as $tsse){
+                                foreach($asignaciones as $asigna){
+                                    if($asigna->empleado_id_empleado==$emple->id_empleado){
+                                    if($asigna->asignaciones_id==$tsse->id){
                                 if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                 if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                     foreach($estado as $estados)
@@ -457,6 +473,9 @@ class NominaController extends Controller
                                    }
                                  }
                                 }
+                                }
+                                }
+                                }
                     
                                 }
                             }
@@ -471,6 +490,9 @@ class NominaController extends Controller
                                 foreach($empleados as $emple){
                                 if($emple->id_empleado==$perfe->id_empleado){
                                 foreach( $tss as $tsse){
+                                    foreach($asignaciones as $asigna){
+                                        if($asigna->empleado_id_empleado==$emple->id_empleado){
+                                        if($asigna->asignaciones_id==$tsse->id){
                                     if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                     if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                         if($tsse->tipo=="PORCENTAJE"){
@@ -483,6 +505,9 @@ class NominaController extends Controller
                                             }
                                         }
                         
+                                    }
+                                    }
+                                    }
                                     }
                                     }
                                    }
@@ -983,8 +1008,15 @@ class NominaController extends Controller
 
     function Detalle($ide){
         $empleado=Empleado::findOrFail($ide);
-        $tss=Asignaciones::all();
-        $asigna=Asignaciones_empleado::all();
+        $asigna=Asignaciones_empleado::where('empleado_id_empleado','=',$ide)->get();
+        $arreglo=[];
+        $p=0;
+        foreach($asigna as $asignas){
+            $arreglo[$p]=$asignas->asignaciones_id;
+            $p++;
+        }
+        
+        $tss=Asignaciones::whereIn('id',$arreglo)->get();
         $estado=estado_asignaciones::all();
         $isr=isr_empleado::all();
         $estadoasigna=estados_isr::all();
@@ -995,7 +1027,14 @@ class NominaController extends Controller
 
     function incremento($ide){
         $empleado=Empleado::findOrFail($ide);
-        $tss=Asignaciones::all();
+        $asigna=Asignaciones_empleado::where('empleado_id_empleado','=',$ide)->get();
+        $arreglo=[];
+        $p=0;
+        foreach($asigna as $asignas){
+            $arreglo[$p]=$asignas->asignaciones_id;
+            $p++;
+        }
+        $tss=Asignaciones::whereIn('id',$arreglo)->get();
         $estado=estado_asignaciones::all();
         $p=0;
 
@@ -1031,7 +1070,7 @@ class NominaController extends Controller
         ->leftjoin('asignaciones_empleado','asignaciones_empleado.empleado_id_empleado','=','perfiles.id_empleado')
         ->leftjoin('asignaciones','asignaciones.id','=','asignaciones_empleado.asignaciones_id')
         ->where('perfiles.estados','=',0)
-        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.horas','empleado.cedula','puesto.name as puesto','empleado.salario',DB::raw('sum(asignaciones_empleado.monto) as Asigna'))->GroupBy('empleado.id_empleado','empleado.cedula','empleado.horas','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario');
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.horas','empleado.cedula','puesto.name as puesto','empleado.salario')->GroupBy('empleado.id_empleado','empleado.cedula','empleado.horas','empleado.cargo','empleado.nombre','empleado.apellido','puesto','empleado.salario');
        
         if(!empty($tipo)){
             $empleados->where('perfiles.id_perfiles',$tipo);
@@ -1092,6 +1131,7 @@ class NominaController extends Controller
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
                 $estado=estado_asignaciones::all();
+                $asignaciones=Asignaciones_empleado::all();
                 $horas=Horas::where('type','=','EXTRAS')->get();
                 $otro=Otros::all();
                 $otrostotal=0;
@@ -1100,6 +1140,9 @@ class NominaController extends Controller
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
                         foreach( $tss as $tsse){
+                            foreach($asignaciones as $asigna){
+                                if($asigna->empleado_id_empleado==$row->id_empleado){
+                                if($asigna->asignaciones_id==$tsse->id){
                             if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0 ){
                             if($tsse->tipo_asigna=="INCREMENTO"){
                                     if($tsse->tipo=="PORCENTAJE"){
@@ -1112,6 +1155,10 @@ class NominaController extends Controller
                                     }
                               }  
                             }
+                            }
+                            }
+                            }
+                            
                             }
                             }
                            }
@@ -1146,6 +1193,9 @@ class NominaController extends Controller
                             if($tipo==$perfe->id_perfiles){
                                 if($row->id_empleado==$perfe->id_empleado){
                                 foreach( $tss as $tsse){
+                                    foreach($asignaciones as $asigna){
+                                        if($asigna->empleado_id_empleado==$row->id_empleado){
+                                        if($asigna->asignaciones_id==$tsse->id){
                                     if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                     if($tsse->tipo_asigna=="INCREMENTO"){
 
@@ -1164,6 +1214,9 @@ class NominaController extends Controller
                                                     }
                                                 }
                                               }
+                                            }
+                                            }
+                                            }
                                             }
                                         
                                               
@@ -1190,6 +1243,7 @@ class NominaController extends Controller
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
                 $estado=estado_asignaciones::all();
+                $asignaciones=Asignaciones_empleado::all();
 
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
@@ -1215,6 +1269,9 @@ class NominaController extends Controller
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
                         foreach( $tss as $tsse){
+                            foreach($asignaciones as $asigna){
+                                if($asigna->empleado_id_empleado==$row->id_empleado){
+                                if($asigna->asignaciones_id==$tsse->id){
                             if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                             if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                 foreach($estado as $estados)
@@ -1234,6 +1291,9 @@ class NominaController extends Controller
                                 }
                                 }
                                 }
+                                }
+                                }
+                                }
                 
                             }
                            }
@@ -1245,6 +1305,9 @@ class NominaController extends Controller
                         if($tipo==$perfe->id_perfiles){
                             if($row->id_empleado==$perfe->id_empleado){
                             foreach( $tss as $tsse){
+                                foreach($asignaciones as $asigna){
+                                if($asigna->empleado_id_empleado==$row->id_empleado){
+                                if($asigna->asignaciones_id==$tsse->id){
                                 if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                 if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                     if($tsse->tipo=="PORCENTAJE"){
@@ -1259,9 +1322,11 @@ class NominaController extends Controller
                     
                                 }
                                 }
+                                 }
+                                 }
+                                }
                                }
                             }
-                            
                         }
 
                         foreach($horas as $hora){
@@ -1285,6 +1350,7 @@ class NominaController extends Controller
                 $valor=request()->get('valor');
 
                 $tss=Asignaciones::all();
+                $asignaciones=Asignaciones_empleado::all();
                 $perf=Perfiles::all();
                 $otro=Otros::all();
                 $estadoasigna=estado_asignaciones::all();
@@ -1376,6 +1442,9 @@ class NominaController extends Controller
                         if($tipo==$perfe->id_perfiles){
                             if($row->id_empleado==$perfe->id_empleado){
                             foreach( $tss as $tsse){
+                                foreach($asignaciones as $asigna){
+                                    if($asigna->empleado_id_empleado==$row->id_empleado){
+                                    if($asigna->asignaciones_id==$tsse->id){
                                 if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                 if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                     foreach($estadoasigna as $estados)
@@ -1395,6 +1464,9 @@ class NominaController extends Controller
                                     }
                                     }
                                     }
+                                    }
+                                    }
+                                    }
                     
                                 }
                                }
@@ -1407,6 +1479,9 @@ class NominaController extends Controller
                             if($tipo==$perfe->id_perfiles){
                                 if($row->id_empleado==$perfe->id_empleado){
                                 foreach( $tss as $tsse){
+                                    foreach($asignaciones as $asigna){
+                                    if($asigna->empleado_id_empleado==$row->id_empleado){
+                                    if($asigna->asignaciones_id==$tsse->id){
                                     if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                     if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                         if($tsse->tipo=="PORCENTAJE"){
@@ -1421,16 +1496,22 @@ class NominaController extends Controller
                         
                                     }
                                     }
+                                     }
+                                     }
+                                    }
                                    }
                                 }
-                                
                             }
+                            
 
 //--------------------------------------------------------------------------------------------------------------------------
 foreach($perf as $perfe){
     if($tipo==$perfe->id_perfiles){
         if($row->id_empleado==$perfe->id_empleado){
         foreach( $tss as $tsse){
+            foreach($asignaciones as $asigna){
+                if($asigna->empleado_id_empleado==$row->id_empleado){
+                if($asigna->asignaciones_id==$tsse->id){
             if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
             if($tsse->tipo_asigna=="INCREMENTO"){
                     if($tsse->tipo=="PORCENTAJE"){
@@ -1445,6 +1526,9 @@ foreach($perf as $perfe){
             }
             }
             }
+            }
+            }
+            }
            }
        }
 
@@ -1454,6 +1538,9 @@ foreach($perf as $perfe){
             if($tipo==$perfe->id_perfiles){
                 if($row->id_empleado==$perfe->id_empleado){
                 foreach( $tss as $tsse){
+                    foreach($asignaciones as $asigna){
+                        if($asigna->empleado_id_empleado==$row->id_empleado){
+                        if($asigna->asignaciones_id==$tsse->id){
                     if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                     if($tsse->tipo_asigna=="INCREMENTO"){
                       foreach( $estadoasigna as $esta){
@@ -1476,6 +1563,9 @@ foreach($perf as $perfe){
                         }
                         }
                       }  
+                    }
+                    }
+                    }
                     }
                     }
                    }
@@ -1557,6 +1647,7 @@ foreach($perf as $perfe){
                     $perf=Perfiles::all();
                     $otro=Otros::all();
                     $estadoasigna=estado_asignaciones::all();
+                    $asignaciones=Asignaciones_empleado::all();
                     $otroD=0;
                     $sum=0;
                     $sum2=0;
@@ -1635,6 +1726,9 @@ foreach($perf as $perfe){
                             if($tipo==$perfe->id_perfiles){
                                 if($row->id_empleado==$perfe->id_empleado){
                                 foreach( $tss as $tsse){
+                                    foreach($asignaciones as $asigna){
+                                        if($asigna->empleado_id_empleado==$row->id_empleado){
+                                        if($asigna->asignaciones_id==$tsse->id){
                                     if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                     if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                         foreach($estadoasigna as $estados)
@@ -1654,6 +1748,9 @@ foreach($perf as $perfe){
                                         }
                                         }
                                         }
+                                        }
+                                        }
+                                        }
                         
                                     }
                                    }
@@ -1666,6 +1763,9 @@ foreach($perf as $perfe){
                                 if($tipo==$perfe->id_perfiles){
                                     if($row->id_empleado==$perfe->id_empleado){
                                     foreach( $tss as $tsse){
+                                        foreach($asignaciones as $asigna){
+                                            if($asigna->empleado_id_empleado==$row->id_empleado){
+                                            if($asigna->asignaciones_id==$tsse->id){
                                         if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                         if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                             if($tsse->tipo=="PORCENTAJE"){
@@ -1680,6 +1780,9 @@ foreach($perf as $perfe){
                             
                                         }
                                         }
+                                        }
+                                        }
+                                        }
                                        }
                                     }
                                     
@@ -1690,6 +1793,9 @@ foreach($perf as $perfe){
         if($tipo==$perfe->id_perfiles){
             if($row->id_empleado==$perfe->id_empleado){
             foreach( $tss as $tsse){
+                foreach($asignaciones as $asigna){
+                    if($asigna->empleado_id_empleado==$row->id_empleado){
+                    if($asigna->asignaciones_id==$tsse->id){
                 if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                 if($tsse->tipo_asigna=="INCREMENTO"){
                         if($tsse->tipo=="PORCENTAJE"){
@@ -1704,6 +1810,9 @@ foreach($perf as $perfe){
                 }
                 }
                 }
+                }
+                }
+                }
                }
            }
     
@@ -1713,6 +1822,9 @@ foreach($perf as $perfe){
                 if($tipo==$perfe->id_perfiles){
                     if($row->id_empleado==$perfe->id_empleado){
                     foreach( $tss as $tsse){
+                        foreach($asignaciones as $asigna){
+                            if($asigna->empleado_id_empleado==$row->id_empleado){
+                            if($asigna->asignaciones_id==$tsse->id){
                         if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                         if($tsse->tipo_asigna=="INCREMENTO"){
                           foreach( $estadoasigna as $esta){
@@ -1737,6 +1849,9 @@ foreach($perf as $perfe){
                           }  
                         }
                         }
+                        }
+                        }
+                        }
                        }
                    }
                                 
@@ -1755,6 +1870,8 @@ foreach($perf as $perfe){
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
                 $estado=estado_asignaciones::all();
+                $asignaciones=Asignaciones_empleado::all();
+                
                 $sum=0;
                 $sumEstado=0;
 
@@ -1763,6 +1880,9 @@ foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
                         if($row->id_empleado==$perfe->id_empleado){
                         foreach( $tss as $tsse){
+                            foreach($asignaciones as $asigna){
+                                if($asigna->empleado_id_empleado==$row->id_empleado){
+                                if($asigna->asignaciones_id==$tsse->id){
                             if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                             if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                 foreach($estado as $estados)
@@ -1782,6 +1902,9 @@ foreach($perf as $perfe){
                                 }
                                 }
                                 }
+                                }
+                                }
+                                }
                 
                             }
                            }
@@ -1793,6 +1916,9 @@ foreach($perf as $perfe){
                         if($tipo==$perfe->id_perfiles){
                             if($row->id_empleado==$perfe->id_empleado){
                             foreach( $tss as $tsse){
+                                foreach($asignaciones as $asigna){
+                                    if($asigna->empleado_id_empleado==$row->id_empleado){
+                                    if($asigna->asignaciones_id==$tsse->id){
                                 if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                 if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                     if($tsse->tipo=="PORCENTAJE"){
@@ -1805,6 +1931,9 @@ foreach($perf as $perfe){
                                         }
                                     }
                     
+                                }
+                                }
+                                }
                                 }
                                 }
                                }
@@ -1820,6 +1949,7 @@ foreach($perf as $perfe){
                     $tss=Asignaciones::all();
                     $perf=Perfiles::all();
                     $estado=estado_asignaciones::all();
+                    $asignaciones=Asignaciones_empleado::all();
                     $otro=Otros::all();
                     $otrostotal=0;
                     $sum=0;
@@ -1829,6 +1959,9 @@ foreach($perf as $perfe){
                         if($tipo==$perfe->id_perfiles){
                             if($row->id_empleado==$perfe->id_empleado){
                             foreach( $tss as $tsse){
+                                foreach($asignaciones as $asigna){
+                                    if($asigna->empleado_id_empleado==$row->id_empleado){
+                                    if($asigna->asignaciones_id==$tsse->id){
                                 if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0 ){
                                 if($tsse->tipo_asigna=="INCREMENTO"){
                                         if($tsse->tipo=="PORCENTAJE"){
@@ -1843,6 +1976,9 @@ foreach($perf as $perfe){
                                 }
                                 }
                                 }
+                                }
+                                }
+                                }
                                }
                            }
     
@@ -1851,6 +1987,9 @@ foreach($perf as $perfe){
                                 if($tipo==$perfe->id_perfiles){
                                     if($row->id_empleado==$perfe->id_empleado){
                                     foreach( $tss as $tsse){
+                                        foreach($asignaciones as $asigna){
+                                            if($asigna->empleado_id_empleado==$row->id_empleado){
+                                            if($asigna->asignaciones_id==$tsse->id){
                                         if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                         if($tsse->tipo_asigna=="INCREMENTO"){
     
@@ -1875,6 +2014,9 @@ foreach($perf as $perfe){
     
                                             }
                                           }  
+                                        }
+                                        }
+                                        }
                                         }
                                         }
                                        }

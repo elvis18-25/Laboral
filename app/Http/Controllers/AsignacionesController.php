@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\estado_asignaciones;
 use App\Models\estados_isr;
+use App\Models\Equipos;
+use App\Models\Asignaciones_empleado;
+use App\Models\Empleado;
+use App\Models\Puesto;
 
 class AsignacionesController extends Controller
 {
@@ -18,7 +22,9 @@ class AsignacionesController extends Controller
      */
     public function index()
     {
-        return view('Asignaciones.index');
+        $equipo=Equipos::all();
+        $empleados=Empleado::all();
+        return view('Asignaciones.index',compact('equipo','empleados'));
     }
 
     /**
@@ -39,32 +45,48 @@ class AsignacionesController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+
         $asigna=new Asignaciones();
         $tipo=request('tipo');
         $forma=request('forma');
-
-
-        $asigna->Nombre=request('name');
-
+        $grupo=request('grupo');
+        
+        
         if($tipo==1){
-        $asigna->tipo_asigna="DEDUCCIÓN";
+            $asigna->tipo_asigna="DEDUCCIÓN";
         }else{
-        $asigna->tipo_asigna="INCREMENTO";  
+            $asigna->tipo_asigna="INCREMENTO";  
         }
-
+        
         if($forma==3){
             $asigna->tipo="MONTO";
         }else{
             $asigna->tipo="PORCENTAJE"; 
         }
 
-
-
+        $asigna->Nombre=request('name');
         $asigna->Monto=request('monto');
         $asigna->id_empresa=Auth::user()->id_empresa;
         $asigna->user=Auth::user()->name;
+        $asigna->grupo=$grupo;
         $asigna->estado=0;
         $asigna->save();
+        
+        $arreglo=request('arreglo');
+        $n=count($arreglo);
+        
+        for ($i=0; $i < $n; $i++) { 
+            if(!empty($arreglo[$i])){
+                $input['empleado_id_empleado']=$arreglo[$i];
+                $input['asignaciones_id']=$asigna->id;
+                $input['estado']=0;
+                $input['id_empresa']=Auth::user()->id_empresa;
+                $perfiles=Asignaciones_empleado::create($input);
+            }
+        }
+
+
 
     }
 
@@ -77,6 +99,11 @@ class AsignacionesController extends Controller
     public function show($id)
     {
         
+    }
+    public function agregarEmpleado($id)
+    {
+        $empleado=Empleado::findOrFail($id);
+        return view('Asignaciones.Plantilla',compact('empleado'));
     }
 
     /**
@@ -93,7 +120,19 @@ class AsignacionesController extends Controller
     public function viewasigna($id)
     {
         $asigna=Asignaciones::findOrFail($id);
-        return view('Asignaciones.edit',compact('asigna'));
+        $empleado_asigna=Asignaciones_empleado::where('asignaciones_id','=',$id)->get();
+        $equipo=Equipos::all();
+        $Arreglo=[];
+        $p=0;
+
+        foreach($empleado_asigna as $empleado_asignas){
+            $Arreglo[$p]=$empleado_asignas->empleado_id_empleado;
+            $p++;
+        }
+        $empleados=Empleado::whereIn('id_empleado',$Arreglo)->get();
+        $puesto=Puesto::all();
+        // $grupo=Equipos::where('grupo','=',$asigna->grupo)->first();
+        return view('Asignaciones.edit',compact('asigna','equipo','empleados','puesto'));
     }
 
     /**
@@ -134,6 +173,26 @@ class AsignacionesController extends Controller
         $asigna->user=Auth::user()->name;
         $asigna->estado=0;
         $asigna->save();
+
+        $arreglo=request('arreglo');
+        $asignaciones=Asignaciones_empleado::where('asignaciones_id','=',$id)->get();
+
+        foreach($asignaciones as $asignacion){
+            $asignacion->delete();
+        }
+        
+        $n=count($arreglo);
+        
+        for ($i=0; $i < $n; $i++) { 
+            if(!empty($arreglo[$i])){
+                $input['empleado_id_empleado']=$arreglo[$i];
+                $input['asignaciones_id']=$asigna->id;
+                $input['estado']=0;
+                $input['id_empresa']=Auth::user()->id_empresa;
+                $perfiles=Asignaciones_empleado::create($input);
+            }
+        }
+
     }
 
     /**

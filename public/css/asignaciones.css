@@ -141,3 +141,55 @@ margin-left: -26px;
 .buttons-print{
   display: none;
 }
+
+.right{
+  text-align: right;
+}
+.center{
+  text-align: center;
+}
+.dataTables_scrollHeadInner{
+width: 100% !important;
+}
+#listado-table_filter{
+margin-left: 33%;
+}
+.list{
+width: 100% !important;
+}
+.listadoth{
+font-size: 12px !important; 
+text-align: center !important; 
+width: 40% !important;
+}
+.listadoth2{
+font-size: 12px !important;
+width: 29% !important;
+}
+.listadoth3{
+font-size: 12px !important;
+width: 24% !important;
+}
+.boldend{
+text-align: center;
+}
+.nametd{
+width: 296px !important;
+}
+.cedulatd{
+width: 124px !important;
+}
+.cargotd{
+width: 238px !important;
+}
+
+.tablesemples{
+  width: 100% !important;
+}
+#Empleadotable_filter{
+margin-left: 48% !important;
+}
+
+#Empleadotable>tbody>tr>td{
+  padding: 5px 7px !important;
+}
