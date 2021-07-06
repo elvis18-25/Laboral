@@ -20,8 +20,8 @@
                     <h4 class="card-title TitleCard" style="font-size: 16px !important; font-weight: bold !important;"><b>NOMINAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                  <a href="#" class="btn btn-sm btn-warning redondo" style="top: -14px; position: relative;"  title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-users" style="margin-left: -5px; top: 6px; position: relative; font-size: 17px;"></i></a>
-                  <a href="#" class="btn btn-sm btn-success redondo"style="top: -14px; position: relative;" id="btnplusemple"  title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;" ></i></a>
+                  <a href="#" class="btn btn-sm btn-warning redondo" style="top: -14px; position: relative; width: 36px !important; height: 35px !important;" title="Agregar Perfiles" data-toggle="modal" data-target="#Mnomina" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-users" style="margin-left: -9px; top: 3px; position: relative; font-size: 19px;"></i></a>
+                  <a href="#" class="btn btn-sm btn-success redondo"style="top: -14px; position: relative; width: 36px !important; height: 35px !important;" id="btnplusemple"  title="Agregar Empleado " data-toggle="modal" data-target="#emplados" ><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-user-plus" style="margin-left: -4px; top: 4px; position: relative; font-size: 16px;" ></i></a>
                 
                 </div>
                 @include('Nominas.perfiles')
@@ -276,7 +276,7 @@ jQuery.extend(jQuery.validator.messages, {
   min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
 });
 
-
+$("#figures").append("$");
   $("#formardC").on('change',function(){
  if($(this).val()==3){
      $("#figures").empty();
@@ -297,16 +297,7 @@ $('.bs-timepicker').timepicker();
 
   $(document).ready(function(){
     
-//     if (window.history && window.history.pushState) {
-
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-
-// });
-
-// }
+    $('.money').mask("#,##0.00", {reverse: true});
 
 var estado=$("#accionesf").val();
 
@@ -335,41 +326,7 @@ var valor =$("#inputCheckBox").val();
 
 });
 
-// function backhome(){
-//   if (window.history && window.history.pushState) {
 
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-
-// });
-
-// }
-// }
-
-
-// function backsave(){
-//   Swal.fire({
-//   title: 'Seguro que deseas salir?',
-//   text: "No se podra revertir,¿Deseas guardarlo? !",
-//   icon: 'warning',
-//   showDenyButton: true,
-//   showCancelButton: true,
-//   confirmButtonText: `Si, Guardar`,
-//   denyButtonText: `No, Salir`,
-// }).then((result) => {
-//   /* Read more about isConfirmed, isDenied below */
-//   if (result.isConfirmed) {
-//     $("#seave").trigger("click");
-//   } else if (result.isDenied) {
-//     history.back();
-//   }else{
-//     backhome();
-//   }
-// })
-
-// }
 
 
 t=0;
@@ -1344,6 +1301,46 @@ $('#Mnomina').keyup(function(e){
     }
 
 });
+
+
+function calcular(){
+   var salario=$("#montoOP").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#montoC").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
 
 function saveotros(){
   var name=$("#nameC").val();

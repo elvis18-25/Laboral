@@ -28,7 +28,7 @@
                         <table class="table table-striped table-hover" id="Detalles">
                             <thead>
                               <tr>
-                                <th class="TitleP">NOMBRE</th>
+                                <th class="TitleP">DESCRIPCIÓN</th>
                                 <th class="TitleP">TIPO</th>
                                 <th class="TitleP">MONTO</th>
                                 <th class="TitleP">P.MONTO</th>
@@ -55,7 +55,7 @@
                       <table class="table table-striped table-hover" id="aumeto">
                   <thead>
                 <tr>
-                  <th class="TitleP">NOMBRE</th>
+                  <th class="TitleP">DESCRIPCIÓN</th>
                   <th class="TitleP">TIPO</th>
                   <th class="TitleP">MONTO</th>
                   <th class="TitleP">P.MONTO</th>
@@ -83,7 +83,7 @@
                       <table class="table table-striped table-hover" id="ot">
                   <thead>
                     <tr>
-                      <th class="TitleP">NOMBRE</th>
+                      <th class="TitleP">DESCRIPCIÓN</th>
                       <th class="TitleP">TIPO</th>
                       <th class="TitleP">FORMA</th>
                       <th class="TitleP">MONTO</th>

@@ -28,8 +28,7 @@
                 <div class="col-sm-5 mb-3">
                     <label style="color: black"><b>{{ __('FORMA ') }}</b></label>
                     <select  class="form-control selec" name="formae"  id="formardC" >
-                        <option selected disabled>ElEGIR...</option>
-                        <option value="3">MONTO</option>
+                        <option selected value="3">MONTO</option>
                         <option value="4">PORCENTAJE</option>
                       </select>
                 </div>
@@ -41,8 +40,9 @@
                     <div class="input-group-prepend" style="top: 0px; position: relative; height: 38px;">
                         <div class="input-group-text" style="color: black"><span id="figures"></span></div>
                       </div>
-                    <input type="text" name="monto" autofocus id="montoC"   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder=""  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
-                </div>
+                    <input type="text" name="monto" autofocus id="montoOP" style="text-align: right;" onkeyup="calcular();" class="form-control money" placeholder=""  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+                      <input type="text" name="" id="montoC" value="" hidden>
+                  </div>
             </div>
         </div>
         <div class="modal-footer">

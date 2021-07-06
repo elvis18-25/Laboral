@@ -11,7 +11,7 @@
         <div class="modal-body">
             <div class="form-row">
                 <div class="col-sm-6">
-                    <label style="color: black"> <b>{{ __('NOMBRE ') }}</b></label>
+                    <label style="color: black"> <b>{{ __('DESCRIPCIÓN ') }}</b></label>
                     <input type="text" name="name" autofocus id="name" value="{{$otros->descripcion}}"   class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                 </div>
     
@@ -56,31 +56,44 @@
                         @endif
                       </select>
                 </div>
+                <br>
               
                 <div class="col-sm-6">
-                    <label style="color: black"></label>
+                  <label style="color: black"><b>{{ __('MONTO ') }}</b></label>
+
     
-                    <div class="input-group" style="top: 5px;">
+                    <div class="input-group" >
                     <div class="input-group-prepend" style="top: 0px; position: relative; height: 38px;">
                         <div class="input-group-text" style="color: black"><span id="figura"></span></div>
                       </div>
-                    <input type="text" name="monto" autofocus id="monto" value="{{$otros->monto}}"  class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder=""  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
-                </div>
+                    <input type="text"  style="text-align: right;"  id="montoOPC" value="{{number_format($otros->monto,2)}}" onkeyup="calculares();" class="form-control money ">
+                    <input type="text"  id="monto" value="{{$otros->monto}}" hidden>
+                  </div>
             </div>
         </div>
 
         <div class="modal-footer">
             <input type="text" id="empleotros" value="{{$empleados->id_empleado}}" hidden>
             <input type="text" id="perfile" value="{{$otros->id_perfiles}}" hidden>
+            <input type="text" id="inputType" value="{{$otros->tipo}}" hidden>
           {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-          <button type="button" class="btn btn-info btn-sm" onclick="updateotros('{{$otros->id}}');"><i class="fas fa-save"></i>&nbsp;Guardar</button>
-          <button type="button" class="btn btn-danger btn-sm" onclick="deleteotros('{{$otros->id}}',{{$empleados->id_empleado}});"><i class="fas fa-trash"></i>&nbsp;Eliminar</button>
+          <button type="button" class="btn btn-danger btn-sm redondo" onclick="deleteotros('{{$otros->id}}',{{$empleados->id_empleado}});"><i class="fas fa-trash"></i></button>
+          <button type="button" class="btn btn-info btn-sm redondo" onclick="updateotros('{{$otros->id}}');"><i class="fas fa-save"></i></button>
         </div>
       </div>
     </div>
 
 
     <script>
+
+$('.money').mask("#,##0.00", {reverse: true});
+
+var figura=$("#inputType").val();
+if (figura=="MONTO") {
+  $("#figura").append("$");
+} else {
+  $("#figura").append("%");
+}
         function updateotros(e){
     var name=$("#name").val();
    var tipo=$("#inputState").val();
@@ -128,6 +141,46 @@
  }   
 
 });
+
+
+function calculares(){
+   var salario=$("#montoOPC").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#monto").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
 
 function deleteotros(e,p){
     var url="{{url('deleteotros')}}/"+e; 
