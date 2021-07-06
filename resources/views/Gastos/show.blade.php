@@ -311,50 +311,10 @@
 totalgastoConcepto();
 totalgastoFijo();
 
-// if (window.history && window.history.pushState) {
 
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-
-// });
-
-// }
 $("#monto").mask('0#');
-// function backhome(){
-//   if (window.history && window.history.pushState) {
+$('.money').mask("#,##0.00", {reverse: true});
 
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-// });
-
-// }
-// }
-
-// function backsave(){
-//   Swal.fire({
-//   title: 'Seguro que deseas salir?',
-//   text: "No se podra revertir,¿Deseas guardarlo? !",
-//   icon: 'warning',
-//   showDenyButton: true,
-//   showCancelButton: true,
-//   confirmButtonText: `Si, Guardar`,
-//   denyButtonText: `No, Salir`,
-// }).then((result) => {
-//   /* Read more about isConfirmed, isDenied below */
-//   if (result.isConfirmed) {
-//     $("#seave").trigger("click");
-//   } else if (result.isDenied) {
-//     history.back();
-//   }else{
-//     backhome();
-//   }
-// })
-
-// }
 
 
 t=0;
@@ -436,6 +396,46 @@ $('#descr').keypress(function(tecla)
 
 
 
+function calcular(){
+   var salario=$("#montoOPS").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#monto").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
+
+
 function MFDC(){
   var id=$("#input").val();
   var url = "{{ url('modalcreateedit')}}/"+id;
@@ -470,54 +470,6 @@ function totalgeneral(){
             $("#totalgeneral").append(resgeneral);
 }
 
-// function totalgasto(){
-//              var restnomina=parseInt($("#nominatotaldf").val(),10);
-//               var concepextras=parseInt( $("#conceptosd").val(),10);
-//               var totalconcepto=parseInt($("#totalconcepto").val(),10);
-//               var totalfijo=parseInt($("#totalfijo").val(),10);
-
-//               if(totalconcepto!=0){
-//                 var sum=restnomina+totalfijo+concepextras+totalconcepto;
-//               }else{
-//                 var sum=restnomina+totalfijo+concepextras;
-                
-//               }
-
-
-//               var sum1=totalfijo;
-//               res= numberFormat2.format(sum1); 
-//               var resgeneral= numberFormat2.format(sum); 
-
-              
-//             $("#totalnomina").empty();
-//             $("#totalnomina").append(res);
-
-//             $("#totalgeneral").empty();
-//             $("#totalgeneral").append(resgeneral);
-            
-//             $("#formes").attr('value',totalfijo);
-//             $("#totl").attr('value',totalfijo);
-            
-//             if($("#totl").val()!=0){
-//               $("#totl").attr('value',sum);
-              
-//             }
-
-            
-//             cont=parseInt($("#formes").val());
-
-//             var totalconcepto=$("#totalconcepto").val();
-//             var restotal= numberFormat2.format(totalconcepto); 
-            
-//             $("#totalperiodo").empty();
-//             $("#totalperiodo").append(restotal);
-//             var idnominas=$("#idnomina").val();
-//             if(idnominas!=0){
-              
-//               VerficateNomina();
-//             }
-
-//           }
 
 function totalgastoConcepto(){
   var e=$("#input").val();

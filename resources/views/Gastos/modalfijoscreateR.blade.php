@@ -38,8 +38,10 @@
                     </div>
                     <div class="col-sm-4" id="txtmonto">
                         <label for=""><b> MONTO</b></label>
-                        <input type="text" name=""  value="" class="form-control" id="txtMmonto" placeholder="Monto">
-                    </div>
+                        <input type="text" name=""  value="" style="text-align: right;" onkeyup="calculares();" class="form-control money" id="txtmontos" placeholder="Monto">
+                        <input type="text" name="" id="txtMmonto" hidden>
+
+                      </div>
                 
                     <div class="col-sm-8" id="selectFijos">
                       <label for=""><b>ELEGIR GASTO</b></label>
@@ -66,7 +68,8 @@
  
     <script>
 $("#selectFijos").hide();
-$("#txtMmonto").mask('0#');
+// $("#txtMmonto").mask('0#');
+$('.money').mask("#,##0.00", {reverse: true});
 
 $("#exampleRadios1").change(function(){
   if($(this).val()=="option1"){
@@ -88,8 +91,49 @@ $("#exampleRadios1").change(function(){
       
       $("#txtMconepto").val(" ");
       $("#txtMmonto").val(" ");
+      $("#txtmontos").val(" ");
   }
  });
+
+ function calculares(){
+   var salario=$("#txtmontos").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#txtMmonto").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
+
 options2 = { style: 'currency', currency: 'USD' };
 numberFormat2 = new Intl.NumberFormat('en-US', options2);
  function saveFijos(){

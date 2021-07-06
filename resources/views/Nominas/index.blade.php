@@ -342,11 +342,14 @@ $("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--co
 });
 
 // alert(img);
-window.onbeforeunload = function() {
-  // 
+
+
+
+window.onbeforeunload = function(e) {
+
   if(t==0){
       $('.o-page-loader').remove();
-      return "¿Estás seguro que deseas salir de la actual página?"
+        return  "H"
     }
     
   }  

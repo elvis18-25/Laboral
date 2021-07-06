@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel" style="font-size: 16px !important; font-weight: bold !important;"><b>EDITAR CONCEPTO</b></h5>
+            <h5 class="modal-title" id="exampleModalLabel" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO GASTO FIJO</b></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -11,11 +11,12 @@
               <div class="form-row">
                   <div class="form-group col-md-8">
                     <label for="inputEmail4"><b>CONCEPTO</b></label>
-                    <input type="text" class="form-control" placeholder="Concepto"  id="nombreC"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+                    <input type="text" class="form-control" placeholder="Concepto"   id="nombreC"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
                   </div>
                   <div class="form-group col-md-4">
                       <label for="inputEmail4"><b>MONTO</b></label>
-                      <input type="text" style="text-align: right;"  class="form-control" placeholder="Monto" id="montsC">
+                      <input type="text" style="text-align: right;" onkeyup="calculares();"  class="form-control money" placeholder="Monto" id="montsCrs">
+                      <input type="text" name="" id="montsC" hidden>
                     </div>
               </div>
           </div>
@@ -28,7 +29,50 @@
   
     <script>
         $("#montsC").mask('0#');
+        $('.money').mask("#,##0.00", {reverse: true});
   
+
+  function calculares(){
+   var salario=$("#montsCrs").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#montsC").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
+
+
+
    $('.elimini').on('click',function(){
   
    var id=$(this).val();

@@ -418,7 +418,8 @@ errorPlacement: function(error, element) {
 
 });
 
-$("#monto").mask('0#');
+// $("#monto").mask('0#');
+$('.money').mask("#,##0.00", {reverse: true});
 totalgasto();
   var hoy = new Date();
   var fecha = moment(hoy);
@@ -535,10 +536,44 @@ $('.montro').keypress(function(tecla)
    }
 });
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+function calcular(){
+   var salario=$("#montoOPS").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#monto").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
 
 
 
@@ -817,7 +852,7 @@ var p=0;
 function agregar(){
   $('.datosInput').val('');
   $("#concepto").focus();
-  $("#conceptomodal").trigger("click");
+  // $("#conceptomodal").trigger("click");
   var valor=parseFloat($("#nominatotaldf").val(),10);
   var cont=parseFloat($("#totl").val(),10);
   

@@ -336,10 +336,10 @@
                             <h2 class="card-title"><b> GASTOS DE LA EMPRESA</b></h2>
                         </div>
                         <div class="col-sm-6">
-                          {{-- <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: right; color: black; float: right;">
+                          <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: right; color: black; float: right;">
                             <i class="fa fa-calendar"></i>&nbsp;
                             <span></span> <i class="fa fa-caret-down"></i>
-                        </div> --}}
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -620,30 +620,30 @@
 
     SerchEventos(start,end);
     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    // $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
 
 
-    // function cb(start, end) {
-    //     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    // }
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
 
-    // $('#Reportegastos').daterangepicker({
-    //     startDate: start,
-    //     endDate: end,
-    //     ranges: {
-    //        'Hoy': [moment(), moment()],
-    //        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    //        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-    //        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-    //        'Este mes': [moment().startOf('month'), moment().endOf('month')],
-    //        'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    //     }
-    //   }, function (start, end) {
+    $('#Reportegastos').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Hoy': [moment(), moment()],
+           'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+           'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+           'Este mes': [moment().startOf('month'), moment().endOf('month')],
+           'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+      }, function (start, end) {
           
-    //       $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    //       chart.update({ data:start });
-    //     });
+          $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+          chart.update({ background: true })
+        });
 
     $('#reportrange').daterangepicker({
         startDate: start,

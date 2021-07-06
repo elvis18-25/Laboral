@@ -19,7 +19,8 @@
 
             <div class="form-group col-md-4">
               <label for="inputEmail4"><b>MONTO</b></label>
-                <input type="text" onFocus="GanoFoco();" style="text-align: left;"  onBlur="PierdoFoco();"  value="" id="monto"   class="form-control datosInput montro" placeholder="Monto">
+                <input type="text" onFocus="GanoFoco();" style="text-align: right;" onkeyup="calcular();"  onBlur="PierdoFoco();"  value="" id="montoOPS"   class="form-control datosInput money" placeholder="Monto">
+                <input type="text" name="" id="monto" value="" hidden>
             </div>
         </div>
           </div>
