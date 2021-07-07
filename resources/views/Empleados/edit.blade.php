@@ -1499,10 +1499,7 @@ $('#crop').click(function(){
 });
 </script>
 <style>
-  .selec option{
-    text:rgb(3, 3, 3);
-    background-color:#525f7f;;
-}
+
 
 #canvas {
   height: 400px;

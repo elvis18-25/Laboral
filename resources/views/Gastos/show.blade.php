@@ -1089,7 +1089,7 @@ function ErroresGeneral(){
 } */
 
 table tr td{
-  padding: 4px 7px !important;
+  padding: 10px 7px !important;
 }
 
   </style>

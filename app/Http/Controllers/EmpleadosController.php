@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Empleado;
 use App\Models\Puesto;
-use App\Models\sexo;
+use App\Models\Sexo;
 use App\Models\empleado_puesto;
 use App\Models\Pagos;
 use App\Models\Asignaciones;

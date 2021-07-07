@@ -5,6 +5,32 @@
   .error{
     border-color: red !important;
   }
+  .disabledclass{
+    background-color: #e2e2e2;
+  color: #000000;
+  }
+
+
+  .disabledclass{
+    background-color: #e2e2e2;
+  color: #000000;
+  }
+  .card-title{
+    margin-left: -17px;
+    width: 102% !important;
+    /* height: 100px !important; */
+    padding: 15px !important;
+    background-color: #4054b2 !important;
+    /* box-shadow: 10px 10px #80808040 !important; */
+    color: white !important;
+    position: relative;
+    top: -15px;
+}
+
+table tr td{
+  padding: 10px 7px !important;
+}
+
 </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
@@ -160,7 +186,8 @@
             </div>
           </div>
           <div class="card-body">
-            <table class="table tablesorter " id="gastonomina-table" style="top: -34px;  position: relative;" >
+            <div style=" max-height:148px; overflow:auto; font-size:small; top:-41px; position: relative; ">
+            <table class="table tablesorter " id="gastonomina-table" style="top: -2px;  position: relative;" >
               <thead class="text-primary">
                   <tr>
                       <th style="text-align: center !important; "  class="TitleCp"><b>CONCEPTO</b></th>
@@ -170,15 +197,15 @@
               <tbody>
                 
               </tbody>
-
-          </table>
+            </table>
           </div>
+        </div>
           <div class="card-footer py-4">
             <nav class="d-flex justify-content-end" aria-label="...">
               <b class="float-right" style="color: black;
               margin-right: 15px;
               font-size: 16px;
-              top: 198px;
+              top: 206px;
               position: absolute;">TOTAL: <span id="totalnominames"></span></b>
             </nav>
           </div>
@@ -696,7 +723,7 @@ var sum=0;
           var id=$(result).attr('action');
           arraynomina[b]=id;
           b++;
-
+          succesNomina();
           $("#arreglo").attr('value',arraynomina);
           refreshSelect(arraynomina);
 
@@ -883,6 +910,7 @@ function agregar(){
         $("#conceptosd").attr('value',formpago);
 
    re= numberFormat2.format(nuevoSujeto.monto);
+   succesCapturar();
 
 
 
@@ -1092,6 +1120,47 @@ function errornomina() {
 }
 
 
+function succesNomina(){
+  Command: toastr["success"]("se ha agregado la nomina", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+}
+function succesCapturar(){
+  Command: toastr["success"]("se ha agregado el concepto", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+}
+
 function vernomina(e){
   var url = "{{ url('vernominaCreate')}}/"+e;
      var data = '';
@@ -1186,32 +1255,3 @@ $("#gastos-table tbody").on('click','tr',function(){
     
 @endsection
 
-<style>
-  .disabledclass{
-    background-color: #e2e2e2;
-  color: #000000;
-  }
-
-
-  <style>
-  .disabledclass{
-    background-color: #e2e2e2;
-  color: #000000;
-  }
-  .card-title{
-    margin-left: -17px;
-    width: 102% !important;
-    /* height: 100px !important; */
-    padding: 15px !important;
-    background-color: #4054b2 !important;
-    /* box-shadow: 10px 10px #80808040 !important; */
-    color: white !important;
-    position: relative;
-    top: -15px;
-}
-
-table tr td{
-  padding: 4px 7px !important;
-}
-
-  </style>
