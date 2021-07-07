@@ -23,7 +23,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 // Route::get('Empleadologin','App\Http\Controllers\EmpleadologinController@showLoginForm');
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
-// Route::get('chartjs','App\Http\Controllers\HomeController@chartjs');
+Route::post('SerchGastos','App\Http\Controllers\HomeController@SerchGastos');
 
 // Route::get('sample_chart', 'App\Charts\SampleChart@sample_chart');
 

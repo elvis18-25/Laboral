@@ -5,7 +5,7 @@
         text-align: center;
     }
     .table>tbody>tr>td{
-            padding: 7px 7px !important;
+            padding: 5px 7px !important;
         }  
     </style>
     <link rel="stylesheet" href="{{asset('css/roles.css')}}">
@@ -64,7 +64,7 @@
             <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>
-                <div class="form-check" style="margin-left: 20px;">
+                <div class="form-check" style="margin-left: 52px;">
                     <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggle(this)' >
                         <span class="form-check-sign">

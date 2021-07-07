@@ -336,7 +336,7 @@
                             <h2 class="card-title"><b> GASTOS DE LA EMPRESA</b></h2>
                         </div>
                         <div class="col-sm-6">
-                          <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: right; color: black; float: right;">
+                          <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 27%; float: right; color: black; float: right;">
                             <i class="fa fa-calendar"></i>&nbsp;
                             <span></span> <i class="fa fa-caret-down"></i>
                         </div>
@@ -346,12 +346,12 @@
                 <div class="card-body">
                     <div class="chart-area">
                         {{-- <canvas id="chartBig1d"></canvas> --}}
-                        <div id="chart" style="height: 147%;
+                        <div id="chart" style="height: 251%;
                         width: 120%;
                         top: -32px;
                         position: relative;
                         margin-left: -131px;
-                        max-height: 305px;"></div>
+                        max-height: 344px;"></div>
                         {{-- {!! $bar!!} --}}
                         {{-- <div id="chart-container"></div> --}}
                       </div>
@@ -615,12 +615,15 @@
 
 
 
-      var start = moment();
-    var end = moment();
+      var start = moment().startOf('year');
+    var end = moment().endOf('year');
 
-    SerchEventos(start,end);
-    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+   var startEvent = moment().startOf('month');
+    var endEvent = moment().endOf('month');
+
+    SerchEventos(startEvent,endEvent);
+    $('#reportrange span').html(startEvent.format('MMMM D, YYYY') + ' - ' + endEvent.format('MMMM D, YYYY'));
+    $('#Reportegastos span').html(start.format('YYYY') + ' - ' + end.format(' YYYY'));
 
 
 
@@ -631,23 +634,69 @@
     $('#Reportegastos').daterangepicker({
         startDate: start,
         endDate: end,
+        showCustomRangeLabel:false,
+
+        "locale": {
+            "separator": " - ",
+            "applyLabel": "Guardar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "Desde",
+            "toLabel": "Hasta",
+            "customRangeLabel": "Personalizar",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+        },
         ranges: {
-           'Hoy': [moment(), moment()],
-           'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-           'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-           'Este mes': [moment().startOf('month'), moment().endOf('month')],
-           'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+           'Este año': [moment().startOf('year'), moment().endOf('year')],
+           'El año pasado': [moment().subtract(1, 'year'), moment().subtract(1, 'year')],
+           'Hace 2 años': [moment().subtract(2, 'year'), moment().subtract(2, 'year')],
+           'Hace 4 años': [moment().subtract(4, 'year'), moment().subtract(4, 'year')],
         }
       }, function (start, end) {
           
-          $('#Reportegastos span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-          chart.update({ background: true })
+          $('#Reportegastos span').html(start.format('YYYY') + ' - ' + end.format('YYYY'));
+          updateChats();
         });
 
+        function  updateChats(){
+          var url = "{{url('SerchGastos')}}";
+          var start=$("#Reportegastos").data('daterangepicker').startDate.format('YYYY-MM-DD');
+          var end=$("#Reportegastos").data('daterangepicker').endDate.format('YYYY-MM-DD');
+          var data = {start:start,end:end};
+          $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              
+              chart.update({ data: { 
+                chart: { labels: result.meses },
+            datasets: [
+              { name: 'Gastos', values: result.gastos },
+              { name: 'Nominas', values: result.nomi},
+            ],
+              } })
+   
+             
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    }
+             });
+
+        };
+
     $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
+        startDate: startEvent,
+        endDate: endEvent,
         ranges: {
            'Hoy': [moment(), moment()],
            'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -656,11 +705,11 @@
            'Este mes': [moment().startOf('month'), moment().endOf('month')],
            'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
-      }, function (start, end) {
+      }, function (endEvent, endEvent) {
           
-          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+          $('#reportrange span').html(startEvent.format('MMMM D, YYYY') + ' - ' + endEvent.format('MMMM D, YYYY'));
           // table.ajax.reload();
-          SerchEventos(start,end);
+          SerchEventos(startEvent,endEvent);
         });
 
     // cb(start, end);
