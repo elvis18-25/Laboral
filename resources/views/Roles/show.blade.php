@@ -7,7 +7,7 @@
         text-align: left;
     }
     .table>tbody>tr>td{
-            padding: 7px 7px !important;
+            padding: 5px 7px !important;
         } 
     </style>
 @section('content')

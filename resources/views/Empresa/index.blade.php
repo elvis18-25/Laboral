@@ -421,6 +421,8 @@
 <!-----------------------------------------------------------------------AJUSTE DEL SISTEMA----------------------------------------------------------------------->
 <div class="tab-pane fade" id="VLO" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 <form action="{{url('Savepermis')}}" method="post">
+
+  
   <input type="text" value="{{$roles->id}}" name="rol" hidden>
   @csrf
   <div class="col-md-12">
@@ -428,7 +430,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>MODULOS</b></h4>
+                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>AJUSTES DEL SISTEMA</b></h4>
                 </div>
                 <div class="col-4 text-right">
                 </div>
@@ -436,127 +438,97 @@
         </div>
         @csrf
         <div class="card-body">
-            <div class="form-row">
-
-                <div class="col-sm-4">
-
-                </div>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#modulos" role="tab" aria-controls="home" aria-selected="true">MODULOS</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#dashboards" role="tab" aria-controls="profile" aria-selected="false">DASHBOARD</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#acciones" role="tab" aria-controls="contact" aria-selected="false">ACCIONES</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="modulos" role="tabpanel" aria-labelledby="home-tab">
+              <table class="table table-striped rolesdws" id="roles">
+                <thead>
+                  <tr>
+                    <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"><b>
+                        <div class="form-check" style="margin-left: 14px;">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleDonm(this)' >
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                                {{-- <h5><b>TODOS</b></h5> --}}
+                            </label>
+                        </div>    
+                    </b></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @include('Empresa.Plantillas.tablemodulo')
+            </tbody>
+        </table>
             </div>
-    <table class="table table-striped rolesdws" id="roles">
-        <thead>
-          <tr>
-            <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
-            <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
-            <th class="TitleP"  style="font-size: 14px;"><b>
-                <div class="form-check" style="margin-left: 14px;">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleDonm(this)' >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        {{-- <h5><b>TODOS</b></h5> --}}
-                    </label>
-                </div>    
-            </b></th>
-          </tr>
-        </thead>
-        <tbody>
-          @include('Empresa.Plantillas.tablemodulo')
-    </tbody>
-</table>
+
+            <div class="tab-pane fade" id="dashboards" role="tabpanel" aria-labelledby="profile-tab">
+              <table class="table table-striped widfgets" id="Widget">
+                <thead>
+                  <tr>
+                    <th class="TitleP" style="font-size: 14px;"><b>ACCESSO</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"><b>
+                        <div class="form-check" style="margin-left: 20px;">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="todos" id="todoWidget" onclick='toggleWidg(this)' >
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span> 
+                                {{-- <h5><b>TODOS</b></h5> --}}
+                            </label>
+                        </div>    
+                    </b></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @include('Empresa.Plantillas.table')
+            </tbody>
+        </table>
+            </div>
+            <div class="tab-pane fade" id="acciones" role="tabpanel" aria-labelledby="contact-tab">
+              <table class="table table-striped rolesdws" id="accionsf">
+                <thead>
+                  <tr>
+                    <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"><b>
+                        <div class="form-check" style="margin-left: 9px;">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleAccion(this)' >
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span> 
+                                {{-- <h5><b>TODOS</b></h5> --}}
+                            </label>
+                        </div>    
+                    </b></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @include('Empresa.Plantillas.tableaccion')
+            </tbody>
+        </table>
+            </div>
+          </div>
+   
 {{-- </div> --}}
 
 </div>
         </div>
-    </div>
-<div class="col-md-12">
-    <div class="card ">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-8">
-                    <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>DASHBOARD</b></h4>
-                </div>
-                <div class="col-4 text-right">
-                </div>
-            </div>
-        </div>
-
-        @csrf
-        <div class="card-body">
-
-    <table class="table table-striped widfgets" id="Widget">
-        <thead>
-          <tr>
-            <th class="TitleP" style="font-size: 14px;"><b>ACCESSO</b></th>
-            <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
-            <th class="TitleP"  style="font-size: 14px;"><b>
-                <div class="form-check" style="margin-left: 20px;">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="todos" id="todoWidget" onclick='toggleWidg(this)' >
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                        {{-- <h5><b>TODOS</b></h5> --}}
-                    </label>
-                </div>    
-            </b></th>
-          </tr>
-        </thead>
-        <tbody>
-          @include('Empresa.Plantillas.table')
-    </tbody>
-</table>
-{{-- </div> --}}
-
-</div>
-        </div>
-
-        <div class="col-md-12">
-          <div class="card ">
-              <div class="card-header">
-                  <div class="row">
-                      <div class="col-8">
-                          <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>ACCIONES</b></h4>
-                      </div>
-                      <div class="col-4 text-right">
-                      </div>
-                  </div>
-              </div>
-              @csrf
-              <div class="card-body">
-                  <div class="form-row">
-      
-                      <div class="col-sm-4">
-      
-                      </div>
-                  </div>
-          <table class="table table-striped rolesdws" id="accionsf">
-              <thead>
-                <tr>
-                  <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
-                  <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
-                  <th class="TitleP"  style="font-size: 14px;"><b>
-                      <div class="form-check" style="margin-left: 9px;">
-                          <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleAccion(this)' >
-                              <span class="form-check-sign">
-                                  <span class="check"></span>
-                              </span>
-                              {{-- <h5><b>TODOS</b></h5> --}}
-                          </label>
-                      </div>    
-                  </b></th>
-                </tr>
-              </thead>
-              <tbody>
-                @include('Empresa.Plantillas.tableaccion')
-          </tbody>
-      </table>
-      {{-- </div> --}}
-      
-      </div>
-              </div>       
-
               <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="float: right;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
 
             </form>
@@ -1155,6 +1127,7 @@ $('#roles').on('key-focus.dt', function(e, datatable, cell){
 
    });
 
+
    tab=$('#Widget').DataTable({
     "info": false,
     "paging":   false,
@@ -1241,7 +1214,18 @@ $('#Widget').on('key-focus.dt', function(e, datatable, cell){
     });
 
 
-   tab=$('#accionsf').DataTable({
+    
+   $('div.dataTables_filter input', tab.table().container()).on('click',function(){
+    var rowIdx = tab.cell(':eq(0)').index().row;
+      
+    tab.row(rowIdx).select();
+      
+    tab.cell( ':eq(0)' ).focus();
+
+   });
+   
+
+   tabes=$('#accionsf').DataTable({
     "info": false,
     "paging":   false,
     "ordering": false,
@@ -1291,7 +1275,7 @@ $('#Widget').on('key-focus.dt', function(e, datatable, cell){
 $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
-        tab.row(cell.index().row).select();
+        tabes.row(cell.index().row).select();
      });
 
     // Handle click on table cell
@@ -1299,11 +1283,11 @@ $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
         e.stopPropagation();
         
         // Get index of the clicked row
-        var rowIdx = tab.cell(this).index().row;
+        var rowIdx = tabes.cell(this).index().row;
 
         
         // Select row
-        tab.row(rowIdx).select();
+        tabes.row(rowIdx).select();
     });
     // Handle key event that hasn't been handled by KeyTable
     $('#accionsf').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
@@ -1312,7 +1296,7 @@ $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
         if(key === 13){
             // Get highlighted row data
             event.preventDefault();
-            var data = tab.row(cell.index().row).data();
+            var data = tabes.row(cell.index().row).data();
             
             var row_s=$(this).DataTable().row({selected:true}).node(); 
             var colum=$('td', row_s).eq(2);
@@ -1326,6 +1310,14 @@ $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
         
     });
 
+    $('div.dataTables_filter input', tabes.table().container()).on('click',function(){
+    var rowIdx = tabes.cell(':eq(0)').index().row;
+      
+    tabes.row(rowIdx).select();
+      
+    tabes.cell( ':eq(0)' ).focus();
+
+   });
 
 
 $('.clockpicker').clockpicker();

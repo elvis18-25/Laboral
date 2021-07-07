@@ -620,44 +620,18 @@ img="{{asset('black') }}/img/logotipo.png";
 $("#seave").on('click',function(){
 t=1;
 
-if(t==1){
-$("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
-      '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
-      '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
-}
 });
 
 // alert(img);
-window.onbeforeunload = function() {
+window.onbeforeunload = function(e) {
   // 
   if(t==0){
       $('.o-page-loader').remove();
-      return "¿Estás seguro que deseas salir de la actual página?"
+      return e.originalEvent.returnValue = "Your message here";
     }
     
   }  
 
-// function backsave(){
-//   Swal.fire({
-//   title: 'Seguro que deseas salir?',
-//   text: "No se podra revertir,¿Deseas guardarlo? !",
-//   icon: 'warning',
-//   showDenyButton: true,
-//   showCancelButton: true,
-//   confirmButtonText: `Si, Guardar`,
-//   denyButtonText: `No, Salir`,
-// }).then((result) => {
-//   /* Read more about isConfirmed, isDenied below */
-//   if (result.isConfirmed) {
-//     $("#seave").trigger("click");
-//   } else if (result.isDenied) {
-//     $("#created").trigger("click");
-//   }else{
-//     backhome();
-//   }
-// })
-
-// }
 
 
 
