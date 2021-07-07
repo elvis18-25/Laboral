@@ -633,7 +633,7 @@ window.onbeforeunload = function(e) {
   }  
 
 
-
+  // $("rel*=localize").localize("application", { language: "en" });
 
 $("#SearcFormulario").on('submit',function(e){
 e.preventDefault();
