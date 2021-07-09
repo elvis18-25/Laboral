@@ -87,10 +87,15 @@ section {
 }
 
 table.dataTable tbody tr.selected {
-  background-color: #4054b2 !important;
+  background-color: #5c6bc0 !important;
   color: white;
+}
+table>thead>tr{
+  background-color: #4054b2 !important;
   
-
+}
+table>thead>tr>th{
+  color: white !important;
 }
 
 

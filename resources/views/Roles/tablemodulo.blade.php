@@ -334,7 +334,7 @@
         <td class="TitleP"  value={{14}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" id="modulo{{14}}" checked type="checkbox" name="dinamico[]" value="13" >
+                    <input class="form-check-input cheinput" id="modulo{{14}}" checked type="checkbox" name="dinamico[]" value="14" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>
@@ -345,7 +345,35 @@
         <td class="TitleP" value={{14}}>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input cheinput" id="modulo{{14}}" type="checkbox" name="dinamico[]" value="13" >
+                    <input class="form-check-input cheinput" id="modulo{{14}}" type="checkbox" name="dinamico[]" value="14" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @endif
+</tr>
+<tr>
+    <td >CATEGORIAS</td>
+    <td class="TitleL">	
+        REGISTRO Y MODIFICACIONES DE CATEGORIAS</td>
+        @if ($permisos->categorias==1) 
+        <td class="TitleP"  value={{15}}>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput" id="modulo{{15}}" checked type="checkbox" name="dinamico[]" value="15" >
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+            </div>
+        </td>
+        @else 
+        <td class="TitleP" value={{15}}>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input cheinput" id="modulo{{15}}" type="checkbox" name="dinamico[]" value="15" >
                     <span class="form-check-sign">
                         <span class="check"></span>
                     </span>

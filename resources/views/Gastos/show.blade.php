@@ -1,6 +1,16 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
+
+<style>
+  table>thead>tr>th{
+        color: black !important;
+    }
+    table>thead>tr{
+  background-color: rgb(255 255 255 / 40%) !important;
+  
+}
+</style>
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">

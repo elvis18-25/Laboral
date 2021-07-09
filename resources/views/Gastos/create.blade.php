@@ -31,6 +31,13 @@ table tr td{
   padding: 10px 7px !important;
 }
 
+table>thead>tr>th{
+        color: black !important;
+    }
+    table>thead>tr{
+  background-color: rgb(255 255 255 / 40%) !important;
+  
+}
 </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">

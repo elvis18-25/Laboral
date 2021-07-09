@@ -7,6 +7,8 @@
     .table>tbody>tr>td{
             padding: 5px 7px !important;
         }  
+
+
     </style>
     <link rel="stylesheet" href="{{asset('css/roles.css')}}">
     <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -60,11 +62,11 @@
             {{-- <div style="max-height: 449px; overflow:auto; font-size:small; top:-12px; "> --}}
     <table class="table table-striped" id="roles">
         <thead>
-          <tr>
-            <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
-            <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
-            <th class="TitleP"  style="font-size: 14px;"><b>
-                <div class="form-check" style="margin-left: 52px;">
+          <tr style="background: #4054b2;" >
+            <th class="TitleP" style="font-size: 14px; color: white"><b>ACCESO</b></th>
+            <th class="TitleP"  style="font-size: 14px; color: white"><b>DESCRIPCIÓN</b></th>
+            <th class="TitleP"  style="font-size: 14px; color: white"><b>
+                <div class="form-check" style="margin-left: 21px;">
                     <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggle(this)' >
                         <span class="form-check-sign">
@@ -82,7 +84,7 @@
                 <td >{{$modulo->nombre}}</td>
                 <td style="text-align: left;">{{$modulo->descripcion}}</td>
                 <td class="TitleP" value={{$modulo->id}}>
-                    <div class="form-check">
+                    <div class="form-check" style="top: 5px;">
                         <label class="form-check-label">
                             <input class="form-check-input cheinput" id="modulo{{$modulo->id}}" type="checkbox" name="dinamico[]" value="{{$modulo->id}}" >
                         <span class="form-check-sign">
@@ -101,7 +103,7 @@
         </div>
     </div>
 <div class="col-md-12">
-    <div class="card ">
+    <div class="card">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
@@ -146,7 +148,7 @@
                 <td >{{$widgets->nombre}}</td>
                 <td style="text-align: left;">{{$widgets->descripcion}}</td>
                 <td class="TitleP" value={{$widgets->id}}>
-                    <div class="form-check" >
+                    <div class="form-check" style="top: 5px;" >
                         <label class="form-check-label">
                             <input class="form-check-input cheinput" type="checkbox" id="widgdt{{$widgets->id}}" name="wingdt[]" value="{{$widgets->id}}" >
                         <span class="form-check-sign">
@@ -165,8 +167,8 @@
         </div>
 
     </div>
+    <button type="submit"  id="subir" class="btn btn-fill btn-info float-right" ><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
 </div>
-<button type="submit"  id="subir" class="btn btn-fill btn-info float-right" style="top: 47px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
 </form>
 
 <div class="o-page-loader">
@@ -330,7 +332,7 @@ $('#roles').on('key-focus.dt', function(e, datatable, cell){
 tab=$('#Widget').DataTable({
     "info": false,
     "paging":   false,
-    scrollY: 300,
+    scrollY: 500,
 
     select: {
             style: 'single',
