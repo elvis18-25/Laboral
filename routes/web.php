@@ -62,10 +62,19 @@ Route::resource('Eventos', 'App\Http\Controllers\EventosController')->middleware
 Route::resource('Cooperativas', 'App\Http\Controllers\CoopController')->middleware('auth');
 Route::resource('PerfilesUsuario', 'App\Http\Controllers\PerfilesUsuarioController')->middleware('auth');
 Route::resource('Asistencia', 'App\Http\Controllers\AsistenciaController')->middleware('auth');
+Route::resource('Categorias', 'App\Http\Controllers\CategoriasController')->middleware('auth');
 Route::resource('Equipos', 'App\Http\Controllers\EquiposController')->middleware('auth');
 Route::resource('Seleccion', 'App\Http\Controllers\MultiController');
 
-
+//Categorias
+Route::get('showcategorias/{id}','App\Http\Controllers\CategoriasController@showcategorias');
+Route::post('updatecategorias/{id}','App\Http\Controllers\CategoriasController@updatecategorias');
+Route::post('deletecategorias/{id}','App\Http\Controllers\CategoriasController@deletecategorias');
+Route::post('deletesubcategory/{id}','App\Http\Controllers\CategoriasController@deletesubcategory');
+Route::post('savesub/{id}','App\Http\Controllers\CategoriasController@savesub');
+Route::get('showsubcategorias/{id}','App\Http\Controllers\CategoriasController@showsubcategorias');
+Route::get('showsub/{id}','App\Http\Controllers\CategoriasController@showsub');
+Route::post('updatesub/{id}','App\Http\Controllers\CategoriasController@updatesub');
 
 //Asingaciones
 Route::post('viewasigna/{id}','App\Http\Controllers\AsignacionesController@viewasigna');
@@ -116,6 +125,8 @@ Route::get('datatableAsistencia','App\Http\Controllers\AsistenciaController@data
 Route::get('datatableHAS','App\Http\Controllers\AsistenciaController@datatableHAS');
 Route::get('datatableListado','App\Http\Controllers\ListadoContrller@datatableListado');
 Route::get('datatableHorario','App\Http\Controllers\EmpresaController@datatableHorario');
+Route::get('datatableCategorias','App\Http\Controllers\CategoriasController@datatableCategorias');
+Route::get('datatableGastosIndex','App\Http\Controllers\GastoController@datatableGastosIndex');
 
 
 //Empleados
@@ -242,8 +253,11 @@ Route::post('deleteotros/{id}','App\Http\Controllers\OtrosController@deleteotros
 //Gasto
 Route::post('listmonto/{id}','App\Http\Controllers\GastoController@listmonto');
 Route::post('listmontoCreate/{id}','App\Http\Controllers\GastoController@listmontoCreate');
-
 Route::get('GastosFijo','App\Http\Controllers\GastoController@GastosFijo');
+
+Route::get('searchsubcategory/{id}','App\Http\Controllers\GastoController@searchsubcategory');
+Route::post('searchsub/{id}','App\Http\Controllers\GastoController@searchsub');
+
 Route::post('Gastossavefijo/{id}','App\Http\Controllers\GastoController@Gastossavefijo');
 Route::get('totalgasto','App\Http\Controllers\GastoController@totalgasto');
 Route::post('totalgastoshow/{id}','App\Http\Controllers\GastoController@totalgastoshow');

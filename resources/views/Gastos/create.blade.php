@@ -54,7 +54,7 @@ table tr td{
 
                 @csrf   
             <div class="form-row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <label><b>{{ __('DESCRIPCION') }}</b></label>
                     <input type="text" name="descripn" id="descr" class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
                 </div>
@@ -62,7 +62,7 @@ table tr td{
                     $user=Auth::user()->id_empresa
                 @endphp
 
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <label><b>{{ __('ELEGIR NOMINA') }}</b></label>
                 <div class="input-group  mb-3">
                   <div class="input-group-prepend disabledclass" id="prepend" >
@@ -85,6 +85,26 @@ table tr td{
                 <label><b>{{ __('FECHA') }}</b></label>
                 <input type="date" id="fech" name="fec" class="form-control"  >
             </div>
+
+            <div class="col-md-2">
+              <label><b>{{ __('CATEGORIAS') }}</b></label>
+              <select id="category" class="form-control " name="categorias">
+                <option selected value="0" disabled >ELEGIR CATEGORIAS</option>
+                @foreach ($categorias as $categoria)
+                    
+                <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+                
+                @endforeach
+            </select>
+            </div>
+
+            <div class="col-md-2" id="showsub">
+              <label><b>{{ __('SUBCATEGORIAS') }}</b></label>
+              <select id="subcategory" class="form-control " name="subcategory">
+                <option selected value="0" disabled >ELEGIR SUBCATEGORIAS</option>
+            </select>
+            </div>
+
 
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
             </div>
@@ -365,11 +385,8 @@ img="{{asset('black') }}/img/logotipo.png";
 $("#seave").on('click',function(){
 t=1;
 
-if(t==1){
-$("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
-      '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
-      '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
-}
+
+
 });
 
 // alert(img);
@@ -836,8 +853,38 @@ $("#gastos-table select[name='porciento[]']").on('change',function(){
     $("#formes").attr('value',e);
 });
 
+$("#showsub").hide();
+$("#category").on('change',function(){
+var id=$(this).val();
+// $("#input").val(id);
+// table.ajax.reload();
+subcategory(id);
+});
 
 
+function subcategory(id){
+  var url = "{{url('searchsubcategory')}}/"+id; 
+    var data = "";
+    $.ajax({
+     method: "GET",
+       data: data,
+        url:url ,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        success:function(result){
+          if(result!=""){
+        $("#subcategory").empty();
+        $("#subcategory").append(result);
+        $("#showsub").show();
+        }else{
+          $("#showsub").hide();
+        }
+          
+       },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+           ErroresGeneral();
+}
+         }); 
+}
 idconcepto=0;
 verificador=0;
 

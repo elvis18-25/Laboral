@@ -4,6 +4,57 @@
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 
+<style>
+    .center{
+        text-align: center;
+    }
+    .right{
+        text-align: right;
+    }
+</style>
+<div class="col-md-12">
+    <div class="card ">
+      <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+        <div class="card card-plain">
+          <div class="card-header" role="tab" id="headingTwo">
+            <div class="row">
+              <div class="col-8">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h4><b> FILTROS
+                  <i class="tim-icons icon-minimal-down"></i>
+                </b>
+                </h4>
+              </a>
+          </div>
+          </div>
+          </div>
+          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-body">
+              <div class="form-row">
+                <div class="col-md-3 float-left">
+                    <label><b>{{ __('CATEGORIAS') }}</b></label>
+                    <select id="category" class="form-control " name="categorias">
+                      <option selected value="0" >NINGUNO</option>
+                      @foreach ($categorias as $categoria)
+                          
+                      <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+                      
+                      @endforeach
+                  </select>
+                  </div>
+                <div class="col-md-3 float-left">
+                    <label><b>{{ __('SUBCATEGORIAS') }}</b></label>
+                    <select id="subcategory" class="form-control " name="categorias">
+                      <option selected value="0" >NINGUNO</option>
+                  </select>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -14,9 +65,46 @@
                 <div class="col-4 text-right">
                     <a href="{{route('Gasto.create')}}" title="Agregar Gastos" class="btn btn-sm btn-info float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
                     <a href="{{url('GastosFijo')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-warning float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-coins"style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;" ></i></a>
+                    {{-- <p>
+                        <button class="btn btn-success redondo btn-sm" type="button" title="Filtros" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fas fa-filter" style="font-size: 16px;
+                            margin-left: -2px;
+                            position: relative;
+                            top: 2px;"></i>
+                        </button>
+                      </p> --}}
+
                 </div>
+
             </div>
         </div>
+
+        {{-- <br> --}}
+        {{-- <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+
+              <div class="form-row">
+                <div class="col-md-3 float-left">
+                    <label><b>{{ __('CATEGORIAS') }}</b></label>
+                    <select id="category" class="form-control " name="categorias">
+                      <option selected value="0" >NINGUNO</option>
+                      @foreach ($categorias as $categoria)
+                          
+                      <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+                      
+                      @endforeach
+                  </select>
+                  </div>
+                <div class="col-md-3 float-left">
+                    <label><b>{{ __('SUBCATEGORIAS') }}</b></label>
+                    <select id="subcategory" class="form-control " name="categorias">
+                      <option selected value="0" >NINGUNO</option>
+                  </select>
+                  </div>
+                </div>
+            </div>
+          </div> --}}
+
         <div class="card-body">
             @php
                 $user=Auth::user()->id_empresa;
@@ -32,7 +120,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach ($gasto as $gastos)
+                        {{-- @foreach ($gasto as $gastos)
                         @if ($gastos->estado!=1)
                         @if ($gastos->id_empresa==$user)
                         <tr action="{{Route('Gasto.show',$gastos->id)}}">
@@ -43,7 +131,7 @@
                         </tr>
                         @endif
                         @endif
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -52,6 +140,8 @@
 </div>
 
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
+<input type="text" name="" id="input" value="0" hidden>
+<input type="text" name="" id="inputsub" value="0" hidden>
 
 <div class="o-page-loader">
     <div class="o-page-loader--content">
@@ -133,21 +223,80 @@
 @endif
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
-   table=$('#gastos-table').DataTable({
-    "info": false,
-    select: {
-            style: 'single',
-        },
-        keys: {
-          keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
-        },
-        rowGroup: {
-        dataSrc: 'group'
-    },
 
-        // "fnDrawCallback":function(){
-    //     started();
-    //   }, 
+$("#category").on('change',function(){
+var id=$(this).val();
+$("#input").val(id);
+$("#inputsub").val(0);
+table.ajax.reload();
+subcategory(id);
+});
+
+$("#subcategory").on('change',function(){
+var id=$(this).val();
+$("#inputsub").val(id);
+table.ajax.reload();
+});
+
+
+function subcategory(id){
+  var url = "{{url('searchsubcategory')}}/"+id; 
+    var data = "";
+    $.ajax({
+     method: "GET",
+       data: data,
+        url:url ,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        success:function(result){
+        $("#subcategory").empty();
+        $("#subcategory").append(result);
+          
+       },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+           ErroresGeneral();
+}
+         }); 
+}
+
+$.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+  });
+  
+  table=$('#gastos-table').DataTable({
+        "paging":   false,
+        // "ordering": false,
+        "info":     false,
+        processing:true,
+      
+        // select: {
+        //     style: 'single',
+        // },
+
+    //     keys: {
+    //       keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+    //     },
+    //     rowGroup: {
+    //     dataSrc: 'group'
+    // },
+
+    serverSide:true,
+    ajax:
+    {
+      url:"{{ url('datatableGastosIndex') }}",
+      "data":function(d){
+        if($("#input").val()!=''){
+          if($("#inputsub").val()==0){
+            // alert($("#inputsub").val());
+          d.dato1=$("#input").val();
+          }else{
+            d.dato2=$("#inputsub").val();
+          }
+
+        }
+      }
+    },
 
     language: {
       searchPlaceholder: "Buscar",
@@ -158,7 +307,7 @@
         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
         "infoPostFix": "",
         "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "lengthMenu": "",
         "loadingRecords": "Cargando...",
         "processing": "Procesando...",
         "search": "",
@@ -170,16 +319,24 @@
             "previous": "Anterior"
         }
 
-      },   
-   
+      }, 
+
+
+    columns:[
+    {data:'descripcion',name:'descripcion'},
+    {data:'fecha', name:'fecha', class: "center"},
+    {data:'user', name:'user', class: "center"},
+    {data:'monto',name:'monto', class: "right"},
+    ],
+
 });
 $('div.dataTables_filter input', table.table().container()).focus();   
 
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
@@ -253,11 +410,11 @@ $('#gastos-table').on('key-focus.dt', function(e, datatable, cell){
 });
 
 
-    var rowIdx = table.cell(':eq(0)').index().row;
+    // var rowIdx = table.cell(':eq(0)').index().row;
       
-      table.row(rowIdx).select();
+    //   table.row(rowIdx).select();
 
-      table.cell( ':eq(0)' ).focus();
+    //   table.cell( ':eq(0)' ).focus();
 
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
@@ -279,5 +436,7 @@ $("#sd").attr('href',url);
 $("#urles").trigger("click");
 
 });
+
+
 </script>
 @endsection

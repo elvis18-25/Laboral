@@ -29,14 +29,14 @@
                   @csrf   
                   @method('PUT') 
             <div class="form-row">
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <label>{{ __('DESCRIPCION') }}</label>
                     <input type="text" name="descripn" id="descr" value="{{$gasto->descripcion}}"class="form-control" required autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Descripcion">
                 </div>
                 @php
                     $user=Auth::user()->id_empresa
                 @endphp
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <label>{{ __('ELEGIR NOMINA') }}</label>
                 <div class="input-group  mb-3">
                   <div class="input-group-prepend disabledclass" id="prepend" >
@@ -53,11 +53,34 @@
                 </div>
               </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label>{{ __('FECHA') }}</label>
                 <input type="date" id="fech" name="fec"  value="{{$gasto->fecha}}" class="form-control"  >
             </div>
 
+            <div class="col-md-2">
+              <label><b>{{ __('CATEGORIAS') }}</b></label>
+              <select id="category" class="form-control " name="categorias">
+                <option selected value="0" disabled >ELEGIR CATEGORIAS</option>
+                @foreach ($categorias as $categoria)
+                    @if ($categorias_gastos==$categoria->id)
+                    <option value="{{$categoria->id}}" selected>{{$categoria->nombre}}</option>
+                        
+                    @else
+                    <option value="{{$categoria->id}}" >{{$categoria->nombre}}</option>
+
+                    @endif
+                
+                @endforeach
+            </select>
+            </div>
+
+            <div class="col-md-2" id="showsub">
+              <label><b>{{ __('SUBCATEGORIAS') }}</b></label>
+              <select id="subcategory" class="form-control " name="subcategory">
+                <option selected value="0" disabled >ELEGIR SUBCATEGORIAS</option>
+            </select>
+            </div>
                 <input type="text" name="montototal" id="nominasfull" value="" hidden>
             </div>
           </div>
@@ -525,6 +548,42 @@ function totalgastoFijo(){
              });  
 }
 
+
+var idsd=$("#category").val();
+subcategory(idsd);
+$("#category").on('change',function(){
+var id=$(this).val();
+// $("#input").val(id);
+// table.ajax.reload();
+subcategory(id);
+});
+
+
+function subcategory(id){
+  var input=$("#input").val();
+  var url = "{{url('searchsub')}}/"+id; 
+    var data = {input:input};
+    $.ajax({
+     method: "POST",
+       data: data,
+        url:url ,
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        success:function(result){
+          if(result!=""){
+            // alert(result);
+        $("#subcategory").empty();
+        $("#subcategory").append(result);
+        $("#showsub").show();
+        }else{
+          $("#showsub").hide();
+        }
+          
+       },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+           ErroresGeneral();
+}
+         }); 
+}
 
 
 function VerficateNomina(){

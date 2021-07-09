@@ -17,6 +17,11 @@ use Illuminate\Support\Carbon;
 use App\Models\gasto_nomina;
 use App\Models\permisos_acciones;
 use App\Models\Role_users;
+use App\Models\categorias;
+use App\Models\categorias_gastos;
+use App\Models\SubCategorias;
+use App\Models\categorias_sub;
+use App\Models\sub_gastos;
 
 class GastoController extends Controller
 {
@@ -28,7 +33,8 @@ class GastoController extends Controller
     public function index()
     {
         $gasto=Gasto::all();
-        return view('Gastos.index',compact('gasto'));
+        $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        return view('Gastos.index',compact('gasto','categorias'));
     }
 
     /**
@@ -38,9 +44,10 @@ class GastoController extends Controller
      */
     public function create()
     {
+        $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $nominas=Listado::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $gasto=gasto_fijo::all();
-        return view('Gastos.create',compact('nominas','gasto'));
+        return view('Gastos.create',compact('nominas','gasto','categorias'));
     }
 
     /**
@@ -70,11 +77,6 @@ class GastoController extends Controller
 
         $nomina=Listado::whereIn('id',$nomipArry)->get();
 
-
-
-
-
-
         $gasto=new Gasto();
         $gasto->descripcion=$request->get('descripn');
         $gasto->fecha=$request->get('fec');
@@ -84,6 +86,25 @@ class GastoController extends Controller
         $gasto->user=Auth::user()->name;
         $gasto->estado=0;
         $gasto->save();
+
+        if($request->get('categorias')!=0){
+        $categorias_gastos=new categorias_gastos();
+        $categorias_gastos->id_gastos=$gasto->id;
+        $categorias_gastos->id_categorias=$request->get('categorias');
+        $categorias_gastos->estado=0;
+        $categorias_gastos->id_empresa=Auth::user()->id_empresa;
+        $categorias_gastos->save();
+        }
+        if($request->get('subcategory')!=0){
+        $categorias_gastos=new sub_gastos();
+        $categorias_gastos->id_gastos=$gasto->id;
+        $categorias_gastos->id_sub=$request->get('subcategory');
+        $categorias_gastos->estado=0;
+        $categorias_gastos->id_empresa=Auth::user()->id_empresa;
+        $categorias_gastos->save();
+        }
+        
+
 
         foreach($nomina as $nominas){
             $input['id_gasto']=$gasto->id;
@@ -296,9 +317,19 @@ class GastoController extends Controller
         ->where('id_empresa','=',Auth::user()->id_empresa)
         ->get();
 
+        if(sizeof(categorias_gastos::select('id_gastos')->where('id_gastos','=',$id)->get())!=0){
+        $categorias_g=categorias_gastos::where('id_gastos','=',$id)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->first();
+        $categorias_gastos=$categorias_g->id_categorias;
+        }else{
+            $categorias_gastos=0;
+        }
+        // dd($categorias_gastos);
+        $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         
 
-        return view('Gastos.show',compact('gasto','totalconcepto','permisos_acciones','concepto','nominas','totalmonto','gastofijos','totalfijo','gasto_nomina'));
+        return view('Gastos.show',compact('gasto','categorias','categorias_gastos','totalconcepto','permisos_acciones','concepto','nominas','totalmonto','gastofijos','totalfijo','gasto_nomina'));
     }
 
     /**
@@ -462,6 +493,39 @@ class GastoController extends Controller
         $gasto->observaciones=$request->get('textarea');
         $gasto->update();
 
+        if(sizeof(categorias_gastos::select('id_gastos')->where('id_gastos','=',$id)->get())!=0){
+            $categorias_g=categorias_gastos::where('id_gastos','=',$id)
+            ->where('id_empresa','=',Auth::user()->id_empresa)
+            ->first();
+            $categorias_g->id_categorias=$request->get('categorias');
+            $categorias_g->update();
+            }else{
+                if($request->get('categorias')!=0){
+                    $categorias_gastos=new categorias_gastos();
+                    $categorias_gastos->id_gastos=$gasto->id;
+                    $categorias_gastos->id_categorias=$request->get('categorias');
+                    $categorias_gastos->estado=0;
+                    $categorias_gastos->id_empresa=Auth::user()->id_empresa;
+                    $categorias_gastos->save();
+                    }
+            }
+        if(sizeof(sub_gastos::select('id_gastos')->where('id_gastos','=',$id)->get())!=0){
+            $sub_g=sub_gastos::where('id_gastos','=',$id)
+            ->where('id_empresa','=',Auth::user()->id_empresa)
+            ->first();
+            $sub_g->id_sub=$request->get('subcategory');
+            $sub_g->update();
+            }else{
+                if($request->get('subcategory')!=0){
+                    $sub_g=new sub_gastos();
+                    $sub_g->id_gastos=$gasto->id;
+                    $sub_g->id_sub=$request->get('subcategory');
+                    $sub_g->estado=0;
+                    $sub_g->id_empresa=Auth::user()->id_empresa;
+                    $sub_g->save();
+                    }
+            }
+
 
 
         return redirect('Gasto')->with('actualizar','ya');
@@ -481,6 +545,58 @@ class GastoController extends Controller
        $gasto->save();
 
        return redirect('Gasto')->with('eliminado','ya');
+
+    }
+    public function searchsubcategory($id)
+    {
+       $suber=categorias_sub::where('id_categorias','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+       $arreglo=[];
+       $p=0;
+       
+       foreach($suber as $sub_gs){
+           $arreglo[$p]=$sub_gs->id_sub;
+           $p++;
+       }
+       $sub=SubCategorias::whereIn('id',$arreglo)
+       ->where('id_empresa','=',Auth::user()->id_empresa)
+       ->where('estado','=',0)
+       ->where('estado','=',0)
+       ->get();
+
+
+       return view('Gastos.Plantillas.searchsub',compact('sub'));
+
+    }
+    public function searchsub($id)
+    {
+        $gasto=request('input');
+       $suber=categorias_sub::where('id_categorias','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+       $arreglo=[];
+       $count=0;
+       $p=0;
+       
+       foreach($suber as $sub_gs){
+           $arreglo[$p]=$sub_gs->id_sub;
+           $p++;
+       }
+
+       if(sizeOf(sub_gastos::where('id_gastos','=',$gasto)->where('id_empresa','=',Auth::user()->id_empresa)->get())!=0){
+        $subver=sub_gastos::where('id_gastos','=',$gasto)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->first();
+        $count=$subver->id_sub;
+       }
+
+
+
+       $sub=SubCategorias::whereIn('id',$arreglo)
+       ->where('id_empresa','=',Auth::user()->id_empresa)
+       ->where('estado','=',0)
+       ->where('estado','=',0)
+       ->get();
+
+
+       return view('Gastos.Plantillas.searchall',compact('sub','count'));
 
     }
     public function GastosFijo()
@@ -798,28 +914,49 @@ class GastoController extends Controller
                 
                 ])->toJson();
     }
-    // public function  datatablegastosshowfijo()
-    // {
-    //     $gastos=concepto_gasto::
-    //     where('concepto_gasto.id_empresa',Auth::user()->id_empresa)
-    //     ->where('concepto_gasto.estado','!=','1')
-    //     ->select('concepto_gasto.id','concepto_gasto.concepto','concepto_gasto.monto')
-    //     ->GroupBy('concepto_gasto.id','concepto_gasto.concepto','concepto_gasto.monto');
+    public function  datatableGastosIndex()
+    {
+        $id=request('id');
+        
+        if(request()->ajax()){
+         $tipo=request()->get('dato1');
+         $tipo2=request()->get('dato2');
+
+        $gasto=Gasto::leftjoin('categorias_gastos','categorias_gastos.id_gastos','=','gasto.id')
+        ->leftjoin('categorias','categorias.id','=','categorias_gastos.id_categorias')
+        ->leftjoin('sub_gastos','sub_gastos.id_gastos','=','gasto.id')
+        ->where('gasto.estado','=',0)
+        ->where('gasto.id_empresa','=',Auth::user()->id_empresa)
+        ->select('gasto.id','gasto.descripcion','gasto.fecha','gasto.user','gasto.monto')
+        ->GroupBy('gasto.id','gasto.descripcion','gasto.fecha','gasto.user','gasto.monto');
        
-    //         return datatables()->of($gastos)
-    //         ->editColumn('monto',function($row){
-    //         return '$'.number_format($row->monto,2);
 
-                
-    //         })
+        if(!empty($tipo)){
+            $gasto->where('categorias_gastos.id_categorias',$tipo);
+        }else if(!empty($tipo2)){
+            $gasto->where('sub_gastos.id_sub',$tipo2);
+        }
+        
+            return datatables()->of($gasto)
+            ->editColumn('monto',function($row){
+                return "$".number_format($row->monto,2);
 
-    //         ->setRowAttr([
-    //             'data-href'=>function($row){
-    //                 return $row->id;    
-    //             },
-                
-    //             ])->toJson();
-    // }
+            })
+            ->editColumn('fecha',function($row){
+                return date("d/m/Y", strtotime($row->fecha));
+
+            })
+            ->setRowAttr([
+                'data-href'=>function($row){
+                    return $row->id;    
+                },
+                'action'=>function($row){
+                    return  Route('Gasto.show',[$row->id]);    
+                },
+                ])->toJson();
+    }
+    }
+
     
 
     public function phoneblade()

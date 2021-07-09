@@ -67,6 +67,8 @@
             </li>
             @endif
 
+
+
             {{-- @if ($permisos->perfiles==1)
             <li  >
                 <a href="{{ url('Perfiles')  }}" class="nav-link  {{request()->Is('Perfiles') ? 'active' : ''}}" >
@@ -159,6 +161,13 @@
                         @endif
 
 
+                        <li>
+                            <a href="{{url('Categorias')}}">
+                                <i class="fas fa-coins"></i>
+                                <p>{{ __('Categorias') }}</p>
+                            </a>
+                        </li>
+                        
                     </ul>
                 </div>
             </li>
