@@ -457,7 +457,7 @@
                     <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>
-                        <div class="form-check" style="margin-left: 14px;">
+                        <div class="form-check" style="margin-left: -5px;">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleDonm(this)' >
                                 <span class="form-check-sign">
@@ -482,7 +482,7 @@
                     <th class="TitleP" style="font-size: 14px;"><b>ACCESSO</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>
-                        <div class="form-check" style="margin-left: 20px;">
+                        <div class="form-check" style="margin-left: 9px;">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" value="todos" id="todoWidget" onclick='toggleWidg(this)' >
                                 <span class="form-check-sign">
@@ -506,7 +506,7 @@
                     <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>
-                        <div class="form-check" style="margin-left: 9px;">
+                        <div class="form-check" style="margin-left: 3px;">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleAccion(this)' >
                                 <span class="form-check-sign">
@@ -1132,7 +1132,7 @@ $('#roles').on('key-focus.dt', function(e, datatable, cell){
     "info": false,
     "paging":   false,
     "ordering": false,
-    scrollY: 300,
+    scrollY: 500,
 
     select: {
             style: 'single',
@@ -1229,7 +1229,7 @@ $('#Widget').on('key-focus.dt', function(e, datatable, cell){
     "info": false,
     "paging":   false,
     "ordering": false,
-    scrollY: 300,
+    scrollY: 500,
 
     select: {
             style: 'single',
@@ -1353,13 +1353,13 @@ $('#inputCity').mask('0#');
         width: 100% !important;
       }
       #roles>tbody>tr>td{
-        padding: 7px 7px !important;
+        padding: 5px 7px !important;
       }
       #Widget>tbody>tr>td{
-        padding: 7px 7px !important;
+        padding: 5px 7px !important;
       }
       #accionsf>tbody>tr>td{
-        padding: 7px 7px !important;
+        padding: 5px 7px !important;
       }
     </style>
 @endsection

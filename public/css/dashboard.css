@@ -30,10 +30,12 @@
 .heigf{
     top: 12px;
     position: relative;
+    font-weight: bold !important;
 }
 .tile{
-  font-size: 17px !important; 
-  color: black !important
+  font-size: 15px !important; 
+  color: black !important;
+  font-weight: bold !important;
 }
 
 @media (max-width: 1858px) {
@@ -68,10 +70,11 @@
     display: block;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgb(0 0 0 / 8%),#666e756b);
+    /* background: linear-gradient(to bottom, rgb(0 0 0 / 8%),#666e756b); */
     z-index: 2;
     transition: 0.5s all;
     opacity: 0;
+    cursor: pointer;
 }
 
 .cardepic:hover:before{
@@ -94,6 +97,7 @@
   background: #666e7517;
   color: black;
   font-size: 13px;
+  width: 247px;
   font-weight: bold;
   cursor: pointer;
   top: 12px;
@@ -115,6 +119,13 @@ background-color: rgb(255 255 255 / 40%) !important;
 
 .input-group-prepend .input-group-text, .input-group-prepend .input-group-text {
   border: 1px solid #ccc !important;
+}
+
+.incons{
+  top: 11px;
+  position: absolute;
+  margin-left: 190px;
+  color: black;
 }
 
 .popper,

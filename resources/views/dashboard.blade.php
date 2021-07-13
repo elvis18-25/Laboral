@@ -16,24 +16,21 @@
  @php
      $a=1;
  @endphp
- <div class="col-lg-2">
-  <div class="card card-chart cardepic" style="height: 118px;">
-      <div class="card-header">
+ <div class="col-lg-2" >
+  <div class="card card-chart cardepic" id="widfgr_emple"  style="height: 118px;">
+      <div class="card-header" >
         <div class="title" style="margin-top: 6px;">
           <h4 class="card-category tile"><b>TOTAL EMPLEADOS</b></h4>
           <h3 class="card-title heigf" >{{$count_empleado}}</h3>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body" >
         <div class="circulo" ><span style="float: right;"><i class="fas fa-users text-light icons"></i></i></span></div>
       </div>
       <div class="info">
         <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-          <a href="{{url('Empleados')}}" class="btnsd">MAS INFORMACIÓN </a>
-          <i class="fas fa-arrow-circle-right" style="color: black;
-          float: right;
-          position: absolute;
-          margin-left: 177px;" ></i>
+          <a href="{{url('Empleados')}}" class="btnsd" id="btnsd_empleado"><b>MAS INFORMACIÓN</b> </a>
+          <i class="fas fa-arrow-circle-right incons"></i>
         </div>
       </div>
   </div>
@@ -50,7 +47,7 @@
 @endphp
   @if ($a==1)
 <div class="col-lg-2">
-  <div class="card card-chart cardepic" style="height: 118px;">
+  <div class="card card-chart cardepic"  id="widfgr_usuario" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
             <h4 class="card-category tile"><b>TOTAL USUARIOS</b></h4>
@@ -62,11 +59,8 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('user')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('user')}}" class="btnsd btnsd_user">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
         </div>
       </div>
@@ -74,7 +68,7 @@
     </div>  
   @else
 <div class="col-lg-2">
-  <div class="card card-chart cardepic" style="height: 118px;">
+  <div class="card card-chart cardepic" id="widfgr_usuario" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
             <h4 class="card-category tile"><b>TOTAL USUARIOS</b></h4>
@@ -86,11 +80,8 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('user')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('user')}}" class="btnsd btnsd_user" >MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
         </div>
       </div>
@@ -107,7 +98,7 @@
   @endphp
   @if ($b==1)
   <div class="col-lg-2">
-    <div class="card card-chart cardepic" style="height: 118px;">
+    <div class="card card-chart cardepic" id="widfgr_puesto" style="height: 118px;">
       <div class="card-header">
         <div class="title" style="margin-top: 6px;">
           <h4 class="card-category tile"><b>TOTAL DEPARTAMENTOS</b></h4>
@@ -119,18 +110,15 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('Puesto')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('Puesto')}}" class="btnsd btnsd_puesto" >MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
         </div>
       </div>
     </div>  
   @else
   <div class="col-lg-2">
-    <div class="card card-chart cardepic" style="height: 118px;">
+    <div class="card card-chart cardepic" id="widfgr_puesto" style="height: 118px;">
       <div class="card-header">
         <div class="title" style="margin-top: 6px;">
           <h4 class="card-category tile"><b>TOTAL DEPARTAMENTOS</b></h4>
@@ -142,11 +130,8 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('Puesto')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('Puesto')}}" class="btnsd btnsd_puesto">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
         </div>
       </div>
@@ -164,7 +149,7 @@
     @endphp
     @if ($c==1)
     <div class="col-lg-2">
-      <div class="card card-chart cardepic" style="height: 118px;">
+      <div class="card card-chart cardepic" id="widfgr_pagos" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
             <h4 class="card-category tile"><b>FORMAS DE PAGOS</b></h4>
@@ -177,18 +162,15 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('Pagos')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('Pagos')}}" class="btnsd btnsd_pagos">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons"></i>
           </div>
         </div>
       </div>
     </div>  
     @else
     <div class="col-lg-2">
-      <div class="card card-chart cardepic" style="height: 118px;">
+      <div class="card card-chart cardepic" id="widfgr_pagos" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
             <h4 class="card-category tile"><b>FORMAS DE PAGOS</b></h4>
@@ -201,11 +183,8 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('Pagos')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('Pagos')}}" class="btnsd btnsd_pagos">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons"></i>
           </div>
         </div>
       </div>
@@ -223,7 +202,7 @@
 @endphp
 @if ($d==1)
 <div class="col-lg-2">
-  <div class="card card-chart cardepic" style="height: 118px;">
+  <div class="card card-chart cardepic" id="widfgr_roles" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
             <h4 class="card-category tile" ><b>TOTAL ROLES</b></h4>
@@ -236,18 +215,15 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('Roles')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('Roles')}}" class="btnsd btnsd_roles">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons"></i>
           </div>
         </div>
       </div>
     </div>  
 @else
 <div class="col-lg-2">
-  <div class="card card-chart cardepic" style="height: 118px;">
+  <div class="card card-chart cardepic" id="widfgr_roles" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
             <h4 class="card-category tile" ><b>TOTAL ROLES</b></h4>
@@ -260,11 +236,8 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="{{url('Roles')}}" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="{{url('Roles')}}" class="btnsd btnsd_roles">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons"></i>
           </div>
         </div>
       </div>
@@ -276,7 +249,7 @@
 @if ($permisos->reuniones==1) 
 @if ($e==1)
 <div class="col-lg-2">
-  <div class="card card-chart cardepic" style="height: 118px;">
+  <div class="card card-chart cardepic"  id="widfgr_pendiente" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
         <h4 class="card-category tile" ><b>REUNIONES PENDIENTE</b></h4>
@@ -289,18 +262,15 @@
         </div>
         <div class="info">
           <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-            <a href="#" class="btnsd">MAS INFORMACIÓN </a>
-            <i class="fas fa-arrow-circle-right" style="color: black;
-            float: right;
-            position: absolute;
-            margin-left: 177px;" ></i>
+            <a href="#" class="btnsd btnsd_pendiente">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right incons"></i>
           </div>
         </div>
       </div>
     </div>  
 @else
 <div class="col-lg-2">
-  <div class="card card-chart cardepic" style="height: 118px;">
+  <div class="card card-chart cardepic"  id="widfgr_pendiente" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
         <h4 class="card-category tile" ><b>REUNIONES PENDIENTE</b></h4>
@@ -312,11 +282,8 @@
             margin-right: 11px !important;"></i></i></span></div>
         </div>
         <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
-          <a href="#" class="btnsd">MAS INFORMACIÓN </a>
-          <i class="fas fa-arrow-circle-right" style="color: black;
-          float: right;
-          position: absolute;
-          margin-left: 177px;" ></i>
+          <a href="#" class="btnsd btnsd_pendiente">MAS INFORMACIÓN </a>
+          <i class="fas fa-arrow-circle-right incons"></i>
         </div>
       </div>
     </div> 
@@ -397,7 +364,7 @@
 
                             <h5 class="card-category"></h5>
 
-                            <h3 class="card-title"><b> GASTOS ANUALES DE LA EMPRESA</b></h3>
+                            <h3 class="card-title" style="font-weight: bold;"><b> GASTOS ANUALES DE LA EMPRESA</b></h3>
                         </div>
                         <div class="col-sm-6">
                           {{-- <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 27%; float: right; color: black; float: right;">
@@ -405,7 +372,7 @@
                             <span></span> <i class="fa fa-caret-down"></i>
                         </div> --}}
 
-                        <div class="input-group" style="width: 20%; float: right; color: #000;">
+                        <div class="input-group" style="width: 12%; float: right; color: #000;">
                           <div class="input-group-prepend">
                             <div class="input-group-text" style="padding: 11px !important;">
                               <i class="fas fa-calendar" style="color: black;"></i>
@@ -442,7 +409,7 @@
         <div class="col-lg-6 col-md-12">
             <div class="card card-tasks">
                 <div class="card-header ">
-                    <h4 class="title d-inline">HISTORIAL DE EMPLEADOS</h4>
+                    <h4 class="title d-inline" style="font-weight: bold;">HISTORIAL DE EMPLEADOS</h4>
 
                     <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 50%; float: right; color: black;">
                       <i class="fa fa-calendar"></i>&nbsp;
@@ -476,7 +443,7 @@
         <div class="col-lg-6 col-md-12">
             <div class="card ">
                 <div class="card-header">
-                    <h4 class="card-title"><b>CALENDARIO</b></h4>
+                    <h4 class="card-title" style="font-weight: bold;"><b>CALENDARIO</b></h4>
                 </div>
                 <div class="card-body">
                   <div id='calendar'></div>
@@ -495,6 +462,9 @@
           </div>
       </div>
   </div>
+
+  <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
+
 @endsection
 @push('js')
 
@@ -559,6 +529,7 @@
         .colors()
         .tooltip()
         .axis(false)
+        // .label(false)
         .datasets([
       { type: 'pie', radius: ['40%', '60%'] },
       { type: 'pie', radius: ['10%', '30%'] },
@@ -846,14 +817,54 @@ dp.on('changeYear', function (e) {
     }
 
 
-    
+
 
     
-    //       $(document).ready(function() {
+  $(document).ready(function() {
       
+    $("#widfgr_emple").on('click',function(){
+      var url=$("#btnsd_empleado").attr('href');
+      $("#sd").attr('href',url);
+      $("#urles").trigger("click");
+      
+    });
+
+    $("#widfgr_usuario").on('click',function(){
+      var url=$(".btnsd_user").attr('href');
+      $("#sd").attr('href',url);
+      $("#urles").trigger("click");
+      
+    });
+
+    $("#widfgr_puesto").on('click',function(){
+      var url=$(".btnsd_puesto").attr('href');
+      $("#sd").attr('href',url);
+      $("#urles").trigger("click");
+      
+    });
+    $("#widfgr_pagos").on('click',function(){
+      var url=$(".btnsd_pagos").attr('href');
+      $("#sd").attr('href',url);
+      $("#urles").trigger("click");
+      
+    });
+    $("#widfgr_roles").on('click',function(){
+      var url=$(".btnsd_roles").attr('href');
+      $("#sd").attr('href',url);
+      $("#urles").trigger("click");
+      
+    });
+    $("#widfgr_pendiente").on('click',function(){
+      var url=$(".btnsd_pendiente").attr('href');
+      $("#sd").attr('href',url);
+      $("#urles").trigger("click");
+      
+    });
+
+    
 
 
-
+          });
 
 
     //     var data_puesto = <?php echo $puesto_empleado; ?>;

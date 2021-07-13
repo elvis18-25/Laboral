@@ -14426,7 +14426,9 @@ table.tablesorter thead tr .headerSortDown {
 }
 
 .dataTables_wrapper .form-control-sm {
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: bold;
+
 }
 
 .form-check {

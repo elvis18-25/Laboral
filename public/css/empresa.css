@@ -1,6 +1,21 @@
 
+#roles_wrapper{
+	top: 15px;
+	position: relative;
+}
 
+#Widget_wrapper{
+	top: 15px;
+	position: relative;
+}
+#accionsf_wrapper{
+	top: 15px;
+	position: relative;
+}
 
+.checkaling{
+	top: 2px;
+}
 	.color-wrapper p {
 		margin-bottom: 5px;
 	}
@@ -38,11 +53,13 @@
   }
   
   .Logo{
-	  margin-right: 8px;
-	  /* height: 100%; */
-	  overflow: hidden;
-	  margin-bottom: 15px;
-	  float: right;
+	margin-right: 5px;
+    /* height: 100%; */
+    overflow: hidden;
+    margin-bottom: 18px;
+    float: right;
+    height: 91%;
+    width: 94%;
 			}
   
   .color{
