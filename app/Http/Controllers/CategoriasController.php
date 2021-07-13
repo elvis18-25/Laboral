@@ -41,13 +41,23 @@ class CategoriasController extends Controller
     {
         // dd($request->all());
         $nombre=request('name');
+        $count=0;
+        if(sizeof(categorias::select('id_category')->where('id_empresa','=',Auth::user()->id_empresa)->get())==0){
+            $count=1;
+        }else{
+            $cate=categorias::latest('id_category')->where('id_empresa','=',Auth::user()->id_empresa)->first();
+            $count=$cate->id_category+1;
+        }
 
         $categoria = new categorias();
         $categoria->nombre=$nombre;
         $categoria->user=Auth::user()->name;
         $categoria->estado=0;
+        $categoria->id_category=$count;
         $categoria->id_empresa=Auth::user()->id_empresa;
         $categoria->save();
+
+
 
         $arreglo=request('arreglo');
 
@@ -199,6 +209,12 @@ class CategoriasController extends Controller
     {
         //
     }
+    public function CatalogoPdf()
+    {
+        $categorias=categorias::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+        $sub_g=SubCategorias::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+        return view('Categorias.catologo');
+    }
     public function savesub(Request $request,$id)
     {
         $name=request('name');
@@ -251,14 +267,24 @@ class CategoriasController extends Controller
         ->leftjoin('categorias_sub','categorias_sub.id_categorias','=','categorias.id')
         ->where('categorias.id_empresa',Auth::user()->id_empresa)
         ->where('categorias.estado','=',0)
-        ->select('categorias.id','categorias.nombre','categorias.user','categorias.created_at',DB::raw('count(categorias_sub.id_sub) as gasto'))
-        ->GroupBy('categorias.id','categorias.nombre','categorias.user','categorias.created_at');
+        ->select('categorias.id','categorias.nombre','categorias.id_category','categorias.user','categorias.created_at')
+        ->GroupBy('categorias.id','categorias.nombre','categorias.id_category','categorias.user','categorias.created_at');
        
             return datatables()->of($perfiles)
             ->editColumn('created_at',function($row){
                 return $row->created_at->format('d/m/Y');
                 
-            })->setRowAttr([
+            })
+            ->editColumn('count',function($row){
+                $sub=categorias_sub::where('id_categorias','=',$row->id)->get();
+                $p=0;
+                foreach($sub as $subs){
+                    $p++;
+                }
+                return $p;
+                
+            })
+            ->setRowAttr([
                 'data-href'=>function($row){
                     return $row->id;    
                 },

@@ -33,12 +33,12 @@
                     }
                     // dd($permiso);
                     if(sizeof(App\Models\Permisos::where('role_id','=',$role->role_id)->get())!=0) {
-                        $permiso=App\Models\Permisos::select('role_id')->where('role_id','=',$role->role_id)->first();
+                        $permiso=App\Models\Permisos::select('role_id')->where('role_id','=',$role->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
                     }
                 @endphp
 
 
-    @if ($permiso->role_id==1)
+    @if ($permiso->role_id==1 || $permiso->role_id==6 )
         @if (sizeof(App\Models\User::where('email','=',Auth::user()->email)->get())>1)
             <form action="{{url('SearchUser')}}" method="post" id="SearcFormulario">
                 @csrf

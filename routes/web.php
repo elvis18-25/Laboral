@@ -75,6 +75,7 @@ Route::post('savesub/{id}','App\Http\Controllers\CategoriasController@savesub');
 Route::get('showsubcategorias/{id}','App\Http\Controllers\CategoriasController@showsubcategorias');
 Route::get('showsub/{id}','App\Http\Controllers\CategoriasController@showsub');
 Route::post('updatesub/{id}','App\Http\Controllers\CategoriasController@updatesub');
+Route::post('CatalogoPdf','App\Http\Controllers\CategoriasController@CatalogoPdf');
 
 //Asingaciones
 Route::post('viewasigna/{id}','App\Http\Controllers\AsignacionesController@viewasigna');

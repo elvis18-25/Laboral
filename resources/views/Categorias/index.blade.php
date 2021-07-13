@@ -16,7 +16,8 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>CATEGORIAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="#" class="btn btn-sm btn-info redondo"  data-toggle="modal" data-target="#Modalcategorias" ><button type="button" id="createcategoria" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                    <a href="{{url('CatalogoPdf')}}" class="btn btn-sm btn-info redondo"  data-toggle="modal" data-target="#Modalcategorias" ><button type="button" id="createcategoria" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                    <a href="#" class="btn btn-sm btn-warning redondo" ><button type="button" style="display: none;"></button><i class="fas fa-scroll incons"></i></a>
                 @include('Categorias.modal')
                 </div>
             </div>
@@ -27,6 +28,7 @@
                 <table class="table tablesorter " id="categorias">
                     <thead class=" text-primary">
                         <tr> 
+                        <th class="TitleP">ID</th>
                         <th class="TitleP">NOMBRE</th>
                         <th class="TitleP">FECHA</th>
                         <th class="TitleP">SUBCATEGORIAS</th>
@@ -98,9 +100,10 @@ headers: {
     },
 
     columns:[
+    {data:'id_category',name:'id_category'},
     {data:'nombre',name:'nombre'},
     {data:'created_at',name:'created_at', class:"center"},
-    {data:'gasto',name:'gasto',searchable:false,class:"center"},
+    {data:'count',name:'count',searchable:false,class:"center"},
     {data:'user',name:'user',class:"center"},
     ],
  

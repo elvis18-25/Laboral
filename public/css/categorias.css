@@ -21,7 +21,12 @@
   text-align: center !important;
 }
 
-
+.incons{
+  top: 6px;
+  position: relative;
+  font-size: 19px;
+  margin-left: -5px;
+}
 
 
 .redondo{
