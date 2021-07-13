@@ -66,7 +66,8 @@ class EventosController extends Controller
         $dia = $separa[2];
 
             $data[] = array(
-                'title'   => "Cumpleado de"." ".$empleados->nombre, 
+                'title'   => "Cumpleaño de"." ".$empleados->nombre, 
+                'description'   => "Cumpleaño de"." ".$empleados->nombre, 
                 'start'   => Carbon::now()->format('Y')."-".$mes."-".$dia,
                 'end'   => Carbon::now()->format('Y')."-".$mes."-".$dia,
                 'color' =>"#00FF2AFF",
@@ -79,6 +80,7 @@ class EventosController extends Controller
             if($evento->id_empresa==Auth::user()->id_empresa && $evento->estado==0){
                 $data[] = array(
                     'title'   => $evento->title, 
+                    'description'   => $evento->title, 
                     'start'   => $evento->start,
                     'end'   => $evento->end,
                     'color' =>$evento->color,

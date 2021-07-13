@@ -1,0 +1,220 @@
+.fc-scrollgrid{
+    cursor: pointer;
+  }
+
+  table>tbody>tr{
+    background: white !important;
+  }
+  .circulo {
+    width: 60px;
+    height: 60px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: #4054b2;
+    float: right;
+    top: -63px;
+    position: relative;
+    margin-right: 12px;
+}
+.icons{
+  font-size: 22px;
+    color: white !important;
+    position: relative;
+    top: 18px;
+    margin-right: 16px;
+}
+.fonts{
+  font-weight: bold !important;
+}
+.heigf{
+    top: 12px;
+    position: relative;
+}
+.tile{
+  font-size: 17px !important; 
+  color: black !important
+}
+
+@media (max-width: 1858px) {
+.tile{
+    font-size: 12px !important; 
+    color: black !important
+}
+
+}
+@media (max-width: 1179px) {
+.tile{
+    font-size: 10px !important; 
+    color: black !important
+}
+
+}
+
+.cardepic{
+  box-shadow: 0px 7px 10px  rgba(0,0,0,0,5);
+  transition: 0.5s ease-in-out;
+}
+
+.cardepic:hover{
+  transform: translateY(20px);
+}
+
+.cardepic:before{
+    content: " ";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 8%),#666e756b);
+    z-index: 2;
+    transition: 0.5s all;
+    opacity: 0;
+}
+
+.cardepic:hover:before{
+  opacity: 1;
+}
+
+.cardepic .info{
+  position: relative;
+  z-index: 3;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.5s all;
+  top: -89px;
+  text-align: center;
+}
+.cardepic .info .btnsd{
+  text-decoration: none;
+  padding: 0.5rem 3rem;
+  background: #666e7517;
+  color: black;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  top: 12px;
+  transition: 0.4s ease-in-out;
+}
+
+.cardepic:hover .info{
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+table>thead>tr>th{
+  color: black !important;
+}
+table>thead>tr{
+background-color: rgb(255 255 255 / 40%) !important;
+
+}
+
+.input-group-prepend .input-group-text, .input-group-prepend .input-group-text {
+  border: 1px solid #ccc !important;
+}
+
+.popper,
+.tooltip {
+  position: absolute;
+  z-index: 9999;
+  background: #FFC107;
+  color: black;
+  width: 150px;
+  border-radius: 3px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  padding: 10px;
+  text-align: center;
+}
+.style5 .tooltip {
+  background: #1E252B;
+  color: #FFFFFF;
+  max-width: 200px;
+  width: auto;
+  font-size: .8rem;
+  padding: .5em 1em;
+}
+.popper .popper__arrow,
+.tooltip .tooltip-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  margin: 5px;
+}
+
+.tooltip .tooltip-arrow,
+.popper .popper__arrow {
+  border-color: #FFC107;
+}
+.style5 .tooltip .tooltip-arrow {
+  border-color: #1E252B;
+}
+.popper[x-placement^="top"],
+.tooltip[x-placement^="top"] {
+  margin-bottom: 5px;
+}
+.popper[x-placement^="top"] .popper__arrow,
+.tooltip[x-placement^="top"] .tooltip-arrow {
+  border-width: 5px 5px 0 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  bottom: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.popper[x-placement^="bottom"],
+.tooltip[x-placement^="bottom"] {
+  margin-top: 5px;
+}
+.tooltip[x-placement^="bottom"] .tooltip-arrow,
+.popper[x-placement^="bottom"] .popper__arrow {
+  border-width: 0 5px 5px 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  top: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.tooltip[x-placement^="right"],
+.popper[x-placement^="right"] {
+  margin-left: 5px;
+}
+.popper[x-placement^="right"] .popper__arrow,
+.tooltip[x-placement^="right"] .tooltip-arrow {
+  border-width: 5px 5px 5px 0;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  left: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+.popper[x-placement^="left"],
+.tooltip[x-placement^="left"] {
+  margin-right: 5px;
+}
+.popper[x-placement^="left"] .popper__arrow,
+.tooltip[x-placement^="left"] .tooltip-arrow {
+  border-width: 5px 0 5px 5px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  right: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* .table-condensed thead tr:nth-child(2),
+.table-condensed tbody {
+  display: none
+} */

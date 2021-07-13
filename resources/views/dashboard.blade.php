@@ -4,43 +4,9 @@
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link href="{{asset('css/mdtimepicker.css')}}" rel="stylesheet">
 <link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
-
+<link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
 @include('Fullcalendar.create')
 @include('Fullcalendar.edit')
-<style>
-  /* .card-tasks{
-    min-height: 100% !important;
-  } */
-
-  .fc-scrollgrid{
-    cursor: pointer;
-  }
-  @media(max-width:: 870px){
-    .card-tasks{
-      min-height: 90% !important;
-  }
-  }
-  .circulo {
-    width: 60px;
-    height: 60px;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
-    background: #4054b2;
-
-      float: right;
-      top: -86px;
-      position: relative;
-      margin-right: 31px;
-}
-.icons{
-  font-size: 22px;
-    color: white !important;
-    position: relative;
-    top: 18px;
-    margin-right: 16px;
-}
-</style>
 <div class="row">
   @php
       $a=0;
@@ -50,16 +16,25 @@
  @php
      $a=1;
  @endphp
- <div class="col-lg-4">
-  <div class="card card-chart" style="height: 118px;">
+ <div class="col-lg-2">
+  <div class="card card-chart cardepic" style="height: 118px;">
       <div class="card-header">
         <div class="title" style="margin-top: 6px;">
-          <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL EMPLEADOS</b></h5>
-          <h3 class="card-title">{{$count_empleado}}</h3>
+          <h4 class="card-category tile"><b>TOTAL EMPLEADOS</b></h4>
+          <h3 class="card-title heigf" >{{$count_empleado}}</h3>
         </div>
       </div>
       <div class="card-body">
         <div class="circulo" ><span style="float: right;"><i class="fas fa-users text-light icons"></i></i></span></div>
+      </div>
+      <div class="info">
+        <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <a href="{{url('Empleados')}}" class="btnsd">MAS INFORMACIÓN </a>
+          <i class="fas fa-arrow-circle-right" style="color: black;
+          float: right;
+          position: absolute;
+          margin-left: 177px;" ></i>
+        </div>
       </div>
   </div>
 </div>    
@@ -74,30 +49,49 @@
     $b=1;
 @endphp
   @if ($a==1)
-<div class="col-lg-4">
-  <div class="card card-chart" style="height: 118px;">
+<div class="col-lg-2">
+  <div class="card card-chart cardepic" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL USUARIOS</b></h5>
-            <h3 class="card-title">{{$count_users}}</h3>
+            <h4 class="card-category tile"><b>TOTAL USUARIOS</b></h4>
+            <h3 class="card-title heigf">{{$count_users}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-friends text-light icons"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('user')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
+
     </div>  
   @else
-<div class="col-lg-6">
-  <div class="card card-chart" style="height: 118px;">
+<div class="col-lg-2">
+  <div class="card card-chart cardepic" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL USUARIOS</b></h5>
-            <h3 class="card-title">{{$count_users}}</h3>
+            <h4 class="card-category tile"><b>TOTAL USUARIOS</b></h4>
+            <h3 class="card-title heigf">{{$count_users}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-friends text-light icons"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('user')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
     </div>
@@ -112,30 +106,48 @@
       $c=1;
   @endphp
   @if ($b==1)
-  <div class="col-lg-4">
-    <div class="card card-chart" style="height: 118px;">
+  <div class="col-lg-2">
+    <div class="card card-chart cardepic" style="height: 118px;">
       <div class="card-header">
         <div class="title" style="margin-top: 6px;">
-          <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL DEPARTAMENTOS</b></h5>
-            <h3 class="card-title">{{$count_puesto}}</h3>
+          <h4 class="card-category tile"><b>TOTAL DEPARTAMENTOS</b></h4>
+            <h3 class="card-title heigf">{{$count_puesto}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('Puesto')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
     </div>  
   @else
-  <div class="col-lg-4">
-    <div class="card card-chart" style="height: 118px;">
+  <div class="col-lg-2">
+    <div class="card card-chart cardepic" style="height: 118px;">
       <div class="card-header">
         <div class="title" style="margin-top: 6px;">
-          <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL DEPARTAMENTOS</b></h5>
-            <h3 class="card-title">{{$count_puesto}}</h3>
+          <h4 class="card-category tile"><b>TOTAL DEPARTAMENTOS</b></h4>
+            <h3 class="card-title heigf">{{$count_puesto}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('Puesto')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
     </div>  
@@ -151,32 +163,50 @@
         $d=1;
     @endphp
     @if ($c==1)
-    <div class="col-lg-4">
-      <div class="card card-chart" style="height: 118px;">
+    <div class="col-lg-2">
+      <div class="card card-chart cardepic" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>FORMAS DE PAGOS</b></h5>
-            <h3 class="card-title">{{$count_pagos}}</h3>
+            <h4 class="card-category tile"><b>FORMAS DE PAGOS</b></h4>
+            <h3 class="card-title heigf">{{$count_pagos}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-file-invoice-dollar text-light icons" style="font-size: 25px !important;
             margin-right: 20px !important;"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('Pagos')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
     </div>  
     @else
-    <div class="col-lg-4">
-      <div class="card card-chart" style="height: 118px;">
+    <div class="col-lg-2">
+      <div class="card card-chart cardepic" style="height: 118px;">
         <div class="card-header">
           <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>FORMAS DE PAGOS</b></h5>
-            <h3 class="card-title">{{$count_pagos}}</h3>
+            <h4 class="card-category tile"><b>FORMAS DE PAGOS</b></h4>
+            <h3 class="card-title heigf">{{$count_pagos}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-file-invoice-dollar text-light icons" style="font-size: 25px !important;
             margin-right: 20px !important;"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('Pagos')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
     </div> 
@@ -192,32 +222,50 @@
     $e=1;
 @endphp
 @if ($d==1)
-<div class="col-lg-4">
-  <div class="card card-chart" style="height: 118px;">
+<div class="col-lg-2">
+  <div class="card card-chart cardepic" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL ROLES</b></h5>
-            <h3 class="card-title">{{$count_roles}}</h3>
+            <h4 class="card-category tile" ><b>TOTAL ROLES</b></h4>
+            <h3 class="card-title heigf">{{$count_roles}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-cog text-light icons" style="font-size: 25px !important;
             margin-right: 11px !important;"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('Roles')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
     </div>  
 @else
-<div class="col-lg-4">
-  <div class="card card-chart" style="height: 118px;">
+<div class="col-lg-2">
+  <div class="card card-chart cardepic" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
-            <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>TOTAL ROLES</b></h5>
-            <h3 class="card-title">{{$count_roles}}</h3>
+            <h4 class="card-category tile" ><b>TOTAL ROLES</b></h4>
+            <h3 class="card-title heigf">{{$count_roles}}</h3>
           </div>
         </div>
         <div class="card-body">
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-cog text-light icons" style="font-size: 25px !important;
             margin-right: 11px !important;"></i></i></span></div>
+        </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="{{url('Roles')}}" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
         </div>
       </div>
     </div>
@@ -227,32 +275,48 @@
 
 @if ($permisos->reuniones==1) 
 @if ($e==1)
-<div class="col-lg-4">
-  <div class="card card-chart" style="height: 118px;">
+<div class="col-lg-2">
+  <div class="card card-chart cardepic" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
-        <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>REUNIONES PENDIENTE</b></h5>
-        <h3 class="card-title">0</h3>
+        <h4 class="card-category tile" ><b>REUNIONES PENDIENTE</b></h4>
+        <h3 class="card-title heigf">0</h3>
       </div>
     </div>
     <div class="card-body">
       <div class="circulo" ><span style="float: right;"><i class="fas fa-user-clock text-light icons" style="font-size: 25px !important;
             margin-right: 11px !important;"></i></i></span></div>
         </div>
+        <div class="info">
+          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+            <a href="#" class="btnsd">MAS INFORMACIÓN </a>
+            <i class="fas fa-arrow-circle-right" style="color: black;
+            float: right;
+            position: absolute;
+            margin-left: 177px;" ></i>
+          </div>
+        </div>
       </div>
     </div>  
 @else
-<div class="col-lg-4">
-  <div class="card card-chart" style="height: 118px;">
+<div class="col-lg-2">
+  <div class="card card-chart cardepic" style="height: 118px;">
     <div class="card-header">
       <div class="title" style="margin-top: 6px;">
-        <h5 class="card-category" style="font-size: 19px !important; color: black !important"><b>REUNIONES PENDIENTE</b></h5>
-        <h3 class="card-title">0</h3>
+        <h4 class="card-category tile" ><b>REUNIONES PENDIENTE</b></h4>
+        <h3 class="card-title heigf">0</h3>
       </div>
     </div>
     <div class="card-body">
       <div class="circulo" ><span style="float: right;"><i class="fas fa-user-clock text-light icons" style="font-size: 25px !important;
             margin-right: 11px !important;"></i></i></span></div>
+        </div>
+        <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <a href="#" class="btnsd">MAS INFORMACIÓN </a>
+          <i class="fas fa-arrow-circle-right" style="color: black;
+          float: right;
+          position: absolute;
+          margin-left: 177px;" ></i>
         </div>
       </div>
     </div> 
@@ -264,7 +328,7 @@
     <div class="col-lg-4">
       <div class="card card-chart" >
         <div class="card-header">
-          <h5 class="card-category" style="color: black"><b>EMPLEADOS</b></h5>
+          <h5 class="card-category" style="color: white"><b>EMPLEADOS</b></h5>
         </div>
         <div class="card-body">
             <div class="chart-area">
@@ -284,7 +348,7 @@
 <div class="col-lg-4">
   <div class="card card-chart">
     <div class="card-header">
-      <h5 class="card-category" style="color: black"><b>DEPARTAMENTOS</b></h5>
+      <h5 class="card-category" style="color: white"><b>DEPARTAMENTOS</b></h5>
     </div>
     <div class="card-body">
       <div class="chart-area">
@@ -302,7 +366,7 @@
     <div class="col-lg-4">
         <div class="card card-chart" >
             <div class="card-header">
-                <h5 class="card-category" style="color: black"><b> GENEROS</b></h5>
+                <h5 class="card-category" style="color: white"><b> GENEROS</b></h5>
                 <div class="form-inline">
                 {{-- <h3 class="card-title"><i class="fas fa-female text-primary" title="Mujeres" style="font-size: 20px "></i>{{$count_mujeres}}</h3>&nbsp;&nbsp;&nbsp;&nbsp;
                 <h3 class="card-title"> <i class="fas fa-male text-info" title="Hombres" style="font-size: 20px "></i>{{$count_hombres}}</h3>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -333,13 +397,25 @@
 
                             <h5 class="card-category"></h5>
 
-                            <h2 class="card-title"><b> GASTOS DE LA EMPRESA</b></h2>
+                            <h3 class="card-title"><b> GASTOS ANUALES DE LA EMPRESA</b></h3>
                         </div>
                         <div class="col-sm-6">
-                          <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 27%; float: right; color: black; float: right;">
+                          {{-- <div id="Reportegastos" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 27%; float: right; color: black; float: right;">
                             <i class="fa fa-calendar"></i>&nbsp;
                             <span></span> <i class="fa fa-caret-down"></i>
+                        </div> --}}
+
+                        <div class="input-group" style="width: 20%; float: right; color: #000;">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text" style="padding: 11px !important;">
+                              <i class="fas fa-calendar" style="color: black;"></i>
+                            </div>      
+                          </div>
+                          <input type="text" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 27%; float: right; color: black; float: right; font-weight: bold;" class="form-control" value="2021" name="datepicker" id="datepicker" />
                         </div>
+
+            
+
                         </div>
                     </div>
                 </div>
@@ -395,7 +471,7 @@
             </div>
         </div>
         @endif
-
+{{-- <div id="tolps" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></div> --}}
         @if ($permisos->calendario==1)
         <div class="col-lg-6 col-md-12">
             <div class="card ">
@@ -432,8 +508,16 @@
 <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
-{{-- <script src="https://code.highcharts.com/highcharts.js"></script> --}}
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
+{{-- <link rel="stylesheet" href="{{asset('css/yearpicker.css')}}" />
+
+<!-- Year Picker Js -->
+<script src="{{asset('js/yearpicker.js')}}"></script> --}}
 
     <script>
 
@@ -455,7 +539,7 @@
         .colors(['#3396FF','#4054b2'])
         .datasets(['bar'])
         .tooltip(),
-    
+        
       });
       const SexoChart = new Chartisan({
         el: '#chartbarsex',
@@ -471,8 +555,14 @@
         url: "@chart('depatamento_chart')",
         hooks: new ChartisanHooks()
         .legend()
-        .colors(['#4054b2'])
-        .tooltip(),
+        // .colors(['#4054b2'])
+        .colors()
+        .tooltip()
+        .axis(false)
+        .datasets([
+      { type: 'pie', radius: ['40%', '60%'] },
+      { type: 'pie', radius: ['10%', '30%'] },
+    ]),
       });
 
 //       var chartDom = document.getElementById('chartbardepartamen');
@@ -549,18 +639,28 @@
 
     $("#opnemodal").trigger("click");
     $("#txtfecha").val(info.dateStr)
+    console.log(info);
   },
   
-  // eventClick: function(info){
-  //   $("#opneditmodal").trigger("click");
-  //   $("#edittitulo").val(info.event.title),
-  //   $("#editcolor").val(info.event.backgroundColor),
-  //   console.log(info);
-  // },
+  eventClick: function(info){
+    // $("#opneditmodal").trigger("click");
+    $("#tolps").attr('title',info.event.title);
+    $('#tolps').tooltip('toggle')
+    // $("#edittitulo").val(info.event.title),
+    // $("#editcolor").val(info.event.backgroundColor),
+    console.log(info);
+  },
 
+  eventRender: function(info) {
+        var tooltip = new Tooltip(info.el, {
+          title: info.event.extendedProps.description,
+          placement: 'top',
+          trigger: 'hover',
+          container: 'body'
+        });
+      },
   
   events:"{{url('Eventos/show')}}"
-
 
         });
 
@@ -623,52 +723,57 @@
 
     SerchEventos(startEvent,endEvent);
     $('#reportrange span').html(startEvent.format('MMMM D, YYYY') + ' - ' + endEvent.format('MMMM D, YYYY'));
-    $('#Reportegastos span').html(start.format('YYYY') + ' - ' + end.format(' YYYY'));
+    // $('#Reportegastos span').html(start.format('YYYY') + ' - ' + end.format(' YYYY'));
 
 
 
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
+    // function cb(start, end) {
+    //     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    // }
 
-    $('#Reportegastos').daterangepicker({
-        startDate: start,
-        endDate: end,
-        showCustomRangeLabel:false,
 
-        "locale": {
-            "separator": " - ",
-            "applyLabel": "Guardar",
-            "cancelLabel": "Cancelar",
-            "fromLabel": "Desde",
-            "toLabel": "Hasta",
-            "customRangeLabel": "Personalizar",
-            "daysOfWeek": [
-                "Do",
-                "Lu",
-                "Ma",
-                "Mi",
-                "Ju",
-                "Vi",
-                "Sa"
-            ],
-        },
-        ranges: {
-           'Este año': [moment().startOf('year'), moment().endOf('year')],
-           'El año pasado': [moment().subtract(1, 'year'), moment().subtract(1, 'year')],
-           'Hace 2 años': [moment().subtract(2, 'year'), moment().subtract(2, 'year')],
-           'Hace 4 años': [moment().subtract(4, 'year'), moment().subtract(4, 'year')],
-        }
-      }, function (start, end) {
+//     $('.yearpicker').yearpicker({
+//   selectedClass: 'selected',
+//   disabledClass: 'disabled',
+//   hideClass: 'hide',
+//   highlightedClass: 'highlighted',
+// });
+
+
+var dp=$("#datepicker").datepicker( {
+    format: "yyyy",
+    startView: "years", 
+    minViewMode: "years"
+});
+
+dp.on('changeYear', function (e) {    
+   var date=moment(e.date).format('YYYY-MM-DD');
+   var startDate=date
+   updateChats(date,startDate)
+});
+
+    // $('#Reportegastos').daterangepicker({
+    //     startDate: start,
+    //     endDate: end,
+    //     "autoApply": true,
+    //     ranges: {
+    //        'Este año': [moment().startOf('year'), moment().endOf('year')],
+    //        'El año pasado': [moment().subtract(1, 'year'), moment().subtract(1, 'year')],
+    //        'Hace 2 años': [moment().subtract(2, 'year'), moment().subtract(2, 'year')],
+    //        'Hace 4 años': [moment().subtract(4, 'year'), moment().subtract(4, 'year')],
+    //     }
+    //   }, function (start, end) {
           
-          $('#Reportegastos span').html(start.format('YYYY') + ' - ' + end.format('YYYY'));
-          updateChats();
-        });
+    //       $('#Reportegastos span').html(start.format('YYYY') + ' - ' + end.format('YYYY'));
+    //       updateChats();
+    //     });
 
-        function  updateChats(){
+        
+
+        function  updateChats(start,end){
           var url = "{{url('SerchGastos')}}";
-          var start=$("#Reportegastos").data('daterangepicker').startDate.format('YYYY-MM-DD');
-          var end=$("#Reportegastos").data('daterangepicker').endDate.format('YYYY-MM-DD');
+          // var start=$("#Reportegastos").data('daterangepicker').startDate.format('YYYY-MM-DD');
+          // var end=$("#Reportegastos").data('daterangepicker').endDate.format('YYYY-MM-DD');
           var data = {start:start,end:end};
           $.ajax({
          method: "POST",

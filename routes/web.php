@@ -50,7 +50,7 @@ Route::resource('Listado', 'App\Http\Controllers\ListadoContrller')->middleware(
 Route::resource('Roles', 'App\Http\Controllers\RolesController')->middleware('auth');
 Route::resource('Pagos', 'App\Http\Controllers\PagosController')->middleware('auth');
 Route::resource('Puesto', 'App\Http\Controllers\PuestoController')->middleware('auth');
-Route::resource('Puesto', 'App\Http\Controllers\PuestoController')->middleware('auth');
+// Route::resource('Puesto', 'App\Http\Controllers\PuestoController')->middleware('auth');
 Route::resource('Configuracion', 'App\Http\Controllers\ConfiguracionController')->middleware('auth');
 Route::resource('user', 'App\Http\Controllers\UserController')->middleware('auth');
 Route::resource('Asignaciones', 'App\Http\Controllers\AsignacionesController')->middleware('auth');

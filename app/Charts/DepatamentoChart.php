@@ -31,6 +31,7 @@ class DepatamentoChart extends BaseChart
         leftjoin('empleado_puesto','empleado_puesto.puesto_id','=','puesto.id')
         ->leftjoin('empleado','empleado.id_empleado','=','empleado_puesto.empleado_id_empleado')
         ->where('puesto.estado','=',0)
+        ->where('empleado.estado','=',0)
         ->where('puesto.id_empresa','=',Auth::user()->id_empresa)
         ->select('puesto.id',DB::raw('count(empleado_puesto.empleado_id_empleado) as emple',))
         ->groupBy('empleado_puesto.puesto_id','puesto.id')

@@ -22,16 +22,19 @@ class SexoChart extends BaseChart
 
         $count_mujeres=sexo_empleado::leftjoin('empleado','empleado.id_empleado','=','empleado_sexo.empleado_id_empleado')
         ->where('empleado_sexo.sexo_id','=',2)
+        ->where('empleado.estado','=',0)
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)
         ->count();
 
         $count_hombres=sexo_empleado::leftjoin('empleado','empleado.id_empleado','=','empleado_sexo.empleado_id_empleado')
         ->where('empleado_sexo.sexo_id','=',1)
+        ->where('empleado.estado','=',0)
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)
         ->count();
 
         $count_indefinido=sexo_empleado::leftjoin('empleado','empleado.id_empleado','=','empleado_sexo.empleado_id_empleado')
         ->where('empleado_sexo.sexo_id','=',4)
+        ->where('empleado.estado','=',0)
         ->where('empleado.id_empresa','=',Auth::user()->id_empresa)
         ->count();
 
