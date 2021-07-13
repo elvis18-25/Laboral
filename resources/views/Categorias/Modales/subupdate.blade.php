@@ -1,6 +1,6 @@
 
   <!-- Modal -->
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel"><b> EDITAR SUBCATEGORIAS</b></h5>
@@ -12,9 +12,34 @@
       <div class="modal-body">
         <div class="form-row">
           <div class="col-sm-11 text-left">
-              <label style="color: black"><b>{{ __('SUBCATEGORIAS:') }}</b></label>
-              <input type="text" name="newcategoria" value="{{$sub->nombre}}" id="subcatupdate" autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" class="form-control datosInput" placeholder="{{ __('Categoria') }}">
-          </div>
+
+            <div class="form-row">
+              <div class="col-sm-7">
+                <h6 for="SUBCATEGORIAS" style="color: black"><b>SUBCATEGORIAS</b></h6>
+                <input type="text" name="newcategoria" value="{{$sub->nombre}}" id="subcatupdate" autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" class="form-control datosInput" placeholder="{{ __('SUBCATEGORIAS') }}">
+
+              </div>
+              <div class="col-sm-4">
+                <h6 for="CATEGORIAS" style="color: black"><b>CATEGORIAS</b></h6>
+                <select class="custom-select form-control" id="slected" >
+                  <option selected disabled value="">ELEGIR...</option>
+                  @foreach ($categorias as $categoria)
+                      @if ($category_sub->id_categorias==$categoria->id)
+                      <option selected value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+                          
+                      @else
+                      <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+
+                      @endif
+                  @endforeach
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid state.
+                </div>
+              </div>
+            </div>
+
+            </div>
       </div>
       </div>
       <div class="modal-footer">
@@ -26,8 +51,9 @@
 <script>
 function updatesave(e){
     var name=$("#subcatupdate").val();
+    var select=$("#slected").val();
     var url="{{url('updatesub')}}/"+e
-    var data ={name:name};
+    var data ={name:name,select:select};
     $.ajax({
     method:"POST",
     data: data,
@@ -35,9 +61,11 @@ function updatesave(e){
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     success:function(result){
     $("#SubupdateEdit").trigger("click");
-    $("#subcategoriasEdi").empty(); 
-    $("#subcategoriasEdi").append(result); 
+    $("#EditCategorias").trigger("click");
+    // $("#subcategoriasEdi").empty(); 
+    // $("#subcategoriasEdi").append(result); 
     sucessf();
+    table.ajax.reload(); 
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) { 
                     ErroresGen();

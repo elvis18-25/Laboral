@@ -92,32 +92,43 @@ class CategoriasController extends Controller
     public function updatesub($id)
     {
         $name=request('name');
+        $categori=request('select');
         $sub=SubCategorias::findOrFail($id);
         $sub->nombre=$name;
         $sub->update();
 
-        $sub_g=categorias_sub::select('id_categorias')->where('id_sub','=',$id)->first();
-        $subcategory=categorias_sub::select('id_sub')->where('id_categorias','=',$sub_g->id_categorias)->get();
-        $arreglo=[];
-        $p=0;
-        
-        foreach($subcategory as $sub_gs){
-            $arreglo[$p]=$sub_gs->id_sub;
-            $p++;
-        }
-        $sub=SubCategorias::whereIn('id',$arreglo)
-        ->where('id_empresa','=',Auth::user()->id_empresa)
-        ->where('estado','=',0)
-        ->where('estado','=',0)
-        ->get();
+        $sub_g=categorias_sub::select('id')->where('id_sub','=',$id)->first();
+        $sub=categorias_sub::findOrFail($sub_g->id);
+        $sub->id_categorias=$categori;
+        $sub->update();
+     
 
-        return view('Categorias.Plantillas.tableall',compact('sub'));
+        return $categori;
+
+        // $sub_g=categorias_sub::select('id_categorias')->where('id_sub','=',$id)->first();
+        // $subcategory=categorias_sub::select('id_sub')->where('id_categorias','=',$sub_g->id_categorias)->get();
+        // $arreglo=[];
+        // $p=0;
+        
+        // foreach($subcategory as $sub_gs){
+        //     $arreglo[$p]=$sub_gs->id_sub;
+        //     $p++;
+        // }
+        // $sub=SubCategorias::whereIn('id',$arreglo)
+        // ->where('id_empresa','=',Auth::user()->id_empresa)
+        // ->where('estado','=',0)
+        // ->where('estado','=',0)
+        // ->get();
+
+        // return view('Categorias.Plantillas.tableall',compact('sub'));
         
     }
     public function showsub($id)
     {
         $sub=SubCategorias::findOrFail($id);
-        return view('Categorias.Modales.subupdate',compact('sub'));
+        $category_sub=categorias_sub::select('id_categorias')->where('id_sub','=',$id)->first();
+        $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        return view('Categorias.Modales.subupdate',compact('sub','categorias','category_sub'));
     }
     public function showcategorias($id)
     {
@@ -240,7 +251,7 @@ class CategoriasController extends Controller
         ->leftjoin('categorias_sub','categorias_sub.id_categorias','=','categorias.id')
         ->where('categorias.id_empresa',Auth::user()->id_empresa)
         ->where('categorias.estado','=',0)
-        ->select('categorias.id','categorias.nombre','categorias.user','categorias.created_at',DB::raw('count(categorias_sub.id_categorias) as gasto'))
+        ->select('categorias.id','categorias.nombre','categorias.user','categorias.created_at',DB::raw('count(categorias_sub.id_sub) as gasto'))
         ->GroupBy('categorias.id','categorias.nombre','categorias.user','categorias.created_at');
        
             return datatables()->of($perfiles)

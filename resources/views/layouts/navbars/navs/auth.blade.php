@@ -25,7 +25,7 @@
 
                 @php
                     $userres=App\Models\User::where('email','=',Auth::user()->email)->where('estado','=',0)->get();
-                    $empresa=App\Models\Empresa::where('estado','=',0)->get();
+                    $empresa=App\Models\Empresa::where('estado','=',0)->orderBy('nombre')->get();
                     $user=Auth::user()->id;
 
                     if(sizeof(App\Models\Role_users::select('role_id')->where('user_id','=',$user)->get())!=0){

@@ -1,6 +1,11 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
+<style>
+  .center{
+  text-align: center !important;
+}
+</style>
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link rel="stylesheet" href="{{asset('css/categorias.css')}}">
 <div class="col-md-12">

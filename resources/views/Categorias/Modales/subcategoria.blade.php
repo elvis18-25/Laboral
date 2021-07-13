@@ -13,8 +13,7 @@
         <div class="modal-body">
           <div class="form-row">
             <div class="col-sm-11 text-left">
-                <label style="color: black"><b>{{ __('SUBCATEGORIAS:') }}</b></label>
-                <input type="text" name="newcategoria" id="subcat" autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" class="form-control datosInput" placeholder="{{ __('Categoria') }}">
+                <input type="text" name="newcategoria" id="subcat" autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" class="form-control datosInput" placeholder="{{ __('SUBCATEGORIAS') }}">
             </div>
         </div>
 
