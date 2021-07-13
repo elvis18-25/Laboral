@@ -15,6 +15,14 @@
       #salarioTable{
         cursor: pointer;
       }
+      table>thead>tr{
+        background-color: rgb(0 0 0 / 0%) !important;
+}
+
+table>thead>tr>th{
+  color: black !important;
+}
+
 </style>
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">  
@@ -1217,6 +1225,7 @@ $("#deleempleado").submit(function(e){
 }).then((result) => {
   if (result.isConfirmed) {
     this.submit();
+    t=1;
   }
 })
 })

@@ -617,6 +617,7 @@ $("#deletelistado").submit(function(e){
 }).then((result) => {
   if (result.isConfirmed) {
     this.submit();
+    t=1;
   }
 })
 })

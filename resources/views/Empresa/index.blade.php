@@ -1,6 +1,6 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
-@section('content')
 <link rel="stylesheet" href="{{asset('css/empresa.css')}}">
+@section('content')
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.css" rel="stylesheet">
 

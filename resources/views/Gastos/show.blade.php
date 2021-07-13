@@ -309,7 +309,7 @@
 <button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
 </form>
 
-<form action="{{route('Gasto.destroy',$gasto->id)}}" method="POST">
+<form action="{{route('Gasto.destroy',$gasto->id)}}" id="deletegastos" method="POST">
   @csrf
   @method('DELETE')
   <button type="submit"  class="btn btn-fill btn-danger float-right" title="Eliminar Empleado" style="margin-right: 5px;"><i class="fas fa-trash"></i>&nbsp;{{ __('Eliminar') }}</button>
@@ -362,6 +362,24 @@ $("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--co
 }
 });
 
+
+$("#deletegastos").submit(function(e){
+    e.preventDefault();
+    Swal.fire({
+  title: 'Estas seguro?',
+  text: "Ya no se podra revertir los cambios!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, Eliminar!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    this.submit();
+    t=1;
+  }
+})
+})
 // alert(img);
 window.onbeforeunload = function() {
   // 
