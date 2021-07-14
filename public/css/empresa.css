@@ -1,4 +1,43 @@
 
+
+      .form-control[readonly]{
+        background-color: rgb(255 255 255 / 50%);
+      }
+
+      .TitleP{
+        text-align: center;
+      }
+      .TitleL{
+        text-align: left;
+    }
+      #HL-Table{
+        width: -webkit-fill-available !important; 
+      }
+      #HL-Table tbody tr{
+        cursor: pointer;
+      }
+
+      .dataTables_scrollHeadInner{
+        width: 105% !important;
+      }
+      .rolesdws{
+        width: 100% !important;
+      }
+      .widfgets{
+        width: 100% !important;
+      }
+      #roles>tbody>tr>td{
+        padding: 5px 7px !important;
+      }
+      #Widget>tbody>tr>td{
+        padding: 5px 7px !important;
+      }
+      #accionsf>tbody>tr>td{
+        padding: 5px 7px !important;
+      }
+      #empresaPredert>tbody>tr>td{
+        padding: 5px 7px !important;
+      }
 #roles_wrapper{
 	top: 15px;
 	position: relative;
@@ -9,6 +48,10 @@
 	position: relative;
 }
 #accionsf_wrapper{
+	top: 15px;
+	position: relative;
+}
+#empresaPredert_wrapper{
 	top: 15px;
 	position: relative;
 }

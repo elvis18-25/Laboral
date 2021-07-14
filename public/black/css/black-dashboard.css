@@ -87,8 +87,8 @@ section {
 }
 
 table.dataTable tbody tr.selected {
-  background-color: #5c6bc0 !important;
-  color: white;
+  background-color: rgb(0 0 0 / 0%)!important;
+  color: black;
 }
 table>thead>tr{
   background-color: #4054b2 !important;
@@ -14564,15 +14564,15 @@ table.tablesorter thead tr .headerSortDown {
 .form-check-radio input[type="radio"]:checked+.form-check-sign::after {
   width: 6px;
   height: 6px;
-  background-color: #e14eca;
-  border-color: #e14eca;
-  top: 9px;
-  left: 6px;
+  background-color: #4054b2;
+  border-color: #4054b2;
+  top: -11px;
+  left: 10px;
   opacity: 1;
 }
 
 .form-check-radio input[type="radio"]:checked+.form-check-sign::before {
-  border-color: #e14eca;
+  border-color: #4054b2;
 }
 
 .form-check-radio input[type="radio"]:checked+.form-check-sign::after {

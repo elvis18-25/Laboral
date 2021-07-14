@@ -64,11 +64,14 @@ class EmpresaController extends Controller
 
         $roles=Role::findOrFail($rol->role_id);
         $permisos_widget=permisos_widget::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
-        
+        // dd(Auth::user()->id_empresa);
         $permisos=Permisos::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         // dd($permisos);
         $permisos_acciones=permisos_acciones::where('role_id','=',$rol->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
-        return view('Empresa.index',compact('empresa','contrato','roles','permisos_acciones','permisos_widget','permisos','pais','pais_start','state_start','city_start','state','city','modulos','widget'));
+
+        $empre=Empresa::where('estado','=',0)->get();
+        $userEmpresa=User::where('email','=',Auth::user()->email)->get();
+        return view('Empresa.index',compact('empresa','empre','userEmpresa','contrato','roles','permisos_acciones','permisos_widget','permisos','pais','pais_start','state_start','city_start','state','city','modulos','widget'));
     }
 
     /**
@@ -297,6 +300,22 @@ class EmpresaController extends Controller
     public function Savepermis(Request $request)
     {
         // dd($request->all());
+        $empre=Empresa::where('estado','=',0)->get();
+        $userEmpresa=User::where('email','=',Auth::user()->email)->get();
+
+        
+        foreach ($empre as $empresas){
+            foreach ($userEmpresa as $users){
+                if ($users->id_empresa==$empresas->id){
+                    $empresas->deafult=0;
+                    $empresas->update();
+                }
+            }
+        }
+        $empre=Empresa::findOrFail($request->get('exampleRadios'));
+        $empre->deafult=1;
+        $empre->update();
+
         $n=count($request->get('wingdt'));
         $p=count($request->get('donm'));
         // dd($p);
@@ -378,11 +397,10 @@ class EmpresaController extends Controller
         }
     }
         
-    // dd("se paso");
-        
         $permisos_widget=permisos_widget::where('role_id','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         $permisos_widget->delete();
-        // dd($permisos_widget);
+        
+
         $permisoss=Permisos::where('role_id','=',$id)->where('id_empresa','=',intval(Auth::user()->id_empresa))->first();
         $permisoss->delete();
 

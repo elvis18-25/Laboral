@@ -448,6 +448,9 @@
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="contact-tab" data-toggle="tab" href="#acciones" role="tab" aria-controls="contact" aria-selected="false">ACCIONES</a>
             </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#predertiments" role="tab" aria-controls="contact" aria-selected="false">EMPRESA PREDETERMINADA</a>
+            </li>
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="modulos" role="tabpanel" aria-labelledby="home-tab">
@@ -506,7 +509,7 @@
                     <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>
-                        <div class="form-check" style="margin-left: 3px;">
+                        <div class="form-check" style="margin-left: -4px;">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleAccion(this)' >
                                 <span class="form-check-sign">
@@ -522,6 +525,21 @@
                   @include('Empresa.Plantillas.tableaccion')
             </tbody>
         </table>
+            </div>
+
+            <div class="tab-pane fade" id="predertiments" role="tabpanel" aria-labelledby="contact-tab">
+              <table class="table table-striped rolesdws empresaPredert" id="empresaPredert">
+                <thead>
+                  <tr>
+                    <th class="TitleP" style="font-size: 14px;"><b>NOMBRE</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"><b>FECHA</b></th>
+                    <th class="TitleP"  style="font-size: 14px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @include('Empresa.Plantillas.searchempresa')
+            </tbody>
+             </table>
             </div>
           </div>
    
@@ -1319,47 +1337,104 @@ $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
 
    });
 
+   tableempresa=$('#empresaPredert').DataTable({
+    "info": false,
+    "paging":   false,
+    "ordering": false,
+    scrollY: 500,
+
+    select: {
+            style: 'single',
+        },
+        keys: {
+           keys:true,
+          keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
+        },
+
+      rowGroup: {
+        dataSrc: 'group',
+    },
+
+    "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ],
+        language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      },    
+   
+    });
+
+
+$('#accionsf').on('key-focus.dt', function(e, datatable, cell){
+        // Select highlighted row
+      
+        tableempresa.row(cell.index().row).select();
+     });
+
+    // Handle click on table cell
+    $('#accionsf').on('click', 'tbody td', function(e){
+        e.stopPropagation();
+        
+        // Get index of the clicked row
+        var rowIdx = tableempresa.cell(this).index().row;
+
+        
+        // Select row
+        tableempresa.row(rowIdx).select();
+    });
+    // Handle key event that hasn't been handled by KeyTable
+    $('#accionsf').on('key.dt', function(e, datatable, key, cell, originalEvent,row){
+
+        // If ENTER key is pressed
+        if(key === 13){
+            // Get highlighted row data
+            event.preventDefault();
+            var data = tableempresa.row(cell.index().row).data();
+            
+            var row_s=$(this).DataTable().row({selected:true}).node(); 
+            var colum=$('td', row_s).eq(2);
+
+            var siz=$(colum).attr('value');
+            $("#acciones"+siz).trigger("click");
+
+            console.log(siz);
+
+        }
+        
+    });
+
+    $('div.dataTables_filter input', tableempresa.table().container()).on('click',function(){
+    var rowIdx = tableempresa.cell(':eq(0)').index().row;
+      
+    tableempresa.row(rowIdx).select();
+      
+    tableempresa.cell( ':eq(0)' ).focus();
+
+   });
+
 
 $('.clockpicker').clockpicker();
 
 $('#inputCity').mask('0#');
     </script>
 
-    <style>
-      .form-control[readonly]{
-        background-color: rgb(255 255 255 / 50%);
-      }
-
-      .TitleP{
-        text-align: center;
-      }
-      .TitleL{
-        text-align: left;
-    }
-      #HL-Table{
-        width: -webkit-fill-available !important; 
-      }
-      #HL-Table tbody tr{
-        cursor: pointer;
-      }
-
-      .dataTables_scrollHeadInner{
-        width: 105% !important;
-      }
-      .rolesdws{
-        width: 100% !important;
-      }
-      .widfgets{
-        width: 100% !important;
-      }
-      #roles>tbody>tr>td{
-        padding: 5px 7px !important;
-      }
-      #Widget>tbody>tr>td{
-        padding: 5px 7px !important;
-      }
-      #accionsf>tbody>tr>td{
-        padding: 5px 7px !important;
-      }
-    </style>
 @endsection

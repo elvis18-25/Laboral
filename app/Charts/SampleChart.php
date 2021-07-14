@@ -33,7 +33,7 @@ class SampleChart extends BaseChart
         // $gasto->whereDate('empleado.created_at','>=',$start)->whereDate('empleado.created_at','<=',$end);
 
         $nominas = Listado::select(DB::raw("month(fecha) as moth"),DB::raw("SUM(monto) as count"))
-        ->whereYear('fecha',date('Y'))
+        ->whereYear('fecha','>=',date('Y'))
         ->where('id_empresa',Auth::user()->id_empresa)
         ->where('estado',0)
         ->orderBy("fecha")
@@ -46,6 +46,8 @@ class SampleChart extends BaseChart
 
         // $m=[];
         $i=0;
+        $moth=[];
+        $data=[];
         foreach($gasto as $gastos){
             $moth[$i]=(int)$gastos->moth;
             $data[$i]=$gastos->count;

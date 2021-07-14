@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Empresa;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +19,27 @@ use Illuminate\Support\Facades\Auth;
 
 
 Auth::routes();
+Route::get('/', function () {
+	$empre=Empresa::where('estado','=',0)->get();
+	$userEmpresa=User::where('email','=',Auth::user()->email)->get();
+	$counts=0;
+	foreach ($empre as $empresas){
+		foreach ($userEmpresa as $users){
+			if ($users->id_empresa==$empresas->id){
+				if($empresas->deafult==1){
+					$counts=$empresas->id;
+				}
+			}
+		}
+	}
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+	     $user=User::where('email','=',Auth::user()->email)->where('id_empresa','=',$counts)->first();
+        $myVariable =Auth::login($user,true);
+
+        return redirect()->intended('/home');
+    // return 'hola';
+});
+// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 
 // Route::get('Empleadologin','App\Http\Controllers\EmpleadologinController@showLoginForm');
 

@@ -77,6 +77,7 @@ class RegisterController extends Controller
             'telefono' => $data['telefono'],
             'direcion' => $data['direcion'],
             'estado'   =>0,
+            'deafult'   =>1,
               'rnc'    => $data['rnc'],
         ]);
 
