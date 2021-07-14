@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\SubCategorias;
 use App\Models\categorias_sub;
-
+use App\Models\Empresa;
+use Barryvdh\DomPDF\Facade as PDF;
 class CategoriasController extends Controller
 {
     /**
@@ -212,8 +213,14 @@ class CategoriasController extends Controller
     public function CatalogoPdf()
     {
         $categorias=categorias::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+        $medio=categorias_sub::where('id_empresa','=',Auth::user()->id_empresa)->get();
         $sub_g=SubCategorias::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
-        return view('Categorias.catologo');
+        $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
+
+        $pdf =PDF::loadView('Categorias.catalogo',compact('categorias','sub_g','empresa','medio'));
+        $pdf->setPaper("A4", "portrait");
+        return $pdf->stream('gastos.pdf');
+        // return view('Categorias.catalogo',compact('categorias','sub_g','empresa'));
     }
     public function savesub(Request $request,$id)
     {

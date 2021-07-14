@@ -68,14 +68,14 @@
 
   .dataTables_filter{
     width: 626px !important;
-   
+    display: none;
   }
 
   #gastoperido-table tbody tr{
     cursor: pointer;
   }
   div.dataTables_wrapper div.dataTables_filter input {
-    display: inline-block;
+    display: none;
     width: 571px !important;
 }
   div.col-sm-12.col-sm-6{

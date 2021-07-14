@@ -16,8 +16,8 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>CATEGORIAS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{url('CatalogoPdf')}}" class="btn btn-sm btn-info redondo"  data-toggle="modal" data-target="#Modalcategorias" ><button type="button" id="createcategoria" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
-                    <a href="#" class="btn btn-sm btn-warning redondo" ><button type="button" style="display: none;"></button><i class="fas fa-scroll incons"></i></a>
+                    <a href="#" class="btn btn-sm btn-info redondo"  data-toggle="modal" data-target="#Modalcategorias" ><button type="button" id="createcategoria" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                    <a href="{{url('CatalogoPdf')}}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-warning redondo" ><button type="button" style="display: none;"></button><i class="fas fa-scroll incons"></i></a>
                 @include('Categorias.modal')
                 </div>
             </div>

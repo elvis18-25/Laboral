@@ -48,6 +48,11 @@
                       <option selected value="0" >NINGUNO</option>
                   </select>
                   </div>
+
+                  <div class="col-md-3 float-left">
+                    <label><b>{{ __('BUSCAR') }}</b></label>
+                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
+                  </div> 
                 </div>
             </div>
           </div>
@@ -438,5 +443,11 @@ $("#urles").trigger("click");
 });
 
 
+function saerch(){
+  name=$("#btnsearch").val();
+  table.search(name).draw();
+  // $('div.dataTables_filter input', table.table().container()).attr('value',name);
+  // alert(name);
+}
 </script>
 @endsection

@@ -520,22 +520,38 @@
         .tooltip(),
     
       });
+
+
       const DepartamentoChart = new Chartisan({
         el: '#chartbardepartamen',
         url: "@chart('depatamento_chart')",
-        hooks: new ChartisanHooks()
-        .legend()
-        // .colors(['#4054b2'])
-        .colors()
-        .tooltip()
-        .axis(false)
-        // .label(false)
-        .datasets([
+      hooks: new ChartisanHooks()
+      .colors()
+      .legend({
+        orient: "vertical",
+        left: "left",
+      })
+      .tooltip()
+      .axis(false)
+      // .series({
+      //   label:{show: false },
+      // })
+
+      // .options({
+      //   labelLine: { show: false },
+      //    label:{show: false },
+      // })
+      .custom(({ data, merge, server }) => {
+        console.log(data);
+          return data
+        })
+      .datasets([
       { type: 'pie', radius: ['40%', '60%'] },
       { type: 'pie', radius: ['10%', '30%'] },
-    ]),
+      ]),
       });
 
+      
 //       var chartDom = document.getElementById('chartbardepartamen');
 // var myChart = echarts.init(chartDom);
 // var option;
