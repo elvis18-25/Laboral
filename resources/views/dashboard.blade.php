@@ -533,18 +533,15 @@
       })
       .tooltip()
       .axis(false)
-      // .series({
-      //   label:{show: false },
-      // })
-
-      // .options({
-      //   labelLine: { show: false },
-      //    label:{show: false },
-      // })
-      .custom(({ data, merge, server }) => {
-        console.log(data);
-          return data
-        })
+      .custom(({ data }) => ({
+      ...data,
+      
+      series: data.series.map((serie) => ({
+        ...serie,
+        label: { show: false },
+      })),
+      
+    }))
       .datasets([
       { type: 'pie', radius: ['40%', '60%'] },
       { type: 'pie', radius: ['10%', '30%'] },
