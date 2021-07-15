@@ -44,7 +44,7 @@
            @endphp
                
            <div class="col-md-3 col-sm-3 col-xl-2 col-lg-2 pb-2 text-center empresas">
-               <button type="submit" class=" btn users" style='height: 156px; width: 172px;  background-color:<?php printf($color); ?>' value="{{$users->email}}" action="{{$users->password}}" id="{{$empresas->id}}" >
+               <button type="submit" class=" btn users" style='height: 156px; width: 172px;  background:<?php print $color; ?>' value="{{$users->email}}" action="{{$users->password}}" id="{{$empresas->id}}" >
                 @if ($empresas->imagen!=null)
                 <img src="{{ asset('logo/'.$empresas->imagen)}}"  width="100%" height="100%" alt="">
                     

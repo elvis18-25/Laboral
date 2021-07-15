@@ -49,12 +49,12 @@
           <form action="{{Route('Empresa.update',$empresa->id)}}" method="POST"  enctype="multipart/form-data" id="formulario">
             @csrf
             @method('PUT')
-        <div class="color" style=' background-color:<?php printf($color); ?>'>
+        <div class="color" style=' background:<?php print $color; ?>'>
           @if ($empresa->imagen!=null)
-          <img class="Logo" src="{{ asset('logo/'.$empresa->imagen)}}"  id="image" alt="">
+          <img class="Logo" src="{{ asset('logo/'.$empresa->imagen)}}"   id="image" alt="">
               
           @else
-          <img src="{{asset('recuros/empresa.png')}}" width="50%" height="50%" id="image"  alt="">
+          <img src="{{asset('recuros/empresa.png')}}" id="image"  alt="">
           @endif
         </div>
             <div class="form-row">
@@ -124,14 +124,7 @@
             </div>
         </div>
 
-        <div class="col-sm-4">
-            <div class="color-wrapper">
-              <label for=""><b>COLOR:</b></label><br>
-              <input type="text" name="custom_color" readonly placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" value="{{$empresa->color}}">
-              <div class="color-holder call-picker"></div>
-              <div class="color-picker" id="color-picker" style="display: none"></div>
-            </div>
-          </div>
+
 
 
 
@@ -195,6 +188,20 @@
               <label for="inputCity"><b>CODIGO POSTAL</b></label>
               <input type="text" class="form-control" id="inputCity" value="{{$empresa->zipcode}}" name="zipcode">
             </div>
+            <div class="col-sm-1">
+              {{-- <div class="color-wrapper">
+                <label for=""><b>COLOR:</b></label><br>
+                <input type="text" name="custom_color" readonly placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" value="{{$empresa->color}}">
+                <div class="color-holder call-picker"></div>
+                <div class="color-picker" id="color-picker" style="display: none"></div>
+              </div> --}}
+              <label for=""><b>COLOR:</b></label>
+              <div class="form-inline">
+                <input type="text" readonly class="form-control" value="{{$empresa->color}}" name="custom_color" id="custom_color" hidden>
+                <div id="colorpicker"></div>
+              </div>
+   
+            </div>
             <div class="col-sm-4">
               <label for=""><b>IMAGEN:</b></label><br>
               <button type="button" type="button" id="btnuploa" for="actual-btn"  class="btn btn-success btn-sm"><i class="fas fa-folder-open"></i></button>
@@ -207,7 +214,7 @@
         </div>
         
 
-        <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 236px; top:-40px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+        <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 236px; top:-25px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
         <input type="text" name="imagen"  id="idphoto" hidden value="">
     </form>
 
@@ -591,6 +598,8 @@
 <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-clockpicker.min.css')}}">
 <script type="text/javascript" src="{{asset('js/bootstrap-clockpicker.min.js')}}"></script>
 
+<script src="{{asset('/dist/xncolorpicker.min.js')}}"></script>
+
 @if (session('guardado')=='ya')
 <script>
   Command: toastr["success"]("Se ha guardado correctamente", "")
@@ -630,6 +639,47 @@ toastr.options = {
     }
   });
 
+
+
+  var xncolorpicker = new XNColorPicker({
+        color: $("#custom_color").val(),
+        selector: "#colorpicker",
+        showprecolor: true,//显示预制颜色
+        prevcolors: null,//预制颜色，不设置则默认
+        showhistorycolor: true,//显示历史
+        historycolornum: 16,//历史条数
+        format: 'hsla',//rgba hex hsla,初始颜色类型
+        showPalette:true,//显示色盘
+        show:false, //初始化显示
+        lang:'en',// cn 、en
+        colorTypeOption:'single,linear-gradient,radial-gradient',
+        canMove:false,//选择器位置是否可以拖拽
+        alwaysShow:false,
+        autoConfirm:true,
+        hideInputer:false,
+        hideCancelButton:false,
+        hideConfirmButton:false,
+        onError: function (e) {
+
+        },
+        onCancel:function(color){
+            console.log("cancel",color)
+            $('.color').css('background', color.color.str);
+            $("#custom_color").attr('value',color.color.str);
+        },
+        onChange:function(color){
+            // console.log("change",color)
+            // alert("cambio")
+            console.log(color.color.str)
+            $('.color').css('background', color.color.str);
+            $("#custom_color").attr('value',color.color.str);
+        },
+        onConfirm:function(color){
+            console.log("confirm",color)
+            $('.color').css('background', color.color.str);
+            $("#custom_color").attr('value',color.color.str);
+        }
+    })
 
 
   $.ajaxSetup({
@@ -1437,4 +1487,23 @@ $('.clockpicker').clockpicker();
 $('#inputCity').mask('0#');
     </script>
 
+<style>
+  
+    .color-slidedown-curbox{
+	  color: black;
+  }
+  
+  .fcolorpicker .color-slidedown ul{
+	  background: white;
+  }
+
+  .color img{
+    position: absolute;
+    width: 193px;
+    top: 22% !important;
+    right: 0;
+    left: 1052px;
+    margin: 0 auto;
+	}
+</style>
 @endsection
