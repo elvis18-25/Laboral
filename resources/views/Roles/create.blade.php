@@ -66,7 +66,7 @@
             <th class="TitleP" style="font-size: 14px; color: white"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px; color: white"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px; color: white"><b>
-                <div class="form-check" style="margin-left: 21px;">
+                <div class="form-check" style="margin-left: 21px; top: 5px;">
                     <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggle(this)' >
                         <span class="form-check-sign">
@@ -130,7 +130,7 @@
             <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
             <th class="TitleP"  style="font-size: 14px;"><b>
-                <div class="form-check" style="margin-left: 20px;">
+                <div class="form-check" style="margin-left: 20px; top: 5px;">
                     <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" value="todos" id="todoWidget" onclick='toggleWidg(this)' >
                         <span class="form-check-sign">

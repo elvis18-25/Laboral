@@ -9,6 +9,9 @@
     .table>tbody>tr>td{
             padding: 5px 7px !important;
         } 
+     .form-check{
+        top: 5px;
+     }   
     </style>
 @section('content')
 <link rel="stylesheet" href="{{asset('css/roles.css')}}">
@@ -330,7 +333,7 @@ $('#roles').on('key-focus.dt', function(e, datatable, cell){
 tab=$('#Widget').DataTable({
     "info": false,
     "paging":   false,
-    scrollY: 300,
+    scrollY: 500,
 
     select: {
             style: 'single',

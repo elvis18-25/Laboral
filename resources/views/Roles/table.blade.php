@@ -4,7 +4,7 @@
 
         @if ($permisos_widget->total_empleado==1) 
         <td class="TitleP" value={{1}}>
-            <div class="form-check">
+            <div class="form-check checks">
                 <label class="form-check-label">
                     <input class="form-check-input cheinput" checked type="checkbox" id="widgdt{{1}}" name="wingdt[]" value="1" >
                     <span class="form-check-sign">
@@ -15,7 +15,7 @@
         </td>
         @else 
         <td class="TitleP" value={{1}}>
-            <div class="form-check">
+            <div class="form-check checks">
                 <label class="form-check-label">
                     <input class="form-check-input cheinput" id="widgdt{{1}}"  type="checkbox" name="wingdt[]" value="1" >
                     <span class="form-check-sign">
@@ -32,7 +32,7 @@
 
         @if ($permisos_widget->total_usuarios==1) 
         <td class="TitleP" value={{2}}>
-            <div class="form-check">
+            <div class="form-check checks">
                 <label class="form-check-label">
                     <input class="form-check-input cheinput" id="widgdt{{2}}" checked type="checkbox" name="wingdt[]" value="2" >
                     <span class="form-check-sign">
@@ -43,7 +43,7 @@
         </td>
         @else 
         <td class="TitleP" value={{2}}>
-            <div class="form-check">
+            <div class="form-check checks">
                 <label class="form-check-label">
                     <input class="form-check-input cheinput" id="widgdt{{2}}" type="checkbox" name="wingdt[]" value="2" >
                     <span class="form-check-sign">
@@ -59,7 +59,7 @@
     <td class="TitleL">VISUALIZACION DE DATOS DE DEPARTAMENTOS</td>
         @if ($permisos_widget->total_departamentos==1) 
         <td class="TitleP" value={{3}}>
-            <div class="form-check">
+            <div class="form-check checks">
                 <label class="form-check-label">
                     <input class="form-check-input cheinput" id="widgdt{{3}}" checked type="checkbox" name="wingdt[]" value="3" >
                     <span class="form-check-sign">
@@ -70,7 +70,7 @@
         </td>
         @else 
         <td class="TitleP" value={{3}}>
-            <div class="form-check">
+            <div class="form-check checks">
                 <label class="form-check-label">
                     <input class="form-check-input cheinput" id="widgdt{{3}}"  type="checkbox" name="wingdt[]" value="3" >
                     <span class="form-check-sign">
@@ -86,7 +86,7 @@
     <td class="TitleL">VISUALIZACION DE DATOS DE FORMAS DE PAGOS</td>
         @if ($permisos_widget->formas_pago==1) 
         <td class="TitleP" value={{4}}>
-            <div class="form-check">
+            <div class="form-check checks">
                 <label class="form-check-label">
                     <input class="form-check-input cheinput" id="widgdt{{4}}" checked type="checkbox" name="wingdt[]" value="4" >
                     <span class="form-check-sign">
