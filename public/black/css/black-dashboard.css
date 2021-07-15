@@ -98,8 +98,17 @@ table>thead>tr>th{
   color: white !important;
 }
 
+.logotipo{
+  webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
 
-
+.o-page-loader--message{
+  webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;

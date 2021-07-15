@@ -451,11 +451,16 @@ table>thead>tr>th{
                         <div class="block block-four"></div>
 
                         @if ($empleados->imagen==null)
-                        <img class="avatar" src="{{asset('black') }}/img/default-user-image.png" id="image" alt="">
+                        <img class="avatar" src="{{asset('black') }}/img/default-user-image.png" id="image" alt="" style="    
+                        webkit-user-select: none; /* Safari */
+                        -ms-user-select: none; /* IE 10 and IE 11 */
+                        user-select: none; /* Standard syntax */">
                         @endif
 
                         @if ($empleados->imagen!=null)
-                        <img class="avatar" src="{{ asset('img/'.$empleados->imagen)}}" id="image" alt="" >
+                        <img class="avatar" src="{{ asset('img/'.$empleados->imagen)}}" id="image" alt="" style="webkit-user-select: none; /* Safari */
+                        -ms-user-select: none; /* IE 10 and IE 11 */
+                        user-select: none; /* Standard syntax */" >
                         @endif
                         
                         

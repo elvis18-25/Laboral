@@ -576,8 +576,8 @@
     <div class="o-page-loader--content">
       <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner logotipo">
         {{-- <div class=""></div> --}}
-        <div class="o-page-loader--message">
-            <span>Cargando...</span>
+        <div class="o-page-loader--message" >
+            <span >Cargando...</span>
         </div>
     </div>
   </div>
