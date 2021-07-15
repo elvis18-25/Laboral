@@ -246,7 +246,7 @@ class CategoriasController extends Controller
     }
     public function showsubcategorias($id)
     {
-        return view('Categorias.modales.subedit',compact('id'));
+        return view('Categorias.Modales.subedit',compact('id'));
     }
     public function deletecategorias($id)
     {

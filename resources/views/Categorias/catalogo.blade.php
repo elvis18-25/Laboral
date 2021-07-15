@@ -21,6 +21,8 @@
       <div id="logo">
         <img src="{{ asset('logo/'.$empresa->imagen)}}">
       </div>
+      <br>
+      <br>
       <div id="logoWS">
         <span>CATALOGO</span><br>
         <span class="recur">De Categorias</span>
@@ -29,7 +31,7 @@
           $hoy=Illuminate\Support\Carbon::now();
       @endphp
            <div class="Userlogin">
-            <span>Imprimida por:&nbsp;{{$nombre}},&nbsp;  Fecha:&nbsp;{{$hoy->format('d/m/Y')}}</span>
+            <span>Impresa por:&nbsp;{{$nombre}},&nbsp;  Fecha:&nbsp;{{$hoy->format('d/m/Y')}}</span>
           </div>
       <br>
       <div id="logow">
