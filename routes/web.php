@@ -20,6 +20,8 @@ use App\Models\Empresa;
 
 Auth::routes();
 Route::get('/', function () {
+	// dd(Auth::user());
+	if(Auth::user()!=null){
 	$empre=Empresa::where('estado','=',0)->get();
 	$userEmpresa=User::where('email','=',Auth::user()->email)->get();
 	$counts=0;
@@ -37,6 +39,9 @@ Route::get('/', function () {
         $myVariable =Auth::login($user,true);
 
         return redirect()->intended('/home');
+}else{
+	Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+}
     // return 'hola';
 });
 // Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');

@@ -49,30 +49,30 @@ class LoginController extends Controller
 
        
 
-    public function authenticateEmpleado(Request $request)
-    {
+    // public function authenticateEmpleado(Request $request)
+    // {
 
-        $credentials = $request->only('email','password');
+    //     $credentials = $request->only('email','password');
         
-        // dd(Auth::guard('EmplLogin')->attempt(['email' => $request->email, 'password' => $request->password]));
+    //     // dd(Auth::guard('EmplLogin')->attempt(['email' => $request->email, 'password' => $request->password]));
 
-        if (Auth::guard('EmplLogin')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            dd("S");
-            $request->session()->regenerate();
-            return redirect()->intended('/home');
-        }else{
-            throw ValidationException::withMessages([
-                $this->username() => [trans('auth.failed')],
-            ]);
-        }
+    //     if (Auth::guard('EmplLogin')->attempt(['email' => $request->email, 'password' => $request->password])) {
+    //         dd("S");
+    //         $request->session()->regenerate();
+    //         return redirect()->intended('/home');
+    //     }else{
+    //         throw ValidationException::withMessages([
+    //             $this->username() => [trans('auth.failed')],
+    //         ]);
+    //     }
         
-        return back()->withErrors([
-            'email' => 'Este Email no es valido.',
-            ]);
+    //     return back()->withErrors([
+    //         'email' => 'Este Email no es valido.',
+    //         ]);
 
 
 
-        }
+    //     }
         
 
         
