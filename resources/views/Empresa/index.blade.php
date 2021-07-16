@@ -244,7 +244,7 @@
                 <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b></b></h4>
             </div>
             <div class="col-4 text-right">
-              <button type="button" class="btn btn-info btn-sm redondo float-right" data-toggle="modal" data-target="#NewHoras" >
+              <button type="button" class="btn btn-info btn-sm redondo float-right" style="border-radius: 50% !important;" data-toggle="modal" data-target="#NewHoras" >
                 <i class="fas fa-plus"></i>
               </button>
             </div>
@@ -280,7 +280,7 @@
                 <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>CONTRATOS</b></h4>
             </div>
             <div class="col-4 text-right">
-              <button type="button" class="btn btn-info btn-sm float-right redondo" data-toggle="modal" data-target="#contrato"><i class="fa fa-plus"></i></button>
+              <button type="button" class="btn btn-info btn-sm float-right redondo" style="border-radius: 50% !important;" data-toggle="modal" data-target="#contrato"><i class="fa fa-plus"></i></button>
             </div>
         </div>
     </div>
@@ -461,13 +461,18 @@
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="modulos" role="tabpanel" aria-labelledby="home-tab">
+              <br>
+              <div class="col-sm-7" style="left: 22%;">
+                <input type="text" name="" id="btnsearch" onkeyup="saerch();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
+              </div>
+
               <table class="table table-striped rolesdws" id="roles">
                 <thead>
                   <tr>
                     <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>
-                        <div class="form-check" style="margin-left: -5px;">
+                        <div class="form-check checkaling" style="margin-left: -8px;">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleDonm(this)' >
                                 <span class="form-check-sign">
@@ -486,13 +491,18 @@
             </div>
 
             <div class="tab-pane fade" id="dashboards" role="tabpanel" aria-labelledby="profile-tab">
+              <br>
+              <div class="col-sm-7" style="left: 22%;">
+                <input type="text" name="" id="btnsearchWidget" onkeyup="saerchWidget();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
+              </div>
+
               <table class="table table-striped widfgets" id="Widget">
                 <thead>
                   <tr>
                     <th class="TitleP" style="font-size: 14px;"><b>ACCESSO</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>
-                        <div class="form-check" style="margin-left: 9px;">
+                        <div class="form-check checkaling" style="margin-left: -5px;">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" value="todos" id="todoWidget" onclick='toggleWidg(this)' >
                                 <span class="form-check-sign">
@@ -510,13 +520,17 @@
         </table>
             </div>
             <div class="tab-pane fade" id="acciones" role="tabpanel" aria-labelledby="contact-tab">
+              <br>
+              <div class="col-sm-7" style="left: 22%;">
+                <input type="text" name="" id="btnsearchaccionsf" onkeyup="saerchaccionsf();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
+              </div>
               <table class="table table-striped rolesdws" id="accionsf">
                 <thead>
                   <tr>
                     <th class="TitleP" style="font-size: 14px;"><b>ACCESO</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>DESCRIPCIÓN</b></th>
                     <th class="TitleP"  style="font-size: 14px;"><b>
-                        <div class="form-check" style="margin-left: -4px;">
+                        <div class="form-check checkaling" style="margin-left: -5px;">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" value="todos" id="todos" onclick='toggleAccion(this)' >
                                 <span class="form-check-sign">
@@ -1481,6 +1495,19 @@ $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
 
    });
 
+  function saerch(){
+  name=$("#btnsearch").val();
+  table.search(name).draw();
+}
+
+  function saerchWidget(){
+  name=$("#btnsearchWidget").val();
+  tab.search(name).draw();
+}
+  function saerchaccionsf(){
+  name=$("#btnsearchaccionsf").val();
+  tabes.search(name).draw();
+}
 
 $('.clockpicker').clockpicker();
 
@@ -1505,5 +1532,6 @@ $('#inputCity').mask('0#');
     left: 1052px;
     margin: 0 auto;
 	}
+  
 </style>
 @endsection
