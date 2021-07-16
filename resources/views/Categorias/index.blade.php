@@ -8,6 +8,44 @@
 </style>
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link rel="stylesheet" href="{{asset('css/categorias.css')}}">
+
+<div class="col-md-12">
+  <div class="card ">
+    <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+      <div class="card card-plain">
+        <div class="card-header" role="tab" id="headingTwo">
+          <div class="row">
+            <div class="col-12">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <h4><b> FILTROS
+                <i class="tim-icons icon-minimal-down"></i>
+              </b>
+              </h4>
+            </a>
+        </div>
+        </div>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col-md-4 float-left">
+                  <label><b>{{ __('BUSCAR') }}</b></label>
+                  <input type="text" name="" id="btnsearch" onkeyup="saerch();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Buscar..." class="form-control">
+                </div> 
+                {{-- <div class="col-sm-2" id="fechaHora">
+                  <label for=""><b>FECHA DE CREACION</b></label>
+                  <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 125%; position: relative; top: 3px;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                  </div>
+                </div> --}}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -317,6 +355,11 @@ $('subcategorias').append(button);
 document.getElementById("subcategorias").innerHTML += '<tr class="reducir" value="'+nuevoSujeto.nombre+'"><td style="text-align: left;"><input  type="text" name="nombre[]" value="'+nuevoSujeto.nombre+'"/ hidden>'+nuevoSujeto.nombre+'<td style="text-align: left;">'+button+'</td></tr>';
 
 
+}
+
+function saerch(){
+  name=$("#btnsearch").val();
+  table.search(name).draw();
 }
 
 $(document).on('click', '.borrar', function (event) {
