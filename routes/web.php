@@ -155,6 +155,7 @@ Route::get('datatableListadoIndex','App\Http\Controllers\ListadoContrller@datata
 Route::get('datatableHorario','App\Http\Controllers\EmpresaController@datatableHorario');
 Route::get('datatableCategorias','App\Http\Controllers\CategoriasController@datatableCategorias');
 Route::get('datatableGastosIndex','App\Http\Controllers\GastoController@datatableGastosIndex');
+Route::get('datatableUsuarios','App\Http\Controllers\UserController@datatableUsuarios');
 
 
 //Empleados

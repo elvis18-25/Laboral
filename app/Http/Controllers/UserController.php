@@ -39,14 +39,27 @@ class UserController extends Controller
     public function index()
     {
         $users=User::all();
-        $puesto=Puesto::all();
+        // $puesto=Puesto::all();
         $empresa=Empresa::select('id')->where('id','=',Auth::user()->id_empresa)->first();
         // dd($empresa);
         $empre=$empresa->id;
 
         $role=Role_users::where('user_id','=',Auth::user()->id)->first();
         $permisos=Permisos::where('role_id','=',$role->role_id)->first();
-        return view('users.index',compact('users','puesto','empre','permisos'));
+
+        $puesto=Puesto::where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+        
+        $pagos=Pagos::where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+
+        $roles=Role::where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+        $sexo=Sexo::all();
+        return view('users.index',compact('users','puesto','empre','permisos','pagos','sexo','roles'));
     }
 
     /**
@@ -450,6 +463,64 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function  datatableUsuarios()
+    {
+        $id=request('id');
+        
+        if(request()->ajax()){
+         $tipo=request()->get('dato1');
+         $tipo2=request()->get('dato2');
+         $tipo3=request()->get('dato3');
+         $tipo4=request()->get('dato4');
+         $start=request()->start_date;
+         $end=request()->end_date;
+
+        $user=User::leftjoin('puesto_user','puesto_user.user_id','=','users.id')
+        ->leftjoin('puesto','puesto.id','=','puesto_user.puesto_id')
+        ->leftjoin('sexo_user','sexo_user.user_id','=','users.id')
+        ->leftjoin('sexo','sexo.id','=','sexo_user.sexo_id')
+        ->leftjoin('pagos_user','pagos_user.user_id','=','users.id')
+        ->leftjoin('pagos','pagos.id','=','pagos_user.pagos_id')
+        ->leftjoin('role_user','role_user.user_id','=','users.id')
+        ->leftjoin('roles','roles.id','=','role_user.role_id')
+        ->where('users.estado','=',0)
+        ->where('users.id_empresa','=',Auth::user()->id_empresa)
+        ->select('users.id','users.name','users.apellido','users.cargo','users.telefono','puesto.name as puesto','users.salario','users.cedula')
+        ->GroupBy('users.id','users.name','users.apellido','users.cargo','users.telefono','users.salario','users.cedula','puesto');
+       
+
+        if(!empty($tipo)){
+            $user->where('puesto_user.puesto_id',$tipo);
+        }else if(!empty($tipo2)){
+            $user->where('sexo_user.sexo_id',$tipo2);
+        }else if(!empty($tipo3)){
+            $user->where('pagos_user.pagos_id',$tipo3);
+        }else if(!empty($tipo4)){
+            $user->where('role_user.role_id',$tipo4);
+        }
+        if(!empty($start) && $start!="Invalid date"){
+            $user->whereDate('users.entrada','>=',$start)->whereDate('users.entrada','<=',$end);
+        }  
+            return datatables()->of($user)
+            ->editColumn('name',function($row){
+                return $row->name." ".$row->apellido;
+
+            })
+            ->editColumn('salario',function($row){
+                return "$".number_format($row->salario,2);
+
+            })
+            ->setRowAttr([
+                'data-href'=>function($row){
+                    return $row->id;    
+                },
+                'action'=>function($row){
+                    return  Route('user.show',[$row->id]);    
+                },
+                ])->toJson();
+    }
     }
     public function UserController($id)
     {
