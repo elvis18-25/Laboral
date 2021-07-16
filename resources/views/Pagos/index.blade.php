@@ -10,6 +10,36 @@
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
+      <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+        <div class="card card-plain">
+          <div class="card-header" role="tab" id="headingTwo">
+            <div class="row">
+              <div class="col-12">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h4><b> FILTROS
+                  <i class="tim-icons icon-minimal-down"></i>
+                </b>
+                </h4>
+              </a>
+          </div>
+          </div>
+          </div>
+          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-body">
+              <div class="form-row">
+                <div class="col-md-4 float-left">
+                    <label><b>{{ __('BUSCAR') }}</b></label>
+                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
+                  </div> 
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="col-md-12">
+    <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
@@ -178,13 +208,13 @@ $('#pagos-table').on('key-focus.dt', function(e, datatable, cell){
         
     });
 
-    $('#pagos-table').DataTable().on("draw", function(){
-    var rowIdx = table.cell(':eq(0)').index().row;
+//     $('#pagos-table').DataTable().on("draw", function(){
+//     var rowIdx = table.cell(':eq(0)').index().row;
       
-      table.row(rowIdx).select();
+//       table.row(rowIdx).select();
 
-      table.cell( ':eq(0)' ).focus();
-});
+//       table.cell( ':eq(0)' ).focus();
+// });
     document.addEventListener ("keydown", function (e) {
     if (e.keyCode==16) {
 
@@ -196,14 +226,14 @@ $('#pagos-table').on('key-focus.dt', function(e, datatable, cell){
 
     }
 });
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+// window.onbeforeunload = function(e) {
+//     HoldOn.open(options);
+// };
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {
@@ -280,6 +310,11 @@ $("#pagos-table tbody").on('click','tr',function(){
    infoPa(ide);
 
 });
+
+function saerch(){
+  name=$("#btnsearch").val();
+  table.search(name).draw();
+}
 
 function  infoPa(e)
 {

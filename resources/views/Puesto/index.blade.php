@@ -5,6 +5,44 @@
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 
 <div class="col-md-12">
+  <div class="card ">
+    <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+      <div class="card card-plain">
+        <div class="card-header" role="tab" id="headingTwo">
+          <div class="row">
+            <div class="col-12">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <h4><b> FILTROS
+                <i class="tim-icons icon-minimal-down"></i>
+              </b>
+              </h4>
+            </a>
+        </div>
+        </div>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col-md-4 float-left">
+                  <label><b>{{ __('BUSCAR') }}</b></label>
+                  <input type="text" name="" id="btnsearch" onkeyup="saerch();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
+                </div> 
+              {{-- <div class="col-md-3 float-left">
+                  <label><b>{{ __('TIPOS') }}</b></label>
+                  <select id="tipy" class="form-control " name="categorias">
+                    <option selected value=" ">NINGUNO...</option>
+                    <option value="DEDUCCIÓN">DEDUCCIÓN</option>
+                    <option value="INCREMENTO">INCREMENTO</option>
+                </select>
+                </div> --}}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
@@ -263,13 +301,13 @@ $('#depar-table').on('key-focus.dt', function(e, datatable, cell){
 // });
 
 
-$('#depar-table').DataTable().on("draw", function(){
-    var rowIdx = table.cell(':eq(0)').index().row;
+// $('#depar-table').DataTable().on("draw", function(){
+//     var rowIdx = table.cell(':eq(0)').index().row;
       
-      table.row(rowIdx).select();
+//       table.row(rowIdx).select();
 
-      table.cell( ':eq(0)' ).focus();
-});
+//       table.cell( ':eq(0)' ).focus();
+// });
 
 
 $("#depar-table tbody").on('click','tr',function(){
@@ -323,7 +361,10 @@ toastr.options = {
 }
 }
 
-
+function saerch(){
+  name=$("#btnsearch").val();
+  table.search(name).draw();
+}
 </script>
     
 <style>
