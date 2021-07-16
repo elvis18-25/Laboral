@@ -195,6 +195,10 @@ table>thead>tr>th{
 <input type="text" name="" id="input" value="0" hidden>
 <input type="text" name="" id="inputsub" value="0" hidden>
 <input type="text" name="" id="inputpagos" value="0" hidden>
+
+<input type="text" name="" value="" id="started" hidden>
+<input type="text" name="" value="" id="ended" hidden>
+
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 @endsection
 
@@ -300,6 +304,9 @@ $('#reportrange').daterangepicker({
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
         var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+        $("#started").attr('value',start);
+        $("#ended").attr('value',end);
         table.ajax.reload();
 
       });
@@ -349,8 +356,11 @@ headers: {
           }
 
         }
-        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
-        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+        startComes = new Date($("#started").attr('value'));
+        endComes = new Date($("#ended").attr('value'));
+
+        start = moment(startComes).format('YYYY-MM-DD');
+        end = moment(endComes).format('YYYY-MM-DD');
         d.start_date=start;
         d.end_date=end;
       }

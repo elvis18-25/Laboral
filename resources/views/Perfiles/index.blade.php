@@ -3,6 +3,44 @@
 @section('content')
 <link rel="stylesheet" href="{{asset('css/perfiles.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+
+<div class="col-md-12">
+    <div class="card ">
+      <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+        <div class="card card-plain">
+          <div class="card-header" role="tab" id="headingTwo">
+            <div class="row">
+              <div class="col-12">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h4><b> FILTROS
+                  <i class="tim-icons icon-minimal-down"></i>
+                </b>
+                </h4>
+              </a>
+          </div>
+          </div>
+          </div>
+          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-body">
+              <div class="form-row">
+                <div class="col-md-3 float-left">
+                    <label><b>{{ __('BUSCAR') }}</b></label>
+                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Buscar..." class="form-control">
+                  </div> 
+                  <div class="col-sm-2" id="fechaHora">
+                    <label for=""><b>FECHA DE CREACION</b></label>
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 125%; position: relative; top: 3px;">
+                      <i class="fa fa-calendar"></i>&nbsp;
+                      <span></span> <i class="fa fa-caret-down"></i>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -50,6 +88,9 @@
         </div>
     </div>
 </div>
+
+<input type="text" name="" value="" id="started" hidden>
+<input type="text" name="" value="" id="ended" hidden>
 
 <a href="" id="sd"><button type="button" id="urles"  class="btn btn-primary " hidden><i class="far fa-edit"></i></button></a>
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
@@ -131,13 +172,51 @@ document.addEventListener ("keydown", function (e) {
         $("#createdperfiles").trigger("click");
     } 
 });
+
+
+start = moment().startOf('month');
+end = moment().endOf('month');
+
+
+$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+$('#reportrange').daterangepicker({
+  startDate: start,
+  endDate: end,
+  ranges: {
+     'Hoy': [moment(), moment()],
+     'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+     'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+     'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+     'Este mes': [moment().startOf('month'), moment().endOf('month')],
+     'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+     'Este año': [moment().startOf('year'), moment().endOf('year')],
+     'El año pasado': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+  }
+}, function (start, end) {
+        
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+        $("#started").attr('value',start);
+        $("#ended").attr('value',end);
+        
+        table.ajax.reload();
+
+      });
+
+
+
+
  $.ajaxSetup({
 headers: {
 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 }
   });
   table=$('#perfiles-table').DataTable({
-    "info": false,
+    "info":false,
+        processing:true,
     select: {
             style: 'single',
         },
@@ -170,6 +249,15 @@ headers: {
     ajax:
     {
       url:"{{ url('datatableperfiles') }}",
+      "data":function(d){
+        startComes = new Date($("#started").attr('value'));
+        endComes = new Date($("#ended").attr('value'));
+
+        start = moment(startComes).format('YYYY-MM-DD');
+        end = moment(endComes).format('YYYY-MM-DD');
+        d.start_date=start;
+        d.end_date=end;
+      }
     },
 
     columns:[
@@ -249,13 +337,13 @@ $('#perfiles-table').on('key-focus.dt', function(e, datatable, cell){
         
     });
 
-    $('#perfiles-table').DataTable().on("draw", function(){
-    var rowIdx = table.cell(':eq(0)').index().row;
+//     $('#perfiles-table').DataTable().on("draw", function(){
+//     var rowIdx = table.cell(':eq(0)').index().row;
       
-    table.row(rowIdx).select();
+//     table.row(rowIdx).select();
 
-    table.cell( ':eq(0)' ).focus();
-});
+//     table.cell( ':eq(0)' ).focus();
+// });
 
     document.addEventListener ("keydown", function (e) {
     if (e.keyCode==16) {
@@ -279,14 +367,14 @@ $("#perfiles-table tbody").on('click','tr',function(){
    
 });
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
+// window.onbeforeunload = function(e) {
+//     HoldOn.open(options);
+// };
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {
@@ -299,11 +387,20 @@ $('div.dataTables_filter input', table.table().container()).keypress(function(te
 
 });
 
+
+
 document.addEventListener ("keydown", function (e) {
     if (e.altKey  &&  e.which === 65) {
         $('#back').trigger("click");
     }
 });
+
+function saerch(){
+  name=$("#btnsearch").val();
+
+  table.search(name).draw();
+
+}
 
 
 </script>

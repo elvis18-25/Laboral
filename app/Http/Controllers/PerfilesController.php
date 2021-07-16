@@ -210,6 +210,10 @@ class PerfilesController extends Controller
     }
     public function datatableperfiles()
     {
+        if(request()->ajax()){
+        $start=request()->start_date;
+        $end=request()->end_date;
+
         $perfiles=Perfiles_empleado::
         leftjoin('perfiles','perfiles.id_perfiles','=','perfiles_empleado.id')
         ->leftjoin('empleado','empleado.id_empleado','=','perfiles.id_empleado')
@@ -218,7 +222,10 @@ class PerfilesController extends Controller
         ->where('perfiles.estados','=',0)
         ->select('perfiles_empleado.id','perfiles_empleado.descripcion','perfiles_empleado.user','perfiles_empleado.created_at',DB::raw('count(perfiles.id_empleado) as emple'))
         ->GroupBy('perfiles_empleado.id','perfiles_empleado.descripcion','perfiles_empleado.user','perfiles_empleado.created_at');
-       
+               
+        if(!empty($start) && $start!="Invalid date"){
+            $perfiles->whereDate('perfiles_empleado.created_at','>=',$start)->whereDate('perfiles_empleado.created_at','<=',$end);
+        }  
             return datatables()->of($perfiles)
             ->editColumn('created_at',function($row){
                 return $row->created_at->format('d/m/Y');
@@ -231,5 +238,6 @@ class PerfilesController extends Controller
                     return Route('Perfiles.show',[$row->id]);
                 },
                 ])->toJson();
+            }
     }
 }

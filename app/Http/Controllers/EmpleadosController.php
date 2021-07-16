@@ -96,7 +96,7 @@ class EmpleadosController extends Controller
         }else if(!empty($tipo3)){
             $gasto->where('empleado_pagos.pagos_id',$tipo3);
         }
-        if(!empty($start)){
+        if(!empty($start) && $start!="Invalid date"){
             $gasto->whereDate('empleado.Fecha_Entrada','>=',$start)->whereDate('empleado.Fecha_Entrada','<=',$end);
         }  
             return datatables()->of($gasto)
