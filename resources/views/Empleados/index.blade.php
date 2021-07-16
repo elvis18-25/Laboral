@@ -40,7 +40,7 @@ table>thead>tr>th{
               <div class="form-row">
                 <div class="col-md-2 float-left">
                     <label><b>{{ __('BUSCAR') }}</b></label>
-                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
+                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
                   </div> 
                 <div class="col-md-2 float-left">
                     <label><b>{{ __('DEPARTAMENTOS') }}</b></label>

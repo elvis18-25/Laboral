@@ -4,7 +4,69 @@
 <link rel="stylesheet" href="{{asset('css/asistencia.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 
-
+<style>
+    .dataTables_filter{
+        margin-top: -30px !important;
+        margin-left: 34px;
+    }
+    #listado-table tbody tr {
+        cursor: 'pointer';
+    } 
+    #listado-table{
+        width: 100% !important;
+    }
+    table>thead>tr{
+    background-color: rgb(255 255 255 / 50%) !important;
+  
+    }
+    table>thead>tr>th{
+    color: black !important;
+    }
+    .azules>thead>tr{
+        background-color: #4054b2 !important;
+    
+    }
+    .azules>thead>tr>th{
+    color: white !important;
+    }
+</style>
+<div class="col-md-12">
+  <div class="card ">
+    <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+      <div class="card card-plain">
+        <div class="card-header" role="tab" id="headingTwo">
+          <div class="row">
+            <div class="col-12">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <h4><b> FILTROS
+                <i class="tim-icons icon-minimal-down"></i>
+              </b>
+              </h4>
+            </a>
+        </div>
+        </div>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col-md-3 float-left">
+                  <label><b>{{ __('BUSCAR') }}</b></label>
+                  <input type="text" name="" id="btnsearch" onkeyup="saerch();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" placeholder="Buscar..." class="form-control">
+                </div> 
+                <div class="col-sm-2" id="fechaHora">
+                  <label for=""><b>FECHA DE CREACION</b></label>
+                  <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 125%; position: relative; top: 3px;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -24,14 +86,14 @@
             @php
                 $user=Auth::user()->id_empresa;
             @endphp
-                        <div class="col-sm-3" >
+                        {{-- <div class="col-sm-3" >
                             <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; position: relative; top: 3px;">
                               <i class="fa fa-calendar"></i>&nbsp;
                               <span></span> <i class="fa fa-caret-down"></i>
                             </div>
-                          </div>
+                          </div> --}}
             <div class="">
-                <table class="table tablesorter " id="listado-table">
+                <table class="table tablesorter azules " id="listado-table">
                     <thead class=" text-primary">
                         <tr> 
                         <th class="titlelistado">NOMBRE</th>
@@ -105,22 +167,26 @@ $(document).ready(function(){
 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
 $('#reportrange').daterangepicker({
-    startDate: start,
-    endDate: end,
-    timePicker: true,
-    ranges: {
-       'Today': [moment(), moment()],
-       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'This Month': [moment().startOf('month'), moment().endOf('month')],
-       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
-},      function (start, end) {
-          
-          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-          tabla.ajax.reload();
-        });
+  startDate: start,
+  endDate: end,
+  ranges: {
+     'Hoy': [moment(), moment()],
+     'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+     'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+     'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+     'Este mes': [moment().startOf('month'), moment().endOf('month')],
+     'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+     'Este año': [moment().startOf('year'), moment().endOf('year')],
+     'El año pasado': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+  }
+}, function (start, end) {
+        
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+        tabla.ajax.reload();
+
+      });
 
   
 
@@ -132,7 +198,7 @@ headers: {
   });
   
  tabla=$('#listado-table').DataTable({
-
+        "info":false,
         processing:true,
               select: {
             style: 'single',
@@ -327,20 +393,16 @@ var data='';
              });
 }
 
+
+function saerch(){
+  name=$("#btnsearch").val();
+
+  tabla.search(name).draw();
+
+}
 </script>
 
-<style>
-    .dataTables_filter{
-        margin-top: -30px !important;
-        margin-left: 34px;
-    }
-    #listado-table tbody tr {
-        cursor: 'pointer';
-    } 
-    #listado-table{
-        width: 100% !important;
-    }
-</style>
+
 
 @endsection
 

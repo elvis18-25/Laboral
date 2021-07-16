@@ -48,7 +48,7 @@
               <div class="form-row">
                 <div class="col-md-3 float-left">
                     <label><b>{{ __('BUSCAR') }}</b></label>
-                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
+                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" class="form-control">
                   </div> 
                   <div class="col-sm-2" id="fechaHora">
                     <label for=""><b>FECHA DE CREACION</b></label>
