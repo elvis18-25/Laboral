@@ -32,6 +32,10 @@
             <div class="card-body">
               <div class="form-row">
                 <div class="col-md-3 float-left">
+                  <label><b>{{ __('BUSCAR') }}</b></label>
+                  <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
+                </div> 
+                <div class="col-md-3 float-left">
                     <label><b>{{ __('CATEGORIAS') }}</b></label>
                     <select id="category" class="form-control " name="categorias">
                       <option selected value="0" >NINGUNO</option>
@@ -49,10 +53,7 @@
                   </select>
                   </div>
 
-                  <div class="col-md-3 float-left">
-                    <label><b>{{ __('BUSCAR') }}</b></label>
-                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
-                  </div> 
+
                 </div>
             </div>
           </div>

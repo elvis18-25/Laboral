@@ -44,6 +44,7 @@ margin-left: -26px;
   .dataTables_filter{
     width: 71% !important;
     max-width: 100% !important;
+    display: none;
    
   }
   div.dataTables_wrapper div.dataTables_filter input {

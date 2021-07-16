@@ -3,6 +3,87 @@
 @section('content')
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<style>
+  table>thead>tr{
+    background-color: rgb(255 255 255 / 50%) !important;
+  
+}
+table>thead>tr>th{
+  color: black !important;
+}
+</style>
+<div class="col-md-12">
+    <div class="card ">
+      <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+        <div class="card card-plain">
+          <div class="card-header" role="tab" id="headingTwo">
+            <div class="row">
+              <div class="col-8">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h4><b> FILTROS
+                  <i class="tim-icons icon-minimal-down"></i>
+                </b>
+                </h4>
+              </a>
+          </div>
+          </div>
+          </div>
+          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-body">
+              <div class="form-row">
+                <div class="col-md-2 float-left">
+                    <label><b>{{ __('BUSCAR') }}</b></label>
+                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
+                  </div> 
+                <div class="col-md-2 float-left">
+                    <label><b>{{ __('DEPARTAMENTOS') }}</b></label>
+                    <select id="departament" class="form-control " name="categorias">
+                      <option selected value="0" >NINGUNO</option>
+                      @foreach ($puesto as $puestos)
+                          
+                      <option value="{{$puestos->id}}">{{$puestos->name}}</option>
+                      
+                      @endforeach
+                  </select>
+                  </div>
+                <div class="col-md-2 float-left">
+                    <label><b>{{ __('GENERO') }}</b></label>
+                    <select id="genero" class="form-control " name="categorias">
+                        <option selected value="0" >NINGUNO</option>
+                        @foreach ($sexo as $sexos)
+                          
+                        <option value="{{$sexos->id}}">{{$sexos->name}}</option>
+                        
+                        @endforeach
+                  </select>
+                  </div>
+                <div class="col-md-2 float-left">
+                    <label><b>{{ __('PAGOS') }}</b></label>
+                    <select id="pagos" class="form-control " name="categorias">
+                        <option selected value="0" >NINGUNO</option>
+                        @foreach ($pagos as $pago)
+                          
+                        <option value="{{$pago->id}}">{{$pago->pago}}</option>
+                        
+                        @endforeach
+                  </select>
+                  </div>
+                  <div class="col-sm-2" id="fechaHora">
+                    <label for=""><b>FECHA DE INGRESOS</b></label>
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 125%; position: relative; top: 3px;">
+                      <i class="fa fa-calendar"></i>&nbsp;
+                      <span></span> <i class="fa fa-caret-down"></i>
+                    </div>
+                  </div>
+
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -38,7 +119,7 @@
                     </thead>
                     <tbody>
                         
-                        @foreach ($empleados as $empleado)
+                        {{-- @foreach ($empleados as $empleado)
                         
                         @if ($empleado->estado==0) 
                         @if ($empleado->id_empresa==$user)
@@ -79,7 +160,7 @@
                         @endif
                       @endif
                        
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -104,6 +185,9 @@
     </div>
 </div>
 
+<input type="text" name="" id="input" value="0" hidden>
+<input type="text" name="" id="inputsub" value="0" hidden>
+<input type="text" name="" id="inputpagos" value="0" hidden>
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 @endsection
 
@@ -186,39 +270,86 @@ document.addEventListener ("keydown", function (e) {
     } 
 });
 
+var start = moment().startOf('year');
+var end = moment().endOf('year');
 
+$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+$('#reportrange').daterangepicker({
+  startDate: start,
+  endDate: end,
+  ranges: {
+     'Hoy': [moment(), moment()],
+     'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+     'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+     'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+     'Este mes': [moment().startOf('month'), moment().endOf('month')],
+     'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+     'Este año': [moment().startOf('year'), moment().endOf('year')],
+     'El año pasado': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+  }
+}, function (start, end) {
+        
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+        table.ajax.reload();
+
+      });
+
+$.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+  });
+  
   table=$('#empleado-table').DataTable({
-    "info": false,
-    dom: 'Bfrtip',
-
+        // "paging":   false,
+        // "ordering": false,
+        "info":     false,
+        processing:true,
+    serverSide:true,
     select: {
-            style: 'single',
+           toggleable: false,
+            select:true,
+            style: 'single'
         },
 
         keys: {
+          keys:true,
+          focus: ':eq(0)', 
+           page: 'current',
           keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
-        },
+        },    
         rowGroup: {
         dataSrc: 'group'
-    },
-    buttons: [
-            {
-                extend: 'excel',
-                messageTop: 'Listado de Empleado.'
-            },
-            {
-                extend: 'pdf',
-                messageBottom: null
-            },
-            {
-                extend: 'print',
-                messageTop: 'Listado de Empleado.',
-            }
-        ],
+    },   
 
-    
-  
-        language: {
+    ajax:
+    {
+      url:"{{ url('datatableEmpleado') }}",
+      "data":function(d){
+        if($("#input").val()!=''){
+          if($("#inputsub").val()==0){
+            // alert($("#inputsub").val());
+          d.dato1=$("#input").val();
+          }else{
+            d.dato2=$("#inputsub").val();
+          } 
+          if($("#inputpagos").val()!=0){
+            // alert($("#inputpagos").val());
+            d.dato3=$("#inputpagos").val();
+          }
+
+        }
+        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+        d.start_date=start;
+        d.end_date=end;
+      }
+    },
+
+    language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
         "emptyTable": "No hay información",
@@ -227,7 +358,7 @@ document.addEventListener ("keydown", function (e) {
         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
         "infoPostFix": "",
         "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "lengthMenu": "",
         "loadingRecords": "Cargando...",
         "processing": "Procesando...",
         "search": "",
@@ -239,11 +370,49 @@ document.addEventListener ("keydown", function (e) {
             "previous": "Anterior"
         }
 
-      },    
-   
+      }, 
+
+
+    columns:[
+    {data:'nombre',name:'nombre'},
+    {data:'cedula', name:'cedula', class: "center"},
+    {data:'cargo', name:'cargo', class: "center"},
+    {data:'telefono',name:'telefono', class: "right"},
+    {data:'puesto',name:'puesto', class: "right",searchable:false},
+    {data:'salario',name:'salario', class: "right"},
+    ],
+
+    // "fnDrawCallback":function(){
+    //     var rowIdx = table.cell(':eq(0)').index().row;
+      
+    //   table.row(rowIdx).select();
+
+    //   table.cell( ':eq(0)' ).focus();
+    // }   
+
 });
 $('div.dataTables_filter input', table.table().container()).focus(); 
 
+// $('#empleado-table').DataTable().on("draw", function(){
+//     var input=$("#input").val();
+//     var inputs=$("#inputsub").val();
+//     alert(input);
+//         if(input==0 || inputs==0){
+//         var rowIdx = table.cell(':eq(0)').index().row;
+        
+//         table.row(rowIdx).select();
+
+//         table.cell( ':eq(0)' ).focus();
+//     }
+//     });
+
+    $('div.dataTables_filter input', table.table().container()).on('click',function(){
+        var rowIdx = table.cell(':eq(0)').index().row;
+        
+        table.row(rowIdx).select();
+
+        table.cell( ':eq(0)' ).focus();
+    });  
 
 document.addEventListener ("keydown", function (e) {
     if (e.keyCode!=13) {
@@ -290,11 +459,11 @@ $('#empleado-table').on('key-focus.dt', function(e, datatable, cell){
     });
 
 
-      var rowIdx = table.cell(':eq(0)').index().row;
+    //   var rowIdx = table.cell(':eq(0)').index().row;
       
-      table.row(rowIdx).select();
+    //   table.row(rowIdx).select();
 
-      table.cell( ':eq(0)' ).focus();
+    //   table.cell( ':eq(0)' ).focus();
 
 
 $("#empleado-table tbody").on('click','tr',function(){
@@ -319,6 +488,13 @@ $('div.dataTables_filter input', table.table().container()).keypress(function(te
 
 });
 
+
+
+
+
+
+
+
 document.addEventListener ("keydown", function (e) {
     if (e.altKey  &&  e.which === 65) {
         $('#back').trigger("click");
@@ -337,6 +513,32 @@ $("#btnpdf").on('click',function(){
 $(".buttons-pdf").click();
 });
 
+
+$("#departament").on('change',function(){
+var id=$(this).val();
+$("#input").val(id);
+$("#inputsub").val(0);
+table.ajax.reload();
+});
+
+$("#genero").on('change',function(){
+var id=$(this).val();
+$("#inputsub").val(id);
+table.ajax.reload();
+});
+
+$("#pagos").on('change',function(){
+var id=$(this).val();
+$("#inputpagos").val(id);
+table.ajax.reload();
+});
+
+function saerch(){
+  name=$("#btnsearch").val();
+
+  table.search(name).draw();
+
+}
 </script>
 
 @endsection

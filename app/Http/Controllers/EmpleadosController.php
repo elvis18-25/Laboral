@@ -49,13 +49,94 @@ class EmpleadosController extends Controller
     public function index()
     {
         $empleados=Empleado::all();
-        $puesto=Puesto::all();
+        $puesto=Puesto::where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
         
         $sueldo=sueldo_aumento::where('estado','=',0)
         ->where('id_empresa','=',Auth::user()->id_empresa)
         ->get();
 
-        return view('Empleados.index',compact('empleados','puesto','sueldo'));
+        $pagos=Pagos::where('estado','=',0)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->get();
+        $sexo=Sexo::all();
+        
+
+        return view('Empleados.index',compact('empleados','puesto','sueldo','sexo','pagos'));
+    }
+
+    public function  datatableEmpleado()
+    {
+        $id=request('id');
+        
+        if(request()->ajax()){
+         $tipo=request()->get('dato1');
+         $tipo2=request()->get('dato2');
+         $tipo3=request()->get('dato3');
+         $start=request()->start_date;
+         $end=request()->end_date;
+
+        $gasto=Empleado::leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','empleado.id_empleado')
+        ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
+        ->leftjoin('empleado_sexo','empleado_sexo.empleado_id_empleado','=','empleado.id_empleado')
+        ->leftjoin('sexo','sexo.id','=','empleado_sexo.sexo_id')
+        ->leftjoin('empleado_pagos','empleado_pagos.empleado_id_empleado','=','empleado.id_empleado')
+        ->leftjoin('pagos','pagos.id','=','empleado_pagos.pagos_id')
+        ->where('empleado.estado','=',0)
+        ->where('empleado.id_empresa','=',Auth::user()->id_empresa)
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.telefono','puesto.name as puesto','empleado.salario','empleado.cedula')
+        ->GroupBy('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cargo','empleado.telefono','empleado.salario','empleado.cedula','puesto');
+       
+
+        if(!empty($tipo)){
+            $gasto->where('empleado_puesto.puesto_id',$tipo);
+        }else if(!empty($tipo2)){
+            $gasto->where('empleado_sexo.sexo_id',$tipo2);
+        }else if(!empty($tipo3)){
+            $gasto->where('empleado_pagos.pagos_id',$tipo3);
+        }
+        if(!empty($start)){
+            $gasto->whereDate('empleado.Fecha_Entrada','>=',$start)->whereDate('empleado.Fecha_Entrada','<=',$end);
+        }  
+            return datatables()->of($gasto)
+            ->editColumn('nombre',function($row){
+                return $row->nombre." ".$row->apellido;
+
+            })
+            ->editColumn('salario',function($row){
+                $sueldo=sueldo_aumento::where('estado','=',0)
+                ->where('id_empresa','=',Auth::user()->id_empresa)
+                ->get();
+                $b=0;
+                $sum=0;
+                
+                foreach ($sueldo as $sueldos){
+                if ($sueldos->id_empleado==$row->id_empleado){
+                      $b=1;
+                      $sum=$sum+$sueldos->sueldo_increment;                                
+                    }
+                }
+         
+                if($b==1){
+                    return "$".number_format($row->salario+$sum,2);
+                }
+
+                if($b==0){
+                    return "$".number_format($row->salario,2);
+                }
+
+
+            })
+            ->setRowAttr([
+                'data-href'=>function($row){
+                    return $row->id_empleado;    
+                },
+                'action'=>function($row){
+                    return  Route('Empleados.show',[$row->id_empleado]);    
+                },
+                ])->toJson();
+    }
     }
 
     /**
