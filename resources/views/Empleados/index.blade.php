@@ -11,6 +11,13 @@
 table>thead>tr>th{
   color: black !important;
 }
+.azules>thead>tr{
+    background-color: #4054b2 !important;
+  
+}
+.azules>thead>tr>th{
+  color: white !important;
+}
 </style>
 <div class="col-md-12">
     <div class="card ">
@@ -18,7 +25,7 @@ table>thead>tr>th{
         <div class="card card-plain">
           <div class="card-header" role="tab" id="headingTwo">
             <div class="row">
-              <div class="col-8">
+              <div class="col-12">
               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 <h4><b> FILTROS
                   <i class="tim-icons icon-minimal-down"></i>
@@ -106,7 +113,7 @@ table>thead>tr>th{
             @endphp
             
             <div class="">
-                <table class="table tablesorter " id="empleado-table">
+                <table class="table tablesorter azules" id="empleado-table">
                     <thead class=" text-primary">
                         <tr> 
                         <th scope="col">NOMBRE</th>
