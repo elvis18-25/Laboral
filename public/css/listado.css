@@ -20,7 +20,7 @@
   }
 
   .titlelistado{
-    text-align: center;
+    text-align: center !important;
     font-size: 14px !important;
   }
 

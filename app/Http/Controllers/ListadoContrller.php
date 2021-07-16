@@ -546,20 +546,42 @@ class ListadoContrller extends Controller
 
     public function modalhoursListado($id)
     {
-        // $equipo=Equipos::
-        // leftjoin('equipos_empleados','equipos_empleados.equipos','=','equipos.id')
-        // ->leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
-        // ->where('equipos.id_empresa',Auth::user()->id_empresa)
-        // ->where('equipos.estado','!=','1')
-        // ->where('equipos_empleados.id_empleado','=',$id)
-        // ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
-        // ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at','equipos.entrada','equipos.salida')
-        // ->get();
-        // dd($equipo);
-
         return view("Listado.modalhoras",compact('id'));
+    }
 
+    public function  datatableListadoIndex()
+    {
+        if(request()->ajax()){
+         $start=request()->start_date;
+         $end=request()->end_date;
 
+        $listado=Listado::where('nomina.estado','=',0)
+        ->where('nomina.id_empresa','=',Auth::user()->id_empresa)
+        ->select('nomina.id','nomina.descripcion','nomina.fecha','nomina.user','nomina.monto')
+        ->GroupBy('nomina.id','nomina.descripcion','nomina.fecha','nomina.user','nomina.monto');
+       
+
+        if(!empty($start)){
+            $listado->whereDate('nomina.fecha','>=',$start)->whereDate('nomina.fecha','<=',$end);
+        }  
+            return datatables()->of($listado)
+            ->editColumn('monto',function($row){
+                return "$".number_format($row->monto,2);
+
+            })
+            ->editColumn('fecha',function($row){
+                return date("d/m/Y", strtotime($row->fecha));
+
+            })
+            ->setRowAttr([
+                'data-href'=>function($row){
+                    return $row->id;    
+                },
+                'action'=>function($row){
+                    return  Route('Listado.show',[$row->id]);    
+                },
+                ])->toJson();
+    }
     }
 
     /**

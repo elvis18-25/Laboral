@@ -8,7 +8,62 @@
     #listado-table tbody tr {
         cursor: pointer;
     }  
+    .titlelistado{
+    text-align: center !important;
+    font-size: 14px !important;
+  }
+  table>thead>tr{
+    background-color: rgb(255 255 255 / 50%) !important;
+  
+    }
+    table>thead>tr>th{
+    color: black !important;
+    }
+    .azules>thead>tr{
+        background-color: #4054b2 !important;
+    
+    }
+    .azules>thead>tr>th{
+    color: white !important;
+    }
   </style>
+  <div class="col-md-12">
+    <div class="card ">
+      <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+        <div class="card card-plain">
+          <div class="card-header" role="tab" id="headingTwo">
+            <div class="row">
+              <div class="col-12">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h4><b> FILTROS
+                  <i class="tim-icons icon-minimal-down"></i>
+                </b>
+                </h4>
+              </a>
+          </div>
+          </div>
+          </div>
+          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-body">
+              <div class="form-row">
+                <div class="col-md-3 float-left">
+                    <label><b>{{ __('BUSCAR') }}</b></label>
+                    <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
+                  </div> 
+                  <div class="col-sm-2" id="fechaHora">
+                    <label for=""><b>FECHA DE CREACION</b></label>
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 125%; position: relative; top: 3px;">
+                      <i class="fa fa-calendar"></i>&nbsp;
+                      <span></span> <i class="fa fa-caret-down"></i>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -30,7 +85,7 @@
                 $user=Auth::user()->id_empresa;
             @endphp
             <div class="">
-                <table class="table tablesorter " id="listado-table">
+                <table class="table tablesorter azules " id="listado-table">
                     <thead class=" text-primary">
                         <tr> 
                         <th class="titlelistado">DESCRIPCION</th>
@@ -40,8 +95,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                        
-                        @foreach ($listado as $listados)
+                        {{-- @foreach ($listado as $listados)
                         @if ($listados->estado==0)
                         @if ($listados->id_empresa==$user)
                         <tr action="{{Route('Listado.show',$listados->id)}}">
@@ -52,7 +106,7 @@
                         </tr>
                         @endif
                         @endif
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -80,6 +134,9 @@
 @endsection
 
 @section('js2')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @if (session('guardar')=='ya')
 <script>
     Command: toastr["success"]("se ha guardo la nomina", "")
@@ -149,38 +206,73 @@
 <script src="{{asset('js/pageLoader.js')}}"></script>
 
 <script>
-   table=$('#listado-table').DataTable({
-    "info": false,
+var start = moment().startOf('year');
+var end = moment().endOf('year');
+
+$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+$('#reportrange').daterangepicker({
+  startDate: start,
+  endDate: end,
+  ranges: {
+     'Hoy': [moment(), moment()],
+     'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+     'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+     'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+     'Este mes': [moment().startOf('month'), moment().endOf('month')],
+     'El mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+     'Este año': [moment().startOf('year'), moment().endOf('year')],
+     'El año pasado': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+  }
+}, function (start, end) {
+        
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+        table.ajax.reload();
+
+      });
+
+
+      $.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+  });
+  
+  table=$('#listado-table').DataTable({
+        // "paging":   false,
+        // "ordering": false,
+        "info":     false,
+        processing:true,
+    serverSide:true,
     select: {
-            style: 'single',
+           toggleable: false,
+            select:true,
+            style: 'single'
         },
+
         keys: {
+          keys:true,
+          focus: ':eq(0)', 
+           page: 'current',
           keys: [ 13 /* ENTER */, 38 /* UP */, 40 /* DOWN */,32 ],
-        },
+        },    
         rowGroup: {
         dataSrc: 'group'
-    },
-    buttons:[{
-            extend: 'print',
-            messageTop: 'Nomina Empleado',
-            exportOptions: {
-                    columns: [0, 1, 2, 3, 4],
-                },
-            customize: function ( win ) {
-                    $(win.document.body)
-                        .css( 'font-size', '20pt' )
-                        .prepend(
-                            '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                        );
- 
-                    $(win.document.body).find( 'table' )
-                        .addClass( 'compact' )
-                        .css( 'font-size', 'inherit' );
-                }
-          }],
+    },   
 
-    
-  
+    ajax:
+    {
+      url:"{{ url('datatableListadoIndex') }}",
+      "data":function(d){
+        var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+        d.start_date=start;
+        d.end_date=end;
+      }
+    },
+
     language: {
       searchPlaceholder: "Buscar",
         "decimal": "",
@@ -190,7 +282,7 @@
         "infoFiltered": "(Filtrado de _MAX_ total entradas)",
         "infoPostFix": "",
         "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "lengthMenu": "",
         "loadingRecords": "Cargando...",
         "processing": "Procesando...",
         "search": "",
@@ -202,10 +294,26 @@
             "previous": "Anterior"
         }
 
-      },   
-   
+      }, 
+
+
+    columns:[
+    {data:'descripcion',name:'descripcion'},
+    {data:'fecha', name:'fecha', class: "center"},
+    {data:'user', name:'user', class: "center"},
+    {data:'monto',name:'monto', class: "amount"},
+    ],
+
+    // "fnDrawCallback":function(){
+    //     var rowIdx = table.cell(':eq(0)').index().row;
+      
+    //   table.row(rowIdx).select();
+
+    //   table.cell( ':eq(0)' ).focus();
+    // }   
+
 });
-$('div.dataTables_filter input', table.table().container()).focus();   
+$('div.dataTables_filter input', table.table().container()).focus();  
 
 
 // var options = {
@@ -272,13 +380,18 @@ $('#listado-table').on('key-focus.dt', function(e, datatable, cell){
         
     });
 
+    function saerch(){
+  name=$("#btnsearch").val();
 
+  table.search(name).draw();
 
-      var rowIdx = table.cell(':eq(0)').index().row;
+}
+
+    //   var rowIdx = table.cell(':eq(0)').index().row;
       
-      table.row(rowIdx).select();
+    //   table.row(rowIdx).select();
 
-      table.cell( ':eq(0)' ).focus();
+    //   table.cell( ':eq(0)' ).focus();
 
 
 

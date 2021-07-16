@@ -151,6 +151,7 @@ Route::get('datatablEquipos','App\Http\Controllers\EquiposController@datatablEqu
 Route::get('datatableAsistencia','App\Http\Controllers\AsistenciaController@datatableAsistencia');
 Route::get('datatableHAS','App\Http\Controllers\AsistenciaController@datatableHAS');
 Route::get('datatableListado','App\Http\Controllers\ListadoContrller@datatableListado');
+Route::get('datatableListadoIndex','App\Http\Controllers\ListadoContrller@datatableListadoIndex');
 Route::get('datatableHorario','App\Http\Controllers\EmpresaController@datatableHorario');
 Route::get('datatableCategorias','App\Http\Controllers\CategoriasController@datatableCategorias');
 Route::get('datatableGastosIndex','App\Http\Controllers\GastoController@datatableGastosIndex');
