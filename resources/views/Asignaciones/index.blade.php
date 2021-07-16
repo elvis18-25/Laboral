@@ -4,6 +4,44 @@
 <link rel="stylesheet" href="{{asset('css/asignaciones.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
+  <div class="card ">
+    <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+      <div class="card card-plain">
+        <div class="card-header" role="tab" id="headingTwo">
+          <div class="row">
+            <div class="col-12">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <h4><b> FILTROS
+                <i class="tim-icons icon-minimal-down"></i>
+              </b>
+              </h4>
+            </a>
+        </div>
+        </div>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col-md-3 float-left">
+                  <label><b>{{ __('BUSCAR') }}</b></label>
+                  <input type="text" name="" id="btnsearch" onkeyup="saerch();" placeholder="Buscar..." class="form-control">
+                </div> 
+              <div class="col-md-3 float-left">
+                  <label><b>{{ __('TIPOS') }}</b></label>
+                  <select id="tipy" class="form-control " name="categorias">
+                    <option selected value=" ">NINGUNO...</option>
+                    <option value="DEDUCCIÓN">DEDUCCIÓN</option>
+                    <option value="INCREMENTO">INCREMENTO</option>
+                </select>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
@@ -62,7 +100,7 @@
 @include('Asignaciones.modalemple')
 <input type="button" id="back" onclick="history.back()" name="volver atrás" value="volver atrás" hidden >
 
-
+<input type="text" name="" id="input" value="" hidden>
 @endsection
 
 @section('js')
@@ -156,6 +194,8 @@ headers: {
   });
   table=$('#asigna-table').DataTable({
     "info": false,
+    processing:true,
+
     dom: 'Bfrtip',
     select: {
             style: 'single',
@@ -184,11 +224,17 @@ headers: {
     ajax:
     {
       url:"{{ url('datatablesasigna') }}",
+            "data":function(d){
+        if($("#input").val()!=''){
+          
+            // alert($("#input").val());
+          d.dato1=$("#input").val();
+
+        }
+
+      }
     },
 
-    // "fnDrawCallback":function(){
-    //     started();
-    //   }, 
 
     columns:[
     {data:'Nombre',name:'Nombre'},
@@ -258,13 +304,13 @@ $('#asigna-table').on('key-focus.dt', function(e, datatable, cell){
         
     });
 
-$('#asigna-table').DataTable().on("draw", function(){
-    var rowIdx = table.cell(':eq(0)').index().row;
+// $('#asigna-table').DataTable().on("draw", function(){
+//     var rowIdx = table.cell(':eq(0)').index().row;
       
-      table.row(rowIdx).select();
+//       table.row(rowIdx).select();
 
-      table.cell( ':eq(0)' ).focus();
-});
+//       table.cell( ':eq(0)' ).focus();
+// });
 
 
 
@@ -773,7 +819,20 @@ function SuccesAdd(){
       "hideMethod": "fadeOut",
     }
   }
+
+  $("#tipy").on('change',function(){
+var id=$(this).val();
+$("#input").val(id);
+table.ajax.reload();
+});
+
     
+function saerch(){
+  name=$("#btnsearch").val();
+
+  table.search(name).draw();
+
+}
 </script>
 
 

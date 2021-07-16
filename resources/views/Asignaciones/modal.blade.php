@@ -22,7 +22,7 @@
                 <label style="color: black"><b> {{ __('TIPO ') }}</b></label>
                 <select id="inputState" class="form-control selec" required name="tipo" >
                     <option selected disabled>ElEGIR...</option>
-                    <option value="1">DEDUCIÓN</option>
+                    <option value="1">DEDUCCIÓN</option>
                     <option value="2">INCREMENTO</option>
                   </select>
             </div>

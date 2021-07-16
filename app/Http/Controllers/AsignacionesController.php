@@ -229,6 +229,8 @@ class AsignacionesController extends Controller
 
     public function datatablesasigna()
     {
+        if(request()->ajax()){
+        $tipo=request()->get('dato1');
         $asigna=Asignaciones::
         leftjoin('asignaciones_empleado','asignaciones_empleado.asignaciones_id','=','asignaciones.id')
         ->where('asignaciones.id_empresa',Auth::user()->id_empresa)
@@ -236,6 +238,9 @@ class AsignacionesController extends Controller
         ->select('asignaciones.id','asignaciones.Nombre','asignaciones.tipo_asigna','asignaciones.tipo','asignaciones.Monto','asignaciones.user',DB::raw('count(asignaciones_empleado.empleado_id_empleado) as emple',))
         ->GroupBy('asignaciones.id','asignaciones.Nombre','asignaciones.tipo_asigna','asignaciones.tipo','asignaciones.Monto','asignaciones.user');
 
+        if(!empty($tipo)){
+            $asigna->where('asignaciones.tipo_asigna',$tipo);
+        }  
             return datatables()->of($asigna)
             ->editColumn('Monto',function($row){
                 if($row->tipo=="PORCENTAJE"){
@@ -249,5 +254,6 @@ class AsignacionesController extends Controller
                 },
 
             ])->toJson();
+        }
     }
 }

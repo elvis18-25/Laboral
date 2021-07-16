@@ -97,6 +97,10 @@ table>thead>tr{
 table>thead>tr>th{
   color: white !important;
 }
+.dataTables_filter{
+  display: none !important;
+ 
+}
 
 .logotipo{
   webkit-user-select: none; /* Safari */
