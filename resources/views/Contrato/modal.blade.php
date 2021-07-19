@@ -2,10 +2,10 @@
 
 <!-- Modal -->
 <div class="modal fade" id="contrato" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title" id="staticBackdropLabel" style="color: black">CONTRATO</h3>
+          <h3 class="modal-title" id="staticBackdropLabel" style="color: black"><b>CONTRATO</b></h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -22,12 +22,12 @@
             <h4 style="color: black">PASO 1: DESCARGAR EL MODELO DEL CONTRATO</h4>
             <div class="form-group">
             
-              <a href="{{url('donwload/Contrato.docx')}}"><button type="button" id="btndown" class="btn btn-success">Descargar Contrato &nbsp;<i class="fas fa-download"></i></button></a>
+              <a href="{{url('donwload/Contrato.docx')}}"><button type="button" id="btndown" style="margin-left: 90px;"  class="btn btn-success">Descargar Contrato &nbsp;<i class="fas fa-download"></i></button></a>
             
               
             </div>
             </div>
-            <input type="button" name="data[password]" class="next btn btn-info" value="Siguiente" style="margin-left: 332px;" />
+            <input type="button" name="data[password]" class="next btn btn-info btn-sm" style="float: right!important;" value="Siguiente"/>
             </fieldset>
             <fieldset>
               <div class="card-body" style="height: 150px">
@@ -41,8 +41,9 @@
             <br>
             </div>
             </div>
-            <input type="button" name="previous" class="previous btn btn-default" value="Previo" style="margin-left: 267px;" />
-            <input type="button" name="next" class="next btn btn-info" value="Siguiente" style="margin-left: -1px;" />
+            <br><br>
+            <input type="button" name="previous" class="previous btn btn-default btn-sm" value="Previo" style="margin-left: 267px;" />
+            <input type="button" name="next" class="next btn btn-info btn-sm" value="Siguiente" style="margin-left: -1px;" />
             </fieldset>
             <fieldset>
               <div class="card-body" style="height: 150px">
@@ -53,8 +54,8 @@
             <label id="fichero" style="color: black;">SIN ARCHIVO</label>
             </div>
             </div>
-            <input type="button" name="previous" class="previous btn btn-default" value="Previo"style="margin-left: 267px;" />
-            <input type="submit" name="submit" class="submit btn btn-info" value="Enviar" style="margin-left: -1px;" id="submit_data" />
+            <input type="button" name="previous" class="previous btn btn-default btn-sm" value="Previo"style="margin-left: 267px;" />
+            <input type="submit" name="submit" class="submit btn btn-info btn-sm" value="Enviar" style="margin-left: -1px;" id="submit_data" />
             </fieldset>
             </form>
        
@@ -135,16 +136,18 @@ $miInput.addEventListener("change", function () {
     i=0;
 	} 
   
-  document.getElementById('file').onchange = function () {
-  console.log(this.value);
-  document.getElementById('fichero').innerHTML = document.getElementById('file').files[0].name;
-}
+
 
   if(archivo.size < MAXIMO_TAMANIO_BYTES) {
 		i=1;
 
 	}
 });
+
+document.getElementById('file').onchange = function () {
+  console.log(this.value);
+  document.getElementById('fichero').innerHTML = document.getElementById('file').files[0].name;
+}
 
 $('#regiration_form').on('submit',function(e){
   if(i==1){
@@ -218,7 +221,10 @@ function correcto(){
   "hideMethod": "fadeOut"
 }
 }
-// $("#btndown").on('click',function(e){
+$("#btndown").on('click',function(e){
+  t=1;
+  $('.o-page-loader').remove();
+});
      
       
 

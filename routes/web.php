@@ -120,6 +120,7 @@ Route::post('DeleteEmpresa/{id}','App\Http\Controllers\EmpresaController@DeleteE
 Route::post('UpdateHorasEmpresa/{id}','App\Http\Controllers\EmpresaController@UpdateHorasEmpresa');
 Route::post('saveUpdate/{id}','App\Http\Controllers\EmpresaController@saveUpdate');
 Route::post('Savepermis','App\Http\Controllers\EmpresaController@Savepermis');
+Route::post('deletecontratosd/{id}','App\Http\Controllers\EmpresaController@deletecontratosd');
 
 
 
@@ -177,6 +178,8 @@ Route::post('downloadContrato','App\Http\Controllers\EmpleadosController@downloa
 Route::get('listadopdf','App\Http\Controllers\EmpleadosController@listadopdf');
 Route::post('ConverterUsuario','App\Http\Controllers\EmpleadosController@ConverterUsuario');
 Route::post('Emplephoto','App\Http\Controllers\EmpleadosController@Emplephoto');
+
+
 
 
 //users

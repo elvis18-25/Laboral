@@ -1,3 +1,4 @@
+@foreach ($contra as $contratos)
 <tr >
     <td>{{$contratos->name}}</td>
     <td>{{$contratos->user}}</td>
@@ -6,3 +7,4 @@
         <button type="button" class="btn btn-danger btn-sm redondo" style="border-radius: 50% !important;"><i class="fas fa-trash"></i></button>
     </td>
 </tr>
+@endforeach

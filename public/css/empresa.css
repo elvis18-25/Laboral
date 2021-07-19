@@ -90,6 +90,13 @@
 				  margin: 10px;
 				  border: 1px solid red;
 			}
+			.preview2 {
+				  overflow: hidden;
+				  width: 160px; 
+				  height: 160px;
+				  margin: 10px;
+				  border: 1px solid red;
+			}
 	
   .modal-lg{
    max-width: 1000px !important;

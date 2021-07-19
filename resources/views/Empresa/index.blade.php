@@ -1,7 +1,7 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link rel="stylesheet" href="{{asset('css/empresa.css')}}">
 @section('content')
-<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.css" rel="stylesheet">
 
 
@@ -14,8 +14,8 @@
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
       <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">CONFIGURACIÓN DEL SITIO</a>
       <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#VLO" role="tab" aria-controls="v-pills-settings" aria-selected="false">AJUSTES DEL SISTEMA</a>
-      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#HL" role="tab" aria-controls="v-pills-profile" aria-selected="false">HORARIO LABORALES</a>
-      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">CONTRATO</a>
+      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#HL" role="tab" aria-controls="v-pills-profile" aria-selected="false">HORARIOS LABORALES</a>
+      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">CONTRATOS</a>
       <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">NUEVA EMPRESA</a>
     </div>
   </div>
@@ -123,9 +123,6 @@
                 <input type="email" name="emailUP" required class="form-control"value="{{$empresa->email}}" placeholder="Email" >
             </div>
         </div>
-
-
-
 
 
 
@@ -280,7 +277,7 @@
                 <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>CONTRATOS</b></h4>
             </div>
             <div class="col-4 text-right">
-              <button type="button" class="btn btn-info btn-sm float-right redondo" style="border-radius: 50% !important;" data-toggle="modal" data-target="#contrato"><i class="fa fa-plus"></i></button>
+              <button type="button" class="btn btn-info btn-sm float-right redondo" style="border-radius: 50% !important;" data-toggle="modal" data-target="#contrato"><i class="fa fa-plus" style="    font-size: 18px;  margin-left: -2px;"></i></button>
             </div>
         </div>
     </div>
@@ -306,7 +303,7 @@
                     <td>{{$contratos->user}}</td>
                     <td>{{$contratos->created_at->format('d/m/Y')}}</td>
                     <td>
-                        <button type="button" value="{{$contratos->id}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        <button type="button" value="{{$contratos->id}}" class="btn btn-danger btn-sm redondo deletecontrato" style="border-radius: 50% !important;"><i class="fas fa-trash" style="margin-left: -1px;"></i></button>
                     </td>
                 </tr>
                 @endif
@@ -334,96 +331,178 @@
   </div>
   <div class="card-body"  style="height: 400px;">
       
-        
-          <form action="{{Route('Empresa.store')}}" method="POST">
-              @csrf
+    <form action="{{Route('Empresa.store')}}" method="POST">
+      @csrf
+      @php
+      $color="";
+      $color='#'.str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+          
+      @endphp
+      <div class="color" style=' background:<?php print $color; ?>'>
+      <img src="{{asset('recuros/empresa.png')}}" id="imageneres"  alt="">
+      </div>
               <div class="form-row">
-              <div class="col-sm-5">
-                  <label for=""><b>NOMBRE:</b></label>
-                 <div class="input-group mb-3">
-                     <div class="input-group-prepend">
-                         <div class="input-group-text">
-                         <i class="fas fa-address-card" style="color: black"></i>
-                     </div>
-                 </div>
-                 <input type="text" name="nombre"  autofocus class="form-control" placeholder="Nombre de la Empresa" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
-             </div>
-         </div>
 
-         <div class="col-sm-3 wrap-input100 validate-input m-b-18" >
-             <label for=""><b>TELÉFONO:</b></label>
-             <div class="input-group mb-3">
-                 <div class="input-group-prepend">
-                     <div class="input-group-text" style="color: black">
-                         <i class="fas fa-mobile-alt"></i>
-                     </div>
-                 </div>
-                 <input type="tel" name="telefono"  class="form-control" placeholder="Télefono">
-             </div>
-             <span class="focus-input100"></span>
-         </div>
-
-         <div class="col-sm-3">
-             <label for=""><b>RNC:</b></label>
-             <div class="input-group mb-3">
-                 <div class="input-group-prepend">
-                     <div class="input-group-text" style="color: black">
-                         <i class="tim-icons icon-paper"></i>
-                     </div>
-                 </div>
-                 <input type="text" name="rnc" class="form-control rnc"  placeholder="RNC">
-             </div>
-       </div>
-
-         <div class="col-sm-4">
-             <label for=""><b>DIRECCION:</b></label>
-             <div class="input-group mb-3">
-                 <div class="input-group-prepend">
-                     <div class="input-group-text" style="color: black">
-                         <i class="tim-icons icon-map-big"></i>
-                     </div>
-                 </div>
-                 <input type="text" name="direcion" class="form-control" placeholder="Direccion" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
-             </div>
-         </div>
-
-         <div class="col-sm-4">
-             <label for=""><b>EMAIL:</b></label>
-             <div class="input-group mb-3">
-                 <div class="input-group-prepend">
-                     <div class="input-group-text" style="color: black">
-                         <i class="fas fa-at"></i>
-                     </div>
-                 </div>
-                 <input type="email" name="email" class="form-control" placeholder="Email" >
-             </div>
-         </div>
-
-         <div class="col-sm-4">
-             <div class="color-wrapper">
-               <label for=""><b>COLOR:</b></label><br>
-               <input type="text" name="custom_color" placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" >
-               <div class="color-holder call-picker"></div>
-               <div class="color-picker" id="color-picker" style="display: none"></div>
-             </div>
+                <div class="col-sm-5">
+                    <label for=""><b>NOMBRE:</b></label>
+                   <div class="input-group mb-3">
+                       <div class="input-group-prepend">
+                           <div class="input-group-text input-required">
+                           <i class="fas fa-address-card" style="color: black"></i>
+                       </div>
+                   </div>
+                   <input type="text" name="nombre" value="" autofocus class="form-control" required placeholder="Nombre de la Empresa" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+               </div>
            </div>
-
-         <div class="col-sm-4">
-             <label for=""><b>IMAGEN:</b></label><br>
-             <button type="button" type="button" id="btnuploa" for="actual-btn"  class="btn btn-success btn-sm"><i class="fas fa-folder-open"></i></button>
-             <input type="file" id="actual-btn" max-file-size="1" accept=".png" name="archiveUP" hidden/>
-             {{-- <label for="actual-btn" id="labides" style="color: black;"></label> --}}
-             <span id="file-chosen" style="color: black">SIN ARCHIVO...</span>
+   
+           
+   
+           <div class="col-sm-3 wrap-input100 validate-input m-b-18" >
+               <label for=""><b>TELÉFONO:</b></label>
+               <div class="input-group mb-3">
+                   <div class="input-group-prepend">
+                       <div class="input-group-text input-required" style="color: black">
+                           <i class="fas fa-mobile-alt"></i>
+                       </div>
+                   </div>
+                   <input type="tel" name="telefono" required value="" class="form-control" placeholder="Télefono">
+               </div>
+               <span class="focus-input100"></span>
            </div>
+   
+   
+   
+           <div class="col-sm-3">
+               <label for=""><b>RNC:</b></label>
+               <div class="input-group mb-3">
+                   <div class="input-group-prepend">
+                       <div class="input-group-text" style="color: black">
+                           <i class="tim-icons icon-paper"></i>
+                       </div>
+                   </div>
+                   <input type="text" name="rnc" class="form-control rnc" value="" placeholder="RNC">
+               </div>
+         </div>
+   
+           <div class="col-sm-4">
+               <label for=""><b>DIRECCION:</b></label>
+               <div class="input-group mb-3">
+                   <div class="input-group-prepend">
+                       <div class="input-group-text input-required" style="color: black">
+                           <i class="tim-icons icon-map-big"></i>
+                       </div>
+                   </div>
+                   <input type="text" name="direcion" required class="form-control" value=" " placeholder="Direccion" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);">
+               </div>
+           </div>
+           
+           <div class="col-sm-4">
+               <label for=""><b>EMAIL:</b></label>
+               <div class="input-group mb-3">
+                   <div class="input-group-prepend">
+                       <div class="input-group-text input-required" style="color: black">
+                           <i class="fas fa-at"></i>
+                       </div>
+                   </div>
+                   <input type="email" name="email" required class="form-control"value=" " placeholder="Email" >
+               </div>
+           </div>
+   
+   
+  
+               <div class="form-group col-md-3">
+                 <label for="inputState"><b>PAIS</b></label>
+                 <select  class="form-control" value="{{old('pais')}}" id="countries" name="paisN" required>
+                   <option selected disabled>ELEGIR...</option>
+                   @foreach ($pais as $paises)
+                   @if ($paises->id==$empresa->contry)
+                   <option value="{{$paises->id}}" selected>{{$paises->name}}</option >
+                   @else
+                   <option value="{{$paises->id}}">{{$paises->name}}</option >
+                   @endif
+                   @endforeach
+                 </select>
+               </div>
+               <div class="form-group col-md-3">
+                 <label for="inputState"><b>ESTADO</b></label>
+                 <select  class="form-control" value="{{old('state')}}" id="state" name="stateN" required>
+                   @if ($state_start!=0)
+   
+                   @foreach ($state as $states)
+                   @if ($states->id==$state_start)
+                   <option value="{{$states->id}}" selected>{{$states->name}}</option >
+                   @else
+                   <option value="{{$states->id}}" >{{$states->name}}</option >
+                    @endif
+                       
+                   @endforeach
+                       
+                   @else
+                   <option selected disabled value="{{old('state')}}">ELEGIR...</option>
+                       
+                   @endif
+                 </select>
+               </div>
+               <div class="form-group col-md-3">
+                 <label for="inputState"><b>CIUDAD</b></label>
+                 <select  class="form-control" value="{{old('ciudad')}}"  name="ciudadN" id="cities" required>
+                   @if ($city_start!=0)
+   
+                   @foreach ($city as $cities)
+                   @if ($cities->id==$city_start)
+                   <option value="{{$cities->id}}" selected>{{$cities->name}}</option >
+                     
+                     @else
+                     <option value="{{$cities->id}}" >{{$cities->name}}</option >
+                       
+                   @endif
+                       
+                   @endforeach
+                       
+                   @else
+                   <option selected disabled value="{{old('ciudad')}}">ELEGIR...</option>
+                       
+                   @endif
+                 </select>
+               </div>
+               <div class="form-group col-md-3">
+                 <label for="inputCity"><b>CODIGO POSTAL</b></label>
+                 <input type="text" class="form-control" id="inputCity" value="{{$empresa->zipcode}}" name="zipcodeN">
+               </div>
+               <div class="col-sm-1">
+                 {{-- <div class="color-wrapper">
+                   <label for=""><b>COLOR:</b></label><br>
+                   <input type="text" name="custom_color" readonly placeholder="#FFFFFF" id="pickcolor" class="call-picker form-control" value="{{$empresa->color}}">
+                   <div class="color-holder call-picker"></div>
+                   <div class="color-picker" id="color-picker" style="display: none"></div>
+                 </div> --}}
+                 <label for=""><b>COLOR:</b></label>
+                 <div class="form-inline">
+                   <input type="text" readonly class="form-control" value="{{$color}}" name="custom_colorN" id="custom_colorN" hidden>
+                   <div id="colorpickerN"></div>
+                 </div>
+      
+               </div>
+               <div class="col-sm-4">
+                 <label for=""><b>IMAGEN:</b></label><br>
+                 <button type="button" type="button" id="btnuploaNE" for="actual-btnN"  class="btn btn-success btn-sm"><i class="fas fa-folder-open"></i></button>
+                 <input type="file" id="actual-btnN" max-file-size="1" accept=".png" name="archiveUP" hidden/>
+                 {{-- <label for="actual-btn" id="labides" style="color: black;"></label> --}}
+                 <span id="file-chosen" style="color: black">SIN ARCHIVO...</span>
+               </div>
+   
+   
+           </div>
+           <input type="text" name="imagenN"  id="idphotoNE" hidden value="">
 
-           <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 197px; top:82px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+           <button type="submit" class="btn btn-info btn-round btn-lg" id="btnnext" style="margin-left: 532px;"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
           </form>
      
 
   </div>
 </div>
 </div>
-</div>
+
 
 <!-----------------------------------------------------------------------AJUSTE DEL SISTEMA----------------------------------------------------------------------->
 <div class="tab-pane fade" id="VLO" role="tabpanel" aria-labelledby="v-pills-messages-tab">
@@ -575,6 +654,7 @@
 </div>
 </div>
 </div>
+</div>
 <!-----------------------------------------------------------------------AJUSTE DEL SISTEMA----------------------------------------------------------------------->
 
 
@@ -585,6 +665,7 @@
 <div class="modal fade" id="updatehours" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 
   @include('Empresa.cropper')
+  @include('Empresa.crooper2')
 
 <div class="o-page-loader">
     <div class="o-page-loader--content">
@@ -637,6 +718,8 @@ toastr.options = {
   </script>    
 @endif
 <script>
+
+
 
   $("#ColWeekendeEn").hide();
   $("#ColWeekendeSa").hide();
@@ -692,6 +775,45 @@ toastr.options = {
             console.log("confirm",color)
             $('.color').css('background', color.color.str);
             $("#custom_color").attr('value',color.color.str);
+        }
+    })
+  var xncolorpicker = new XNColorPicker({
+        color: $("#custom_colorN").val(),
+        selector: "#colorpickerN",
+        showprecolor: true,//显示预制颜色
+        prevcolors: null,//预制颜色，不设置则默认
+        showhistorycolor: true,//显示历史
+        historycolornum: 16,//历史条数
+        format: 'hsla',//rgba hex hsla,初始颜色类型
+        showPalette:true,//显示色盘
+        show:false, //初始化显示
+        lang:'en',// cn 、en
+        colorTypeOption:'single,linear-gradient,radial-gradient',
+        canMove:false,//选择器位置是否可以拖拽
+        alwaysShow:false,
+        autoConfirm:true,
+        hideInputer:false,
+        hideCancelButton:false,
+        hideConfirmButton:false,
+        onError: function (e) {
+
+        },
+        onCancel:function(color){
+            console.log("cancel",color)
+            $('.color').css('background', color.color.str);
+            $("#custom_colorN").attr('value',color.color.str);
+        },
+        onChange:function(color){
+            // console.log("change",color)
+            // alert("cambio")
+            console.log(color.color.str)
+            $('.color').css('background', color.color.str);
+            $("#custom_colorN").attr('value',color.color.str);
+        },
+        onConfirm:function(color){
+            console.log("confirm",color)
+            $('.color').css('background', color.color.str);
+            $("#custom_colorN").attr('value',color.color.str);
         }
     })
 
@@ -774,7 +896,7 @@ errorPlacement: function(error, element) {
 jQuery.extend(jQuery.validator.messages, {
   required: "",
   remote: "Please fix this field.",
-  email: "Please enter a valid email address.",
+  email: "",
   url: "Please enter a valid URL.",
   date: "Please enter a valid date.",
   dateISO: "Please enter a valid date (ISO).",
@@ -872,19 +994,28 @@ var colorList = [ '000000', '993300', '333300', '003300', '003366', '000066', '3
 			});
 		});
 
+
+$("#btnuploaNE").on('click',function(){
+    $("#actual-btnN").trigger("click");
+  });    
+
 $("#btnuploa").on('click',function(){
     $("#actual-btn").trigger("click");
   });     
 
 var $modal = $('#crpimg');
+var $modales = $('#crpimg2');
+// alert($modales)
 
 var image = document.getElementById('sample_image');
+var imagenes = document.getElementById('sample_image2');
 
 var cropper;
 
 $('#actual-btn').change(function(event){
   var files = event.target.files;
 
+  
   var done = function(url){
     image.src = url;
     $modal.modal('show');
@@ -900,6 +1031,71 @@ $('#actual-btn').change(function(event){
     reader.readAsDataURL(files[0]);
   }
 });
+$('#actual-btnN').change(function(event){
+
+  
+  var files = event.target.files;
+  var done = function(url){
+    imagenes.src = url;
+    $modales.modal('show');
+  };
+
+  if(files && files.length > 0)
+  {
+    reader = new FileReader();
+    reader.onload = function(event)
+    {
+      done(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+});
+
+
+$modales.on('shown.bs.modal', function() {
+  cropper = new Cropper(imagenes, {
+    aspectRatio: 1,
+    viewMode: 3,
+    preview:'.preview'
+  });
+}).on('hidden.bs.modal', function(){
+  cropper.destroy();
+     cropper = null;
+});
+
+$('#crop2').click(function(){
+  canvas = cropper.getCroppedCanvas({
+    width:400,
+    height:400
+  });
+
+  canvas.toBlob(function(blob){
+    url = URL.createObjectURL(blob);
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function(){
+      var base64data = reader.result;
+      $.ajax({
+        url:"{{url('Empresaphoto')}}",
+        method:'POST',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        data:{imagenes:base64data},
+        success:function(data)
+        {
+          $("#btncloses").trigger("click");
+          console.log(imagenes);
+          var route=$(data).attr('value');
+          var file=$(data).attr('action');
+
+          var union="{{asset('')}}/"+route;
+          $("#idphotoNE").attr('value',file+".png")
+          $('#imageneres').attr('src', union);
+        }
+      });
+    };
+  });
+});
+
 
 $modal.on('shown.bs.modal', function() {
   cropper = new Cropper(image, {
@@ -943,6 +1139,8 @@ $('#crop').click(function(){
     };
   });
 });
+
+
 
 $("#countries").on('change',function(){
     var id=$(this).val();
@@ -1495,6 +1693,44 @@ $('#accionsf').on('key-focus.dt', function(e, datatable, cell){
 
    });
 
+
+  $('.deletecontrato').on("click",function(){
+    var id=$(this).val();
+    // alert(id);
+    Swal.fire({
+  title: '¿Estás seguro?',
+  text: "¡No podrás revertir esto!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, Eliminarlo!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    var url = "{{url('deletecontratosd')}}/"+id; 
+     var data ='';
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+            $("#contratos-table tbody").empty();    
+            $("#contratos-table tbody").append(result);
+            SuccesGen();
+            
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                ErroresGeneral();
+    }
+             });
+  }
+})
+
+
+
+   });
+
   function saerch(){
   name=$("#btnsearch").val();
   table.search(name).draw();
@@ -1524,14 +1760,14 @@ $('#inputCity').mask('0#');
 	  background: white;
   }
 
-  .color img{
+  /* .color img{
     position: absolute;
     width: 193px;
     top: 22% !important;
     right: 0;
-    left: 1052px;
+    left: 1071px;
     margin: 0 auto;
-	}
+	} */
   
 </style>
 @endsection

@@ -83,6 +83,16 @@ class EmpresaController extends Controller
     {
         //
     }
+    public function deletecontratosd($id)
+    {
+        $contrato=Contrato::findOrFail($id);
+        $contrato->estado=1;
+        $contrato->update();
+        
+        $contra=Contrato::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+
+        return view('Contrato.plantillasall',compact('contra'));
+    }
 
     public function datatableHorario()
     {
@@ -124,15 +134,29 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
         $empresa= new Empresa();
+        // $empresa->nombre=$request->get('nombre');
+        // $empresa->telefono=$request->get('telefono');
+        // $empresa->direcion=$request->get('direcion');
+        // $empresa->email=$request->get('email');
+        // $empresa->color=$request->get('custom_color');
+        // $empresa->email=$request->get('archiveUP');
+        // $empresa->estado=0;
+        // $empresa->rnc=$request->get('rnc');
+        // $empresa->save();
+
         $empresa->nombre=$request->get('nombre');
         $empresa->telefono=$request->get('telefono');
         $empresa->direcion=$request->get('direcion');
-        $empresa->email=$request->get('email');
-        $empresa->color=$request->get('custom_color');
-        $empresa->email=$request->get('archiveUP');
-        $empresa->estado=0;
         $empresa->rnc=$request->get('rnc');
-        $empresa->save();
+        $empresa->email=$request->get('email');
+        $empresa->color=$request->get('custom_colorN');
+        $empresa->zipcode=$request->get('zipcodeN');
+        $empresa->contry=$request->get('paisN');
+        $empresa->state=$request->get('stateN');
+        $empresa->city=$request->get('ciudadN');
+        if($request->get('imagenN')!=null){
+            $empresa->imagen=$request->get('imagenN');
+        }
 
         $user=new User();
         $user->name=Auth::user()->name;
