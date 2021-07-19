@@ -659,7 +659,7 @@ class EmpleadosController extends Controller
     public function openadjunto()
     {
         $id=request('id');
-        return view('Empleados.Adjunto',compact('id'));
+        return view('Empleados.adjunto',compact('id'));
     }
 
 

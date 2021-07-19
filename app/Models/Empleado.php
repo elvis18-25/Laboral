@@ -78,7 +78,7 @@ protected $column='email';
     // Sexo
     public function sexo()
     {
-        return $this->belongsToMany(sexo::class)->withTimestamps();
+        return $this->belongsToMany(Sexo::class)->withTimestamps();
     }
 
 
