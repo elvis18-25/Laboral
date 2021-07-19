@@ -530,6 +530,10 @@
       .legend({
         orient: "vertical",
         left: "left",
+        textStyle: {
+          lineHeight: 11,
+          fontSize: 11,
+    },
       })
       .tooltip()
       .axis(false)
@@ -538,7 +542,7 @@
       
       series: data.series.map((serie) => ({
         ...serie,
-        label: { show: false },
+        label: { show: false,},
       })),
       
     }))

@@ -90,33 +90,8 @@ class HomeController extends Controller
                     ->orderBy("fecha")
                     ->groupBy(DB::raw("month(fecha)"))
                     ->get();
-                    // $gasto = array_column($gasto, 'count');
-                    // dd($gasto);
-                
 
-
-                    //  $gasto = Gasto::select(DB::raw("SUM(monto) as count"))
-                    //  ->whereYear('fecha',date('Y'))
-                    //  ->where('id_empresa',Auth::user()->id_empresa)
-                    //  ->where('estado',0)
-                    //  ->orderBy("fecha")
-                    //  ->groupBy(DB::raw("Month(fecha)"))
-                    //  ->pluck('count');
-             
-                    //  $moths=Gasto::select(DB::raw("Month(fecha) as month"))
-                    //  ->whereYear('fecha',date('Y'))
-                    //  ->where('id_empresa',Auth::user()->id_empresa)
-                    //  ->where('estado',0)
-                    //  ->orderBy("fecha")
-                    //  ->groupBy(DB::raw("Month(fecha)"))
-                    //  ->pluck('month');
-             
-                    //  $data=array(0,0,0,0,0,0,0,0,0,0,0,0);
-             
-                    //  foreach($moths as $index =>$moth)
-                    //  {
-                    //      $data=[$month]=$gasto[$index];
-                    //  }
+                    // dd("s");
 
                      $moth =[];  
                      $data=[];
@@ -165,7 +140,7 @@ class HomeController extends Controller
         // $usersChart->dataset('Users by trimester', 'bar', [10, 25, 13]);
         // return view('users', [ 'usersChart' => $usersChart ] );
 
-        return view('dashboard',compact('count_empleado','count_mujeres','data','count_hombres','count_indefinido','permisos','count_roles','count_puesto','count_users','count_pagos'))
+        return view('.dashboard',compact('count_empleado','count_mujeres','data','count_hombres','count_indefinido','permisos','count_roles','count_puesto','count_users','count_pagos'))
         ->with('puesto',json_encode($puesto,JSON_NUMERIC_CHECK))
         ->with('data',json_encode($data,JSON_NUMERIC_CHECK))
         ->with('moth',json_encode($moth,JSON_NUMERIC_CHECK))

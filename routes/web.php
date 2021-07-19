@@ -40,7 +40,8 @@ Route::get('/', function () {
 
         return redirect()->intended('/home');
 }else{
-	Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+	return redirect()->intended('/home');
+	// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 }
     // return 'hola';
 });
