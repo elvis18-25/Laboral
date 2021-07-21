@@ -45,9 +45,13 @@ Route::get('/', function () {
 }
     // return 'hola';
 });
-// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 
-// Route::get('Empleadologin','App\Http\Controllers\EmpleadologinController@showLoginForm');
+//Messeges
+Route::get('send','App\Http\Controllers\MessegeController@send')->middleware('auth');
+Route::get('showMesseges','App\Http\Controllers\MessegeController@showMesseges');
+Route::post('sender','App\Http\Controllers\MessegeController@sender');
+Route::get('phoneblade/{id}','App\Http\Controllers\MessegeController@phoneblade');
+
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home')->middleware('auth');
 Route::post('SerchGastos','App\Http\Controllers\HomeController@SerchGastos');
@@ -127,6 +131,8 @@ Route::post('deletecontratosd/{id}','App\Http\Controllers\EmpresaController@dele
 //Multi
 Route::post('MultiEmpresa','App\Http\Controllers\MultiController@MultiEmpresa');
 Route::post('SeleccionEmpresa','App\Http\Controllers\MultiController@SeleccionEmpresa');
+
+
 
 //Salario
 Route::post('salarioSave','App\Http\Controllers\SueldoAumentoController@salarioSave');
@@ -300,7 +306,6 @@ Route::post('vernomina/{id}','App\Http\Controllers\GastoController@vernomina');
 Route::post('vernominaCreate/{id}','App\Http\Controllers\GastoController@vernominaCreate');
 
 Route::post('savephone','App\Http\Controllers\GastoController@savephone');
-Route::get('phoneblade','App\Http\Controllers\GastoController@phoneblade');
 Route::post('conceptelimini/{id}','App\Http\Controllers\GastoController@conceptelimini');
 Route::post('modalfijo/{id}','App\Http\Controllers\GastoController@modalfijo');
 

@@ -1,5 +1,9 @@
+
+
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
+
+@section('content')
 <style>
 
   .error{
@@ -31,15 +35,17 @@ table tr td{
   padding: 10px 7px !important;
 }
 
-table>thead>tr>th{
-        color: black !important;
+  table>thead>tr>th{
+          color: black !important;
+      }
+
+  table>thead>tr{
+    background-color: rgb(255 255 255 / 40%) !important;
     }
-    table>thead>tr{
-  background-color: rgb(255 255 255 / 40%) !important;
-  
-}
+  .dataTables_scroll{
+    top: -97px !important;
+  }
 </style>
-@section('content')
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
@@ -136,7 +142,7 @@ table>thead>tr>th{
               {{-- <div style="max-height: 289px; overflow-x: hidden; width: auto; position: relative; overflow-y: auto; font-size:small; top:-12px; "> --}}
                 <table class="table tablesorter " id="gastos-table">
                     <thead class=" text-primary">
-                        <tr>
+                        <tr style="background-color: rgb(255 255 255 / 40%) !important; color: black !important;">
                             <th style="text-align: center !important;"  class="TitleCp"><b>CONCEPTO</b></th>
                             <th style="text-align: center !important;"  class="TitleCp"><b>MONTO</b></th>
                         </tr>
@@ -174,12 +180,13 @@ table>thead>tr>th{
               </div>
             </div>
             <div class="card-body">
-              <button type="button" title="Guardar Gastos"  data-toggle="modal" data-target="#conceptomodal " class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus" style="margin-left: -2px; ; position: relative; font-size: 17px;" ></i></button>
+              <button type="button" title="Guardar Gastos" id="btnconceptrs" data-toggle="modal" data-target="#conceptomodal " class="btn btn-fill btn-info btn-sm float-right redondo whiter "><i class="fas fa-plus" style="margin-left: -2px; ; position: relative; font-size: 17px;" ></i></button>
           <div style="max-height: 289px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-77px; ">
               <table class="table tablesorter " id="gastoperido-table">
                 <thead class="text-primary">
-                    <tr>
+                    <tr style="background-color: rgb(255 255 255 / 40%) !important; color: black !important;">
                         <th style="text-align: center !important; "  class="TitleCp"><b>CONCEPTO</b></th>
+                        <th style="text-align: center !important; "  class="TitleCp"><b>IMAGEN</b></th>
                         <th style="text-align: center !important; position: relative; width: 25%;"  class="TitleCp"><b>MONTO</b></th>
                     </tr>
                 </thead>
@@ -216,7 +223,7 @@ table>thead>tr>th{
             <div style=" max-height:148px; overflow:auto; font-size:small; top:-41px; position: relative; ">
             <table class="table tablesorter " id="gastonomina-table" style="top: -2px;  position: relative;" >
               <thead class="text-primary">
-                  <tr>
+                  <tr style="background-color: rgb(255 255 255 / 40%) !important; color: black !important;">
                       <th style="text-align: center !important; "  class="TitleCp"><b>CONCEPTO</b></th>
                       <th style="text-align: center !important; position: relative; width: 25%;"  class="TitleCp"><b>MONTO</b></th>
                   </tr>
@@ -239,7 +246,6 @@ table>thead>tr>th{
       </div>
       {{---------------------------------------------------------------------------------------------------------------------------------------------}}
      
-
       @include('Gastos.modalconcept')
         @include('Gastos.upload')
         <input type="text" name="" value="" hidden id="getval">
@@ -251,8 +257,13 @@ table>thead>tr>th{
         <input type="text" name="elimiarrelgo[]" value="" hidden id="elimiarrelgo">
         <input type="text" onFocus="GanoFoco2();" onBlur="PierdoFoco2();" hidden name="concepter[]" value="0" id="conp">
         <input type="text" onFocus="GanoFoco();"  onBlur="PierdoFoco();" hidden name="monter[]" value=" " id="montp">
+        <input type="text" onFocus="GanoFoco();"  onBlur="PierdoFoco();" hidden name="filer[]" value=" " id="file">
 
-
+        @php
+        $users=Auth::user()->id;
+    @endphp
+    
+    <input type="text" name="" id="id_user" value="{{$users}}" hidden>
     
 </div>
 <div class="col-sm-6 float-right">
@@ -317,6 +328,7 @@ table>thead>tr>th{
   </div>
 </div>
 
+
 <div class="modal fade" id="nominamodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 {{-- @include('Gastos.phone') --}}
 <div class="modal fade" id="fijomodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
@@ -325,6 +337,7 @@ table>thead>tr>th{
 @endsection
 
 @section('js')
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous"></script>
 <script src="{{asset('js/jquery-qrcode-0.18.0.min.js')}}"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
@@ -332,60 +345,33 @@ table>thead>tr>th{
 
 <script>
 
-// $(document).ready(function(){
+Pusher.logToConsole = true;
 
+var pusher = new Pusher('b94f0b012a3d0bf93748', {
+  cluster: 'eu'
+});
 
-// });
-// window.addEventListener("onbeforeunload",function(e){
-// return "h";
-// });
+var channel = pusher.subscribe('my-channel');
+channel.bind('form-submit', function(data) {
+  // alert(JSON.stringify(data.text));
+  console.log(JSON.stringify(data));
+  $("#files").attr('value',data.text);
+  succesPhones();
+  $('a[tabindex=0]').trigger("click");
+  $("#back").attr('hidden',true);
+  $("#btnpc").attr('hidden',false);
+  $("#btnsave").attr('hidden',false);
+  $("#btnphone").attr('hidden',false);
+});
+
+$("#btnconceptrs").on('click',function(){
+  $("#btnphone").attr('hidden',false);
+});
+
 var arraynomina=[];
 b=0;
 
-// if (window.history && window.history.pushState) {
 
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-
-// });
-
-// }
-
-// function backhome(){
-//   if (window.history && window.history.pushState) {
-
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-// });
-
-// }
-// }
-
-// function backsave(){
-//   Swal.fire({
-//   title: 'Seguro que deseas salir?',
-//   text: "No se podra revertir,¿Deseas guardarlo? !",
-//   icon: 'warning',
-//   showDenyButton: true,
-//   showCancelButton: true,
-//   confirmButtonText: `Si, Guardar`,
-//   denyButtonText: `No, Salir`,
-// }).then((result) => {
-//   /* Read more about isConfirmed, isDenied below */
-//   if (result.isConfirmed) {
-//     $("#seave").trigger("click");
-//   } else if (result.isDenied) {
-//     history.back();
-//   }else{
-//     backhome();
-//   }
-// })
-
-// }
 
 t=0;
 img="{{asset('black') }}/img/logotipo.png";
@@ -628,25 +614,14 @@ toInt = function(val){
 
 
 
-$("#phone").on('click',function(){
 
-  $('a[tabindex=1]').trigger("click");
-  $("#back").attr('hidden',false);
-
-});
-
-$("#back").on('click',function(){
-  $('a[tabindex=0]').trigger("click");
-  $("#back").attr('hidden',true);
-
-});
-
+var id_users=$("#id_user").val();
 
 $("#qrcode").qrcode({
 render: 'canvas',
 width: 150,
 height:150,
-text: "{{url('phoneblade')}}",
+text: "{{url('phoneblade')}}/"+id_users,
 });
 
 
@@ -899,19 +874,21 @@ function capturar(){
 
   var conceptoCapturar=document.getElementById("concepto").value;
   var montoCapturar=document.getElementById("monto").value;
+  var ArchivosFiles=document.getElementById("files").value;
   var conceptid=idconcepto++;
  
   var nomina=$("#nominavalue").val();
 
 if(conceptoCapturar!=''&&montoCapturar!=''){
 
-    function  Persona(id,concepto,monto){
+    function  Persona(id,concepto,monto,archivo){
      this.concepto=concepto;
      this.monto=monto;
      this.id=id;
+     this.archivo=archivo;
     }
 
-    nuevoSujeto= new Persona(conceptid,conceptoCapturar,montoCapturar);
+    nuevoSujeto= new Persona(conceptid,conceptoCapturar,montoCapturar,ArchivosFiles);
  
  agregar();
   }else{
@@ -928,6 +905,7 @@ if(conceptoCapturar!=''&&montoCapturar!=''){
 var baseDatos=[];
 var BDconceptos=[];
 var BDmonto=[];
+var BDfile=[];
 var p=0;
 
 function agregar(){
@@ -942,8 +920,6 @@ function agregar(){
 
   if(valor==0){
     cont=cont+parseFloat(nuevoSujeto.monto,10);
-    // verificador=parseFloat($("#formes").val());
-    // alert()
   }else{
     cont=cont+parseFloat(nuevoSujeto.monto,10);
 
@@ -975,22 +951,25 @@ var button2=' <button class="btn btn-info  btn-sm" data-toggle="modal" data-targ
 
 BDconceptos[p]=nuevoSujeto.concepto;
 BDmonto[p]=nuevoSujeto.monto;
+BDfile[p]=nuevoSujeto.archivo;
 console.log(BDconceptos);
 console.log(BDmonto);
+console.log(BDfile);
 p++;
 
 $("#conp").attr('value',BDconceptos);
 $("#montp").attr('value',BDmonto);
+$("#file").attr('value',BDfile);
 
 
-$('#gastoperido-table tbody').append('<tr class="showinfo" action="'+nuevoSujeto.concepto+'" value="'+nuevoSujeto.monto+'" ><td><input type="text" value="'+nuevoSujeto.concepto+'"  name="concepto[]" / hidden>'+nuevoSujeto.concepto+'</td><td style="text-align: right;"><input type="text" name="monto[]" value="'+nuevoSujeto.monto+'"/hidden>'+re+'</tr>');
+$('#gastoperido-table tbody').append('<tr class="showinfo" action="'+nuevoSujeto.concepto+'" value="'+nuevoSujeto.monto+'" ><td><input type="text" value="'+nuevoSujeto.concepto+'"  name="concepto[]" / hidden>'+nuevoSujeto.concepto+'</td>'+'<td style="text-align: center;"><a href="{{asset("recibo")}}/'+nuevoSujeto.archivo+'" target="_blank" rel="noopener noreferrer">'+nuevoSujeto.archivo+'</a></td>'+'<td style="text-align: right;"><input type="text" name="monto[]" value="'+nuevoSujeto.monto+'"/hidden>'+re+'<input type="text" name="file[]" value="'+nuevoSujeto.archivo+'"/hidden>'+'</tr>');
 
 
 }
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
 // window.onbeforeunload = function(e) {
 //     HoldOn.open(options);
@@ -1152,30 +1131,30 @@ function error() {
     "hideMethod": "fadeOut"
   }
 }
-function errornomina() {
-  Command: toastr["error"]("Debes de elegir una nomina", "Error")
-  toastr.options = {
-    "closeButton": false,
-    "debug": false,
-    "newestOnTop": false,
-    "progressBar": true,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": true,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
-  }
-}
 
 
 function succesNomina(){
   Command: toastr["success"]("se ha agregado la nomina", "")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+}
+function succesPhones(){
+  Command: toastr["success"]("se ha subido la imagen", "Exito!")
     toastr.options = {
       "closeButton": false,
       "debug": false,

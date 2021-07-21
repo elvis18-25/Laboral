@@ -63,13 +63,14 @@ class GastoController extends Controller
         $strings=implode(",",$request->get('elimiarrelgo'));
         $concp=implode(",", $request->get('concepter'));
         $monter=implode(",", $request->get('monter'));
-        // $nomi=implode(",", $request->get('arreglo'));
+        $archivo=implode(",", $request->get('filer'));
 
         $concepArry=explode(",", $concp);
         $monterpArry=explode(",", $monter);
+        $filesArray=explode(",", $archivo);
         $nomipArry=explode(",", $request->get('arreglo'));
         
-        // dd( $nomipArry);
+        // dd($filesArray);
         $array = explode(",", $strings);
         // dd("llego");
         $n=count($array);
@@ -104,8 +105,6 @@ class GastoController extends Controller
         $categorias_gastos->save();
         }
         
-
-
         foreach($nomina as $nominas){
             $input['id_gasto']=$gasto->id;
             $input['id_nomina'] = $nominas->id;
@@ -123,6 +122,7 @@ class GastoController extends Controller
                 $input['id_gasto']=$gasto->id;
                 $input['concepto'] = $concepArry[$i];
                 $input['monto'] = $monterpArry[$i];
+                $input['imagen'] = $filesArray[$i];
                 $input['id_empresa'] = Auth::user()->id_empresa;
                 $input['estado'] =0;
                 $referencia=concepto_gasto::create($input);
@@ -131,12 +131,12 @@ class GastoController extends Controller
         }
         foreach($fijo as $fijos){
         if($fijos->id_empresa==Auth::user()->id_empresa &&$fijos->estado==0){
-            $input['id_gasto']=$gasto->id;
-            $input['concepto'] = $fijos->concepto; 
-            $input['monto'] = $fijos->monto; 
-            $input['id_empresa'] = Auth::user()->id_empresa;
-            $input['estado'] =0;
-            $referencia=concepto_gasto::create($input);
+            $input2['id_gasto']=$gasto->id;
+            $input2['concepto'] = $fijos->concepto; 
+            $input2['monto'] = $fijos->monto; 
+            $input2['id_empresa'] = Auth::user()->id_empresa;
+            $input2['estado'] =0;
+            $referencia=concepto_gasto::create($input2);
            }
         }
 
@@ -680,6 +680,7 @@ class GastoController extends Controller
         $concep=request('name');
         $monto=request('monto');
         $sele=request('elegir');
+        $archivo=request('archivo');
         $verificateGastoFijo=gasto_fijo::all();
 
 
@@ -699,6 +700,9 @@ class GastoController extends Controller
             $concept->concepto=$gasto->concepto;
             $concept->monto=$gasto->monto;
             $concept->estado=0;
+            if($archivo!=""){
+            $concept->imagen=$archivo;
+            }
             $concept->id_empresa=Auth::user()->id_empresa;
             $concept->save();
 
@@ -744,6 +748,9 @@ class GastoController extends Controller
             $concept->concepto=$gasto->concepto;
             $concept->monto=$gasto->monto;
             $concept->estado=0;
+            if($archivo!=""){
+                $concept->imagen=$archivo;
+            }
             $concept->id_empresa=Auth::user()->id_empresa;
             $concept->save();
 
@@ -786,6 +793,7 @@ class GastoController extends Controller
         $gastos=Gasto::findOrFail($id);
         $concep=request('concepto');
         $monto=request('monto');
+        $archivo=request('Archivos');
 
         $verificateGastoFijo=gasto_fijo::all();
         $p=0;
@@ -805,6 +813,9 @@ class GastoController extends Controller
             $gasto->monto=$monto;
             $gasto->estado=0;
             $gasto->id_empresa=Auth::user()->id_empresa;
+            if($archivo!=""){
+                $gasto->imagen=$archivo;
+            }
             $gasto->save();
 
             $gasto=Gasto::findOrFail($id);
@@ -959,10 +970,7 @@ class GastoController extends Controller
 
     
 
-    public function phoneblade()
-    {
-        return view('Gastos.phone');
-    }
+
     public function savephone(Request $request)
     {
         dd($request->all());
@@ -1134,9 +1142,13 @@ class GastoController extends Controller
         $nombre=request('name');
         $monto=request('monto');
         $gasto_fijo=request('gasto');
+        $archivo=request('archivo');
 
          $concepto->concepto=$nombre;
          $concepto->monto=$monto;
+         if($archivo!=""){
+            $concepto->imagen=$archivo;
+         }
          $concepto->update();
 
          $gasto=Gasto::findOrFail($gasto_fijo);
@@ -1164,9 +1176,13 @@ class GastoController extends Controller
         $nombre=request('name');
         $monto=request('monto');
         $gasto_fijo=request('gasto');
+        $archivo=request('archivo');
 
         $concepto->concepto=$nombre;
         $concepto->monto=$monto;
+        if($archivo!=""){
+            $concepto->imagen=$archivo;
+        }
         $concepto->update();
 
         $gasto=Gasto::findOrFail($gasto_fijo);

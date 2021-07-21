@@ -498,7 +498,10 @@ table>thead>tr>th{
                         <select class="form-control selec" id="contra">
                           <option selected >ELEGIR...</option>
                           @foreach ($contrato as $contratos)
+                          @if ($contratos->estado==0 && $contratos->id_empresa==Auth::user()->id_empresa)
+                              
                           <option value="{{$contratos->id}}">{{$contratos->name}}</option>	
+                          @endif
                           @endforeach
                         </select> 
                     </div>
@@ -670,6 +673,8 @@ Swal.fire({
 })
 });
 
+
+  
 
 
     $("#pass").val('');
@@ -1280,7 +1285,17 @@ $('#adjunnew').keyup(function(e){
 });
 
 $(document).on('click', '.remf', function (event) {
-  var e=$(this).val();
+  Swal.fire({
+  title: '¿Estás seguro?',
+  text: "¡No podrás revertir esto!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, Eliminarlo!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    var e=$(this).val();
       var url = "{{url('deleteEadjuto')}}/"+e; 
      var data ='';
         $.ajax({
@@ -1289,16 +1304,40 @@ $(document).on('click', '.remf', function (event) {
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){;
+              
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
                ErroresGeneral();
     }
              }); 
 
-
+  SuccesEliminado();
   $(this).closest('tr').remove();
+  }
+})
 
 });
+
+function SuccesEliminado(){
+    Command: toastr["success"]("se ha eliminado correctamente", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
 
 $("#countries").on('change',function(){
     var id=$(this).val();

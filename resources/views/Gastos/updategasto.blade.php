@@ -6,6 +6,17 @@
 
 <tr id="gasto{{$gastofijo->id}}">
     <td style=" cursor: pointer;" onclick="verconceptFijo({{$gastofijo->id}})">{{$gastofijo->concepto}}</td>
+
+    @if ($gastofijo->imagen!=null)
+    <td style="text-align: center;">
+      <a href="{{asset('recibo/'. $gastofijo->imagen)}}" target="_blank" rel="noopener noreferrer">
+          {{$gastofijo->imagen}}
+        </a>
+     </td>  
+    @else
+    <td style="text-align: center; cursor: pointer;" onclick="verconceptFijo({{$gastofijo->id}})"  >
+     </td>  
+    @endif
     <td  onclick="verconceptFijo({{$gastofijo->id}})" style="text-align: right; cursor: pointer;">${{number_format($gastofijo->monto,2)}}</td>
 </tr>
     

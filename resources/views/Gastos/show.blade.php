@@ -8,8 +8,12 @@
     }
     table>thead>tr{
   background-color: rgb(255 255 255 / 40%) !important;
-  
 }
+.form-check-radio input[type="radio"]:checked+.form-check-sign::after{
+  top: 9px !important;
+    left: 6px !important;
+  }
+
 </style>
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -115,7 +119,8 @@
                 <table class="table tablesorter " id="gastofijo-table" style="top: -8px; position: relative;">
                 <thead class="text-primary">
                     <tr>
-                        <th style="text-align: center !important; "  scope="col">CONCEPTO</th>
+                        <th style="text-align: center !important; width: 403px;"  scope="col">CONCEPTO</th>
+                        <th style="text-align: center !important; "  scope="col">IMAGEN</th>
                         <th style="text-align: center !important; position: relative; width: 25%;"  scope="col">MONTO</th>
                     </tr>
                 </thead>
@@ -128,6 +133,20 @@
 
                   <tr id="gasto{{$gastofijo->id}}">
                       <td style=" cursor: pointer;" onclick="verconceptFijo({{$gastofijo->id}})">{{$gastofijo->concepto}}</td>
+
+                      @if ($gastofijo->imagen!=null)
+                      <td style="text-align: center;">
+                        <a href="{{asset('recibo/'. $gastofijo->imagen)}}" target="_blank" rel="noopener noreferrer">
+                            {{$gastofijo->imagen}}
+                          </a>
+                       </td>  
+                      @else
+                      <td style="text-align: center; cursor: pointer;" onclick="verconceptFijo({{$gastofijo->id}})"  >
+                       </td>  
+                      @endif
+
+
+
                       <td  onclick="verconceptFijo({{$gastofijo->id}})" style="text-align: right; cursor: pointer;">${{number_format($gastofijo->monto,2)}}</td>
                   </tr>
                       
@@ -169,7 +188,8 @@
                 <table class="table tablesorter " id="gastoperido-table" style="top: -8px; position: relative;">
                 <thead class="text-primary">
                     <tr>
-                        <th style="text-align: center !important; "  scope="col">CONCEPTO</th>
+                        <th style="text-align: center !important; width: 26%;">CONCEPTO</th>
+                        <th style="text-align: center !important; "  scope="col">IMAGEN</th>
                         <th style="text-align: center !important; position: relative; width: 25%;"  scope="col">MONTO</th>
                     </tr>
                 </thead>
@@ -180,6 +200,20 @@
 
                   <tr id="gasto{{$conceptos->id}}">
                       <td onclick="verconcept({{$conceptos->id}})">{{$conceptos->concepto}}</td>
+
+                      @if ($conceptos->imagen!=null)
+                      <td style="text-align: center;">
+                        <a href="{{asset('recibo/'. $conceptos->imagen)}}" target="_blank" rel="noopener noreferrer">
+                            {{$conceptos->imagen}}
+                          </a>
+                       </td>
+                      @else
+                      <td style="text-align: center;" onclick="verconcept({{$conceptos->id}})">
+ 
+                       </td>   
+                      @endif
+
+
                       <td  onclick="verconcept({{$conceptos->id}})" style="text-align: right;">${{number_format($conceptos->monto,2)}}</td>
                   </tr>
                       
@@ -321,6 +355,13 @@
 <div class="modal fade" id="fijomodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <div class="modal fade" id="modalcreatefijo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <div class="modal fade" id="modalSf" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<input type="text" onFocus="GanoFoco();"  onBlur="PierdoFoco();" hidden name="filer" value=" " id="file">
+
+@php
+$users=Auth::user()->id;
+@endphp
+
+<input type="text" name="" id="id_user" value="{{$users}}" hidden>
 
 <div id="adcls" >
     <div class="o-page-loader">
@@ -339,28 +380,93 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous"></script>
 <script src="{{asset('js/jquery-qrcode-0.18.0.min.js')}}"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
+
+$("#txtmontos").on('keypress', function(e) { return e.keyCode != 13; }); 
+
+$('#exampleModalLabel').keyup(function(e){
+    if(e.keyCode==13)
+    {
+      alert("S");
+      $('#btnsavefijos').trigger("click");
+      
+    }
+});
+
+Pusher.logToConsole = true;
+
+var pusher = new Pusher('b94f0b012a3d0bf93748', {
+  cluster: 'eu'
+});
+
+var channel = pusher.subscribe('my-channel');
+channel.bind('form-submit', function(data) {
+  // alert(JSON.stringify(data.text));
+  console.log(JSON.stringify(data));
+  $("#files").attr('value',data.text);
+  succesPhones();
+  $('a[tabindex=0]').trigger("click");
+  $('a[tabindex=3]').trigger("click");
+  $('a[tabindex=6]').trigger("click");
+  $("#back").attr('hidden',true);
+  $("#btnpc").attr('hidden',false);
+  $("#btnsave").attr('hidden',false);
+  $("#btnphone").attr('hidden',false);
+
+  $("#backed").attr('hidden',true);
+$("#btnpce").attr('hidden',false);
+$(".updatestes").attr('hidden',false);
+$(".eliminiconcepts").attr('hidden',false);
+$("#btnQr").attr('hidden',false);
+
+$(".updatestesFijo").attr('hidden',false);
+$(".eliminiconceptsFjo").attr('hidden',false);
+
+
+});
 
 totalgastoConcepto();
 totalgastoFijo();
 
+
+function succesPhones(){
+  Command: toastr["success"]("se ha subido la imagen", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+}
 
 $("#monto").mask('0#');
 $('.money').mask("#,##0.00", {reverse: true});
 
 
 
-t=0;
-img="{{asset('black') }}/img/logotipo.png";
-$("#seave").on('click',function(){
-t=1;
+// t=0;
+// img="{{asset('black') }}/img/logotipo.png";
+// $("#seave").on('click',function(){
+// t=1;
 
-if(t==1){
-$("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
-      '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
-      '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
-}
-});
+// if(t==1){
+// $("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
+//       '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
+//       '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
+// }
+// });
 
 
 $("#deletegastos").submit(function(e){
@@ -669,10 +775,10 @@ $('.montro').keypress(function(tecla)
    }
 });
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+// var options = {
+//      theme:"sk-cube-grid",
+//      message:'Cargando.... ',
+// };
 
 
 
@@ -689,21 +795,21 @@ $("#back").on('click',function(){
 
 });
 
-
+var id_users=$("#id_user").val();
 $("#qrcode").qrcode({
 render: 'canvas',
 width: 150,
 height:150,
-text: "{{url('phoneblade')}}",
+text: "{{url('phoneblade')}}/"+id_users,
 });
 
 
 HayFoco=true;
 HayFoco2=true;
-document.addEventListener ("keydown", function (e) {
+$("#montoOPS").on('keypress', function(e) { 
   if(HayFoco==true || HayFoco2==true ){
     HayFoco=true;
-HayFoco2=true;
+    HayFoco2=true;
     if (e.keyCode== 13) {
         event.preventDefault();
         capturar()
@@ -801,51 +907,53 @@ verificador=0;
 function capturar(){
   var concepto=document.getElementById("concepto").value;
   var monto=document.getElementById("monto").value;
+  var Archivos=document.getElementById("files").value;
   var e=$("#input").val();
-  // var conceptid=idconcepto++;
- 
   var nomina=$("#nominavalue").val();
+  
 
-if(concepto!=''&& monto!=''){
-  var url = "{{ url('saveconconcepto')}}/"+e;
-     var data = {concepto:concepto, monto:monto};
-        $.ajax({
-         method: "POST",
-           data: data,
-            url:url ,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success:function(result){
-              if(result!=0){
-            $('.datosInput').val('');
-            $("#concepto").focus();
-
-              $("#gastoperido-table tbody").empty();
-            $("#gastoperido-table tbody").append(result);
-            $("#conceptomodal").trigger("click");
-            totalgastoConcepto();
-            SuccesGen();
+  var form=$("#createforme").submit();
+  event.preventDefault();
+  console.log(form);
 
 
-              }else{
-                ComparationGastos();
-              }
+// if(concepto!=''&& monto!=''){
+//   var url = "{{ url('saveconconcepto')}}/"+e;
+//      var data = {concepto:concepto,monto:monto,Archivos:Archivos};
+//         $.ajax({
+//          method: "POST",
+//            data: data,
+//             url:url ,
+//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+//             success:function(result){
+//               if(result!=0){
+//             $('.datosInput').val('');
+//             $("#concepto").focus();
+            
+//               $("#gastoperido-table tbody").empty();
+//             $("#gastoperido-table tbody").append(result);
+//             $("#conceptomodal").trigger("click");
+//             totalgastoConcepto();
+//             SuccesGen();
+
+
+//               }else{
+//                 ComparationGastos();
+//               }
         
           
            
-           },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-               ErroresGeneral();
-    }
-             }); 
-            }else{
-              error();
-            }
+//            },
+//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
+//                ErroresGeneral();
+//     }
+//              }); 
+//             }else{
+//               error();
+//             }
 }
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Cargando.... ',
-};
+
 
 // window.onbeforeunload = function(e) {
 //     HoldOn.open(options);
@@ -910,13 +1018,6 @@ $(document).on('click', '.showinfo', function (event) {
 });
 
 
-// function eliminis(e){
-//   // var modal=$('#nominamodal').hasClass('show');
-//   //     if(modal==false){
-//   //       $("#nominamodal").trigger("click");
-//   //  }
-//   alert(e);
-// }
 
 
 arreglo=[];

@@ -1,12 +1,13 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
 @section('content')
+<link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
             <div class="row">
                 <div class="col-8">
-                    <h4 class="card-title">SUBIR ARCHIVO</h4>
+                    <h4 class="card-title"><b>SUBIR ARCHIVO</b></h4>
                 </div>
      
                 <div class="col-4 text-right">
@@ -14,16 +15,19 @@
               </div>
             </div>
             <div class="card-body">
-                <form action="{{url('savephone')}}" method="POST">
+                {{-- <form action="{{url('savephone')}}" method="POST"> --}}
+                  <form action="{{url('sender')}}" method="POST" enctype="multipart/form-data">
+                    @method('POST')
                     @csrf
                 <div class="input-group mb-3">
                     <div class="custom-file">
                       <input type="file" class="custom-file-input" name="image" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                      <label class="custom-file-label" id="actual-btn">ELEGIR ARCHIVO</label>
+                      <label class="custom-file-label" id="actual-btn" style="color: black;">ELEGIR ARCHIVO</label>
                     </div>
+                    {{-- <input type="text" name="text" id="" placeholder="Enviar" class="form-control"> --}}
                   </div>
 
-                  <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                  <button type="submit" class="btn btn-info"><i class="fas fa-save"></i></button>
                 </form>
             </div>
             <div class="">
@@ -31,9 +35,22 @@
         </div>
     </div>
 </div>
+<div id="adcls" >
+  <div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
     const MAXIMO_TAMANIO_BYTES = 1000000; // 1MB = 1 millón de bytes
 $miInput = document.querySelector("#inputGroupFile01");
@@ -65,14 +82,7 @@ document.getElementById('inputGroupFile01').onchange = function () {
   document.getElementById('actual-btn').innerHTML = document.getElementById('inputGroupFile01').files[0].name;
 }
 
-var options = {
-     theme:"sk-cube-grid",
-     message:'Procesando Informacion.... ',
-};
 
-window.onbeforeunload = function(e) {
-    HoldOn.open(options);
-};
 
 function Errores() {
   Command: toastr["error"]("El Tamoño maximo es de un 1MB", "Error")

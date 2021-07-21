@@ -18,6 +18,7 @@ class Concepto_gasto extends Model
         'monto',
         'id_empresa',
         'estado',
+        'imagen',
     ];
 
     protected $cats = [
