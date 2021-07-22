@@ -22,6 +22,7 @@ use App\Models\categorias_gastos;
 use App\Models\SubCategorias;
 use App\Models\categorias_sub;
 use App\Models\sub_gastos;
+use App\Models\Permisos;
 
 class GastoController extends Controller
 {
@@ -34,7 +35,9 @@ class GastoController extends Controller
     {
         $gasto=Gasto::all();
         $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
-        return view('Gastos.index',compact('gasto','categorias'));
+        $role=Role_users::where('user_id','=',Auth::user()->id)->first();
+        $permisos=Permisos::where('role_id','=',$role->role_id)->first();
+        return view('Gastos.index',compact('gasto','categorias','permisos'));
     }
 
     /**

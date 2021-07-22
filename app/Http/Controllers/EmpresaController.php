@@ -523,6 +523,9 @@ class EmpresaController extends Controller
                    if($permisos[$i]==14){
                     $permi->grupo=1;
                    }
+                   if($permisos[$i]==15){
+                    $permi->categorias=1;
+                   }
                 $permi->save();
         } 
 

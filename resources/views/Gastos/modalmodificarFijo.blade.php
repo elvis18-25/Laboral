@@ -142,7 +142,7 @@ $('.updatestesFijo').on('click',function(){
     var monto=$("#montsFijo").val();
     var gasto=$("#input").val();
     var archivo=$("#files").val();
-    alert(archivo);
+   
     var url = "{{ url('updateconceptFijo')}}/"+id;
      var data = {name:name,monto:monto,gasto:gasto,archivo:archivo};
         $.ajax({

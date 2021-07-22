@@ -53,7 +53,7 @@
         <input type="text" name="" value="{{$count}}" id="idinput" hidden >
           
             <div id="btnplusEdit">
-              <button type="button" class="btn btn-info redondo btn-sm float-left" style="margin-left: 94%" onclick="createsub({{$categorias->id}});"><i class="fas fa-plus"></i></button>
+              <button type="button" class="btn btn-info redondo btn-sm float-left" style="margin-left: 94%" onclick="createsub({{$categorias->id}});"><i class="fas fa-plus" style="font-size: 17px; margin-left: -2px;"></i></button>
             </div>
             <div style="max-height: 277px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-1px; ">
               <table class="table" id="subcategoriasEdi">

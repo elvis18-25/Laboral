@@ -160,14 +160,14 @@
                         </li>
                         @endif
 
-                        @if ($permisos->categorias==1)
+                        {{-- @if ($permisos->categorias==1)
                         <li>
                             <a href="{{url('Categorias')}}">
                                 <i class="fas fa-coins"></i>
                                 <p>{{ __('Categorias') }}</p>
                             </a>
                         </li>
-                        @endif
+                        @endif --}}
                         
                     </ul>
                 </div>
