@@ -1,17 +1,21 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
 
+
+@section('content')
 <style>
 
   .error{
     border-color: red !important;
   }
 
-  /* .cropper-container{
-  width: 664px !important;
-  height: 489px !important;
-} */
+  table>thead>tr{
+        background-color: rgb(0 0 0 / 0%) !important;
+}
+
+table>thead>tr>th{
+  color: black !important;
+}
 </style>
-@section('content')
 <link rel="stylesheet" href="{{asset('css/empleado.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
@@ -50,7 +54,7 @@
                         </div>
                         <div class="col-sm-4{{ $errors->has('cedula') ? ' has-danger' : '' }}">
                             <label>{{ __('CÉDULA') }}</label>
-                            <input type="text" name="cedula" class="form-control{{ $errors->has('cedula') ? ' is-invalid' : '' }}" id="cedula" placeholder="{{ __('Cedula') }}" required>
+                            <input type="tel" name="cedula" class="form-control{{ $errors->has('cedula') ? ' is-invalid' : '' }}" id="cedula" placeholder="{{ __('Cedula') }}" required>
                             <label for="cedula" class="validation_error_message help-block"></label>
 
                         </div>
@@ -156,13 +160,13 @@
 
                         <div class="col-sm-3{{ $errors->has('salario') ? ' has-danger' : '' }}">
                             <label>{{ __('SALARIO BRUTO') }}</label>
-                            <input type="text"  onkeyup="calcular();"  class="form-control money" id="salario"  placeholder="{{ __('Salario') }}" required>
+                            <input type="tel"  onkeyup="calcular();"  class="form-control money" id="salario"  placeholder="{{ __('Salario') }}" required>
                             <input type="text" name="salario"   class="form-control money" id="recisalario"   hidden>
                        
                         </div>
                         <div class="col-sm-3{{ $errors->has('dias') ? ' has-danger' : '' }}">
                             <label>{{ __('SALARIO POR DIAS') }}</label>
-                            <input type="text" name="horas"  class="form-control  " id="salDias" placeholder="{{ __('$0.00') }}" required>
+                            <input type="tel" name="horas"  class="form-control  " id="salDias" placeholder="{{ __('$0.00') }}" required>
                        
                         </div>
                         <div class="col-sm-3{{ $errors->has('pagos') ? ' has-danger' : '' }}">
@@ -263,14 +267,15 @@
                       </ul>
                       <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="card-body" style="height: 250px;" >
+                            <div class="card-body" >
                                <div class="form-row">
                                 <div class="col-sm-4"><input type="text"    name="nop" class="form-control datosInput" id="NN" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
                                 <div class="col-sm-3"><input type="tel"  onFocus="GanoFoco();"  onBlur="PierdoFoco();"  name="telp" class="form-control datosInput" id="tt" placeholder="{{ __('Telefono') }}" ></div>
                                 <div class="col-sm-3"><input type="text" onFocus="GanoFoco2();" onBlur="PierdoFoco2();"   name="parp" class="form-control datosInput" id="parentesco" placeholder="{{ __('Parentesco') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
                                 <button type="button" onclick="capturar();" class="btn btn-info btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button>
                                </div>
-                               <div style=" max-height:189px; overflow:auto; position: relative; top: -10px; position: relative; top:-12px; ">
+                               <br>
+                               <div  class="scrolles" style=" max-height:189px; overflow:auto; position: relative; top: -10px; position: relative; top:-12px; width: 103%; ">
                             <table class="table tablesorter " id="transTable">
                                 <thead class=" text-primary">
                                     <tr>

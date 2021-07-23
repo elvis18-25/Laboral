@@ -1,6 +1,9 @@
 @extends('layouts.app', ['pageSlug' => 'dashboard'])
 
 @section('content')
+<style>
+
+</style>
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link href="{{asset('css/mdtimepicker.css')}}" rel="stylesheet">
 <link rel="stylesheet" href="{{asset('css/timepicker.min.css')}}">
@@ -28,7 +31,7 @@
         <div class="circulo" ><span style="float: right;"><i class="fas fa-users text-light icons"></i></i></span></div>
       </div>
       <div class="info">
-        <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+        <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
           <a href="{{url('Empleados')}}" class="btnsd" id="btnsd_empleado"><b>MAS INFORMACIÓN</b> </a>
           <i class="fas fa-arrow-circle-right incons"></i>
         </div>
@@ -58,7 +61,7 @@
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-friends text-light icons"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('user')}}" class="btnsd btnsd_user">MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
@@ -79,7 +82,7 @@
           <div class="circulo" ><span style="float: right;"><i class="fas fa-user-friends text-light icons"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('user')}}" class="btnsd btnsd_user" >MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
@@ -109,7 +112,7 @@
           <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('Puesto')}}" class="btnsd btnsd_puesto" >MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
@@ -129,7 +132,7 @@
           <div class="circulo" ><span style="float: right;"><i class="fas fa-warehouse text-light icons"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('Puesto')}}" class="btnsd btnsd_puesto">MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons" ></i>
           </div>
@@ -161,7 +164,7 @@
             margin-right: 20px !important;"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('Pagos')}}" class="btnsd btnsd_pagos">MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons"></i>
           </div>
@@ -182,7 +185,7 @@
             margin-right: 20px !important;"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('Pagos')}}" class="btnsd btnsd_pagos">MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons"></i>
           </div>
@@ -214,7 +217,7 @@
             margin-right: 11px !important;"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('Roles')}}" class="btnsd btnsd_roles">MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons"></i>
           </div>
@@ -235,7 +238,7 @@
             margin-right: 11px !important;"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="{{url('Roles')}}" class="btnsd btnsd_roles">MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons"></i>
           </div>
@@ -261,7 +264,7 @@
             margin-right: 11px !important;"></i></i></span></div>
         </div>
         <div class="info">
-          <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+          <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
             <a href="#" class="btnsd btnsd_pendiente">MAS INFORMACIÓN </a>
             <i class="fas fa-arrow-circle-right incons"></i>
           </div>
@@ -281,7 +284,7 @@
       <div class="circulo" ><span style="float: right;"><i class="fas fa-user-clock text-light icons" style="font-size: 25px !important;
             margin-right: 11px !important;"></i></i></span></div>
         </div>
-        <div class="form-inline" style="top: -4px; position: relative; margin-left: -10px;">
+        <div class="form-inline info-inline" style="top: -4px; position: relative; margin-left: -10px;">
           <a href="#" class="btnsd btnsd_pendiente">MAS INFORMACIÓN </a>
           <i class="fas fa-arrow-circle-right incons"></i>
         </div>
@@ -372,7 +375,7 @@
                             <span></span> <i class="fa fa-caret-down"></i>
                         </div> --}}
 
-                        <div class="input-group" style="width: 12%; float: right; color: #000;">
+                        <div class="input-group calendarinput" style="width: 12%; float: right; color: #000;">
                           <div class="input-group-prepend">
                             <div class="input-group-text" style="padding: 11px !important;">
                               <i class="fas fa-calendar" style="color: black;"></i>

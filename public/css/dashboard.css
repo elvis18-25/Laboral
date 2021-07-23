@@ -43,12 +43,136 @@
     font-size: 12px !important; 
     color: black !important
 }
+.info-inline{
+    top: -2px;
+    position: relative;
+    margin-left: 0px;
+}
+
+.cardepic .info .btnsd {
+    text-decoration: none;
+    padding: 0.5rem 3rem;
+    background: #666e7517;
+    width: 100% !important;
+    color: black;
+    font-size: 13px;
+    width: 247px;
+    font-weight: bold;
+    cursor: pointer;
+    top: 12px;
+    transition: 0.4s ease-in-out;
+}
+
+.info .incons{
+    top: 11px;
+    position: absolute;
+    margin-left: 473px !important;
+    color: black;
+}
 
 }
+
 @media (max-width: 1179px) {
 .tile{
     font-size: 10px !important; 
     color: black !important
+}
+
+.info-inline{
+    top: -2px;
+    position: relative;
+    margin-left: 0px;
+}
+
+.cardepic .info .btnsd {
+    text-decoration: none;
+    padding: 0.5rem 3rem;
+    background: #666e7517;
+    width: 100% !important;
+    color: black;
+    font-size: 13px;
+    width: 247px;
+    font-weight: bold;
+    cursor: pointer;
+    top: 12px;
+    transition: 0.4s ease-in-out;
+}
+
+.incons{
+    top: 11px;
+    position: absolute;
+    margin-left: 235px;
+    color: black;
+}
+
+}
+
+@media (max-width: 800px) {
+  .o-page-loader--spinner {
+    width: 29% !important;
+    height: 20% !important;
+    /* background-color: rgb(255,255,255); */
+    /* background-image: url('..black/img/logotipo.png'); */
+    margin: -10px auto !important;
+    /* animation: rotate-plane 1.2s infinite ease-in-out;
+    -webkit-animation: rotate-plane 1.2s infinite ease-in-out; */
+  }
+}
+@media screen and (max-width: 991px){
+  .o-page-loader--spinner {
+    width: 35% !important;
+  }
+}
+
+@media (max-width: 360px) {
+.info-inline{
+    top: -2px;
+    position: relative;
+    margin-left: 0px;
+}
+
+#chart{
+  height: 151% !important;
+  width: 0px !important;
+  top: -25px !important;
+  position: relative !important;
+  margin-left: 0 !important;
+  min-height: 113% !important;
+  min-width: 108% !important;
+}
+
+.calendarinput{
+  width: 32% !important;
+}
+
+.o-page-loader--spinner {
+  width: 50% !important;
+  height: 20% !important;
+  /* background-color: rgb(255,255,255); */
+  /* background-image: url('..black/img/logotipo.png'); */
+  margin: 20px auto !important;
+  /* animation: rotate-plane 1.2s infinite ease-in-out;
+  -webkit-animation: rotate-plane 1.2s infinite ease-in-out; */
+}
+.cardepic .info .btnsd {
+    text-decoration: none;
+    padding: 0.5rem 3rem;
+    background: #666e7517;
+    width: 100% !important;
+    color: black;
+    font-size: 13px;
+    width: 247px;
+    font-weight: bold;
+    cursor: pointer;
+    top: 12px;
+    transition: 0.4s ease-in-out;
+}
+
+.info .incons{
+    top: 11px;
+    position: absolute;
+    margin-left: 235px !important;
+    color: black;
 }
 
 }

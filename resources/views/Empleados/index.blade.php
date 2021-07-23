@@ -18,6 +18,18 @@ table>thead>tr>th{
 .azules>thead>tr>th{
   color: white !important;
 }
+
+@media (max-width: 360px) {
+  .o-page-loader--spinner {
+    width: 50% !important;
+    height: 20% !important;
+    /* background-color: rgb(255,255,255); */
+    /* background-image: url('..black/img/logotipo.png'); */
+    margin: 20px auto !important;
+    /* animation: rotate-plane 1.2s infinite ease-in-out;
+    -webkit-animation: rotate-plane 1.2s infinite ease-in-out; */
+  }
+}
 </style>
 <div class="col-md-12">
     <div class="card ">
@@ -98,8 +110,8 @@ table>thead>tr>th{
                 <div class="col-8">
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h4>
                 </div>
-                <div class="col-4 text-right">
-                    <a href="{{route('Empleados.create')}}" title="Crear Nuevo Empleado" class="btn btn-sm btn-info redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"  style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
+                <div class="col-4 text-right col4">
+                    <a href="{{route('Empleados.create')}}" title="Crear Nuevo Empleado" class="btn btn-sm btn-info redondo creaplus"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus"  style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
                     <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo"><i class="fas fa-file-excel"  style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button> --}}
                     <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo"><i class="fas fa-print"  style="margin-left: -3px;  position: relative; font-size: 17px;"></i></button></a>
@@ -272,6 +284,7 @@ table>thead>tr>th{
   </script>    
 @endif
 <script src="{{asset('js/pageLoader.js')}}"></script>
+{{--  --}}
 <script>
 
 document.addEventListener ("keydown", function (e) {
@@ -320,8 +333,10 @@ headers: {
   table=$('#empleado-table').DataTable({
         // "paging":   false,
         // "ordering": false,
-        "info":     false,
+        "info": false,
         processing:true,
+        responsive: true,
+
     serverSide:true,
     select: {
            toggleable: false,
@@ -410,18 +425,6 @@ headers: {
 });
 $('div.dataTables_filter input', table.table().container()).focus(); 
 
-// $('#empleado-table').DataTable().on("draw", function(){
-//     var input=$("#input").val();
-//     var inputs=$("#inputsub").val();
-//     alert(input);
-//         if(input==0 || inputs==0){
-//         var rowIdx = table.cell(':eq(0)').index().row;
-        
-//         table.row(rowIdx).select();
-
-//         table.cell( ':eq(0)' ).focus();
-//     }
-//     });
 
     $('div.dataTables_filter input', table.table().container()).on('click',function(){
         var rowIdx = table.cell(':eq(0)').index().row;
@@ -483,16 +486,15 @@ $('#empleado-table').on('key-focus.dt', function(e, datatable, cell){
     //   table.cell( ':eq(0)' ).focus();
 
 
-$("#empleado-table tbody").on('click','tr',function(){
+// $("#empleado-table tbody").on('click','tr',function(){
  
-   url=$(this).attr('action');
+//    url=$(this).attr('action');
 
-   $("#sd").attr('href',url);
+//    $("#sd").attr('href',url);
 
-   $("#urles").trigger("click");
+//    $("#urles").trigger("click");
 
-   
-});
+// });
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {
