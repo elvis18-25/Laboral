@@ -13,6 +13,7 @@ class categorias_sub extends Model
     protected $fillable = [
         'id_sub',
         'id_categorias',
+        'padres',
         'id_empresa',
         'estado',
     ];

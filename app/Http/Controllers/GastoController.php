@@ -36,7 +36,8 @@ class GastoController extends Controller
         $gasto=Gasto::all();
         $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $role=Role_users::where('user_id','=',Auth::user()->id)->first();
-        $permisos=Permisos::where('role_id','=',$role->role_id)->first();
+        // dd($role);
+        $permisos=Permisos::where('role_id','=',$role->role_id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
         return view('Gastos.index',compact('gasto','categorias','permisos'));
     }
 

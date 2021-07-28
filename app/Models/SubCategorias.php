@@ -15,5 +15,6 @@ class SubCategorias extends Model
         'nombre',
         'id_empresa',
         'estado',
+        'id_subed',
     ];
 }

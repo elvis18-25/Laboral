@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\SubCategorias;
 use App\Models\categorias_sub;
 use App\Models\Empresa;
+use App\Models\sub_subcategory;
 use Barryvdh\DomPDF\Facade as PDF;
 class CategoriasController extends Controller
 {
@@ -61,10 +62,13 @@ class CategoriasController extends Controller
 
 
         $arreglo=request('arreglo');
+        $arreglocode=request('arreglocode');
 
         if($arreglo!=""){
             for($i = 0; $i < count($arreglo); $i++){
                 if(!empty(collect($arreglo)[$i])){
+
+                $input['id_subed'] =$arreglocode[$i];
                 $input['nombre'] = $arreglo[$i];
                 $input['id_empresa'] = Auth::user()->id_empresa;
                 $input['estado'] =0;
@@ -76,12 +80,13 @@ class CategoriasController extends Controller
         if($arreglo!=""){
         for($i = 0; $i < count($arreglo); $i++){
             if(!empty(collect($arreglo)[$i])){
-            $sub=SubCategorias::where('nombre','=',$arreglo[$i])->where('id_empresa','=',Auth::user()->id_empresa)->first();    
-            $input['id_sub'] = $sub->id;
-            $input['id_categorias'] = $categoria->id;
-            $input['id_empresa'] = Auth::user()->id_empresa;
-            $input['estado'] =0;
-            $referencia=categorias_sub::create($input);
+            $sub=SubCategorias::where('id_subed','=',$arreglocode[$i])->where('id_empresa','=',Auth::user()->id_empresa)->first();
+            $inputs['id_sub'] = $sub->id;
+            $inputs['id_categorias'] = $categoria->id.".".$arreglocode[$i];
+            $inputs['padres'] = $categoria->id;
+            $inputs['id_empresa'] = Auth::user()->id_empresa;
+            $inputs['estado'] =0;
+            $referencia=categorias_sub::create($inputs);
         }  
         }
     }  
@@ -104,54 +109,67 @@ class CategoriasController extends Controller
     {
         $name=request('name');
         $categori=request('select');
+        $code=request('code');
+        $category=request('category');
+        $count=0;
+
+        if(sizeof(categorias::select('id_category')->where('id_empresa','=',Auth::user()->id_empresa)->get())==0){
+            $count=1;
+        }else{
+            $cate=categorias::latest('id_category')->where('id_empresa','=',Auth::user()->id_empresa)->first();
+            $count=$cate->id_category+1;
+        }
+
+        if($category==0){
         $sub=SubCategorias::findOrFail($id);
         $sub->nombre=$name;
+        $sub->id_subed=$code;
         $sub->update();
 
         $sub_g=categorias_sub::select('id')->where('id_sub','=',$id)->first();
-        $sub=categorias_sub::findOrFail($sub_g->id);
-        $sub->id_categorias=$categori;
-        $sub->update();
-     
+        $subs=categorias_sub::findOrFail($sub_g->id);
 
-        return $categori;
-
-        // $sub_g=categorias_sub::select('id_categorias')->where('id_sub','=',$id)->first();
-        // $subcategory=categorias_sub::select('id_sub')->where('id_categorias','=',$sub_g->id_categorias)->get();
-        // $arreglo=[];
-        // $p=0;
-        
-        // foreach($subcategory as $sub_gs){
-        //     $arreglo[$p]=$sub_gs->id_sub;
-        //     $p++;
-        // }
-        // $sub=SubCategorias::whereIn('id',$arreglo)
-        // ->where('id_empresa','=',Auth::user()->id_empresa)
-        // ->where('estado','=',0)
-        // ->where('estado','=',0)
-        // ->get();
-
-        // return view('Categorias.Plantillas.tableall',compact('sub'));
-        
-    }
-    public function showsub($id)
-    {
-        $sub=SubCategorias::findOrFail($id);
-        $category_sub=categorias_sub::select('id_categorias')->where('id_sub','=',$id)->first();
-        $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
-        return view('Categorias.Modales.subupdate',compact('sub','categorias','category_sub'));
-    }
-    public function showcategorias($id)
-    {
-        $categorias=categorias::findOrFail($id);
-        $count=0;
-
-        // $sub=SubCategorias::all();
-        if(sizeof(categorias_sub::select('id_categorias')->where('id_categorias','=',$id)->get())!=0){
-            $count=count(categorias_sub::select('id_categorias')->where('id_categorias','=',$id)->get());
-
+        if(sizeof(categorias_sub::select('padres')->where('id_categorias','=',$categori)->where('id_empresa','=',Auth::user()->id_empresa)->get())==0){
+            $conts=$categori;
+        }else{
+            $cont=categorias_sub::select('padres')->where('id_categorias','=',$categori)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+            $conts=$cont->padres;
         }
-        $sub_g=categorias_sub::select('id_sub')->where('id_categorias','=',$id)->get();
+       
+        $subs->id_categorias=$categori.".".$code;
+        $subs->padres=$conts;
+        $subs->update();
+    }
+        else{
+        $categoria=new categorias();
+        $categoria->nombre=$name;
+        $categoria->user=Auth::user()->name;
+        $categoria->estado=0;
+        $categoria->id_empresa=Auth::user()->id_empresa;
+        $categoria->id_category=$count; 
+        $categoria->save();
+
+        $sub_g=categorias_sub::select('id_categorias')->where('id_sub','=',$id)->where('id_empresa','=',Auth::user()->id_empresa)->first();
+        $sub_Categorias=SubCategorias::where('id_empresa','=',Auth::user()->id_empresa)
+        ->where('estado','=',0)
+        ->get();
+        $sub_idsubed=categorias_sub::where('id_empresa','=',Auth::user()->id_empresa)->get();
+
+        foreach($sub_Categorias as $sub_Categoria){
+            foreach($sub_idsubed as $sub_idsubeds){
+                if($sub_idsubeds->id_sub==$sub_Categoria->id){
+                    $floot= floatval($sub_idsubeds->id_categorias);
+                    if($floot==$sub_g->id_categorias){
+                        $sub_idsubeds->id_categorias=$categoria->id_category.".". $sub_Categoria->id_subed;
+                        $sub_idsubeds->padres=$categoria->id_category;
+                        $sub_idsubeds->update();
+                    }
+                }
+            }
+            }
+        }
+
+        $sub_g=categorias_sub::select('id_sub')->where('padres','=',$id)->get();
         $arreglo=[];
         $p=0;
         
@@ -159,10 +177,48 @@ class CategoriasController extends Controller
             $arreglo[$p]=$sub_gs->id_sub;
             $p++;
         }
-        $sub=SubCategorias::whereIn('id',$arreglo)
-        ->where('id_empresa','=',Auth::user()->id_empresa)
-        ->where('estado','=',0)
-        ->where('estado','=',0)
+        $sub=SubCategorias::leftjoin('categorias_sub','categorias_sub.id_sub','=','sub_categorias.id')
+        ->whereIn('sub_categorias.id',$arreglo)
+        ->where('sub_categorias.id_empresa','=',Auth::user()->id_empresa)
+        ->where('sub_categorias.estado','=',0)
+        ->orderBy('categorias_sub.id_categorias')
+        ->select('sub_categorias.id as ides','sub_categorias.nombre','categorias_sub.id_categorias')
+        ->get();
+     
+
+        return view('Categorias.Plantillas.tablesub',compact('sub'));
+        
+    }
+    public function showsub($id)
+    {
+        $sub=SubCategorias::findOrFail($id);
+        $categoria=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
+        return view('Categorias.Modales.subupdate',compact('sub','categoria'));
+    }
+    public function showcategorias($id)
+    {
+        $categorias=categorias::findOrFail($id);
+        $count=0;
+
+        // $sub=SubCategorias::all();
+        if(sizeof(categorias_sub::select('padres')->where('padres','=',$categorias->id_category)->get())!=0){
+            $count=count(categorias_sub::select('padres')->where('padres','=',$categorias->id_category)->get());
+
+        }
+        $sub_g=categorias_sub::select('id_sub')->where('padres','=',$categorias->id_category)->get();
+        $arreglo=[];
+        $p=0;
+        
+        foreach($sub_g as $sub_gs){
+            $arreglo[$p]=$sub_gs->id_sub;
+            $p++;
+        }
+        $sub=SubCategorias::leftjoin('categorias_sub','categorias_sub.id_sub','=','sub_categorias.id')
+        ->whereIn('sub_categorias.id',$arreglo)
+        ->where('sub_categorias.id_empresa','=',Auth::user()->id_empresa)
+        ->where('sub_categorias.estado','=',0)
+        ->orderBy('categorias_sub.id_categorias')
+        ->select('sub_categorias.id as ides','sub_categorias.nombre','categorias_sub.id_categorias')
         ->get();
         return view('Categorias.edit',compact('categorias','sub','count'));
     }
@@ -225,20 +281,45 @@ class CategoriasController extends Controller
     public function savesub(Request $request,$id)
     {
         $name=request('name');
+        $pertenece=request('pertenece');
+        $code=request('code');
+
         $sub = new SubCategorias();
         $sub->nombre=$name;
         $sub->estado=0;
         $sub->id_empresa=Auth::user()->id_empresa;
+        $sub->id_subed=$code;
         $sub->save();
+        $categorias=categorias::findOrFail($id);
 
         $sub_g= new categorias_sub();
         $sub_g->id_sub=$sub->id;
-        $sub_g->id_categorias=$id;
+        $sub_g->id_categorias=$pertenece.".".$code;
+        $sub_g->padres=$categorias->id_category;
         $sub_g->estado=0;
         $sub_g->id_empresa=Auth::user()->id_empresa;
         $sub_g->save();
 
-        return view('Categorias.Plantillas.tablesub',compact('sub'));
+        
+
+        $subs=categorias_sub::select('id_sub')->where('padres','=', $categorias->id_category)->get();
+        $arreglo=[];
+        $p=0;
+        
+        foreach($subs as $subss){
+            $arreglo[$p]=$subss->id_sub;
+            $p++;
+        }
+        $sub=SubCategorias::leftjoin('categorias_sub','categorias_sub.id_sub','=','sub_categorias.id')
+        ->whereIn('sub_categorias.id',$arreglo)
+        ->where('sub_categorias.id_empresa','=',Auth::user()->id_empresa)
+        ->where('sub_categorias.estado','=',0)
+        ->orderBy('categorias_sub.id_categorias')
+        ->get();
+        
+
+        return view('Categorias.Plantillas.tablesub',compact('sub','pertenece'));
+        // return $code;
 
 
 
@@ -246,7 +327,27 @@ class CategoriasController extends Controller
     }
     public function showsubcategorias($id)
     {
-        return view('Categorias.Modales.subedit',compact('id'));
+
+        $categorias=categorias::findOrFail($id);
+        $count=0;
+
+        $sub_g=categorias_sub::select('id_sub')->where('padres','=', $categorias->id_category)->get();
+        $arreglo=[];
+        $p=0;
+        
+        foreach($sub_g as $sub_gs){
+            $arreglo[$p]=$sub_gs->id_sub;
+            $p++;
+        }
+        $sub=SubCategorias::leftjoin('categorias_sub','categorias_sub.id_sub','=','sub_categorias.id')
+        ->whereIn('sub_categorias.id',$arreglo)
+        ->where('sub_categorias.id_empresa','=',Auth::user()->id_empresa)
+        ->where('sub_categorias.estado','=',0)
+        ->orderBy('categorias_sub.id_categorias')
+        ->get();
+
+        
+        return view('Categorias.Modales.subedit',compact('id','categorias','sub'));
     }
     public function deletecategorias($id)
     {
@@ -283,7 +384,7 @@ class CategoriasController extends Controller
                 
             })
             ->editColumn('count',function($row){
-                $sub=categorias_sub::where('id_categorias','=',$row->id)->get();
+                $sub=categorias_sub::where('padres','=',$row->id_category)->get();
                 $p=0;
                 foreach($sub as $subs){
                     $p++;

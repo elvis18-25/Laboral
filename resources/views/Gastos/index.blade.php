@@ -71,9 +71,14 @@
                 <div class="col-4 text-right">
                     <a href="{{route('Gasto.create')}}" title="Agregar Gastos" class="btn btn-sm btn-info float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-plus" style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;"></i></a>
                     <a href="{{url('GastosFijo')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-warning float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-coins"style="margin-left: -2px; top: 6px; position: relative; font-size: 17px;" ></i></a>
+                  
+                    @php
+                    // dd($permisos);
+                    // dd(Auth::user());
+                @endphp
                     @if ($permisos->categorias==1)
+
                     <a href="{{url('Categorias')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-success float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-file-alt"style="margin-left: -3px; top: 6px; position: relative; font-size: 20px;" ></i></a>
-                      
                     @endif
                     {{-- <p>
                         <button class="btn btn-success redondo btn-sm" type="button" title="Filtros" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">

@@ -496,6 +496,18 @@ $('#empleado-table').on('key-focus.dt', function(e, datatable, cell){
 
 // });
 
+function myFunction(x) {
+  if (x.matches) { // If media query matches
+    alert("S");
+  } else {
+   alert("a");
+  }
+}
+
+var x = window.matchMedia("(max-width: 765px)")
+myFunction(x) // Call listener function at run time
+x.addListener(myFunction) // Attach listener function on state changes
+
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {
    if(tecla.charCode==43)

@@ -9,6 +9,12 @@
     #subcategoriasEdi tbody tr{
       cursor: pointer;
     }
+    .dataTables_scrollHeadInner{
+      width: 100% !important;
+    }
+    .subcategorts{
+      width: 100% !important;
+    }
   </style>
     <div class="modal-dialog  modal-lg">
       <div class="modal-content" style="top: -78px;">
@@ -51,31 +57,31 @@
         </div>
 
         <input type="text" name="" value="{{$count}}" id="idinput" hidden >
-          
+        
             <div id="btnplusEdit">
+              <div class="col-sm-6">
+                <input type="text" name="" class="form-control" onkeyup="saerches();" placeholder="Buscar..." id="btnsubsearch" style="margin-left: 175px; position: absolute; top: 12px;">
+              </div>  
               <button type="button" class="btn btn-info redondo btn-sm float-left" style="margin-left: 94%" onclick="createsub({{$categorias->id}});"><i class="fas fa-plus" style="font-size: 17px; margin-left: -2px;"></i></button>
             </div>
-            <div style="max-height: 277px; overflow-x: hidden; width: 100%; position: relative; overflow-y: auto; font-size:small; top:-1px; ">
-              <table class="table" id="subcategoriasEdi">
+              <table class="table subcategorts" id="subcategoriasEdi">
                 <thead>
                   <tr>
-                    <th style="text-align: left;">NOMBRE</th>
-                    <th style="text-align: left;">ACCION</th>
+                    <th style="text-align: left;">ID</th>
+                    <th style="text-align: center; width: 100% !important;">NOMBRE</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach ($sub as $subs)
+                  
                       <tr >
-                        <td onclick="updatesub({{$subs->id}})">{{$subs->nombre}}</td>
-                        <td>
-                          <button class="btn btn-danger btn-sm redondo" onclick="subcategory({{$subs->id}})" value="{{$subs->id}}"><i class="fas fa-minus"></i></button>
-                        </td>
+                        <td onclick="updatesub({{$subs->ides}})">{{$subs->id_categorias}}</td>
+                        <td onclick="updatesub({{$subs->ides}})" style="text-align: center; width: 132% !important; ">{{$subs->nombre}}</td>
+                                    
                       </tr>
                   @endforeach
                 </tbody>
               </table>
-            </div>
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-info redondo btn-sm"  onclick="updatecategorias({{$categorias->id}});"><i class="fas fa-save"></i></button>
@@ -93,6 +99,42 @@ $("#btnplusEdit").hide();
 $("#subcategoriasEdi").hide();
 
 }
+
+tablesub=$('#subcategoriasEdi').DataTable({
+    "info": false,
+    "paging":   false,
+    "ordering": false,
+    scrollY: 200,
+
+
+    "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ],
+
+        language: {
+      searchPlaceholder: "Buscar",
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+            "first": "Primero",
+            "last": "Ultimo",
+            "next": "Siguiente",
+            "previous": "Anterior"
+        }
+
+      },    
+   
+});
 
 $("#btnsub").on('click',function(){
 var valor =$("#idinput").val();
@@ -162,37 +204,7 @@ error: function(XMLHttpRequest, textStatus, errorThrown) {
 })
 
 }
-function subcategory(e){
-  Swal.fire({
-  title: 'Estas seguro?',
-  text: "¡No podrás revertir esto!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, Eliminarlo!'
-}).then((result) => {
-  if (result.isConfirmed) {
-    var url="{{url('deletesubcategory')}}/"+e
-  var data ={name:name};
-  $.ajax({
-  method:"POST",
-  data: data,
-  url:url,
-  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-  success:function(result){
-  $("#EditCategorias").trigger('click');
-  table.ajax.reload(); 
-  sucessf();
-},
-error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                  ErroresGen();
-    }
-});
-  }
-})
 
-}
 
 
 function createsub(e){
@@ -224,6 +236,11 @@ function updatesub(e){
                   ErroresGen();
     }
   });
+}
+
+function saerches(){
+  var name=$("#btnsubsearch").val();
+  tablesub.search(name).draw();
 }
 
 </script>

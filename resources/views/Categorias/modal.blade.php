@@ -33,6 +33,7 @@
             <table class="table" id="subcategorias">
               <thead>
                 <tr>
+                  <th style="text-align: left;">ID</th>
                   <th style="text-align: left;">NOMBRE</th>
                   <th style="text-align: left;">ACCION</th>
                 </tr>

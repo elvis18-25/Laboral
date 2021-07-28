@@ -100,10 +100,13 @@
 <div class="modal fade" id="SubmodalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <div class="modal fade" id="SubupdateEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
   {{-- @include('Categorias.Modales.subedit') --}}
+
 <input type="text" name="" value="1" id="inputCheckBox" hidden>
 @endsection
 
 @section('js')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.1/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.1/select2.min.js"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script>
 
@@ -242,14 +245,16 @@ function savecategoria(){
   var name=$("#newcategoria").val();
   var url="{{route('Categorias.store')}}"
   var arreglo=[];
+  var arreglocode=[];
   i=0;
   $("#subcategorias tbody tr").each(function(){
     arreglo[i]=$(this).attr('value');
+    arreglocode[i]=$(this).attr('action');
     i++;
   });
-  console.log(arreglo);
+  console.log(arreglocode);
   
-  var data ={name:name,arreglo:arreglo};
+  var data ={name:name,arreglo:arreglo,arreglocode:arreglocode};
   $.ajax({
   method:"POST",
   data: data,
@@ -323,21 +328,37 @@ $('#Submodal').keyup(function(e){
     }
     if(e.keycode!=13)
     {
-       
-        $("#subcat").focus();
+       var id=$("#subcode").val();
+
+       if(id==""){
+         $("#subcode").focus();
+
+       }
         
     }
 });
+
 function capturar(){
-    function  Persona(nombre){
+  
+    function  Persona(codigo,nombre){
+      this.codigo=codigo;
      this.nombre=nombre;
     }
     var nombreCapturar=document.getElementById("subcat").value;
+    var codigoCapturar=document.getElementById("subcode").value;
 
-    nuevoSujeto= new Persona(nombreCapturar);
- 
- agregar();
+    if(nombreCapturar!="" || codigoCapturar!="" ){
+      nuevoSujeto= new Persona(codigoCapturar,nombreCapturar);
+    agregar();
+    }else{
+      ErroresGen();
+    }
+
+
+
 }
+
+$("#subcode").mask("#0");
 var baseDatos=[];
 
 function agregar(){
@@ -352,7 +373,7 @@ $('subcategorias').append(button);
 
 
 
-document.getElementById("subcategorias").innerHTML += '<tr class="reducir" value="'+nuevoSujeto.nombre+'"><td style="text-align: left;"><input  type="text" name="nombre[]" value="'+nuevoSujeto.nombre+'"/ hidden>'+nuevoSujeto.nombre+'<td style="text-align: left;">'+button+'</td></tr>';
+document.getElementById("subcategorias").innerHTML += '<tr class="reducir" value="'+nuevoSujeto.nombre+'" action="'+nuevoSujeto.codigo+'"><td style="text-align: left;"><input  type="text" name="codigo[]" value="'+nuevoSujeto.codigo+'"/ hidden>'+nuevoSujeto.codigo+'</td><td style="text-align: center;"><input  type="text" name="nombre[]" value="'+nuevoSujeto.nombre+'"/ hidden>'+nuevoSujeto.nombre+'<td style="text-align: left;">'+button+'</td></tr>';
 
 
 }

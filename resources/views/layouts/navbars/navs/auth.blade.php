@@ -71,6 +71,7 @@
                         <p class="d-lg-none"> {{ __('Notificaciónes') }} </p>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
+                      
                     </ul>
                 </li>
                 <li class="dropdown nav-item">

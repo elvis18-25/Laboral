@@ -381,14 +381,19 @@ $users=Auth::user()->id;
 <script src="{{asset('js/jquery-qrcode-0.18.0.min.js')}}"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="{{asset('js/dropzone.js')}}"></script>
+<link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
+
+{{-- <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css"> --}}
 <script>
+$("#my-awesome-dropzone").dropzone({ url: "/file/post" });
 
 $("#txtmontos").on('keypress', function(e) { return e.keyCode != 13; }); 
 
 $('#exampleModalLabel').keyup(function(e){
     if(e.keyCode==13)
     {
-      alert("S");
       $('#btnsavefijos').trigger("click");
       
     }

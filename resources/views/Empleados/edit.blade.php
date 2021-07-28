@@ -59,7 +59,7 @@ table>thead>tr>th{
                         </div>
                         <div class="col-sm-4{{ $errors->has('cedula') ? ' has-danger' : '' }}">
                             <label>{{ __('CÉDULA') }}</label>
-                            <input type="text" name="cedula" class="form-control{{ $errors->has('cedula') ? ' is-invalid' : '' }}" value="{{$empleados->cedula}}" id="cedula" placeholder="{{ __('Cedula') }}" required>
+                            <input type="tel" name="cedula" class="form-control{{ $errors->has('cedula') ? ' is-invalid' : '' }}" value="{{$empleados->cedula}}" id="cedula" placeholder="{{ __('Cedula') }}" required>
                        
                         </div>
                         <div class="col-sm-4 mb-2{{ $errors->has('edad') ? ' has-danger' : '' }}">

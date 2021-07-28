@@ -39,6 +39,11 @@
                   </div>
                 </div>
 
+                {{-- <form action="/upload-target" class="dropzone"></form> --}}
+                <form action="/file-upload"
+                class="dropzone"
+                id="my-awesome-dropzone"></form>
+
                 </div>
                 <div class="tab-pane fade" id="phone" role="tabpanel" aria-labelledby="profile-tab">
                   <div id="qrcode" style="margin-left: 36%"></div>

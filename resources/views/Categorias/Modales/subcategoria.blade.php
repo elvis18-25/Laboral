@@ -11,10 +11,15 @@
         </div>
 
         <div class="modal-body">
+
           <div class="form-row">
-            <div class="col-sm-11 text-left">
+            <div class="col-sm-2">
+              <input type="text" name="" placeholder="ID.." class="form-control datosInput" id="subcode">
+            </div>
+            <div class="col-sm-8 text-left">
                 <input type="text" name="newcategoria" id="subcat" autofocus  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" class="form-control datosInput" placeholder="{{ __('SUBCATEGORIAS') }}">
             </div>
+
         </div>
 
         </div>

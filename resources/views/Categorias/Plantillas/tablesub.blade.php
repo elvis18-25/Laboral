@@ -1,6 +1,7 @@
-<tr>
-    <td style="padding: 5px 7px;" onclick="updatesub({{$sub->id}})">{{$sub->nombre}}</td>
-    <td style="padding: 5px 7px;">
-      <button class="btn btn-danger btn-sm redondo" onclick="subcategory({{$sub->id}})" value="{{$sub->id}}"><i class="fas fa-minus"></i></button>
-    </td>
+@foreach ($sub as $subs)
+<tr >
+  <td onclick="updatesub({{$subs->id}})">{{$subs->id_categorias}}</td>
+  <td onclick="updatesub({{$subs->id}})" style="text-align: center; width: 132% !important; ">{{$subs->nombre}}</td>
+              
 </tr>
+@endforeach
