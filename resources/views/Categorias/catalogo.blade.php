@@ -71,7 +71,34 @@
                  <td style="text-align: left; background-color: white" ><b>{{$categoria->nombre}}</b></td>
              </tr>
 
-             @foreach ($sub_g as $sub_gs)
+             @php
+             $sub_g=App\Models\categorias_sub::select('id_sub')->where('padres','=',$categoria->id_category)->get();
+             $arreglo=[];
+             $p=0;
+             
+             foreach($sub_g as $sub_gs){
+                 $arreglo[$p]=$sub_gs->id_sub;
+                 $p++;
+             }
+         $subss=App\Models\SubCategorias::leftjoin('categorias_sub','categorias_sub.id_sub','=','sub_categorias.id')
+         ->whereIn('sub_categorias.id',$arreglo)
+         ->where('sub_categorias.id_empresa','=',Auth::user()->id_empresa)
+         ->where('sub_categorias.estado','=',0)
+         ->orderBy('categorias_sub.id_categorias')
+         ->select('sub_categorias.id as ides','sub_categorias.nombre','categorias_sub.id_categorias')
+         ->get();
+           @endphp
+
+           @foreach ($subss as $subs)
+           <tr>  
+            <td style="background-color: white; text-align: left;"><span style="margin-left: 5%; position: relative;">{{$subs->id_categorias}}.{{$p}}</span></td>
+            <td style="text-align: left; background-color: white; "><span style="margin-left: 5%; position: relative;">{{$subs->nombre}}</span></td>
+           </tr>
+           @endforeach
+           
+           @endforeach
+
+             {{-- @foreach ($sub_g as $sub_gs)
              @foreach ($medio as $medios)
 
              @if ($medios->id_categorias==$categoria->id)
@@ -88,7 +115,7 @@
 
              @endforeach
              @endforeach
-             @endforeach
+             @endforeach --}}
      
              </tbody>
            </table>

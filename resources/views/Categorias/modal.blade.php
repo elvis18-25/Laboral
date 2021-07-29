@@ -34,7 +34,7 @@
               <thead>
                 <tr>
                   <th style="text-align: left;">ID</th>
-                  <th style="text-align: left;">NOMBRE</th>
+                  <th style="text-align: center;">NOMBRE</th>
                   <th style="text-align: left;">ACCION</th>
                 </tr>
               </thead>

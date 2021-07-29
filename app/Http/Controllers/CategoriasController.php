@@ -80,10 +80,10 @@ class CategoriasController extends Controller
         if($arreglo!=""){
         for($i = 0; $i < count($arreglo); $i++){
             if(!empty(collect($arreglo)[$i])){
-            $sub=SubCategorias::where('id_subed','=',$arreglocode[$i])->where('id_empresa','=',Auth::user()->id_empresa)->first();
+            $sub=SubCategorias::where('nombre','=',$arreglo[$i])->where('id_empresa','=',Auth::user()->id_empresa)->first();
             $inputs['id_sub'] = $sub->id;
-            $inputs['id_categorias'] = $categoria->id.".".$arreglocode[$i];
-            $inputs['padres'] = $categoria->id;
+            $inputs['id_categorias'] = $categoria->id_category.".".$arreglocode[$i];
+            $inputs['padres'] = $categoria->id_category;
             $inputs['id_empresa'] = Auth::user()->id_empresa;
             $inputs['estado'] =0;
             $referencia=categorias_sub::create($inputs);
@@ -268,12 +268,11 @@ class CategoriasController extends Controller
     }
     public function CatalogoPdf()
     {
-        $categorias=categorias::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
-        $medio=categorias_sub::where('id_empresa','=',Auth::user()->id_empresa)->get();
-        $sub_g=SubCategorias::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+        // $categorias=categorias::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+        $categorias=categorias::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $empresa=Empresa::findOrFail(Auth::user()->id_empresa);
 
-        $pdf =PDF::loadView('Categorias.catalogo',compact('categorias','sub_g','empresa','medio'));
+        $pdf =PDF::loadView('Categorias.catalogo',compact('categorias','empresa'));
         $pdf->setPaper("A4", "portrait");
         return $pdf->stream('gastos.pdf');
         // return view('Categorias.catalogo',compact('categorias','sub_g','empresa'));
@@ -384,7 +383,7 @@ class CategoriasController extends Controller
                 
             })
             ->editColumn('count',function($row){
-                $sub=categorias_sub::where('padres','=',$row->id_category)->get();
+                $sub=categorias_sub::where('padres','=',$row->id_category)->where('id_empresa','=',Auth::user()->id_empresa)->get();
                 $p=0;
                 foreach($sub as $subs){
                     $p++;

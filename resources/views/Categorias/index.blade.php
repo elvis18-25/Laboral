@@ -347,7 +347,7 @@ function capturar(){
     var nombreCapturar=document.getElementById("subcat").value;
     var codigoCapturar=document.getElementById("subcode").value;
 
-    if(nombreCapturar!="" || codigoCapturar!="" ){
+    if(nombreCapturar!="" && codigoCapturar!="" ){
       nuevoSujeto= new Persona(codigoCapturar,nombreCapturar);
     agregar();
     }else{
@@ -358,7 +358,7 @@ function capturar(){
 
 }
 
-$("#subcode").mask("#0");
+$("#subcode").mask("0#");
 var baseDatos=[];
 
 function agregar(){
