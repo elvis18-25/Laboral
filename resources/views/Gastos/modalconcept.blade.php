@@ -37,12 +37,11 @@
                       <input type="text" onFocus="GanoFoco();" style="text-align: right;" onkeyup="calcular();"  onBlur="PierdoFoco();"  value="" id="montoOPS"   class="form-control datosInput money" placeholder="Monto">
                       <input type="text" name="" id="monto" value="" hidden>
                   </div>
+
                 </div>
 
                 {{-- <form action="/upload-target" class="dropzone"></form> --}}
-                <form action="/file-upload"
-                class="dropzone"
-                id="my-awesome-dropzone"></form>
+
 
                 </div>
                 <div class="tab-pane fade" id="phone" role="tabpanel" aria-labelledby="profile-tab">
@@ -51,15 +50,6 @@
                 </div>
                 <div class="tab-pane fade" id="upload" role="tabpanel" aria-labelledby="contact-tab">
 
-                  <form id="createforme" enctype="multipart/form-data">
-                  <div class="input-group mb-3">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" name="image" style="cursor: pointer;" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                      <label class="custom-file-label" style="color: black; cursor: pointer;" id="actual-btn">ELEGIR ARCHIVO</label>
-                    </div>
-                  </div>
-                  <button type="submit" id="btnadjuntos" hidden></button>
-                </form>
 
                 </div>
               </div>
@@ -69,7 +59,7 @@
     
         <div class="modal-footer" style="display: flow-root !important;">
           {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-          <button type="button" class="btn btn-success redondo float-left" id="btnphone" title="Agregar Fotos por el cell"><i class="fas fa-mobile-alt" style="font-size: 18px;"></i></button>
+          <button type="button" class="btn btn-success redondo float-left" id="btnphone" title="Agregar Fotos por el cell"><i class="fas fa-mobile-alt" style="font-size: 20px; margin-left: -1px;"></i></button>
           {{-- <button type="button" class="btn btn-warning redondo float-left" id="btnpc" title="Agregar Fotos por la Pc" style="margin-left: 5px;"><i class="fas fa-image" style="font-size: 17px;  margin-left: -3px;"></i></button> --}}
           <button class="btn btn-info redondo float-left" id="btnsave"  title="Agregar Gasto" type="button" style=" position: relative;margin-left: 5px; top:-1px" onclick=" capturar();"><i class="fas fa-save"></i></button>
           <button type="button" class="btn btn-success redondo" id="back" hidden><i class="fas fa-arrow-left"></i></button>
@@ -80,7 +70,6 @@
 
 
   <script>
-
 
 
 // $("#btnconceptrs").on('click',function(){

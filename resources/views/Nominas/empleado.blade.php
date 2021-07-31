@@ -12,7 +12,9 @@
           <div style=" max-height: 435px;font-size: small; top: -12px; overflow-y: auto;
           overflow-x: hidden; ">
                         {{-- <div class="class="display " style="width: 100""></div> --}}
-
+                        <div class="col-sm-7" style="left: 22%;">
+                          <input type="text" name="" id="btnsearchaEmpleado" onkeyup="saerchEmpleado();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
+                        </div>
             <table class="table tablesorter table-striped table-hover " style="width: 100" id="Empleadotable" style=" width: 844px !important;">
                 <thead class=" text-primary" style="color: black !important">
                     <tr> 

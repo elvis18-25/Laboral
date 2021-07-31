@@ -1,10 +1,18 @@
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
+@section('content')
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
 <link rel="stylesheet" href="{{asset('css/empresa.css')}}">
-@section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.css" rel="stylesheet">
 
-
+<div class="o-page-loader">
+  <div class="o-page-loader--content">
+    <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner logotipo">
+      {{-- <div class=""></div> --}}
+      <div class="o-page-loader--message" >
+          <span >Cargando...</span>
+      </div>
+  </div>
+</div>  
 
 <div class="row">
 
@@ -661,32 +669,25 @@
     </div>
 </div>
 </div>
+
+ 
 <div class="modal fade" id="HorasEmple" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <div class="modal fade" id="updatehours" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 
   @include('Empresa.cropper')
   @include('Empresa.crooper2')
-
-<div class="o-page-loader">
-    <div class="o-page-loader--content">
-      <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner logotipo">
-        {{-- <div class=""></div> --}}
-        <div class="o-page-loader--message" >
-            <span >Cargando...</span>
-        </div>
-    </div>
-  </div>
-
     @include('Contrato.modal')
+
+
 @endsection
 
 @section('js')
+<script src="{{asset('js/pageLoader.js')}}"></script>
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/js/bootstrap-colorpicker.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 

@@ -13,6 +13,9 @@
       <div class="modal-body">
         <div class="card-body" style="height: 335px;">
         <div style="max-height: 436px;font-size: small; top: -12px; overflow-y: auto; overflow-x: hidden; ">
+                        <div class="col-sm-7" style="left: 22%;">
+                <input type="text" name="" id="btnsearcha" onkeyup="saercha();" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"  placeholder="Buscar..." class="form-control">
+              </div>
           <table class="table tablesorter table-striped table-hover" style="position: relative; width: 870px!important; margin-left: -3px!important;" id="perfiles">
               <thead class=" text-primary">
                   <tr> 

@@ -64,7 +64,10 @@ class GastoController extends Controller
     {
         // dd($request->all());
 
-        $strings=implode(",",$request->get('elimiarrelgo'));
+        if($request->get('elimiarrelgo')!=""){
+         $strings=implode(",",$request->get('elimiarrelgo'));   
+        }
+        
         $concp=implode(",", $request->get('concepter'));
         $monter=implode(",", $request->get('monter'));
         $archivo=implode(",", $request->get('filer'));
@@ -126,7 +129,7 @@ class GastoController extends Controller
                 $input['id_gasto']=$gasto->id;
                 $input['concepto'] = $concepArry[$i];
                 $input['monto'] = $monterpArry[$i];
-                $input['imagen'] = $filesArray[$i];
+                // $input['imagen'] = $filesArray[$i];
                 $input['id_empresa'] = Auth::user()->id_empresa;
                 $input['estado'] =0;
                 $referencia=concepto_gasto::create($input);
@@ -259,7 +262,7 @@ class GastoController extends Controller
         }
      }
         
-        $concepto=concepto_gasto::whereNotIn('concepto',$array)->get();
+        $concepto=concepto_gasto::whereNotIn('concepto',$array)->where('id_gasto','=',$id)->get();
 
         $p=0;
         foreach($concepto as $conceptos){
@@ -269,7 +272,7 @@ class GastoController extends Controller
         }
     }
         
-        $gastofijos=concepto_gasto::whereNotIn('concepto',$array2)->get();
+        $gastofijos=concepto_gasto::whereNotIn('concepto',$array2)->where('id_gasto','=',$id)->get();
 
         // dd($concepto);
         // $fijo=gasto_fijo::whereNotIn('id',$array)->get();

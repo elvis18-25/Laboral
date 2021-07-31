@@ -6,6 +6,14 @@
   .error{
     border-color: red !important;
   }
+  
+table>thead>tr>th{
+  color: black !important;
+}
+table>thead>tr{
+background-color: rgb(255 255 255 / 40%) !important;
+
+}
 </style>
 <link rel="stylesheet" href="{{asset('css/nominas.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
@@ -183,6 +191,7 @@
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script> 
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+<script src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script>
 
 <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-clockpicker.min.css')}}">
 <script type="text/javascript" src="{{asset('js/bootstrap-clockpicker.min.js')}}"></script>
@@ -517,6 +526,8 @@ className: 'bolded'
    
 });
 
+
+
 $('div.dataTables_filter input', tabla.table().container()).focus(); 
 
 
@@ -638,6 +649,16 @@ headers: {
    
 });
 
+function saercha(){
+ var  name=$("#btnsearcha").val();
+  tab.search(name).draw();
+}
+function saerchEmpleado(){
+ var  name=$("#btnsearchaEmpleado").val();
+ tebl.search(name).draw();
+}
+
+
 $('#perfiles').on('key-focus.dt', function(e, datatable, cell){
         // Select highlighted row
       
@@ -678,13 +699,13 @@ $('#perfiles').on('key-focus.dt', function(e, datatable, cell){
 
 
 
-    $('#perfiles').DataTable().on("draw", function(){
-    var rowIdx = tab.cell(':eq(0)').index().row;
+//     $('#perfiles').DataTable().on("draw", function(){
+//     var rowIdx = tab.cell(':eq(0)').index().row;
       
-    tab.row(rowIdx).select();
+//     tab.row(rowIdx).select();
 
-    tab.cell( ':eq(0)' ).focus();
-});
+//     tab.cell( ':eq(0)' ).focus();
+// });
 
 
 
@@ -943,6 +964,13 @@ var reses= numberFormat2.format(Priim);
             $("#totalnomina").append(reses);
 
 
+// function totalnomi(e){
+//   var tot=tabla.column(6).data().sum();
+//   res= numberFormat2.format(tot); 
+//   $("#totalnomina").empty();
+//   $("#totalnomina").append(res);
+
+// }
 function totalnomi(e){
   var start=$("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
         var end=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
@@ -1189,7 +1217,6 @@ tebl=$('#Empleadotable').DataTable({
 
   $('#Empleadotable').DataTable().on("draw", function(){
     $("input:[type=search]").addClass("serachEmpleado");
-
 });
 
 $("#btnplusemple").on('click',function(){
@@ -1370,12 +1397,7 @@ function saveotros(){
              $("#detalle").trigger("click");
             tabla.ajax.reload();
             $("#nameC").val(" ");
-          $("#montoC").val(" ");
-                      totalnomi(idperfil);
-
-
-        
-            
+            totalnomi(idperfil);
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 

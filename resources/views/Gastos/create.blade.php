@@ -1,8 +1,4 @@
-
-
 @extends('layouts.app', ['page' => __('User Profile'), 'pageSlug' => 'profile'])
-
-
 @section('content')
 <style>
 
@@ -48,6 +44,21 @@ table tr td{
 </style>
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<div id="adcls" >
+  <div class="o-page-loader">
+    <div class="o-page-loader--content">
+      <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner">
+        {{-- <div class=""></div> --}}
+        <div class="o-page-loader--message">
+            <span>Cargando...</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<form action="{{route('Gasto.store')}}" method="POST" id="formulario">
+@csrf
+
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -61,11 +72,12 @@ table tr td{
               </div>
             </div>
             <div class="card-body">
-              <form action="{{route('Gasto.store')}}" method="POST" id="formulario">
+<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;Guardar</button>
+
                 {{-- <button type="button" title="Guardar Gastos" id="save" class="btn btn-fill btn-primary btn-sm float-right " style="top: -59px;"><i class="fas fa-save"></i></button> --}}
                 {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacionCreate" class="btn btn-info  btn-sm float-right"  style="top: -59px;"><i class="fas fa-edit"></i></i></button> --}}
 
-                @csrf   
+                 
             <div class="form-row">
                 <div class="col-sm-3">
                     <label><b>{{ __('DESCRIPCION') }}</b></label>
@@ -289,7 +301,7 @@ table tr td{
       </nav>
     </div>
 </div>
-<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+
 
 </div>
 
@@ -310,23 +322,14 @@ table tr td{
       <textarea class="form-control" style="color: black; font-size: 13px !important; font-weight: bold !important;" name="textarea" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"id="exampleFormControlTextarea1" rows="5"></textarea>
     </div>
 </div>
-</div>
-
 <input type="text" name="arreglo" value="" id="arreglo" hidden>
 
+
+</div>
 </form>
 
-<div id="adcls" >
-  <div class="o-page-loader">
-    <div class="o-page-loader--content">
-      <img src="{{asset('black')}}/img/logotipo.png" alt="" class="o-page-loader--spinner">
-        {{-- <div class=""></div> --}}
-        <div class="o-page-loader--message">
-            <span>Cargando...</span>
-        </div>
-    </div>
-  </div>
-</div>
+
+
 
 
 <div class="modal fade" id="nominamodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
@@ -1106,7 +1109,7 @@ var reses= numberFormat2.format(cont);
 
 
 
-     $("#elimiarrelgo").attr('value',arreglo);
+     $("#r").attr('value',arreglo);
     i++
 });
 

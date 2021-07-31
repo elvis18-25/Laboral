@@ -17,6 +17,8 @@
 </style>
 <link rel="stylesheet" href="{{asset('css/gasto.css')}}">
 <link rel="stylesheet" href="{{asset('css/pageLoader.css')}}">
+<form action="{{route('Gasto.update',$gasto->id)}}" method="POST">
+@csrf
 <div class="col-md-12">
     <div class="card ">
         <div class="card-header">
@@ -31,7 +33,8 @@
             </div>
             <div class="card-body">
 
-                <form action="{{route('Gasto.update',$gasto->id)}}" method="POST">
+
+<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
                   @if ($permisos_acciones->imprimir_gastos)
                   <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-excel" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button>
                   {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacion" class="btn btn-info  btn-sm float-right whiter redondo"  style="top: -104px;"><i class="fas fa-edit"></i></i></button> --}}
@@ -340,7 +343,7 @@
     </div>
   </div>
 </div>
-<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
+
 </form>
 
 <form action="{{route('Gasto.destroy',$gasto->id)}}" id="deletegastos" method="POST">
@@ -381,13 +384,15 @@ $users=Auth::user()->id;
 <script src="{{asset('js/jquery-qrcode-0.18.0.min.js')}}"></script>
 <script src="{{asset('js/pageLoader.js')}}"></script>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-<script src="{{asset('js/dropzone.js')}}"></script>
-<link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
+{{-- <link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
+<script src="{{asset('js/dropzone.js')}}"></script> --}}
 
+<link rel="stylesheet" href="https://unpkg.com/filepond/dist/filepond.min.css">
+<link rel="stylesheet" href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css">
 {{-- <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
 <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css"> --}}
 <script>
-$("#my-awesome-dropzone").dropzone({ url: "/file/post" });
+
 
 $("#txtmontos").on('keypress', function(e) { return e.keyCode != 13; }); 
 
@@ -915,47 +920,41 @@ function capturar(){
   var Archivos=document.getElementById("files").value;
   var e=$("#input").val();
   var nomina=$("#nominavalue").val();
-  
 
-  var form=$("#createforme").submit();
-  event.preventDefault();
-  console.log(form);
-
-
-// if(concepto!=''&& monto!=''){
-//   var url = "{{ url('saveconconcepto')}}/"+e;
-//      var data = {concepto:concepto,monto:monto,Archivos:Archivos};
-//         $.ajax({
-//          method: "POST",
-//            data: data,
-//             url:url ,
-//             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-//             success:function(result){
-//               if(result!=0){
-//             $('.datosInput').val('');
-//             $("#concepto").focus();
+if(concepto!=''&& monto!=''){
+  var url = "{{ url('saveconconcepto')}}/"+e;
+     var data = {concepto:concepto,monto:monto,Archivos:Archivos};
+        $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+              if(result!=0){
+            $('.datosInput').val('');
+            $("#concepto").focus();
             
-//               $("#gastoperido-table tbody").empty();
-//             $("#gastoperido-table tbody").append(result);
-//             $("#conceptomodal").trigger("click");
-//             totalgastoConcepto();
-//             SuccesGen();
+              $("#gastoperido-table tbody").empty();
+            $("#gastoperido-table tbody").append(result);
+            $("#conceptomodal").trigger("click");
+            totalgastoConcepto();
+            SuccesGen();
 
 
-//               }else{
-//                 ComparationGastos();
-//               }
+              }else{
+                ComparationGastos();
+              }
         
           
            
-//            },
-//                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-//                ErroresGeneral();
-//     }
-//              }); 
-//             }else{
-//               error();
-//             }
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+               ErroresGeneral();
+    }
+             }); 
+            }else{
+              error();
+            }
 }
 
 

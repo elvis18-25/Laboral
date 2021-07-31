@@ -541,7 +541,7 @@ class ListadoContrller extends Controller
             // return $otrosD;
 
              return  $salario+$totalincremento-$totaldeducion;
-            //  return $sumHoraExtra;
+            //  return $totaldeducion;
     }
 
     public function modalhoursListado($id)

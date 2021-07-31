@@ -17,8 +17,8 @@
     
                 <div class="col-sm-6">
                     <label style="color: black"><b>{{ __('TIPO ') }}</b></label>
-                    <select id="inputState" class="form-control selec"  name="tipo" >
-                        <option selected disabled>ElEGIR...</option>
+                    <select id="inputStateTipos" class="form-control selec"  name="tipo" >
+
 
                         @if ($otros->tipo_asigna=="DEDUCIÓN")
                         <option value="1" selected>DEDUCIÓN</option>
@@ -96,11 +96,12 @@ if (figura=="MONTO") {
 }
         function updateotros(e){
     var name=$("#name").val();
-   var tipo=$("#inputState").val();
+   var tipo=$("#inputStateTipos").val();
    var forma=$("#forma").val();
    var monto=$("#monto").val();
    var idempl=$("#empleotros").val();
    var perfil=$("#perfile").val();
+  //  alert(tipo);
 
    if(name==""|| tipo==""||forma==""||monto==""){
     Errore();
@@ -113,6 +114,7 @@ if (figura=="MONTO") {
             url:url ,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success:function(result){
+              // alert(result);
              $("#ot tbody").empty();
              $("#ot tbody").append(result); 
              $("#otrosedites").trigger("click");

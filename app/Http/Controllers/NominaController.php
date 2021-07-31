@@ -154,6 +154,38 @@ class NominaController extends Controller
         }
         
         $empleado=Empleado::whereIn('id_empleado',$arrayID)->get();
+
+        $asigna=Asignaciones::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+        foreach($asigna as $asignas){
+            foreach($empleado as $empleados){
+            $input['id_empleado']=$empleados->id_empleado;
+            $input['id_nomina']=$nominas->id;
+            $input['id_asignaciones']= $asignas->id;
+            $input['salarioBruto']= $empleados->salario;
+            $input['nombre']=$asignas->Nombre;
+            $input['tipo_asigna']=$asignas->tipo_asigna;
+            $input['tipo']=$asignas->tipo;
+            $input['id_empresa']=Auth::user()->id_empresa;
+            $input['estado']=0;
+
+            if(sizeof(Asignaciones_empleado::where('empleado_id_empleado','=',$empleados->id_empleado)->
+            where('asignaciones_id','=',$asignas->id)->
+            where('id_empresa','=',Auth::user()->id_empresa)->
+            where('estado','=',0)->
+            get())!=0){
+
+            $input['montos']=$asignas->Monto;
+            }else{
+                $input['montos']=0;
+            }
+
+            nomina_asignaciones::create($input);   
+             }
+          }
+          
+
+
+
         $horas=Horas::all();
 
         foreach($horas as $hora){
@@ -173,26 +205,28 @@ class NominaController extends Controller
             }
           }
         }
-        $asigna=Asignaciones::where('id_empresa','=',Auth::user()->id_empresa)->get();
         $estado=estado_asignaciones::all();
+
+
         
-        foreach($asigna as $asignas){
-            foreach($empleado as $empleados){
-                if($asignas->estado==0){
-            $input['id_empleado']=$empleados->id_empleado;
-            $input['id_nomina']=$nominas->id;
-            $input['id_asignaciones']= $asignas->id;
-            $input['salarioBruto']= $empleados->salario;
-            $input['nombre']=$asignas->Nombre;
-            $input['tipo_asigna']=$asignas->tipo_asigna;
-            $input['tipo']=$asignas->tipo;
-            $input['montos']=$asignas->Monto;
-            $input['id_empresa']=Auth::user()->id_empresa;
-            $input['estado']=0;
-            nomina_asignaciones::create($input);   
-          }
-          }
-        }
+
+        // $asigna=Asignaciones::where('id_empresa','=',Auth::user()->id_empresa)->get();
+        // foreach($asigna as $asignas){
+        //     foreach($empleado as $empleados){
+        //     $input['id_empleado']=$empleados->id_empleado;
+        //     $input['id_nomina']=$nominas->id;
+        //     $input['id_asignaciones']= $asignas->id;
+        //     $input['salarioBruto']= $empleados->salario;
+        //     $input['nombre']=$asignas->Nombre;
+        //     $input['tipo_asigna']=$asignas->tipo_asigna;
+        //     $input['tipo']=$asignas->tipo;
+        //     $input['montos']=$asignas->Monto;
+        //     $input['id_empresa']=Auth::user()->id_empresa;
+        //     $input['estado']=0;
+        //     nomina_asignaciones::create($input);   
+        //   }
+        //   }
+        // }
 
         $nominasAsigna=nomina_asignaciones::where('id_nomina','=',$nominas->id)->get();
         $otro=otros::all();
@@ -241,7 +275,7 @@ class NominaController extends Controller
 
         $perfiles=Perfiles_empleado::select('id')->where('id','=',$id)->first();
         $perf=Perfiles::all();
-        $empleados=Empleado::all();
+        $empleados=Empleado::where('estado','=',0)->where('id_empresa','=',Auth::user()->id_empresa)->get();
         $otro=Otros::all();
         $tss=Asignaciones::all();
         $estado=estado_asignaciones::all();
@@ -555,7 +589,7 @@ class NominaController extends Controller
              $totalincremento=$otrosI+$contbono-$desbonoCont+$sumHoraExtra;
              
              return  $salario+$totalincremento-$totaldeducion+$desdeucionCont+$salarioSum;
-            //  return  $salarioSum;
+            //  return  $salario+$salarioSum;
             //  return $p;
     }
 
@@ -1243,7 +1277,7 @@ class NominaController extends Controller
                 $tss=Asignaciones::all();
                 $perf=Perfiles::all();
                 $estado=estado_asignaciones::all();
-                $asignaciones=Asignaciones_empleado::all();
+                $asignaciones=Asignaciones_empleado::where('id_empresa','=',Auth::user()->id_empresa)->get();
 
                 foreach($perf as $perfe){
                     if($tipo==$perfe->id_perfiles){
@@ -1271,7 +1305,7 @@ class NominaController extends Controller
                         foreach( $tss as $tsse){
                             foreach($asignaciones as $asigna){
                                 if($asigna->empleado_id_empleado==$row->id_empleado){
-                                if($asigna->asignaciones_id==$tsse->id){
+                                if($asigna->asignaciones_id==$tsse->id && $asigna->id_empresa==Auth::user()->id_empresa ){
                             if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                             if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                 foreach($estado as $estados)
@@ -1300,14 +1334,14 @@ class NominaController extends Controller
                         }
                         
                     }
-
+                    
                     foreach($perf as $perfe){
                         if($tipo==$perfe->id_perfiles){
                             if($row->id_empleado==$perfe->id_empleado){
                             foreach( $tss as $tsse){
                                 foreach($asignaciones as $asigna){
                                 if($asigna->empleado_id_empleado==$row->id_empleado){
-                                if($asigna->asignaciones_id==$tsse->id){
+                                if($asigna->asignaciones_id==$tsse->id && $asigna->id_empresa==Auth::user()->id_empresa){
                                 if($tsse->id_empresa==Auth::user()->id_empresa && $tsse->estado==0){
                                 if($tsse->tipo_asigna=="DEDUCCIÓN"){
                                     if($tsse->tipo=="PORCENTAJE"){
