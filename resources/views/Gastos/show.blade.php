@@ -34,7 +34,6 @@
             <div class="card-body">
 
 
-<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
                   @if ($permisos_acciones->imprimir_gastos)
                   <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo float-right"  style="top: -92px;"><i class="fas fa-file-excel" style="margin-left: -2px; ; position: relative; font-size: 17px;"></i></button>
                   {{-- <button  type="button" title="Agregar Observaciones" data-toggle="modal" data-target="#obervacion" class="btn btn-info  btn-sm float-right whiter redondo"  style="top: -104px;"><i class="fas fa-edit"></i></i></button> --}}
@@ -343,7 +342,7 @@
     </div>
   </div>
 </div>
-
+<button type="submit" class="btn btn-fill btn-info mx-auto float-right" id="seave"><i class="fas fa-save"></i>&nbsp;{{ __('Guardar') }}</button>
 </form>
 
 <form action="{{route('Gasto.destroy',$gasto->id)}}" id="deletegastos" method="POST">

@@ -262,7 +262,7 @@ class GastoController extends Controller
         }
      }
         
-        $concepto=concepto_gasto::whereNotIn('concepto',$array)->where('id_gasto','=',$id)->get();
+        $concepto=concepto_gasto::whereNotIn('concepto',$array)->get();
 
         $p=0;
         foreach($concepto as $conceptos){
@@ -272,7 +272,7 @@ class GastoController extends Controller
         }
     }
         
-        $gastofijos=concepto_gasto::whereNotIn('concepto',$array2)->where('id_gasto','=',$id)->get();
+        $gastofijos=concepto_gasto::whereNotIn('concepto',$array2)->get();
 
         // dd($concepto);
         // $fijo=gasto_fijo::whereNotIn('id',$array)->get();
