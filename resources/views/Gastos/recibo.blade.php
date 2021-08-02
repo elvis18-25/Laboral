@@ -46,6 +46,14 @@
         </div>
       </div> 
     </header>
+    <footer>
+    
+      <div class="row" style="top: -2%; position: absolute;">
+        <div class="col-md-3" style="width:40%; border-top: 1px solid #000; top: -26px; position: relative; "><p style="text-align:center;">ELABORADO POR: <b>&nbsp;{{$gasto->user}}</b></p></div>
+        <div class="col-md-3" style="width:40%; border-top: 1px solid #000; top: -75px; margin-left: 60%; position: relative; "><p style="text-align:center;">RECIBIDO POR:</p></div>
+        {{-- <div class="col-md-3" style="width:40%;border-top: 1px solid #000; margin-top: -50px; float: right;"><p style="text-align:center;">RECIBIDO POR</p></div> --}}
+      </div> 
+  </footer>
     <main>
       <div id="details" class="clearfix">
         <div id="client">
@@ -63,7 +71,7 @@
       <table  border="0" cellspacing="1" cellpadding="1" style="margin-top: -6%;"   id="princpial" >
      <thead style="thd" style="">
       <tr>
-        <th  style="text-align: left; width: 113px;">ID</th>
+        <th  style="text-align: left; width: -2%;">ID</th>
         <th></th>
         <th style="text-align: center;"><b> CONCEPTO</b></th>
         <th style="text-align: right; height: 10px;"><b>MONTO</b></th>
@@ -82,9 +90,9 @@
             @php
                  $cont=$cont+$conceptos->monto;
             @endphp
-            <td style="background-color: white; text-align: left;">#000{{$conceptos->id}}</td>
+            <td style="background-color: white; text-align: left; ">#000{{$conceptos->id}}</td>
             <td style="background-color: white"></td>
-            <td style="text-align: center; background-color: white" >{{$conceptos->concepto}}</td>
+            <td style="text-align: left; background-color: white" >{{$conceptos->concepto}}</td>
             <th style="text-align: right; background-color: white" class="last">{{number_format($conceptos->monto,2)}}</th>
         </tr>
         @endif
@@ -107,7 +115,7 @@
   <table border="0" cellspacing="1" cellpadding="1"  >
     <thead style="thd" style="">
       <tr>
-        <th  style="text-align: left; width: 113px;">ID</th>
+        <th  style="text-align: left; width: -2%;">ID</th>
         <th></th>
         <th style="text-align: center; "><b> CONCEPTO</b></th>
         <th style="text-align: right; height: 10px;"><b>MONTO</b></th>
@@ -122,7 +130,7 @@
       <tr>
         <td style="background-color: white; text-align: left;">#000{{$nomina->id}}</td>
         <td id="#space" style="background-color: white"></td>
-        <td id="#space" style=" text-align: center; background-color: white">{{$nomina->descripcion}}</td>
+        <td id="#space" style=" text-align: left; background-color: white">{{$nomina->descripcion}}</td>
         <td id="#space" style="text-align: right;  background-color: white">{{number_format($nomina->monto,2)}}</td>
       </tr>
       @php
@@ -161,49 +169,41 @@
     </tbody>
   </table>
 
+
 <table id="obser" style="margin-top: -88%; position: absolute;">
   <div class="obersrvaciones" style="border: 1px solid;  width: 50%; height: 10%;" >
     <span><b>OBSERVACIONES:</b>&nbsp;{{$gasto->observaciones}}</span>
   </div>
 </table>
-
-<br>
-<br>
-<div class="row" style="top: 82%; position: absolute;">
-<div class="col-md-3" style="width:40%; border-top: 1px solid #000; margin-top: 70px; "><p style="text-align:center;">ELABORADO POR: <b>&nbsp;{{$gasto->user}}</b></p></div>
-<div class="col-md-3" style="width:40%;border-top: 1px solid #000; margin-top: -50px; float: right;"><p style="text-align:center;">RECIBIDO POR</p></div>
-</div>
-
-
     </main>
-    <div class="Userfooter">
-      <span>ELABORADO POR:Laboral.com.do</span>
+
+    {{-- <div class="row" style="top: 82%; position: absolute;">
+      <div class="col-md-3" style="width:40%; border-top: 1px solid #000; margin-top: 70px; "><p style="text-align:center;">ELABORADO POR: <b>&nbsp;{{$gasto->user}}</b></p></div>
+      <div class="col-md-3" style="width:40%;border-top: 1px solid #000; margin-top: -50px; float: right;"><p style="text-align:center;">RECIBIDO POR</p></div>
     </div>
+
+    <div class="page-break"></div>
+
+
+
+
+
+  {{-- <footer>
+
+  </footer> --}}
+
+  <script type="text/php">
+      if ( isset($pdf) ) {
+          $pdf->page_script('
+              $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+              $pdf->text(470, 14, "Página $PAGE_NUM de $PAGE_COUNT", $font, 10);
+          ');
+      }
+
+
+</script>
+
   </body>
+
 </html>
 
-{{-- @section('js')
-<script>
-  function totalnominaShow(){
-  var id=$("#listadonomina").val();
-  if(id!=0){
-    var url = "{{url('listmonto')}}/"+id; 
-    var data = '';
-    $.ajax({
-     method: "POST",
-       data: data,
-        url:url ,
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        success:function(result){
-          $("#princpial tbody").prepend(result);
-
-       },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-}
-         });  
-  }
-
-}
-</script>
-@endsection --}}

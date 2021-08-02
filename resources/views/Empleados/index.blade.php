@@ -479,34 +479,18 @@ $('#empleado-table').on('key-focus.dt', function(e, datatable, cell){
     });
 
 
-    //   var rowIdx = table.cell(':eq(0)').index().row;
-      
-    //   table.row(rowIdx).select();
 
-    //   table.cell( ':eq(0)' ).focus();
+// function myFunction(x) {
+//   if (x.matches) { // If media query matches
+//     alert("S");
+//   } else {
+//    alert("a");
+//   }
+// }
 
-
-// $("#empleado-table tbody").on('click','tr',function(){
- 
-//    url=$(this).attr('action');
-
-//    $("#sd").attr('href',url);
-
-//    $("#urles").trigger("click");
-
-// });
-
-function myFunction(x) {
-  if (x.matches) { // If media query matches
-    alert("S");
-  } else {
-   alert("a");
-  }
-}
-
-var x = window.matchMedia("(max-width: 765px)")
-myFunction(x) // Call listener function at run time
-x.addListener(myFunction) // Attach listener function on state changes
+// var x = window.matchMedia("(max-width: 765px)")
+// myFunction(x) // Call listener function at run time
+// x.addListener(myFunction) // Attach listener function on state changes
 
 $('div.dataTables_filter input', table.table().container()).keypress(function(tecla)
 {
