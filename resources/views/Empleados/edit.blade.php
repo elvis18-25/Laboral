@@ -18,7 +18,13 @@
       table>thead>tr{
         background-color: rgb(0 0 0 / 0%) !important;
 }
-
+.azules>thead>tr{
+    background-color: #4054b2 !important;
+  
+}
+.azules>thead>tr>th{
+  color: white !important;
+}
 table>thead>tr>th{
   color: black !important;
 }
@@ -102,7 +108,7 @@ table>thead>tr>th{
                           </div>
                         <div class="col-sm-3{{ $errors->has('telefono') ? ' has-danger' : '' }}">
                             <label>{{ __('TÉLEFONO') }}</label>
-                            <input type="tel" name="telefono" class="form-control{{ $errors->has('telefono') ? ' is-invalid' : '' }}" value="{{$empleados->telefono}}" placeholder="{{ __('Télefono') }}" required>
+                            <input type="tel" name="telefono" class="form-control telefono {{ $errors->has('telefono') ? ' is-invalid' : '' }}" value="{{$empleados->telefono}}" placeholder="{{ __('Télefono') }}" required>
                         
                         </div>
 
@@ -307,9 +313,9 @@ table>thead>tr>th{
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="card-body" style="height: 250px;" >
                                <div class="form-row">
-                                <div class="col-sm-4"><input type="text" name="nop" class="form-control datosInput" id="NN" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
-                                <div class="col-sm-3"><input type="tel" name="telp" class="form-control datosInput" id="tt" placeholder="{{ __('Telefono') }}" ></div>
-                                <div class="col-sm-3"><input type="text" name="parp" class="form-control datosInput" id="parentesco" placeholder="{{ __('Parentesco') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
+                                <div class="col-sm-4"><input type="text"    name="nop" class="form-control datosInput" id="NN" placeholder="{{ __('Nombre') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
+                                <div class="col-sm-3"><input type="tel"  onFocus="GanoFoco();"  onBlur="PierdoFoco();"  name="telp" class="form-control datosInput telefono" id="tt" placeholder="{{ __('Telefono') }}" ></div>
+                                <div class="col-sm-3"><input type="text" onFocus="GanoFoco2();" onBlur="PierdoFoco2();"   name="parp" class="form-control datosInput" id="parentesco" placeholder="{{ __('Parentesco') }}"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" ></div>
                                 <button type="button" onclick="capturar();" class="btn btn-info btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button>
                                </div>
                                <div style=" max-height:189px; overflow:auto; position: relative; top: -10px; position: relative; top:-12px; ">
@@ -331,7 +337,7 @@ table>thead>tr>th{
                                     <td>{{$referen->telefono}}</td>
                                     <td>{{$referen->parentesco}}</td>
                                     <td>
-                                     <button type="button" class="btn btn-danger btn-sm"  onclick="elimini({{$referen->id}},{{$empleados->id_empleado}})" ><i class="fas fa-minus"></i></button>
+                                     <button type="button" class="btn btn-danger redondo btn-sm"  onclick="elimini({{$referen->id}},{{$empleados->id_empleado}})" ><i class="fas fa-minus"></i></button>
                                     </td>
                                     </tr>
                                     @endif
@@ -342,7 +348,7 @@ table>thead>tr>th{
                             </div>
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <div class="card-body" style="height: 250px;" >
+                            <div class="card-body" >
                                 <div style=" max-height:189px; overflow:auto; position: relative; top: -10px; position: relative; top:-12px; ">
                                 <table class="table tablesorter " id="Asigna">
                                     <thead class=" text-primary">
@@ -384,7 +390,7 @@ table>thead>tr>th{
                             $user=Auth::user()->id_empresa;
                         @endphp
                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                            <div class="card-body" style="height: 250px;" >
+                            <div class="card-body" >
                                 <div style=" max-height:189px; overflow:auto; position: relative; top: -10px; position: relative; top:-12px; ">
                                 <table class="table tablesorter " id="Adjunto">
                                     <thead class=" text-primary">
@@ -423,7 +429,7 @@ table>thead>tr>th{
                                 </div>
                                 
                             {{-- <button type="button"data-toggle="modal" data-target="#adjunnew" style="top: 137px;" class="btn btn-success float-right btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button> --}}
-                            <button type="button" onclick="openadjunto();" style="top: 84px;" class="btn btn-success float-right btn-sm redondo" id="limpiar" ><i class="fas fa-plus"></i></button>
+                            <button type="button" onclick="openadjunto();"class="btn btn-success float-right btn-sm redondo" id="limpiar" ><i class="fas fa-plus" style="font-size: 16px; margin-left: -1px;"></i></button>
                         </div>
                         {{-- @include('Empleados.adjunto') --}}
                         </div>
@@ -594,7 +600,6 @@ table>thead>tr>th{
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" integrity="sha512-NCJ1O5tCMq4DK670CblvRiob3bb5PAxJ7MALAz2cV40T9RgNMrJSAwJKy0oz20Wu7TDn9Z2WnveirOeHmpaIlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 @include('Contrato.modal')
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 {{-- <script src="{{asset('js/holdOn.js')}}"></script>
@@ -606,28 +611,35 @@ table>thead>tr>th{
 
   $(document).ready(function(){
    
-// if (window.history && window.history.pushState) {
-
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-
+//     HayFoco=false;
+// HayFoco2=false;
+// document.addEventListener ("keydown", function (e) {
+//         $('input[type=submit]').attr('disabled', 'disabled');
+//   if(HayFoco2==true ){
+//     if (e.keyCode== 13) {
+//         capturar();
+//         event.preventDefault();
+//     } 
+//   } 
 // });
+
+
+// function PierdoFoco(){
+//    HayFoco = false;
 
 // }
 
-
-// function backhome(){
-//   if (window.history && window.history.pushState) {
-
-// window.history.pushState('forward', null);
-
-// $(window).on('popstate', function() {
-//   backsave();
-// });
+// function GanoFoco(){
+//    HayFoco = true;
+// }
+// function PierdoFoco2(){
+//   HayFoco2 = false;
 
 // }
+
+// function GanoFoco2(){
+//   HayFoco2 = true;
+  
 // }
 
 
@@ -635,15 +647,14 @@ t=0;
 img="{{asset('black') }}/img/logotipo.png";
 $("#seave").on('click',function(){
 t=1;
-
 });
 
 // alert(img);
-window.onbeforeunload = function(e) {
+window.onbeforeunload = function() {
   // 
   if(t==0){
       $('.o-page-loader').remove();
-      return e.originalEvent.returnValue = "Your message here";
+      return "¿Estás seguro que deseas salir de la actual página?"
     }
     
   }  
@@ -684,7 +695,7 @@ Swal.fire({
 
     // var saler=$("#salario").val();
     // $("#salarioOP").attr('value',saler);
-    $("input[type='tel']").mask('(000) 000-0000');
+    $(".telefono").mask('(000) 000-0000');
     $("#descradjunto").val(" ");
     $('.bs-timepicker').timepicker();
 
@@ -864,25 +875,27 @@ document.addEventListener ("keydown", function (e) {
      
     
 
-    nuevoSujeto= new Persona(nombreCapturar,preferenciaCapturar,telefonoCapturar,);
- 
- agregar();
+    if(nombreCapturar!='' && preferenciaCapturar!='' && telefonoCapturar!=''){
+      nuevoSujeto= new Persona(nombreCapturar,preferenciaCapturar,telefonoCapturar,);
+      agregar();
+    }else{
+      ErrorDatos();
+
+    }
+
 }
 var baseDatos=[];
 
 function agregar(){
   $('.datosInput').val('');
+  $("#NN").focus();
 
 baseDatos.push(nuevoSujeto);
 console.log(baseDatos);
-var button = '<button type="button"class="btn btn-danger borrar btn-sm"><i class="fas fa-minus"></i></button';
+var button = '<button type="button"class="btn btn-danger borrar redondo btn-sm"><i class="fas fa-minus"></i></button';
 $('transTable').append(button);
-
-
-
-
 document.getElementById("transTable").innerHTML += '<tr class="reducir"><td><input type="text" name="no[]" value="'+nuevoSujeto.nombre+'"/ hidden>'+nuevoSujeto.nombre+'</td><td><input type="text" name="parentesco[]" value="'+nuevoSujeto.preferencia+'"/hidden>'+nuevoSujeto.preferencia+'</td><td><input type="text" name="tel[]" value="'+nuevoSujeto.telefono+'"/ hidden>'+nuevoSujeto.telefono+'</td><td>'+button+'</td></tr>';
-
+SuccesDatos();
 
 }
 
@@ -927,6 +940,67 @@ toInt = function(val){
 
 
 
+function ErroresGeneral(){
+    Command: toastr["error"]("", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+function ErrorDatos(){
+    Command: toastr["error"]("Debes llenar los campos obligatorios", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+function SuccesDatos(){
+    Command: toastr["success"]("se ha agregado la referencia", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+
 
 HayFoco=false;
 HayFoco2=false;
@@ -964,6 +1038,9 @@ $("#newpago").on('keypress', function(e) { return e.keyCode != 13; });
 $("#salario").on('keypress', function(e) { return e.keyCode != 13; }); 
 
 
+
+
+
 $('#exampleModal').keyup(function(e){
     if(e.keyCode==13)
     {
@@ -994,29 +1071,35 @@ $('#exampleModal').keyup(function(e){
     }
 });
 
-$('#salariosbase').keyup(function(e){
-    if(e.keycode==107)
-    {
-        alert("s");
-        $("#btnwssswa").trigger("click");
-        
-    }
-});
 
-  $('#modalsalario').keyup(function(e){
-    if(e.keyCode==13)
-    {
-      $('#btnsavesSalario').trigger("click"); 
-    }
-});
+
+// $('#salariosbase').on('shown.bs.modal', function () {
+//     $('#salariosbase').keyup(function(e){
+//       if(e.keycode==82)
+//       {
+          
+//       }
+//   });
+// })
+
+$('#showsalarios').on('shown.bs.modal', function () {
+  $("#showsalario").focus();
+})
+
+$('#modalsalario').on('shown.bs.modal', function () {
+  $("#SalarioName").focus();
+})
+
+
 
 table=$('#salarioTable').DataTable({
+  responsive: true,
     "info": false,
     "paging":   false,
     "ordering": false,
-    responsive: true,
     // "order": [[ 1, 'desc' ]],
     scrollY: 200,
+    scrollX: false,
 
 
         language: {
@@ -1044,6 +1127,7 @@ table=$('#salarioTable').DataTable({
    
 });
 
+new $.fn.dataTable.Responsive( table );
 
 $(document).on('click', '.borrar', function (event) {
     event.preventDefault();

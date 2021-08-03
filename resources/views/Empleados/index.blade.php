@@ -11,6 +11,7 @@
 table>thead>tr>th{
   color: black !important;
 }
+
 .azules>thead>tr{
     background-color: #4054b2 !important;
   
@@ -18,6 +19,7 @@ table>thead>tr>th{
 .azules>thead>tr>th{
   color: white !important;
 }
+
 
 @media (max-width: 360px) {
   .o-page-loader--spinner {
@@ -115,7 +117,8 @@ table>thead>tr>th{
                     <button id="btnexcel" type="button" title="Exportar en Hoja de Excel" class="btn btn-success btn-sm redondo"><i class="fas fa-file-excel"  style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
                     {{-- <button id="btnprint" type="button" title="Imprimir Lista de Empleado" class="btn btn-info btn-sm"><i class="fas fa-print"></i></button> --}}
                     <a href="{{url('listadopdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Imprimir Lista de Empleado" class="btn btn-warning btn-sm redondo"><i class="fas fa-print"  style="margin-left: -3px;  position: relative; font-size: 17px;"></i></button></a>
-                    <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf"  style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button>
+                    <a href="{{url('downloadpdf')}}" target="_blank" rel="noopener noreferrer"><button  type="button" title="Descargar Listado de Empleado" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf"  style="margin-left: -1px;  position: relative; font-size: 19px;"></i></button></a>
+                    {{-- <button id="btnpdf" type="button" title="Exportar en PDF" class="btn btn-danger btn-sm redondo"><i class="fas fa-file-pdf"  style="margin-left: -2px;  position: relative; font-size: 17px;"></i></button> --}}
                 </div>
             </div>
         </div>
@@ -478,7 +481,15 @@ $('#empleado-table').on('key-focus.dt', function(e, datatable, cell){
         
     });
 
+    $("#empleado-table tbody").on('click','tr',function(){
+ 
+ url=$(this).attr('action');
 
+ $("#sd").attr('href',url);
+
+ $("#urles").trigger("click");
+
+});
 
 // function myFunction(x) {
 //   if (x.matches) { // If media query matches

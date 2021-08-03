@@ -14,21 +14,34 @@
                 </div>
                 <div class="col-sm-4">
                     <label>{{ __('MONTO') }}</label>
-                    <input type="text" name="" value="{{number_format($sueldo->sueldo_increment,2)}}" style="text-align: right;"  onkeyup="calcular();" id="salarioShow" value="" class="form-control money">
+                    <input type="tel" name="" value="{{number_format($sueldo->sueldo_increment,2)}}" style="text-align: right;"  onkeyup="calcular();" id="salarioShow" value="" class="form-control money">
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-info redondo"><i class="fas fa-save" onclick="updatesalario({{$sueldo->id}});" style="margin-left: -1px;"></i></button>
-          <button type="button" class="btn btn-danger redondo"><i class="fas fa-trash" onclick="deletesalario({{$sueldo->id}});" style="margin-left: -1px;"></i></button>
+          <button type="button" class="btn btn-info redondo" id="btnsaveshow" onclick="updatesalario({{$sueldo->id}});" ><i class="fas fa-save" style="margin-left: -1px;"></i></button>
+          <button type="button" class="btn btn-danger redondo"  onclick="deletesalario({{$sueldo->id}});"><i class="fas fa-trash" style="margin-left: -1px;"></i></button>
         </div>
       </div>
     </div>
 <input type="text" id="salarioRecishow" hidden>
 
     <script>
-
+$("#salarioShow").on('keypress', function(e) { 
+  if(e.keyCode == 13){
+    $('#btnsaveshow').trigger("click");
+  } 
+}); 
 $('.money').mask("#,##0.00", {reverse: true});
+
+// $('#showsalarios').keyup(function(e){
+//     if(e.keycode==13)
+//     {
+//         alert("Salers");
+//           $('#btnsaveshow').trigger("click");
+//       }
+//   });
+
 
         function calcular(){
    var salario=$("#salarioShow").val();
@@ -141,6 +154,10 @@ function deletesalario(e){
   }
 })
 }
+
+
+
+
 
 
 

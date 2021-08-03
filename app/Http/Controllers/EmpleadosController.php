@@ -761,13 +761,35 @@ public function downloadContrato(Request $request)
   public function listadopdf()
   {
 
-    $empleados=Empleado::all();
-    $puesto=Puesto::all();
+    $empleados=Empleado::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+    $puesto=Puesto::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+    $sueldo=sueldo_aumento::where('estado','=',0)
+    ->where('id_empresa','=',Auth::user()->id_empresa)
+    ->get();
     $fecha=Carbon::now();
+   
+    $idempresa=Auth::user()->id_empresa;
+    $empresa=Empresa::findOrFail($idempresa);
 
-    $pdf =PDF::loadView('Empleados.listadopdf',compact('empleados','puesto','fecha'));
+    $pdf =PDF::loadView('Empleados.listadopdf',compact('empleados','puesto','fecha','empresa','sueldo'));
     $pdf->setPaper("letter", "portrait");
     return $pdf->stream('Empleado.pdf');
+  }
+  public function downloadpdf()
+  {
+
+    $empleados=Empleado::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+    $puesto=Puesto::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+    $fecha=Carbon::now();
+    $sueldo=sueldo_aumento::where('estado','=',0)
+    ->where('id_empresa','=',Auth::user()->id_empresa)
+    ->get();
+    $idempresa=Auth::user()->id_empresa;
+    $empresa=Empresa::findOrFail($idempresa);
+
+    $pdf =PDF::loadView('Empleados.listadopdf',compact('empleados','puesto','fecha','empresa','sueldo'));
+    $pdf->setPaper("letter", "portrait");
+    return $pdf->download('Empleado.pdf');
   }
   public function Emplephoto(Request $request)
   {

@@ -182,8 +182,10 @@ Route::post('emplepaises/{id}','App\Http\Controllers\EmpleadosController@emplepa
 Route::post('empleciudad/{id}','App\Http\Controllers\EmpleadosController@empleciudad');
 Route::post('downloadContrato','App\Http\Controllers\EmpleadosController@downloadContrato');
 Route::get('listadopdf','App\Http\Controllers\EmpleadosController@listadopdf');
+Route::get('downloadpdf','App\Http\Controllers\EmpleadosController@downloadpdf');
 Route::post('ConverterUsuario','App\Http\Controllers\EmpleadosController@ConverterUsuario');
 Route::post('Emplephoto','App\Http\Controllers\EmpleadosController@Emplephoto');
+
 
 
 

@@ -14,7 +14,13 @@
     top: -6px;
     position: relative;
     margin-left: 5px;  
-}
+  }
+  .totalsueldo{
+    font-size: 16px;
+    float: right;
+    margin-top: 2px;
+    margin-right: -718px !important;
+  }
 
 @media (max-width: 360px) {
   .o-page-loader--spinner {
@@ -25,6 +31,11 @@
     margin: 20px auto !important;
     /* animation: rotate-plane 1.2s infinite ease-in-out;
     -webkit-animation: rotate-plane 1.2s infinite ease-in-out; */
+  }
+  .totalsueldo{
+     float: right; 
+     margin-top: 0px;
+    margin-right: -70px !important;
   }
 
   .col4{

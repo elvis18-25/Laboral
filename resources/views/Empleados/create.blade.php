@@ -554,12 +554,6 @@ t=0;
 img="{{asset('black') }}/img/logotipo.png";
 $("#seave").on('click',function(){
 t=1;
-
-if(t==1){
-$("#adcls").append('<div class="o-page-loader">'+ '<div class="o-page-loader--content">'+
-      '<img src="'+img+'" alt="" class="o-page-loader--spinner">'+
-      '<div class="o-page-loader--message"><span>Cargando...</span></div></div></div>');
-}
 });
 
 // alert(img);
@@ -985,9 +979,13 @@ toInt = function(val){
      
     
 
-    nuevoSujeto= new Persona(nombreCapturar,preferenciaCapturar,telefonoCapturar,);
- 
- agregar();
+    if(nombreCapturar!='' && preferenciaCapturar!='' && telefonoCapturar!=''){
+      nuevoSujeto= new Persona(nombreCapturar,preferenciaCapturar,telefonoCapturar,);
+      agregar();
+    }else{
+      ErrorDatos();
+
+    }
 }
 var baseDatos=[];
 
@@ -999,7 +997,7 @@ baseDatos.push(nuevoSujeto);
 console.log(baseDatos);
 var button = '<button type="button"class="btn btn-danger borrar btn-sm"><i class="fas fa-minus"></i></button';
 $('transTable').append(button);
-
+SuccesDatos();
 
 
 
@@ -1013,6 +1011,48 @@ $(document).on('click', '.borrar', function (event) {
     $(this).closest('tr').remove();
     // ($(this).closest('tr').val());
 });  
+
+function ErrorDatos(){
+    Command: toastr["error"]("Debes llenar los campos obligatorios", "Error!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+function SuccesDatos(){
+    Command: toastr["success"]("se ha agregado la referencia", "Exito!")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+
 
 function savedepart(){
     var name=$("#newdepart").val();

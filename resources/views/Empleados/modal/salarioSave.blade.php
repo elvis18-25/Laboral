@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-sm-4">
                     <label><b>{{ __('MONTO') }}</b></label>
-                    <input type="text" name="" onkeyup="calcular();" id="salario" style="text-align: right;" value="" class="form-control money">
+                    <input type="tel" name="" onkeyup="calcular();" id="salario" style="text-align: right;" value="" class="form-control money">
                 </div>
             </div>
         </div>
@@ -62,7 +62,6 @@
               $("#totalsalario").append(bonores);
               successGen();
               $("#SalarioName").val("");
-              $("#salario").val("");
 
             
            },
@@ -71,4 +70,11 @@
     }
              }); 
 }
+
+$('#modalsalario').keyup(function(e){
+    if(e.keyCode==13)
+    {
+      $('#btnsavesSalario').trigger("click"); 
+    }
+});
   </script>
