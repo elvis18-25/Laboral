@@ -78,16 +78,16 @@
             <div class="input-group-prepend" style="top: 0px; position: relative; height: 38px;">
               <div class="input-group-text"style="color: black"><span id="figure"></span></div>
             </div>
-            <input type="text" name="monto"  onkeyup="calcular();" style="text-align: right;" id="montoedit"  value="{{$asigna->Monto}}" required  class="form-control money" placeholder=""  >
-            <input type="text"   id="montoOP" value="" hidden>
+            <input type="text" name="monto"  onkeyup="calculares();" style="text-align: right;" id="montoedit"  value="{{number_format($asigna->Monto,2)}}" required  class="form-control money" placeholder=""  >
+            <input type="text"   id="montoOPEdit" value="{{$asigna->Monto}}" hidden>
         </div>
     </div>
 
 </div> 
+<button type="button" class="btn btn-info redondo btn-sm float-right" title="Agregar Empleado a la asignacion" id="btnsingle"  data-toggle="modal" data-target="#Empleadomodal"><i class="fas fa-user-plus" style="margin-left: -3px; font-size: 17px;"></i></button>
+<button type="button" class="btn btn-warning redondo btn-sm float-right" title="Agregar Todos los empleado" onclick="allEmple();"><i class="fas fa-users" style="margin-left: -6px; font-size: 19px;"></i></button>
 <br>
 
-  <button type="button" class="btn btn-info redondo btn-sm float-left" title="Agregar Empleado a la asignacion" id="btnsingle"  data-toggle="modal" data-target="#Empleadomodal"><i class="fas fa-user-plus" style="margin-left: -3px; font-size: 17px;"></i></button>
-  <button type="button" class="btn btn-warning redondo btn-sm float-left" title="Agregar Todos los empleado" onclick="allEmple();"><i class="fas fa-users" style="margin-left: -6px; font-size: 19px;"></i></button>
   <br>
   <input type="text" name="" id="inputEdit" value="{{$asigna->grupo}}" hidden>
   <table class="table tablesorter list" id="listadoEdit-table" style="width: 100% !important;">
@@ -130,7 +130,8 @@
 
 <script>
 var figure=$("#inputfigures").val();
-
+$('.money').mask("#,##0.00", {reverse: true});
+// $('.money').mask('0#');
 if(figure=="PORCENATJE"){
   $("#figure").empty();
   $("#figure").append("$"); 
@@ -142,7 +143,7 @@ if(figure=="PORCENATJE"){
      var name=$("#nameedit").val();
      var tipo=$("#inputStateed").val();
      var forma=$("#formaedit").val();
-     var monto=$("#montoedit").val();
+     var monto=$("#montoOPEdit").val();
      var id=$("#inputEdit").val();
      var arreglo=[];
     var p=0;
@@ -316,6 +317,45 @@ $('div.dataTables_filter input', tebl.table().container()).on('click',function()
   tebl.cell( ':eq(0)' ).focus();
 });
 
+
+function calculares(){
+   var salario=$("#montoedit").val();
+   
+  //  var sum=0;
+
+   var montoFormat = toInt(salario);
+ 
+
+
+  //  sum=montoFormat/23.83/8;
+
+   $("#montoOPEdit").attr('value',montoFormat);
+  //  $("#salDias").attr('value',financial(sum));
+
+ }
+ 
+ function financial(x) {
+   var sala=Number.parseFloat(x).toFixed(2);
+  return sala;
+}
+
+
+String.prototype.toInt = function (){    
+    return parseInt(this.split(' ').join('').split(',').join('') || 0);
+}
+
+
+
+toInt = function(val){
+  var result;
+  if (typeof val === "string")
+    result = parseInt(val.split(' ').join('').split(',').join('') || 0);
+  else if (typeof val === "number")
+    result = parseInt(val);
+  else if (typeof val === "object")
+    result = 0;
+  return result;
+}
 
 
 
