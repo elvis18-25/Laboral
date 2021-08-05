@@ -15,7 +15,7 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>NUEVO PERFIL</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
+                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-plus"  style="margin-left: -14%; font-size: 17px;"></i></button>
                @include('Perfiles.modalemple')
                 </div>
             </div>
@@ -78,55 +78,71 @@
 <script>
     $(document).ready(function(){
  
- if (window.history && window.history.pushState) {
+//  if (window.history && window.history.pushState) {
 
-window.history.pushState('forward', null);
+// window.history.pushState('forward', null);
 
-$(window).on('popstate', function() {
-  backsave();
+// $(window).on('popstate', function() {
+//   backsave();
 
+// });
+
+// }
+
+// function backhome(){
+//   if (window.history && window.history.pushState) {
+
+// window.history.pushState('forward', null);
+
+// $(window).on('popstate', function() {
+//   backsave();
+
+// });
+
+// }
+// }
+
+
+// function backsave(){
+//   Swal.fire({
+//   title: 'Seguro que deseas salir?',
+//   text: "No se podra revertir,¿Deseas guardarlo? !",
+//   icon: 'warning',
+//   showDenyButton: true,
+//   showCancelButton: true,
+//   confirmButtonText: `Si, Guardar`,
+//   denyButtonText: `No, Salir`,
+// }).then((result) => {
+//   /* Read more about isConfirmed, isDenied below */
+//   if (result.isConfirmed) {
+//     $("#seave").trigger("click");
+//   } else if (result.isDenied) {
+//     history.back();
+//   }else{
+//     backhome();
+//   }
+// })
+
+// }
+
+t=0;
+img="{{asset('black') }}/img/logotipo.png";
+$("#subir").on('click',function(){
+t=1;
 });
 
-}
-
-function backhome(){
-  if (window.history && window.history.pushState) {
-
-window.history.pushState('forward', null);
-
-$(window).on('popstate', function() {
-  backsave();
-
-});
-
-}
-}
+// alert(img);
+window.onbeforeunload = function() {
+  // 
+  if(t==0){
+      $('.o-page-loader').remove();
+      return "¿Estás seguro que deseas salir de la actual página?"
+    }
+    
+  }  
 
 
-function backsave(){
-  Swal.fire({
-  title: 'Seguro que deseas salir?',
-  text: "No se podra revertir,¿Deseas guardarlo? !",
-  icon: 'warning',
-  showDenyButton: true,
-  showCancelButton: true,
-  confirmButtonText: `Si, Guardar`,
-  denyButtonText: `No, Salir`,
-}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
-    $("#seave").trigger("click");
-  } else if (result.isDenied) {
-    history.back();
-  }else{
-    backhome();
-  }
-})
-
-}
-
-
-    document.addEventListener ("keydown", function (e) {
+document.addEventListener ("keydown", function (e) {
     if (e.keyCode== 107) {
         $("#createdperfiles").trigger("click");
         started();

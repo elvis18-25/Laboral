@@ -17,7 +17,7 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EDITAR PERFIL</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil" data-toggle="modal" data-target="#Empleadoedit" class="btn btn-info btn-sm redondo"><i class="fas fa-users" style="top: 5px; margin-left: -39%;"></i></button>
+                    <button type="button" id="createdperfiles" title="Agregar Empleado al Perfil" data-toggle="modal" data-target="#Empleadoedit" class="btn btn-info btn-sm redondo"><i class="fas fa-plus" style="margin-left: -14%; font-size: 17px;"></i></button>
                     @include('Perfiles.modaleditempleado')
                 </div>
             </div>
@@ -62,7 +62,7 @@
                             </td>
                             <td style="text-align: right;">{{$empleados->telefono}}</td>
                             <td style="text-align: right;">
-                                <button class="btn btn-danger btn-sm remfe" type="button" value="{{$empleados->id_empleado}}"><i class="fas fa-minus"></i></button>
+                                <button class="btn btn-danger btn-sm remfe redondo" type="button" value="{{$empleados->id_empleado}}"><i class="fas fa-minus"></i></button>
                             </td>
                         </tr>
                         @endforeach
@@ -399,12 +399,15 @@ function Errore(){
 </script>
     
 <style>
-.table-striped{
-  width: 100% !important;
-}
-
-.tablesorter {
-  width: 100% !important;
-}
-</style>
+    .table-striped{
+      width: 100% !important;
+    }
+    
+    .tablesorter {
+      width: 100% !important;
+    }
+    .table>tbody>tr>td{
+        padding: 4px 7px !important;
+    }
+    </style>
 @endsection

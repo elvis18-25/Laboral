@@ -78,7 +78,7 @@
                 @endphp
                     @if ($permisos->categorias==1)
 
-                    <a href="{{url('Categorias')}}" title="Agregar Nuevo Gastos Fijo" class="btn btn-sm btn-success float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-file-alt"style="margin-left: -3px; top: 6px; position: relative; font-size: 20px;" ></i></a>
+                    <a href="{{url('Categorias')}}" title="Categorias" class="btn btn-sm btn-success float-right redondo"><button type="button" id="created" style="display: none;"></button><i class="fas fa-file-alt"style="margin-left: -3px; top: 6px; position: relative; font-size: 20px;" ></i></a>
                     @endif
                     {{-- <p>
                         <button class="btn btn-success redondo btn-sm" type="button" title="Filtros" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">

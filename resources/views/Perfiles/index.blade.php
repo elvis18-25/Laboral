@@ -49,7 +49,10 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>PERFILES</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="{{route('Perfiles.create')}}" class="btn btn-sm btn-info redondo"><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus" style="top: 6px; position: relative;"></i></a>
+                    <a href="{{route('Perfiles.create')}}" class="btn btn-sm btn-info redondo"><button type="button" id="createdperfiles" style="display: none;"></button><i class="fas fa-plus" style="    top: 7px;
+                      font-size: 17px;
+                      position: relative;
+                      margin-left: -2px;"></i></a>
                 </div>
             </div>
         </div>
