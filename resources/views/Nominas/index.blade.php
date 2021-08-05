@@ -649,10 +649,13 @@ headers: {
    
 });
 
-function saercha(){
- var  name=$("#btnsearcha").val();
+function saerches(){
+ var  name=$("#btnsearch").val();
+//  alert(name);
   tab.search(name).draw();
 }
+
+
 function saerchEmpleado(){
  var  name=$("#btnsearchaEmpleado").val();
  tebl.search(name).draw();
@@ -1204,8 +1207,9 @@ tebl=$('#Empleadotable').DataTable({
             var data = tebl.row(cell.index().row).data();
             
             var row_s=$(this).DataTable().row({selected:true}).node(); 
-
-            $('td', row_s).css('backgroundColor', '#9e2ca8');
+            // $('td', row_s).css('backgroundColor', '#958fcd ');
+            // $('td', row_s).css('color', 'white');
+            // $('td', row_s).css('backgroundColor', '#9e2ca8');
 
 
            var id=$(row_s).attr('value');
@@ -1215,17 +1219,25 @@ tebl=$('#Empleadotable').DataTable({
         
     });
 
-  $('#Empleadotable').DataTable().on("draw", function(){
-    $("input:[type=search]").addClass("serachEmpleado");
-});
+//   $('#Empleadotable').DataTable().on("draw", function(){
+//     $("input:[type=search]").addClass("serachEmpleado");
+// });
 
-$("#btnplusemple").on('click',function(){
-  var rowIdx = tebl.cell(':eq(0)').index().row;
+// $("#btnplusemple").on('click',function(){
+//   var rowIdx = tebl.cell(':eq(0)').index().row;
+      
+//       tebl.row(rowIdx).select();
+
+//       tebl.cell( ':eq(0)' ).focus();
+//       verificate();
+// });
+
+$("#btnsearchaEmpleado").on("click",function(){
+      var rowIdx = tebl.cell(':eq(0)').index().row;
       
       tebl.row(rowIdx).select();
 
       tebl.cell( ':eq(0)' ).focus();
-      verificate();
 });
 
 
@@ -1253,7 +1265,7 @@ function verificate(){
 
 function Add(e){
     var idPerfiles =$("#input").val();
-    alert(idPerfiles);
+    // alert(idPerfiles);
     var url = "{{url('addempleado')}}/"+e;
      var data ={idPerfiles:idPerfiles};
         $.ajax({

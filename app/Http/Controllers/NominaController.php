@@ -865,7 +865,7 @@ class NominaController extends Controller
         $Cambio=intval($tipo);
 
         
-        if(sizeof(Perfiles::select('id_empleado')->where('id_empleado','=',$id)->get())!=0){
+        if(sizeof(Perfiles::select('id_empleado')->where('id_empleado','=',$id)->where('id_perfiles','=', $tipo)->where('id_empresa','=',Auth::user()->id_empresa)->get())!=0){
             return 2;
             
         }else{
