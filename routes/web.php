@@ -203,6 +203,8 @@ Route::PUT('agregarGruop/{id}','App\Http\Controllers\EquiposController@agregarGr
 Route::PUT('agregarGruopEdit/{id}','App\Http\Controllers\EquiposController@agregarGruopEdit');
 Route::post('AllGroupEDIT','App\Http\Controllers\EquiposController@AllGroupEDIT');
 Route::get('AllGroup','App\Http\Controllers\EquiposController@AllGroup');
+Route::post('destroyemploye','App\Http\Controllers\EquiposController@destroyemploye');
+
 
 //Horas
 Route::post('updatehoras/{id}','App\Http\Controllers\HorasController@updatehoras');

@@ -89,10 +89,19 @@ class EquiposController extends Controller
     public function show($id)
     {
         $equipo=Equipos::findOrFail($id);
-        $perf=empleados_equipo::select('id_empleado')->where('equipos','=',$id)->get();
+        // $perf=empleados_equipo::select('id_empleado')->where('equipos','=',$id)->get();
         $puesto=Puesto::all();
-        $empleado=Empleado::all();
-        return view('Equipos.show',compact('equipo','perf','empleado','puesto'));
+        $emple=Empleado::where('id_empresa','=',Auth::user()->id_empresa)->where('estado','=',0)->get();
+        $empleado=empleados_equipo::leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
+        ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','equipos_empleados.id_empleado')
+        ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
+        ->where('equipos_empleados.equipos','=',$id)
+        ->where('equipos_empleados.id_empresa','=',Auth::user()->id_empresa)
+        ->where('equipos_empleados.estado','=',0)
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cedula','empleado.cargo','empleado.salario','puesto.name')
+        ->GroupBy('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cedula','empleado.cargo','empleado.salario','puesto.name')
+        ->get();
+        return view('Equipos.show',compact('equipo','empleado','emple','puesto'));
         
     }
 
@@ -154,6 +163,32 @@ class EquiposController extends Controller
     {
         //
     }
+    public function destroyemploye()
+    {
+        $idempleado=request('id');
+        $id=request('equipo');
+
+        // $equipo=Equipos::findOrFail($id);
+        $emple_eqi=empleados_equipo::where('equipos','=',$id)
+        ->where('id_empleado','=',$idempleado)
+        ->where('id_empresa','=',Auth::user()->id_empresa)
+        ->first();
+
+        // $emple_eqi->estado=1;
+        $emple_eqi->delete();
+
+        $empleado=empleados_equipo::leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
+        ->leftjoin('empleado_puesto','empleado_puesto.empleado_id_empleado','=','equipos_empleados.id_empleado')
+        ->leftjoin('puesto','puesto.id','=','empleado_puesto.puesto_id')
+        ->where('equipos_empleados.equipos','=',$id)
+        ->where('equipos_empleados.id_empresa','=',Auth::user()->id_empresa)
+        ->where('equipos_empleados.estado','=',0)
+        ->select('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cedula','empleado.cargo','empleado.salario','puesto.name')
+        ->GroupBy('empleado.id_empleado','empleado.nombre','empleado.apellido','empleado.cedula','empleado.cargo','empleado.salario','puesto.name')
+        ->get();
+
+        return view('Equipos.Plantillas.update',compact('empleado'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -192,20 +227,20 @@ class EquiposController extends Controller
         }
     }
 
-        if( $arrayremo!=''){
-        $r=count($arrayremo);
-            for ($i=0; $i <$r; $i++){ 
-                foreach($emple_eqi as $perfil){
-                if(!empty($arrayremo[$i])){
-                    if($perfil->id_empleado==$arrayremo[$i]){
-                        if($perfil->id_perfiles==$id){
-                            $perfil->delete();
-                        }
-                    }
-                } 
-            }
-        }
-    }
+    //     if( $arrayremo!=''){
+    //     $r=count($arrayremo);
+    //         for ($i=0; $i <$r; $i++){ 
+    //             foreach($emple_eqi as $perfil){
+    //             if(!empty($arrayremo[$i])){
+    //                 if($perfil->id_empleado==$arrayremo[$i]){
+    //                     if($perfil->id_perfiles==$id){
+    //                         $perfil->delete();
+    //                     }
+    //                 }
+    //             } 
+    //         }
+    //     }
+    // }
 
 
 
@@ -229,7 +264,10 @@ class EquiposController extends Controller
 
     public function datatablEquipos()
     {
-        $perfiles=Equipos::
+        if(request()->ajax()){
+            $start=request()->start_date;
+            $end=request()->end_date;
+        $equipos=Equipos::
         leftjoin('equipos_empleados','equipos_empleados.equipos','=','equipos.id')
         ->leftjoin('empleado','empleado.id_empleado','=','equipos_empleados.id_empleado')
         ->where('equipos.id_empresa',Auth::user()->id_empresa)
@@ -238,7 +276,10 @@ class EquiposController extends Controller
         ->select('equipos.id','equipos.descripcion','equipos.user','equipos.created_at',DB::raw('count(equipos_empleados.id_empleado) as emple'))
         ->GroupBy('equipos.id','equipos.descripcion','equipos.user','equipos.created_at');
        
-            return datatables()->of($perfiles)
+        if(!empty($start) && $start!="Invalid date"){
+            $equipos->whereDate('equipos.created_at','>=',$start)->whereDate('equipos.created_at','<=',$end);
+        } 
+            return datatables()->of($equipos)
             ->editColumn('created_at',function($row){
                 return $row->created_at->format('d/m/Y');
                 
@@ -250,5 +291,6 @@ class EquiposController extends Controller
                     return Route('Equipos.show',[$row->id]);
                 },
                 ])->toJson();
+            }
     }
 }

@@ -83,8 +83,8 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdperfiles" title="Agregar Empleados al Grupo"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-user"  style="top: 5px; margin-left: -14%;"></i></button>
-                    <button type="button" id="btnall" onclick="AllGroup();" title="Agregar Todos los Empleado al Grupo"  class="btn btn-warning btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
+                    <button type="button" id="createdperfiles" title="Agregar Empleados al Grupo"  data-toggle="modal" data-target="#Empleado" class="btn btn-info btn-sm redondo"><i class="fas fa-user"  style="top: 6px; margin-left: -25%; font-size: 17px;"></i></button>
+                    <button type="button" id="btnall" onclick="AllGroup();" title="Agregar Todos los Empleado al Grupo"  class="btn btn-warning btn-sm redondo"><i class="fas fa-users"  style="top: 6px; margin-left: -53%; font-size: 18px;"></i></button>
                @include('Equipos.modalempleado')
                 </div>
             </div>
@@ -160,6 +160,21 @@
 
 
 
+t=0;
+img="{{asset('black') }}/img/logotipo.png";
+$("#subir").on('click',function(){
+t=1;
+});
+
+// alert(img);
+window.onbeforeunload = function() {
+  // 
+  if(t==0){
+      $('.o-page-loader').remove();
+      return "¿Estás seguro que deseas salir de la actual página?"
+    }
+    
+  }  
 tebl=$('#Empleadotable').DataTable({
         scrollY: 300,
         "paging":   false,
@@ -363,19 +378,11 @@ function AgregarGru(){
     });
 }
 
+function saerches(){
+  name=$("#btnsearch").val();
+  tebl.search(name).draw();
 
-// $('#formularios').on('submit',function(e){
-//     e.preventDefault();
-//     $("#grupo-table tbody tr").each(function(){
-//         arreglo[i]=$(this).attr('value');
-//         i++;
-//         $("#arreglo").attr('value',arreglo);
-//     });
-
-//     this.submit();
-// });
-
-
+}
 function Errore(){
     Command: toastr["error"]("Este Empleado ha sido Selecionado", "Error")
     toastr.options = {

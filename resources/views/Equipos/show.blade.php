@@ -91,8 +91,8 @@
                     <h4 class="card-title" style="font-size: 16px !important; font-weight: bold !important;"><b>EMPLEADOS</b></h4>
                 </div>
                 <div class="col-4 text-right">
-                    <button type="button" id="createdgruop" title="Agregar Empleados al Grupo"  data-toggle="modal" data-target="#EmpleadoEDIT" class="btn btn-info btn-sm redondo"><i class="fas fa-user"  style="top: 5px; margin-left: -14%;"></i></button>
-                    <button type="button" id="btnall" onclick="AllGroup();" title="Agregar Todos los Empleado al Grupo"  class="btn btn-warning btn-sm redondo"><i class="fas fa-users"  style="top: 5px; margin-left: -39%;"></i></button>
+                    <button type="button" id="createdgruop" title="Agregar Empleados al Grupo"  data-toggle="modal" data-target="#EmpleadoEDIT" class="btn btn-info btn-sm redondo"><i class="fas fa-user"  style="top: 6px; margin-left: -25%; font-size: 17px;"></i></button>
+                    <button type="button" id="btnall" onclick="AllGroup();" title="Agregar Todos los Empleado al Grupo"  class="btn btn-warning btn-sm redondo"><i class="fas fa-users" style="top: 6px; margin-left: -53%; font-size: 18px;"></i></button>
                @include('Equipos.modalEdit')
                 </div>
             </div>
@@ -113,33 +113,25 @@
                         <th class="TitlePer">CARGO</th>
                         <th class="TitlePer">DEPARTAMENTO</th>
                         <th class="TitlePer">SALARIO</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach ($empleado as $empleados)
-                        @if ($empleados->estado==0)
-                        @foreach ($perf as $perfe)
-                        @if ($perfe->id_empleado==$empleados->id_empleado)
-                        @if ($perfe->id_empresa=$empresa)
-                        <tr value="{{$empleados->id_empleado}}">
-                            <td >{{$empleados->nombre." ".$empleados->apellido}}</td>
-                            <td style="text-align: center;">{{$empleados->cedula}}</td>
-                            <td style="text-align: center;">{{$empleados->cargo}}</td>
-                            <td style="text-align: center;">
-                            @foreach ($empleados->puesto as $puesto)
-                                {{$puesto->name}}
-                            @endforeach
-                            </td>
-                            <td style="text-align: right;">${{number_format($empleados->salario,2)}}</td>
-                            <td style="text-align: right;">
-                                <button class="btn btn-danger btn-sm remfe" type="button" value="{{$empleados->id_empleado}}"><i class="fas fa-minus"></i></button>
-                            </td>
-                        </tr>
-                        @endif
-                        @endif
-                        @endforeach
-                        @endif
-                        @endforeach
+                      @foreach ($empleado as $empleados)
+    
+                      <tr value="{{$empleados->id_empleado}}">
+                          <td >{{$empleados->nombre." ".$empleados->apellido}}</td>
+                          <td style="text-align: center;">{{$empleados->cedula}}</td>
+                          <td style="text-align: center;">{{$empleados->cargo}}</td>
+                          <td style="text-align: center;">
+                              {{$empleados->name}}
+                          </td>
+                          <td style="text-align: right;">${{number_format($empleados->salario,2)}}</td>
+                          <td style="text-align: right;">
+                              <button class="btn btn-danger btn-sm remfe redondo" type="button" value="{{$empleados->id_empleado}}"><i class="fas fa-minus"></i></button>
+                          </td>
+                      </tr>
+                      @endforeach
                     </tbody>
                 </table>
             </div>
@@ -190,6 +182,21 @@
 
 
 
+t=0;
+img="{{asset('black') }}/img/logotipo.png";
+$("#subir").on('click',function(){
+t=1;
+});
+
+// alert(img);
+window.onbeforeunload = function() {
+  // 
+  if(t==0){
+      $('.o-page-loader').remove();
+      return "¿Estás seguro que deseas salir de la actual página?"
+    }
+    
+  } 
 $("#deleeperfil").submit(function(e){
     e.preventDefault();
 Swal.fire({
@@ -326,7 +333,7 @@ j=0;
 
 $(document).on('click', '.remfe', function (event) {
     Swal.fire({
-  title: 'Enserio Quieres Eliminarlo?',
+  title: 'Quieres Eliminarlo?',
   text: "Ya no podras revertir esto!",
   icon: 'warning',
   showCancelButton: true,
@@ -335,17 +342,37 @@ $(document).on('click', '.remfe', function (event) {
   confirmButtonText: 'Si, Eliminar!'
 }).then((result) => {
   if (result.isConfirmed) {
-    event.preventDefault();
-    $(this).closest('tr').remove();
-   var id=$(this).val();
-     arreRemov[j]=id;
-     $("#arregloremo").attr('value',arreRemov);
-      j++;
-    Swal.fire(
-      'Eliminado!',
-      'Este empleado ha sido eliminado.',
-      'success'
-    )
+    var id=$(this).val();
+    var equipo=$("#input").val();
+    var url="{{url('destroyemploye')}}"; 
+  var data={id:id,equipo:equipo};
+    $.ajax({
+         method: "POST",
+           data: data,
+            url:url ,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(result){
+            $("#grupo-table tbody").empty();  
+            $("#grupo-table tbody").append(result);  
+            exitodelete();
+            
+           },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                 ErroreGeneral()
+    }
+             });
+
+  //   event.preventDefault();
+  //   $(this).closest('tr').remove();
+  //  
+  //    arreRemov[j]=id;
+  //    $("#arregloremo").attr('value',arreRemov);
+  //     j++;
+  //   Swal.fire(
+  //     'Eliminado!',
+  //     'Este empleado ha sido eliminado.',
+  //     'success'
+  //   )
   }
 })
 
@@ -410,7 +437,7 @@ function AddGroup(e,m){
            
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                 ErroreGeneral()
     }
              });
      }else{
@@ -419,6 +446,11 @@ function AddGroup(e,m){
 }
 
 
+function saerches(){
+  name=$("#btnsearch").val();
+  tebl.search(name).draw();
+
+}
 
 function AllGroup(){
     $("#grupo-table tbody tr").each(function(){
@@ -448,7 +480,7 @@ function AllGroup(){
 
            },
                 error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                 ErroreGeneral()
     }
              });
 }
@@ -463,6 +495,26 @@ function AgregarGru(){
 }
 
 
+function ErroreGeneral(){
+    Command: toastr["error"]("", "Error")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
 function Errore(){
     Command: toastr["error"]("Este Empleado ha sido Selecionado", "Error")
     toastr.options = {
@@ -543,11 +595,31 @@ function exitoall(){
       "hideMethod": "fadeOut",
     }
   }
+function exitodelete(){
+    Command: toastr["success"]("se ha eliminado el empleado", "Correto")
+    toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+    }
+  }
 </script>
 
 <style>
     table tbody tr td{
-        padding:  6px 7px !important;
+        padding:  3px 7px !important;
     }
     .form-control[readonly]{
         background-color: rgb(255 255 255 / 50%);
